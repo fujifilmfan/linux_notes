@@ -210,18 +210,18 @@ You should be able to:
 ### Notes 3
 
 #### 3.3 Processes, Programs and Threads
-? What's the difference? https://www.youtube.com/watch?v=exbKr6fnoUw
-A process is an executing program and associated resources, including environment, open files, signal handlers, etc. The same program may be executing more than once simultaneously, and thus, be responsible for multiple processes.
+? What's the difference? https://www.youtube.com/watch?v=exbKr6fnoUw  
+A process is an executing program and associated resources, including environment, open files, signal handlers, etc. The same program may be executing more than once simultaneously, and thus, be responsible for multiple processes.  
 
-At the same time, two or more tasks, or threads of execution, can share various resources, such as their entire memory spaces (or just particular memory areas), open files, etc. When there is an everything shared circumstance, one speaks of a multi-threaded process.
+At the same time, two or more tasks, or threads of execution, can share various resources, such as their entire memory spaces (or just particular memory areas), open files, etc. When there is an everything shared circumstance, one speaks of a multi-threaded process.  
 
-In other operating systems, there may be a big distinction between full heavy weight processes and light weight ones; strictly speaking, the heavy weight process may include a number of light weight processes, or just one of them.
+In other operating systems, there may be a big distinction between full heavy weight processes and light weight ones; strictly speaking, the heavy weight process may include a number of light weight processes, or just one of them.  
 
-In Linux, the situation is quite different. Each thread of execution is considered individually, the difference between heavy and light having to do only with sharing of resources and somewhat faster context switching between threads of execution.
+In Linux, the situation is quite different. Each thread of execution is considered individually, the difference between heavy and light having to do only with sharing of resources and somewhat faster context switching between threads of execution.  
 
-Unlike some other operating systems, Linux has always done an exceptionally fast job of creating, destroying, and switching between processes. Thus, the model adopted for multi-threaded applications resembles multiple processes; each thread is scheduled individually and normally, as if it were a stand-alone process. This is done instead of involving more levels of complication, such as having a separate method of scheduling among the threads of a process, as well as having a scheduling method between different processes.
+Unlike some other operating systems, Linux has always done an exceptionally fast job of creating, destroying, and switching between processes. Thus, the model adopted for multi-threaded applications resembles multiple processes; each thread is scheduled individually and normally, as if it were a stand-alone process. This is done instead of involving more levels of complication, such as having a separate method of scheduling among the threads of a process, as well as having a scheduling method between different processes.  
 
-At the same time, Linux respects POSIX and other standards for multi-threaded processes; e.g., each thread returns the same process ID (called the thread group ID internally), while returning a distinct thread ID (called the process ID internally). This can lead to confusion for developers, but should be invisible to administrators. 
+At the same time, Linux respects POSIX and other standards for multi-threaded processes; e.g., each thread returns the same process ID (called the thread group ID internally), while returning a distinct thread ID (called the process ID internally). This can lead to confusion for developers, but should be invisible to administrators.  
 
 #### 3.4 The init Process
 * first user process on system with ID = 1
@@ -239,7 +239,7 @@ At the same time, Linux respects POSIX and other standards for multi-threaded pr
   * variables
   * file descriptors
   * environment
-* **init** if first user process
+* **init** is first user process
   * ancestor of all subsequent processes running on the system
   * except those initiated directly from kernel (will have [] around their name in a **ps** listing)
 * if parent process dies before child, ppid of child set to 1; process adopted by init
@@ -319,11 +319,12 @@ The mode is not a state of the system but the processor, and what instructions c
 * name often end with **d**, such as **httpd** and **systemd-udevd**
 * may respond to external events (**systemd-udevd**) or elapsed time (**crond**)
 * generally have no controlling terminal and no standard input/output devices
-* sometimes provide better security control
+* sometimes provide better security control  
 ? better than what?  
 when using **SysVinit**, scripts in the `/etc/init.d` directory start various system daemons; these scripts invoke commands as arguments to a shell function named **daemon**, defined in the `/etc/init.d/functions` file  
-? example?
-The README in `/etc/init.d` says:
+? example?  
+The README in `/etc/init.d` says:  
+
 > [root@centos init.d]# cat README 
 > You are looking for the traditional init scripts in /etc/rc.d/init.d, and they are gone?
 > 
