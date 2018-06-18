@@ -3,29 +3,29 @@ LFS201 Essentials of System Administration Notes
 
 Chapter 2: Linux filesystem tree layout
 -----
-## Goals 2
+### Goals 2
 You should be able to:
 * Explain why Linux requires the organization of one big filesystem tree, and what the major considerations are for how it is done.
 * Know the role played by the Filesystem Hierarchy Standard.
 * Describe what must be available at boot in the root (/) directory, and what can be available only once the system has started.
 * Explain each of the main subdirectory trees in terms of purpose and contents.
 
-## Notes 2
+### Notes 2
 
-### 2.3 One Big Filesystem
+#### 2.3 One Big Filesystem
 It's an inverted tree, with root, `/`, at the top of the tree
 
-### 2.4 Data Distinctions
+#### 2.4 Data Distinctions
 Two distinctions on what kind of information has to be read and written:
 1. Shareable (between diff. hosts) vs. non-shareable (specific to a particular host)
 2. Variable vs. static (require sys admin to change, like binaries, libraries, documentation)
 
-### 2.5 Filesystem Hierarchy Standard (FHS)
+#### 2.5 Filesystem Hierarchy Standard (FHS)
 
-### 2.6b Main Directory Layout II
+#### 2.6b Main Directory Layout II
 Does not violate **FHS** to have other directories, but to have components in directories other than those dicatated in the standard
 
-### 2.7 The Root (`/`) Directory and Filesystems
+#### 2.7 The Root (`/`) Directory and Filesystems
 * It's special
 * Must contain all essential files for booting and then mounting other file systems, config files, boot loader info, etc.; must be adequate to:
   1. boot the system
@@ -33,7 +33,7 @@ Does not violate **FHS** to have other directories, but to have components in di
   3. recover and/or repair the system
 * No application or package should create new subdirectories of the root directory
 
-### 2.8 `/bin`
+#### 2.8 `/bin`
 * Contains executables needed before other filesystems have been mounted, for example when booting into single user or recovery mode
 * May contain executables used indirectly by scripts
 * May not include any subdirectories
@@ -42,7 +42,7 @@ Does not violate **FHS** to have other directories, but to have components in di
 * Less important command binaries go in `/usr/bin`; programs required only by non-root users
 * Some recent distros are abandoning the separation of `/bin` and `/usr/bin`
 
-### 2.9 and 2.10 `/boot`
+#### 2.9 and 2.10 `/boot`
 Absolutely essential:
 * `vmlinuz` (compressed Linus kernel)
 * `initramfs` (**initial RAM Filesystem**, mounted before real root filesystem becomes available)
@@ -57,36 +57,36 @@ Absolutely essential:
  ? What's a kernel symbol?
 
 
-### 2.11 `/dev`
+#### 2.11 `/dev`
 * Contains **special device files**, or **device nodes**
 * Such files represent **character** and **block I/O** devices
 ? like stderr, stdin, stdout? check the 101 course
 * Network devices do not have device nodes and are represented by name, such as eth1 or wlan0
 
-### 2.12 `/etc`
+#### 2.12 `/etc`
 * Should not contain executable binaries
 * Files which might be found:
 **csh.login, exports, fstab, ftpusers, gateways, gettydefs, group, host.conf, hosts.allow, hosts.deny, hosts,equiv, hosts.lpd, inetd.conf, inittab, issue, ld.so.conf, motd, mtab, mtools.conf, networks, passwd, printcap, profile, protocols, resolv.conf, rpc, securetty, services, shells, syslog.conf**
 * Red Hat adds subdirectories to `/etc`, like `/etc/sysconfig`, `/etc/skel` used to populate new home dirs, and `/etc/init.d` which contains start up and shut down scripts when using System V initialization
 
-### 2.13 `/home`
+#### 2.13 `/home`
 In some systems, mounted automatically upon use with an **automount** facility
 `$ ls -l $HOME/public_html`
 `$ ls -l ~/public_html`
 
-### 2.14 `/lib` and `/lib64`
+#### 2.14 `/lib` and `/lib64`
 * Contain libraries needed to execute binaries in `/bin` and `/sbin`
 * kernel modules that are loadable extensions of the kernel: `/lib/modules/<kernel-version-number>`
 * **PAM** (Pluggable Authentication Modules) in `/lib/security`
 
-### 2.15 `/media`
+#### 2.15 `/media`
 Modern Linux systems mount such media dynamically upon insertion, and udev creates directories under `/media` and then mounts the removable filesystems there, with names that are set with udev rules specified in configuration files. Upon unmounting and removal, the directories used as mount points under `/media` will disappear.
 
 If the media has more than one partition and filesystem, more than one entry will appear on `/media`. On many Linux distributions the file manager (such as Nautilus) will pop up when the media is mounted.
 
 On some newer distributions (including SUSE and RHEL 7) removable media will pop up under `/run/media/[username]/....` We will discuss `/run` at the end of this section.
 
-### 2.16 `/mnt`
+#### 2.16 `/mnt`
 * Provided so that a sys dmin can temporarily mount a FS when needed, like for network filesystems, including:
   * NFS
   * Samba
@@ -95,14 +95,14 @@ On some newer distributions (including SUSE and RHEL 7) removable media will pop
 * Used to be used for kinds of files now mounted under `/media` or `/run/media`
 * Should not be used by installation programs
 
-### 2.17 `/opt`
+#### 2.17 `/opt`
 * For software packages that want all or most files in one place instead of scattered over the system
   * `/opt/application`, `/opt/application/bin`, `/opt/application/man`, etc.
   * **RPM**, **APT**, etc. make this unnecessary
 * Used by application providers with proprietary software or who like to avoid complications of distribution variance, like `/opt/skype` and `/opt/google`, `/opt/google/chrome`, `/opt/google/earth`, and `/opt/google/talkplugin`
 * `/opt/bin`, `/opt/doc`, `/opt/include`, `opt/info`, `/opt/lib`, and `opt/man` are reserved for local system administrator use; packages may provide files linked to these reserved directories but must be able to function without the programs being in them
 
-### 2.18 `/proc`
+#### 2.18 `/proc`
 * Pseudo-filesystem: exists only in memory, not on disk
 * Empty on a non-running system like `/dev`
 * Each active process has its own subdir w/ info about state of process, resources it is using, and its history
@@ -114,34 +114,34 @@ On some newer distributions (including SUSE and RHEL 7) removable media will pop
 * Others, like `/proc/filesystems` and the `/proc/sys/` directory, provide system configuration information and interfaces
 * Files containing info about a similar topic are grouped into virtual directories, like `/proc/scsi/` for information about all physical **SCSI** devices; similar for **process** directories
 
-### 2.19 `/sys`
+#### 2.19 `/sys`
 * mount point for **sysfs pseudo-filesystem**
 * empty on a non-running system like `/proc` and `/dev`
 * gathers system information, modifies behavior while running
 * most pseudo files contain only one line or value
 
-### 2.20 `/root`
+#### 2.20 `/root`
 * root account should only be used for actions which require superuser privileges; otherwise, use another account
 
-### 2.21 `/sbin`
+#### 2.21 `/sbin`
 * contains binaries essential for booting, restoring, recovering, and/or repairing in addition to those binaries in the `/bin` directory
 * should be included: **fdisk, fsck, getty, halt, ifconfig, init, mkfs, mkswap, reboot, route, swapon, swapoff, update**
 * some recent distros are abandoning the separation of `/sbin` and `/usr/sbin`
 
-### 2.22 `/srv`
+#### 2.22 `/srv`
 * helps users find location of data files for a particular service and a place for read-only data, writable data, and scripts (like **cgi** scripts) can be reasonable placed
 * no concensus on naming subdirectories; sometimes it's by protocol, such as **ftp, rsync, www**
 * some swear by its use, others ignore it
 * confusion about what is best to go here as opposed to `/var`
 
-### 2.23 `/tmp`
+#### 2.23 `/tmp`
 * used for temporary files, accessible by any user or application
   * **cron** jobs might remove files older than 10 days (RHEL 6 policy)
   * some distros remove with every reboot (Ubuntu)
   * some use a virtual filesystem, using `/tmp` as a mount point for a **ram disk** using the **tmpfs** filesystem, so information lost on reboot (Fedora); in this system, files occupy memory rather than disk, so beware of large files
   * this policy can be canceled on systems (such as Fedora), using **systemd**: `$ sudo systemctl mask tmp.mount` followed by a system reboot
 
-### 2.24 `/usr`
+#### 2.24 `/usr`
 * the `/usr` directory can be thought of as a **secondary hierarchy**
 * used for files not needed for booting and need not reside in the same partition as the root directory
 * can be shared among hosts of the same system architecture across a network
@@ -150,7 +150,7 @@ On some newer distributions (including SUSE and RHEL 7) removable media will pop
 * contains `/usr/local` where local binaries may be stored
 * **man** pages in `/usr/share/man`
 
-### 2.25 `/var`
+#### 2.25 `/var`
 * contains variable (or volatile) data files that change frequently during system operation, including:
   * log files
   * spool (?) directories and files for printing, mail queues, etc.
@@ -161,12 +161,12 @@ On some newer distributions (including SUSE and RHEL 7) removable media will pop
 * `/var/log` contains most log files
 * `/var/spool` where local files for processes such as mail, printing, and cron jobs are stored while awaiting action
 
-### 2.26 `/run`
+#### 2.26 `/run`
 * purpose is to store transient files: those that contain runtime information, which may need to be written early in system startup, and which do not need to be preserved when rebooting
 * implemented as an empty mount point, with a **tmpts** ram disk (like `/dev/shm`) mounted there at runtime; thus, `/run` is a pseudo-filesystem existing only in memory
 * some locations, such as `/var/run` and `/var/lock`, will now just be symbolic links to directories under `/run`; some distros might point to location under `/run`
 
-## Labs 2
+### Labs 2
 2.1 Use du to calculate overall size of each of your system's top-level directories
 -c total
 -h human readable
@@ -197,7 +197,7 @@ Note that this information is not being constantly updated; it is obtained only 
 
 Chapter 3: Processes
 -----
-## Goals 3
+### Goals 3
 You should be able to:
 * Describe a process and the resources associated with it.
 * Distinguish between processes, programs and threads.
@@ -207,9 +207,9 @@ You should be able to:
 * Understand how new processes are forked (created).
 * Use nice and renice to set and modify priorities. 
 
-## Notes 3
+### Notes 3
 
-### 3.3 Processes, Programs and Threads
+#### 3.3 Processes, Programs and Threads
 ? What's the difference? https://www.youtube.com/watch?v=exbKr6fnoUw
 A process is an executing program and associated resources, including environment, open files, signal handlers, etc. The same program may be executing more than once simultaneously, and thus, be responsible for multiple processes.
 
@@ -223,13 +223,13 @@ Unlike some other operating systems, Linux has always done an exceptionally fast
 
 At the same time, Linux respects POSIX and other standards for multi-threaded processes; e.g., each thread returns the same process ID (called the thread group ID internally), while returning a distinct thread ID (called the process ID internally). This can lead to confusion for developers, but should be invisible to administrators. 
 
-### 3.4 The init Process
+#### 3.4 The init Process
 * first user process on system with ID = 1
 * started as soon as the kernal is initialized and has mounted the root filesystem
 * will run until system is shut down; last user process to be terminated
 * ancestral parent of all other user process, both directly and indirectly
 
-### 3.5 Processes
+#### 3.5 Processes
 * a process is an instance of a program in execution; it may be in different states, such as running and sleeping; every process has the following:
   * **pid** (process ID)
   * **ppid** (parent process ID)
@@ -249,7 +249,7 @@ At the same time, Linux respects POSIX and other standards for multi-threaded pr
 * largest pid is a 16-bit number, 32768, but can be altered by changing `/proc/sys/kernel/pid_max`; when pid_max is reached, they will start again at 300
 ? what if all are used? or does that not happen?
 
-### 3.6 Process Attributes
+#### 3.6 Process Attributes
 * all processes have certain attributes:
   * program being executed
   * context (state), such as state of CPU registers, where it is executing in the program, what is in the process' memory, and other information
@@ -257,7 +257,7 @@ At the same time, Linux respects POSIX and other standards for multi-threaded pr
   * associated resources
 * **context switching** requires the kernel to store the entire context when swapping out the process and being able to restore it upon execution resumption (such as when it's sleeping while waiting for a condition to be met, like the user to make a request or data to arrive)
 
-### 3.7 Controlling Processes with ulimit
+#### 3.7 Controlling Processes with ulimit
 * `ulimit -a`
 * sysadmin can change values
   * restrict capabilities to prevent system resource exhaustion
@@ -269,7 +269,7 @@ At the same time, Linux respects POSIX and other standards for multi-threaded pr
   * only affects current shell
   * for all logged-in users, modify `/etc/security/limits.conf` and then reboot
 
-### 3.8 Process Permissions and setuid
+#### 3.8 Process Permissions and setuid
 * every process has permissions based on which user invoked it; may also have permissions based on who owns its program file
 * **setuid** programs:
   * marked with an **s** execute bit
@@ -279,20 +279,20 @@ At the same time, Linux respects POSIX and other standards for multi-threaded pr
   * example: **passwd**; any user can run it; root permission required to update the write-restricted `/etc/passwd` and `/etc/shadow` files
 * non-**setuid** programs run with the permissions of the user who **runs** them
 
-### 3.9 More on Process States
+#### 3.9 More on Process States
 Possible states:
 * Running; either executing on a CPU or CPU core or sitting in the **run queue**, waiting for a time slice
 * Sleeping (i.e., Waiting); waiting on a request (usually I/O); when request completed, kernel will put process back on run queue
 * Stopped; suspended, such as when programmer wants to examine the executing program's memory, CPU registers, flags, or other attributes; generally done when process is being run under a debugger or the user hits **Ctrl-Z**
 * Zombie; when process terminates and no other process (usually the parent) has inquired about its exit state, i.e. reaped it; called a **defunct** process; a zombie process has released all its resources except its exit state and its entry in the procss table; if parent dies, the process is **adopted** by **init** (PID = 1) or **kthreadd** (PID = 2)
 
-### 3.10 Execution Modes
+#### 3.10 Execution Modes
 A process (or any particular thread of a multi-threaded process) may be executing in either:
 * **user mode** (Intel: **Ring 3**)
 * **system mode** (or **kernel mode**) (Intel: **Ring 0**)
 The mode is not a state of the system but the processor, and what instructions can be executed depends on the mode and is enforced at the hardware, not the software level
 
-### 3.11 User Mode
+#### 3.11 User Mode
 * **user mode**
   * mode in which processes execute except when executing a **system call**
   * in **user mdoe**, processes have lesser privileges than in kernel mode
@@ -305,14 +305,14 @@ The mode is not a state of the system but the processor, and what instructions c
   User  ---System Call---> Kernel
   Mode    <---Return---    Mode
 
-### 3.12 Kernel Mode
+#### 3.12 Kernel Mode
 * kernel mode:
   * CPU has full access to all hardware on the system, including peripherals, memory, disks, etc.
   * applications that need access to these resources must issue a **system** call, which causes a **context switch** from user mode to kernel mode; must be followed when reading and writing from files, creating a new process, etc.
   * times when the system is in kernel mode that have nothing to do with processes: handling hardware interrupts, running scheduling routines and other management tasks for the system, etc.
 * application code never runs in kernel mode; it's only the system call itself which is kernel code
 
-### 3.13 Daemons
+#### 3.13 Daemons
 **daemons** run in the background and provide a specific service to users of the system
 * only operate when needed (so efficient)
 * many started at boot time
@@ -355,7 +355,7 @@ Further reading:
         http://www.freedesktop.org/wiki/Software/systemd/Incompatibilities
 >>>
 
-### 3.14 Creating Processes in a Command Shell
+#### 3.14 Creating Processes in a Command Shell
 when a user executed a command in a command shell interpreter, like **bash**:
 * a new process is created (forked from the user's login shell)
 * a wait system call puts the parent shell process to sleep
