@@ -320,38 +320,40 @@ The mode is not a state of the system but the processor, and what instructions c
 * may respond to external events (**systemd-udevd**) or elapsed time (**crond**)
 * generally have no controlling terminal and no standard input/output devices
 * sometimes provide better security control
-? better than what?
-when using **SysVinit**, scripts in the `/etc/init.d` directory start various system daemons; these scripts invoke commands as arguments to a shell function named **daemon**, defined in the `/etc/init.d/functions` file
+? better than what?  
+when using **SysVinit**, scripts in the `/etc/init.d` directory start various system daemons; these scripts invoke commands as arguments to a shell function named **daemon**, defined in the `/etc/init.d/functions` file  
 ? example?
 The README in `/etc/init.d` says:
-> [root@centos init.d]# cat README 
-> You are looking for the traditional init scripts in /etc/rc.d/init.d,
-> and they are gone?
-> 
-> Here's an explanation on what's going on:
-> 
-> You are running a systemd-based OS where traditional init scripts have
-> been replaced by native systemd services files. Service files provide
-> very similar functionality to init scripts. To make use of service
-> files simply invoke "systemctl", which will output a list of all
-> currently running services (and other units). Use "systemctl
-> list-unit-files" to get a listing of all known unit files, including
-> stopped, disabled and masked ones. Use "systemctl start
-> foobar.service" and "systemctl stop foobar.service" to start or stop a
-> service, respectively. For further details, please refer to
-> systemctl(1).
-> 
-> Note that traditional init scripts continue to function on a systemd
-> system. An init script /etc/rc.d/init.d/foobar is implicitly mapped
-> into a service unit foobar.service during system initialization.
-> 
-> Thank you!
-> 
-> Further reading:
->         man:systemctl(1)
->         man:systemd(1)
->         http://0pointer.de/blog/projects/systemd-for-admins-3.html
->         http://www.freedesktop.org/wiki/Software/systemd/Incompatibilities
+>>>
+[root@centos init.d]# cat README 
+You are looking for the traditional init scripts in /etc/rc.d/init.d,
+and they are gone?
+
+Here's an explanation on what's going on:
+
+You are running a systemd-based OS where traditional init scripts have
+been replaced by native systemd services files. Service files provide
+very similar functionality to init scripts. To make use of service
+files simply invoke "systemctl", which will output a list of all
+currently running services (and other units). Use "systemctl
+list-unit-files" to get a listing of all known unit files, including
+stopped, disabled and masked ones. Use "systemctl start
+foobar.service" and "systemctl stop foobar.service" to start or stop a
+service, respectively. For further details, please refer to
+systemctl(1).
+
+Note that traditional init scripts continue to function on a systemd
+system. An init script /etc/rc.d/init.d/foobar is implicitly mapped
+into a service unit foobar.service during system initialization.
+
+Thank you!
+
+Further reading:
+        man:systemctl(1)
+        man:systemd(1)
+        http://0pointer.de/blog/projects/systemd-for-admins-3.html
+        http://www.freedesktop.org/wiki/Software/systemd/Incompatibilities
+>>>
 
 ### 3.14 Creating Processes in a Command Shell
 when a user executed a command in a command shell interpreter, like **bash**:
