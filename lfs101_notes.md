@@ -59,8 +59,36 @@ the Linux **boot process** is the procedure for initializing the system; everyth
   ? What is a 'terminal' in this context?
   * **bash** (the **GNU Bourne Again Shell**) is the usual, default command shell
 
-
 ### Section 2: Kernel, init, and Services
+
+#### The Linux Kernel
+* the boot loader loads the kernel and a RAM-based file system (**initramfs**) into memory
+* the kernel initializes and configures the computer's memory and all attached hardware (processors, I/O subsystems, storage devices, etc.) in addition to some user space applications
+
+#### /sbin/init and Services
+* the kernel runs the `/sbin/init` program, which becomes the origin of all other processors except those started byt he kernel itself
+* **init** starts other processes to get the system running, keeps it running, and shuts it down cleanly
+* old way of doing it: **System V UNIX** with **runlevels**
+
+#### Startup Alternatives: Upstart and systemd
+* problem: **SysVinit** viewed things as **serial** and did not take advantage of parallel processing offered by multiple processors or cores; shutdown and reboot treated as rare events; startup scripts difficult to maintain
+* alternatives:
+  * **Upstart**
+    * developed by **Ubuntu** and included in 2006
+    * adopted in **Fedora 9** in 2008 and **RHEL 6**
+  * **systemd**
+    * adopted by **Fedora** in 2011
+    * adopted by **RHEL 7** and **SUSE**
+    * replaced **Upstart** in **Ubuntu 16.04**
+    * migration to **systemd** controversial, but almost universal adoption has made learning how to work on Linux systems simpler
+
+#### systemd Features
+* boot with **systemd** is faster than with init methods
+* complicated startup shell scripts replaced with simpler configuration files
+* **systemctl** is a **systemd** command; what it does (**fooservice** like **nfsd**):
+  * starting, stopping, restarting a service: `$ sudo systemctl start/stop/restart fooservice`
+  * enabling or disabling a system service from starting up at system boot: `$ sudo systemctl enable/disable fooservice`
+
 ### Section 3: Linux Filesystem Basics
 ### Section 4: Linux Distribution Installation
 ### Summary

@@ -321,8 +321,10 @@ The mode is not a state of the system but the processor, and what instructions c
 * generally have no controlling terminal and no standard input/output devices
 * sometimes provide better security control  
 ? better than what?  
+
 when using **SysVinit**, scripts in the `/etc/init.d` directory start various system daemons; these scripts invoke commands as arguments to a shell function named **daemon**, defined in the `/etc/init.d/functions` file  
 ? example?  
+
 The README in `/etc/init.d` says:  
 
 > [root@centos init.d]# cat README 
@@ -336,11 +338,11 @@ The README in `/etc/init.d` says:
 > 
 > Thank you!
 > 
-> Further reading:
->         man:systemctl(1)
->         man:systemd(1)
->         http://0pointer.de/blog/projects/systemd-for-admins-3.html
->         http://www.freedesktop.org/wiki/Software/systemd/Incompatibilities
+> Further reading:  
+>         man:systemctl(1)  
+>         man:systemd(1)  
+>         http://0pointer.de/blog/projects/systemd-for-admins-3.html  
+>         http://www.freedesktop.org/wiki/Software/systemd/Incompatibilities  
 
 #### 3.14 Creating Processes in a Command Shell
 when a user executed a command in a command shell interpreter, like **bash**:
@@ -351,7 +353,26 @@ when a user executed a command in a command shell interpreter, like **bash**:
 * the parent shell is re-awakened by the death of the child process and proceeds to issue a new shell prompt; parent shell then waits for the next command request from the user, at which time the cycle will be repeated
 some exceptions:
 * if a command is issued for **background** processing (via the ampersand `&` at the end of the command line), the parent shell skips the wait request and is free to issue a new shell prompt immediately, allowing backround process to execute in parallel; otherwise, for **foreground** requests, the shell waits until the child process has completed or is stopped via a signal
-* some shell commands (such as echo and kill) are built into the shell itself, and do not involve loading of program files; for these commands, no **for** or **exec** are issued for the execution
+* some shell commands (such as echo and kill) are built into the shell itself, and do not involve loading of program files; for these commands, no **fork** or **exec** are issued for the execution
+
+#### 3.15 Kernel-Created Processes
+the **Linux** kernel creates two kinds of processes on its own initiative (not created, or **forked** from user parents):
+* internal kernel processes
+  * maintenance work, such as ensuring that:
+    * buffers get flushed out to disk
+    * the load on different CPUs is balanced evenly
+    * device drivers handle work that has been queued up for them to do
+  * these often run as long as the system is running, sleeping when they don't have something to do
+* external user processes
+  * run in user space like normal applications but which the kernel started
+  * very few of these and usually short-lived  
+  ? what is 'user space'?
+* run `$ ps -elf` to see processes of this nature
+  * they will have **PPID = 2**, corresponding to **kthreadd**
+  * names encapsulated in square brackets, such as **[ksoftirqd/0]**
+
+#### 3.16 Process Creating and Forking
+
 
 
 Linux filesystem and paths
@@ -386,13 +407,14 @@ Directory | In FHS? | Purpose
 
 Linux commands
 =====
-`$ sudo du -shxc --exclude=proc *`
-`$ du -shc share/*`
-`$ file *cgi-bin/*` # in `/usr/lib/cups` (should be in lib64)
-`$ ls -lF` # difference from `lf -al` ? '-F' appends a symbol at the end of the name corresponding to the type
-`$ ulimit -a` displays or resets resource limits associated with processes running under a shell
-`$ ulimit [options] [limit]` as in `$ ulimit -n 1600` (changes maximum number of file descriptors)
-? What's a file descriptor?
-`&` at end of command for background processing (see 3.14)
+`$ sudo du -shxc --exclude=proc *`  
+`$ du -shc share/*`  
+`$ file *cgi-bin/*` # in `/usr/lib/cups` (should be in lib64)  
+`$ ls -lF` # difference from `lf -al` ? '-F' appends a symbol at the end of the name corresponding to the type  
+`$ ulimit -a` displays or resets resource limits associated with processes running under a shell  
+`$ ulimit [options] [limit]` as in `$ ulimit -n 1600` (changes maximum number of file descriptors)  
+? What's a file descriptor?  
+`&` at end of command for background processing (see 3.14)  
+`$ ps -elf` to see kernel created processes
 
 
