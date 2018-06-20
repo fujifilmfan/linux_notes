@@ -6,14 +6,14 @@ Chapter 3: Linux Basics and System Startup
 
 ## Notes 3
 
-### Introduction/ Learning Objectives
+### 3.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:
 * Identify Linux filesystems.
 * Identify the differences between partitions and filesystems.
 * Describe the boot process.
 * Install Linux on a computer.
 
-### Section 1: The Boot Process
+### 3.1: The Boot Process
 the Linux **boot process** is the procedure for initializing the system; everything that happens from power on until the UI is fully operational
 1. **BIOS** (**Basis Input/Output System**)
   * initializes hardware, including screen and keyboard, and tests main memory (**POST** or **POwer On Self Test**)
@@ -59,7 +59,7 @@ the Linux **boot process** is the procedure for initializing the system; everyth
   ? What is a 'terminal' in this context?
   * **bash** (the **GNU Bourne Again Shell**) is the usual, default command shell
 
-### Section 2: Kernel, init, and Services
+### 3.2: Kernel, init, and Services
 
 #### The Linux Kernel
 * the boot loader loads the kernel and a RAM-based file system (**initramfs**) into memory
@@ -89,9 +89,41 @@ the Linux **boot process** is the procedure for initializing the system; everyth
   * starting, stopping, restarting a service: `$ sudo systemctl start/stop/restart fooservice`
   * enabling or disabling a system service from starting up at system boot: `$ sudo systemctl enable/disable fooservice`
 
-### Section 3: Linux Filesystem Basics
-### Section 4: Linux Distribution Installation
-### Summary
+### 3.3: Linux Filesystem Basics
+
+#### Linux Filesystems
+* filesystems store and organize arbitrary collections of data in a human-usable form
+* types of filesystems supported by Linux:
+  * conventional disk filesystems: **ext2, ext3, ext4, XFS, Btrfs, JFS, NTFS,** etc.
+  * flash storage filesystems: **ubifs, JFFS2, YAFFS,** etc.
+  * database filesystems
+  * special purpose filesystems: **procfs, sysfs, tmpfs, debugfs,** etc.
+
+#### Partitions and Filesystems
+* a **partition** is a logical part of the disk
+* a **filesystem** is a method of storing and finding files on a hard disk (usually in a partition)
+* analogy: filesystem like a family tree showing descendants and relationships, while partitions like different families, each with their own tree
+
+Table 3.3 Comparison between filesystems in Windows and Linux
+feature                        | Windows     | Linux
+-------                        | -------     | -----
+Partition                      | Disk1       | /dev/sda1
+Filesystem type                | NTFS/VFAT   | EXT3/EXT4/XFS/BTRFS...
+Mounting parameters            | DriveLetter | MountPoint
+Base folder where OS is stored | C:\         | /
+
+#### The Filesystem Hierarchy Standard
+* important files stored according to a standard layout called the **Filesystem Hierarchy Standard (FHS)**, maintained by The Linux Foundation
+* Linux doesn't have drive letters like Windows
+  * multiple drives or partitions are mounted as directories within the FS, like `/run/media/yourusername/disklabel`
+
+#### More About the Filesystem Hierarchy Standard
+* filesystem names are case-sensitive
+* most distros distinguish between core utilities needed for system operation and other programs (those in `/usr`, which has a similar structure to `/`)
+* viewing FSH in GUI: click 'Home' -> 'Computer' -> 'etc' -> 'avahi' and CTRL-L to see the path (all major distros use the same File Manager program, so this is basically the same across distros)
+
+### 3.4: Linux Distribution Installation
+### 3.5: Summary
 
 Chapter 4: Graphical Interface
 -----
