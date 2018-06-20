@@ -372,6 +372,15 @@ the **Linux** kernel creates two kinds of processes on its own initiative (not c
   * names encapsulated in square brackets, such as **[ksoftirqd/0]**
 
 #### 3.16 Process Creating and Forking
+* **forking** == creating new (child) processes
+* often followed by an **exec**, in which the parent process terminates and the child process inherits the PID of the parent
+* older UNIX systems used **spawn** (not part of the **POSIX** standard or a normal part of Linux)
+* an application (like a web server handling many clients) can start many new processes or start new threads as part of the same process; there isn't much difference with respect to time and resources
+* example:
+  * the **init** process executes the **sshd** init script, which then launches the **sshd daemon** (the daemon listens for **ssh** requests from remote users)
+  * when a request is received, **sshd** creates a copy of itself to service the requests, so each remote user gets their own copy of the **sshd** daemon running to service their remote login
+  * the **sshd** process will start the login program to validate the user; if successful, the login process will fork off a shell (like **bash**) to interpret user commands, and so on
+
 
 
 
