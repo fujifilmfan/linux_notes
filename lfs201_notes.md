@@ -381,7 +381,30 @@ the **Linux** kernel creates two kinds of processes on its own initiative (not c
   * when a request is received, **sshd** creates a copy of itself to service the requests, so each remote user gets their own copy of the **sshd** daemon running to service their remote login
   * the **sshd** process will start the login program to validate the user; if successful, the login process will fork off a shell (like **bash**) to interpret user commands, and so on
 
+#### 3.17 Using nice to Set Priorities
+* process priority can be controlled via **nice** and **renice** commands
+* a *nice* process yields to other, so higher niceness == lower priority
+* niceness range: -20 (highest priority) to +19 (lowest priority)
+* examples (these are equivalent):
+  * `$ nice -n 5 command [ARGS]`
+  * `$ nice -5 command [ARGS]`
+  ? This doesn't seem to work in CentOS 7; running `$ nice -n 5 cat`, for instance, still expects input, and adding `&` creates a stopped process instead of reducing priority of the existing process; ah, see next section
+* if you do not give a nice value, default is to increase niceness by 10
+* no args reports current niceness
+* examples:
+  * `$ nice` --> 0
+  * `$ nice cat &` --> [1] 24908
+  * `$ ps -l`
+* increasing the niceness does not mean a process won't run (such as if there is nothing else with which to compete)
 
+#### 3.18 Modifiying the Nice Value
+* by default, only a superuser can decrease niceness
+* normal users can get that ability via `/etc/security/limits.conf`
+* to change niceness of an already running process, use renice:
+  *  `$ renice +3 13848`, where 13848 is the pid of the process; 3 would be the new niceness, not the change
+  * more than one process can be changed at a time; see the man page
+
+#### 3.19 Using renice to Set Priorities Demo
 
 
 Linux filesystem and paths
@@ -413,6 +436,9 @@ Directory | In FHS? | Purpose
 /run      | No      | some distros (see 2.6b); pseudo-filesystem
 /tftpboot | No      | some distros (see 2.6b)
 
+Linux paths
+=====
+`/etc/security/limits.conf` (3.18)
 
 Linux commands
 =====
@@ -424,6 +450,8 @@ Linux commands
 `$ ulimit [options] [limit]` as in `$ ulimit -n 1600` (changes maximum number of file descriptors)  
 ? What's a file descriptor?  
 `&` at end of command for background processing (see 3.14)  
-`$ ps -elf` to see kernel created processes
-
+`$ ps -elf` to see kernel created processes  
+`$ nice -n 5 command [ARGS]` (3.17)  
+`$ nice -5 command [ARGS]` (3.17)  
+`$ renice +3 13848` (3.18)  
 
