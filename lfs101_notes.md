@@ -123,11 +123,58 @@ Base folder where OS is stored | C:\         | /
 * viewing FSH in GUI: click 'Home' -> 'Computer' -> 'etc' -> 'avahi' and CTRL-L to see the path (all major distros use the same File Manager program, so this is basically the same across distros)
 
 ### 3.4: Linux Distribution Installation
+
+#### Choosing a Linux Distribution / Questions to Ask When Choosing
+*  What is the main function of the system (server or desktop)?
+*  What types of packages are important to the organization? For example, web server, word processing, etc.
+*  How much hard disk space is available? For example, when installing Linux on an embedded device, there will be space limitations.
+*  How often are packages updated?
+*  How long is the support cycle for each release? For example, LTS releases have long term support.
+*  Do you need kernel customization from the vendor?
+*  What hardware are you running the Linux distribution on? For example, X86, ARM, PPC, etc.
+*  Do you need long-term stability or short-term experimental software?
+
+#### Linux Installation: Planning
+* partition design can be modified later, but easier to get it right the first time
+* most installers provide reasonable default filesystem layouts
+
+#### More About Planning in Linux Installation
+* most installers provide options for adding categories of software
+* examples of what is often included:
+  * common applications (such as the Firefox web browser and LibreOffice office suite)
+  * developer tools (like the vi and emacs text editors)
+  * popular services, (such as the Apache web server tools or MySQL database)
+  * a desktop environment
+* all installers secure the system as part of the installation (like setting a password for **root**; Ubuntu starts with an initial user but no root access at first)
+
+#### Linux Installation: Install Source
+* can be installed from removable media or a small image which then downloads rest over the network
+* config files can specify installation options
+  * Fedora-based systems: **Kickstart** file
+  * SUSE-based systems: **AutoYAST** profile
+  * Debian-based systems: **preseed file**
+
+#### Linux Installation: The Process
+Nothing to see here
+
+#### Linux Installation: The Warning
+* Don't install on a currently-used hard disk without knowing what you're doing
+* alternate options:
+  * re-partitioning your hard disk to free up enough room to permit dual boot
+  * using a host machine hypervisor program (such as VMWare's products or Oracle Virtual Box) to install a client Linux Virtual Machine
+  * booting off of and using a Live CD or USB stick and not writing to the hard disk at all
+
 ### 3.5: Summary
+* The boot process has multiple steps, starting with **BIOS**, which triggers the **boot loader** to start up the Linux kernel. From there, the **initramfs** filesystem is invoked, which triggers the **init** program to complete the startup process.
 
 Chapter 4: Graphical Interface
 -----
 ### Introduction/ Learning Objectives
+By the end of this chapter, you should be able to:
+  * Manage graphical interface sessions.
+  * Perform basic operations using the graphical interface.
+  * Change the graphical desktop to suit your needs.
+
 ### Section 1: Graphical Desktop
 ### Section 2: Session Management
 ### Section 3: Basic Operations
