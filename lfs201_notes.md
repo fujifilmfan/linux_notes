@@ -405,6 +405,18 @@ the **Linux** kernel creates two kinds of processes on its own initiative (not c
   * more than one process can be changed at a time; see the man page
 
 #### 3.19 Using renice to Set Priorities Demo
+* run `ps lf` to see processes and priorities
+* `renice +5 3077`
+* child processes have same, new priority
+* can increase niceness as normal user but not decrease: "Permission denied"
+* can run 'gnome-system-monitor' and change priorities there, too
+
+#### 3.20 Static and Shared Libraries
+* two types of **libraries** of code:
+  * **static**: code for library functions inserted in program at **compile time** and then does not change even if the library is updated
+  * **shared**: code for library functions loaded in program at **run time**, and if library is changed later, running program runs with new library modifications
+    * shared libraries more efficient b/c they can be used by many applications at once; memory usage, executable sizes, and application load time are reduced
+    * also called **DLL**s (**D**ynamic **L**ink **L**ibrary)
 
 
 Linux filesystem and paths
