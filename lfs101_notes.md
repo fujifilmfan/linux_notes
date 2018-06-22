@@ -176,6 +176,34 @@ By the end of this chapter, you should be able to:
   * Change the graphical desktop to suit your needs.
 
 ### Section 1: Graphical Desktop
+
+#### Introduction
+* **CLI**: Command Line Interface
+* **GUI**: Graphical User Interface
+
+#### X Window System
+* loaded as final step in boot process
+* **display manager** service keeps track of provided displays, loads the **X server**, handles graphical logins, starts desktop environment
+* **X server** provides graphical services to application, sometimes called **X clients**
+* old, so might be replaced by **Wayland**, already adopted in **Fedora 25**
+* three components of the desktop environment:
+  * session manager: starts and maintains the components of the graphical session
+  * window manager: controls placement and movement of windows, window title-bars, and controls
+  * utilities
+
+#### GUI Startup
+* **X** display manager:
+  * starts at the end of the boot process
+  * responsible for starting graphics system
+  * logging in the user
+  * starting the user's desktop environment
+* default display manager for **GNOME** is called **gdm** (**lightdm** used on Ubuntu, **kdm** associated with KDE)
+
+#### GNOME Desktop Environment
+* GNOME bundled as default for RHEL, Fedora, CentOS, SUSE Linux Enterprise, and Debian
+* KDE also a common desktop environment, often used in SUSE and openSUSE
+* other alternatives: **Unity** (from Ubuntu, based on GNOME), **XFCE**, and **LXDE**
+
 ### Section 2: Session Management
 ### Section 3: Basic Operations
 ### Summary
