@@ -169,13 +169,13 @@ Nothing to see here
 
 Chapter 4: Graphical Interface
 -----
-### Introduction/ Learning Objectives
+### 4.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:
   * Manage graphical interface sessions.
   * Perform basic operations using the graphical interface.
   * Change the graphical desktop to suit your needs.
 
-### Section 1: Graphical Desktop
+### 4.1: Graphical Desktop
 
 #### Introduction
 * **CLI**: Command Line Interface
@@ -204,14 +204,57 @@ By the end of this chapter, you should be able to:
 * KDE also a common desktop environment, often used in SUSE and openSUSE
 * other alternatives: **Unity** (from Ubuntu, based on GNOME), **XFCE**, and **LXDE**
 
-### Section 2: Session Management
-### Section 3: Basic Operations
-### Summary
+#### Graphical Desktop Background
+#### Customizing the Desktop Background
+#### Changing the Desktop Background in CentOS
+#### Changing the Desktop Background in openSUSE
+#### Changing the Desktop Background in Ubuntu
+#### Try-It-Yourself: Changing the Desktop Background
+#### gnome-tweak-tool
+* exposes many more setting options than the default settings utility
+* can also be used to add third-party extenstions
+* use **Alt-F2** to enter a command
+
+#### Changing the Theme
+* can do this via settings or gnome-tweak-tool
+* this link doesn't seem to work anymore: http://art.gnome.org/themes/
+
+### Lab 1: Customizing the Desktop
+
+### 4.2: Session Management
+### 4.3: Basic Operations
+### 4.4: Summary
 
 Chapter 5: System Configuration from the Graphical Interface
 -----
-### Introduction/ Learning Objectives
-### Section 1: System, Display, Date and Time Settings
-### Section 2: Network Manager
-### Section 3: Installing and Updating Software
-### Summary
+### 5.0: Introduction/ Learning Objectives
+### 5.1: System, Display, Date and Time Settings
+### 5.2: Network Manager
+### 5.3: Installing and Updating Software
+### 5.4: Summary
+
+Chapter 6: Common Applications
+-----
+### 6.0: Introduction/ Learning Objectives
+### 6.1: Internet Applications
+### 6.2: Productivity and Development Applications
+### 6.3: Multimedia Applications
+### 6.4: Graphics Editors and Utilities
+### 6.5: Summary
+
+Chapter 7: Command Line Operations
+-----
+### 7.0: Introduction/ Learning Objectives
+### 7.1: Command Line Mode Options
+### 7.2: Basic Operations
+### 7.3: Working with Files
+### 7.4: Searching for Files
+### 7.5: Installing Software
+### 7.6: Summary
+
+
+
+
+Linux commands
+=====
+`$ gnome-tweak-tool`
