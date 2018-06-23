@@ -244,7 +244,7 @@ At the same time, Linux respects POSIX and other standards for multi-threaded pr
   * except those initiated directly from kernel (will have [] around their name in a **ps** listing)
 * if parent process dies before child, ppid of child set to 1; process adopted by init
   * recent Linux systems using systemd will set the ppid to 2, corresponding to an internal kernel thread known as kthreadd, which has taken over the role of adopter of orphaned children from init
-* A child process which terminates (either normally or abnormally) before its parent, which has not waited for it and examined its exit code, is known as a zombie (or defunct) process. Zombies have released almost all resources and remain only to convey their exit status. One function of the init process is to check on its adopted children and let those who have terminated die gracefully. Hence, it is sometimes known as the zombie killer, or more grimly, the child reaper.
+* A child process which terminates (either normally or abnormally) before its parent, which has not waited for it and examined its exit code, is known as a **zombie** (or defunct) process. Zombies have released almost all resources and remain only to convey their exit status. One function of the init process is to check on its adopted children and let those who have terminated die gracefully. Hence, it is sometimes known as the zombie killer, or more grimly, the child reaper.
 * processes are controlled by **scheduling**, which is completely preemptive; only the kernel can preempt a process
 * largest pid is a 16-bit number, 32768, but can be altered by changing `/proc/sys/kernel/pid_max`; when pid_max is reached, they will start again at 300
 ? what if all are used? or does that not happen?
@@ -418,6 +418,45 @@ the **Linux** kernel creates two kinds of processes on its own initiative (not c
     * shared libraries more efficient b/c they can be used by many applications at once; memory usage, executable sizes, and application load time are reduced
     * also called **DLL**s (**D**ynamic **L**ink **L**ibrary)
 
+#### 3.21 Shared Library Versions
+* shared libraries need to be carefully versioned to avoid **DLL Hell** (programs breaking when the library changes)
+* some programs embed or bundle the library, but then can't benefit from bug fixes, security patches, etc. as quickly
+* shared libraries have the extension **.so**
+* full name like **libc.so.N** where **N** is a major version number
+* example:  
+  `$ ls -lF libgdbm.so.*  
+  lrwxrwxrwx. 1 root root    16 May 10 11:56 libgdbm.so.4 -> libgdbm.so.4.0.0*  
+  -rwxr-xr-x. 1 root root 36720 Jun  9  2014 libgdbm.so.4.0.0*  
+  $ `  
+
+#### 3.22 Finding Shared Libraries
+* **ldd** can be used to find what shared libraries an executable requires
+* it shows the **soname** of the library and what file it points to
+* example:  
+`[student@centos lib]$ ldd /usr/bin/vi
+  linux-vdso.so.1 =>  (0x00007ffda6469000)
+  libselinux.so.1 => /lib64/libselinux.so.1 (0x00007fc3686e2000)
+  libtinfo.so.5 => /lib64/libtinfo.so.5 (0x00007fc3684b8000)
+  libacl.so.1 => /lib64/libacl.so.1 (0x00007fc3682af000)
+  libc.so.6 => /lib64/libc.so.6 (0x00007fc367ee2000)
+  libpcre.so.1 => /lib64/libpcre.so.1 (0x00007fc367c80000)
+  libdl.so.2 => /lib64/libdl.so.2 (0x00007fc367a7c000)
+  /lib64/ld-linux-x86-64.so.2 (0x00007fc368909000)
+  libattr.so.1 => /lib64/libattr.so.1 (0x00007fc367877000)
+  libpthread.so.0 => /lib64/libpthread.so.0 (0x00007fc36765b000)
+[student@centos lib]$ `
+* **ldconfig** is generally run at boot time and uses the file `/etc/ld.so.conf`, which lists the directories searched for shared libraries
+  * must be run as root
+* besides searching the data base built by **ldconfig**, the linker will first search directories specified by the **LD_LIBRARY_PATH** environment variable
+* one can do:
+`$ LD_LIBRARY_PATH=$HOME/foo/lib`  
+`$ foo [args]`  
+  or  
+`$ LD_LIBRARY_PATH=$HOME/foo/lib foo [args]`  
+
+
+
+
 
 Linux filesystem and paths
 =====
@@ -465,5 +504,5 @@ Linux commands
 `$ ps -elf` to see kernel created processes  
 `$ nice -n 5 command [ARGS]` (3.17)  
 `$ nice -5 command [ARGS]` (3.17)  
-`$ renice +3 13848` (3.18)  
-
+`$ renice +3 13848` (3.18)
+`$ ldd /usr/bin/vi`
