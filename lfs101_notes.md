@@ -245,7 +245,23 @@ Chapter 6: Common Applications
 Chapter 7: Command Line Operations
 -----
 ### 7.0: Introduction/ Learning Objectives
+By the end of this chapter, you should be able to:
+  * Use the command line to perform operations in Linux.
+  * Search for files.
+  * Create and manage files.
+  * Install and update software.
+
 ### 7.1: Command Line Mode Options
+
+#### Introduction to Command Line
+"Graphical user interfaces make easy tasks easier, while command line interfaces make difficult tasks possible."
+
+#### Some Basic Utilities
+* **cat**
+* **head**
+* **tail**
+* **man**
+
 ### 7.2: Basic Operations
 ### 7.3: Working with Files
 ### 7.4: Searching for Files
@@ -258,3 +274,8 @@ Chapter 7: Command Line Operations
 Linux commands
 =====
 `$ gnome-tweak-tool`
+`$ cat [FILE]`
+`$ head [FILE]`
+`$ tail [FILE]`
+`$ man _name_`
+
