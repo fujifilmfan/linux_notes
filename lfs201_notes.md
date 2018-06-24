@@ -167,7 +167,8 @@ On some newer distributions (including SUSE and RHEL 7) removable media will pop
 * some locations, such as `/var/run` and `/var/lock`, will now just be symbolic links to directories under `/run`; some distros might point to location under `/run`
 
 ### Labs 2
-2.1 Use du to calculate overall size of each of your system's top-level directories
+
+#### Lab 2.1 Use du to calculate overall size of each of your system's top-level directories
 -c total
 -h human readable
 -s summarize (otherwise every file on the system!
@@ -179,7 +180,7 @@ Solution: `$ sudo du --max-depth=1 -hx /`
   pseudo-filesystems not followed: /dev /proc /run /sys
   symbolic links to counterparts under /usr not followed: /bin /sbin /lib /lib64
 
-2.2 Touring the `/proc` Filesystem
+#### Lab 2.2 Touring the `/proc` Filesystem
 1. As root, cd into /proc and do a directory listing.  Notice many of the directory names are numbers; each corresponds to a running process and the name is the process ID. An important subdirectory we will discuss later is /proc/sys, under which many system parameters can be examined or modified.
 * `ls -aF`
 2. View the following files:
@@ -433,18 +434,20 @@ the **Linux** kernel creates two kinds of processes on its own initiative (not c
 * **ldd** can be used to find what shared libraries an executable requires
 * it shows the **soname** of the library and what file it points to
 * example:  
-`[student@centos lib]$ ldd /usr/bin/vi
-  linux-vdso.so.1 =>  (0x00007ffda6469000)
-  libselinux.so.1 => /lib64/libselinux.so.1 (0x00007fc3686e2000)
-  libtinfo.so.5 => /lib64/libtinfo.so.5 (0x00007fc3684b8000)
-  libacl.so.1 => /lib64/libacl.so.1 (0x00007fc3682af000)
-  libc.so.6 => /lib64/libc.so.6 (0x00007fc367ee2000)
-  libpcre.so.1 => /lib64/libpcre.so.1 (0x00007fc367c80000)
-  libdl.so.2 => /lib64/libdl.so.2 (0x00007fc367a7c000)
-  /lib64/ld-linux-x86-64.so.2 (0x00007fc368909000)
-  libattr.so.1 => /lib64/libattr.so.1 (0x00007fc367877000)
-  libpthread.so.0 => /lib64/libpthread.so.0 (0x00007fc36765b000)
-[student@centos lib]$ `
+`[student@centos lib]$ ldd /usr/bin/vi`
+
+> linux-vdso.so.1 =>  (0x00007ffda6469000)
+> libselinux.so.1 => /lib64/libselinux.so.1 (0x00007fc3686e2000)
+> libtinfo.so.5 => /lib64/libtinfo.so.5 (0x00007fc3684b8000)
+> libacl.so.1 => /lib64/libacl.so.1 (0x00007fc3682af000)
+> libc.so.6 => /lib64/libc.so.6 (0x00007fc367ee2000)
+> libpcre.so.1 => /lib64/libpcre.so.1 (0x00007fc367c80000)
+> libdl.so.2 => /lib64/libdl.so.2 (0x00007fc367a7c000)
+> /lib64/ld-linux-x86-64.so.2 (0x00007fc368909000)
+> libattr.so.1 => /lib64/libattr.so.1 (0x00007fc367877000)
+> libpthread.so.0 => /lib64/libpthread.so.0 (0x00007fc36765b000)
+
+`[student@centos lib]$ `
 * **ldconfig** is generally run at boot time and uses the file `/etc/ld.so.conf`, which lists the directories searched for shared libraries
   * must be run as root
 * besides searching the data base built by **ldconfig**, the linker will first search directories specified by the **LD_LIBRARY_PATH** environment variable
@@ -454,7 +457,106 @@ the **Linux** kernel creates two kinds of processes on its own initiative (not c
   or  
 `$ LD_LIBRARY_PATH=$HOME/foo/lib foo [args]`  
 
+### Labs 3
 
+#### Lab 3.1 Controlling Processes with ulimit
+Please do:
+`$ help ulimit` and read /etc/security/limits.conf before doing the following steps.
+1. Start a new shell by typing bash (or opening a new terminal) so that your changes are only effective in the new shell.  View the current limit on the number of open files and explicitly view the hard and soft limits.
+2. Set the limit to the hard limit value and verify if it worked.
+3. Set the hard limit to 2048 and verify it worked.
+4. Try to set the limit back to the previous value. Did it work?
+
+Mine:
+1. typed `$ bash` to start a new shell and confirmed with `$ ps`.
+`$ ulimit -a`  
+
+> core file size          (blocks, -c) 0  
+> data seg size           (kbytes, -d) unlimited  
+> scheduling priority             (-e) 0  
+> file size               (blocks, -f) unlimited  
+> pending signals                 (-i) 14969  
+> max locked memory       (kbytes, -l) 64  
+> max memory size         (kbytes, -m) unlimited  
+> open files                      (-n) 1024  
+> pipe size            (512 bytes, -p) 8  
+> POSIX message queues     (bytes, -q) 819200  
+> real-time priority              (-r) 0  
+> stack size              (kbytes, -s) 8192  
+> cpu time               (seconds, -t) unlimited
+> max user processes              (-u) 4096  
+> virtual memory          (kbytes, -v) unlimited  
+> file locks                      (-x) unlimited
+
+`$ ulimit -H -n`
+
+> 4096
+
+`$ ulimit -S -n`
+
+> 1024
+
+2. Set soft limit to hard limit value
+`$ ulimit -n 4096
+$ ulimit -S -n`
+
+> 4096
+
+3. Set hard limit to 2048
+`$ ulimit -H -n 2048`
+
+> 4096
+
+This doesn't work, even with sudo or changing user to root; need to change the soft limit first:
+
+`[student@centos ~]$ ulimit -S -n 2048
+[student@centos ~]$ ulimit -H -n 2048
+[student@centos ~]$ ulimit -H -n 4096`
+> bash: ulimit: open files: cannot modify limit: Operation not permitted
+`[student@centos ~]$ sudo ulimit -H -n 4096`
+> sudo: ulimit: command not found
+
+4. Change to root user and set hard limit back to 4096
+
+`[student@centos ~]$ sudo su -`
+> Last login: Mon Jun 18 01:34:21 CDT 2018 on pts/0
+`[root@centos ~]# ulimit -H -n 4096
+[root@centos ~]# exit`
+> logout
+
+This didn't work:
+`[student@centos ~]$ ulimit -H -n`
+
+> 2048
+
+Solution:
+
+2. `$ ulimit -n hard`
+
+3. `$ ulimit -n 2048`
+
+4. We can't do this anymore, but a limit like stack size (-s) could be raised since the hard limit is `unlimited`
+
+#### Lab 3.2 Examining System V IPC Activity
+**System V IPC** is an old method of **I**nter **P**rocess **C**ommunication that dates to the early days of **UNIX**; involves three mechanisms:
+1. **Shared Memory Segments**
+2. **Semaphores**
+3. **Message Queues**
+Modern programs tend to use **POSIX IPC** methods for these mechanisms, but still plenty of System V IPC applications found in the wild
+
+`$ ipcs`
+
+------ Message Queues --------
+key        msqid      owner      perms      used-bytes   messages    
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x00000000 3637248    student    600        16777216   2          dest         
+0x00000000 163841     student    600        4194304    2          dest         
+0x00000000 360450     student    600        524288     2          dest         
+
+------ Semaphore Arrays --------
+key        semid      owner      perms      nsems     
 
 
 
