@@ -262,6 +262,59 @@ By the end of this chapter, you should be able to:
 * **tail**
 * **man**
 
+#### The Command Line
+Most input lines entered at shell prompt have three basic elements:
+* command
+* options
+* arguments (what the command operates on)
+
+#### sudo
+* **sudo** allows a user to run programs with privileges of another user, generally root (superuser)
+steps for setting up and running sudo if not already set up and enabled:
+1. use **su** and then enter password; prompt changes from `$` to `#`
+2. create a config file, typically created in `/etc/sudoers.d`; file created like this: `# echo "student ALL=(ALL) ALL" > /etc/sudoers.d/student`  
+I already have the file:
+`[root@centos sudoers.d]# cat student` 
+> student ALL=(ALL) NOPASSWD: ALL
+3. change permissions: `# chmod 440 /etc/sudoers.d/student`
+* it is possible (though very insecure) to configure sudo to not require a password or change the time window in which the password does not have to be repeated with every sudo command
+
+#### Using a Text Terminal on the Graphical Desktop
+**gnome-terminal** is the default **terminal emulator** on **GNOME** desktop environments; other terminal programs include:
+* **xterm**
+* **rxvt**
+* **konsole**
+* **terminator**
+
+#### Launching Terminal Windows
+in **CentOS 7**:
+* click **Applications->Utilities->Terminal**
+* right-click on desktop background and select **Open Terminal**
+* hit **Alt-F2** and type **gnome-terminal** or **xterm**
+
+#### Switching between the GUI and the Command Line
+* during installation, one can often choose between desktop (with **X**) or server (usually without **X**)
+* removing **X** from a production server can help maintain a lean system that can be easier to support and more secure
+
+#### Virtual Terminals
+**Virtual Terminals (VT)** are **console** sessions that use the entire display and keyboard outside of graphical environment; only one visible at a time even if others active; not the same as command line terminal on desktop  
+One VT reserved for graphical environment (Ubuntu: VT 7; CentOS/RHEL and openSUSE: VT 1), six for text logins
+To switch between the VTs:
+* **CTRL-ALT-corresponding function key** for the VT if running **X**
+* **ALT-corresponding function key** if not running **X**
+
+#### Turning Off the Graphical Desktop
+on newer **systemd**-based distros, the display manager is run as a service; it can be stopped with the **systemctl** utility or **telinit** on most distros:
+* `$ sudo systemctl stop gdm`  (or `$ sudo telinit 3`)
+* `$ sudo systemctl start gdm`  (or `$ sudo telinit 5`)
+  (use **lightdm** instead of **gdm** on Ubuntu)
+
+### Lab 7.1 Killing the Graphical User Interface
+1. kill the current graphical desktop
+I used `$ sudo systemctl stop gdm`
+2. restart the GUI from the console
+I used `$ sudo telinit 5`; GUI reinstated in VT 1; got message that last login was on tty2, so I guess that refers to the terminal
+
 ### 7.2: Basic Operations
 ### 7.3: Working with Files
 ### 7.4: Searching for Files
@@ -278,4 +331,10 @@ Linux commands
 `$ head [FILE]`
 `$ tail [FILE]`
 `$ man _name_`
-
+**pipe** |
+`[student@centos ~]$ su
+Password: 
+[root@centos student]#`
+`$ sudo systemctl stop gdm`  (or `$ sudo telinit 3`)
+`$ sudo systemctl start gdm`  (or `$ sudo telinit 5`)
+(use **lightdm** instead of **gdm** on Ubuntu)
