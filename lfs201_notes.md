@@ -431,7 +431,7 @@ the **Linux** kernel creates two kinds of processes on its own initiative (not c
   $ `  
 
 #### 3.22 Finding Shared Libraries
-* **ldd** can be used to find what shared libraries an executable requires
+**ldd** can be used to find what shared libraries an executable requires
 * it shows the **soname** of the library and what file it points to
 * example:  
 `[student@centos lib]$ ldd /usr/bin/vi`
@@ -544,20 +544,123 @@ Solution:
 3. **Message Queues**
 Modern programs tend to use **POSIX IPC** methods for these mechanisms, but still plenty of System V IPC applications found in the wild
 
-`$ ipcs`
+`$ ipcs`  
+> 
+> ------ Message Queues --------
+> key        msqid      owner      perms      used-bytes   messages    
+> 
+> ------ Shared Memory Segments --------
+> key        shmid      owner      perms      bytes      nattch     status      
+> 0x00000000 3637248    student    600        16777216   2          dest         
+> 0x00000000 163841     student    600        4194304    2          dest         
+> 0x00000000 360450     student    600        524288     2          dest         
+> 
+> ------ Semaphore Arrays --------
+> key        semid      owner      perms      nsems     
 
------- Message Queues --------
-key        msqid      owner      perms      used-bytes   messages    
+Shared memory segments have a key of 0 (also known as `IPC_PRIVATE`), which means they are only shared between processes in a parent-child relationship. "Dest" means marked for destruction when there are no further attachments.  If there is no status, then there are no attachments, so it might persist forever and leak memory if no subsequent process attaches to it.
 
------- Shared Memory Segments --------
-key        shmid      owner      perms      bytes      nattch     status      
-0x00000000 3637248    student    600        16777216   2          dest         
-0x00000000 163841     student    600        4194304    2          dest         
-0x00000000 360450     student    600        524288     2          dest         
+`$ ipcs -p`  
+> 
+> ------ Message Queues PIDs --------
+> msqid      owner      lspid      lrpid     
+> 
+> ------ Shared Memory Creator/Last-op PIDs --------
+> shmid      owner      cpid       lpid      
+> 262144     student    11310      3869      
+> 851969     student    12144      12151     
+> 524291     student    11044      11780     
+> 688132     student    11737      3869  
 
------- Semaphore Arrays --------
-key        semid      owner      perms      nsems     
+The `-p` option shows the PIDs of creator and last operator.
 
+`$ ps aux |grep -e 11737 -e 11044`  
+> student   11044  1.4  3.7 3688388 144132 ?      Sl   18:16   0:12 /usr/bin/gnome-shell
+> student   11737  0.0  0.8 760220 32268 ?        Sl   18:17   0:00 /usr/bin/gedit --gapplication-service
+> student   12431  0.0  0.0 112708   980 pts/0    S+   18:31   0:00 grep --color=auto -e 11737 -e 11044
+
+
+Chapter 4: Signals
+-----
+### Introduction 4
+**signals** emit notifications between processes or from kernal to app
+* one of the oldest forms of **inter-process communication (IPC)**
+* used to signal when an action is completed or to terminate a process, for example
+* the command for sending a signal is named "kill", but not all signals are kill signals
+
+### Goals 4
+By the end of this chapter, you should be able to:
+* Explain what signals are and how they are used.
+* Know the different signals and types of signals available in Linux.
+* Use kill, killall and pkill to send signals from the command line.
+
+### Notes 4
+
+#### 4.3 What Are Signals?
+* **Signals** are one of the oldest methods of **Inter-Process Communication (IPC) and are used to notify processes about **asynchronous** events (or exceptions); by asynchronous, we mean the signal-receiving process may:
+  * not expect the event to occur
+  * expect the event, but not know when it is most likely to occur
+* for example, if a user decides to terminate a running program, it could send a signal to the process through the kernel to interrupt and kill the process.  
+* there are two pathy by which signals are sent to a process:
+  * from the kernel to a user process, as a result of an exception or programming error
+  * from a user process (using a system call) to the kernel which will then send it to a user process; the process sending the signal can be the same as the one receiving it
+* signals can only be sent:
+  * between processes owned by the same user
+  * from a process ownded by the superuser to any process
+* what the process does when receiving a signal depends on the way the program was written:
+  * it can take actions to **handle** the signal
+  * it can respond according to system defaults
+  * **SIGKILL** and **SIGSTOP** cannot be handled and will always terminate the program
+
+#### 4.4 Types of Signals
+* there are different types of signals, and the particular signal dispatched indicates the type of event that occurred; generally, signals handle two things:
+  * exceptions detected by hardware (e.g. illegal memory reference)
+  * exceptions generated by the environment (e.g. premature death of a process from user's terminal)
+* use `$ kill -l` to see a list of signals with their numbers  
+* the signals from **SIGRTMIN** (34) and on are called **real-time signals** and are arelatively recent addition
+  * they have no predefined purpose
+  * they can be queued up and are handled in a **FIFO** **F**irst **I**n **F**irst **O**ut) order
+* the meaning attached to the signal type indicates what event caused the signal to be sent
+* type `$ man 7 signal` for documentation
+
+#### 4.5 kill
+* a process cannot send a signal directly to another process; it must ask the kernel to send the signal by executing a **system call**
+* users, including the superuser, can send signals to process by using **kill**:
+  * `$ kill 1991` (PID = 1991; will send a **SIGTERM (15)** by default, which can be handled; program can take elusive action or clean up after itself rather than die immediately)
+  * `$ kill -9 1991` (**SIGKILL (9)** cannot be ignored, causes termination with extreme prejudice)
+  * `$ kill -SIGKILL 1991`
+* **kill** is a misnomer b/c it is used to send any and all signals, even benign, informative ones
+* passing **kill -SIGTSTP** or pressing **Ctrl+Z** do the same thing
+
+#### 4.6 killall and pkill
+* **killall** kills all processes with a given name; uses a command name rather than PID:
+  * `$ killall bash`
+  * `$ killall -9 bash`
+  * `$ killall -SIGKILL bash`
+* **pkill** sends a signal to a process using selection criteria
+  * `$ pkill [-signal] [options] [pattern]`
+  * `$ pkill -u libby foobar` (will kill all of **libby**'s processes with a name of **foobar**)
+  * `$ pkill -HUP rsyslogd` (makes **rsyslog** re-read its config file)
+
+### Labs 4
+
+#### Lab 4.1 Examining Signal Priorities and Execution
+
+When run, the signals program:
+* Does not send the signals SIGKILL or SIGSTOP, which can not be handled and will always terminate a program.
+* Stores the sequence of signals as they come in, and updates a counter array for each signal that indicates how many times the signal has been handled.
+* Begins by suspending processing of all signals and then installs a new set of signal handlers for all signals.
+* Sends every possible signal to itself multiple times and then unblocks signal handling and the queued up signal handlers will be called.
+* Prints out statistics including:
+  * The total number of times each signal was received.
+  * The order in which the signals were received, noting each time the total number of times that signal had been received up to that point.
+Note the following:
+* If more than one of a given signal is **raised** while the process has blocked it, does the process **receive** it multiple times? Does the behavior of **real time** signals differ from normal signals?
+* Are all signals received by the process, or are some handled before they reach it?
+* What order are the signals received in?
+One signal, SIGCONT (18 on **x86**) may not get through; can you figure out why? Note:  
+On some **Linux** distributions signals 32 and 33 can not be blocked and will cause the program to fail. Even though system header files indicate SIGRTMIN=32, the command kill -l indicates SIGRTMIN=34.
+Note that **POSIX** says one should use signal names, not numbers, which are allowed to be completely implementation dependent. You should generally avoid sending these signals.
 
 
 Linux filesystem and paths
@@ -589,12 +692,10 @@ Directory | In FHS? | Purpose
 /run      | No      | some distros (see 2.6b); pseudo-filesystem
 /tftpboot | No      | some distros (see 2.6b)
 
-Linux paths
-=====
+## Linux paths
 `/etc/security/limits.conf` (3.18)
 
-Linux commands
-=====
+## Linux commands
 `$ sudo du -shxc --exclude=proc *`  
 `$ du -shc share/*`  
 `$ file *cgi-bin/*` # in `/usr/lib/cups` (should be in lib64)  
@@ -606,5 +707,42 @@ Linux commands
 `$ ps -elf` to see kernel created processes  
 `$ nice -n 5 command [ARGS]` (3.17)  
 `$ nice -5 command [ARGS]` (3.17)  
-`$ renice +3 13848` (3.18)
-`$ ldd /usr/bin/vi`
+`$ renice +3 13848` (3.18)  
+`$ ldd /usr/bin/vi`  
+`$ ulimit -H -n` (Lab 3.1)  
+`$ ulimit -S -n` (Lab 3.1)  
+`$ ulimit -n 4096` (Lab 3.1)  
+`$ ulimit -H -n 2048` (Lab 3.1)  
+`$ ipcs` (Lab 3.2)  
+`$ ipcs -p` (Lab 3.2)  
+`$ ps aux |grep -e 11737 -e 11044`  (Lab 3.2) the `-e` option is to match a pattern; also `--regexp`  
+`$ kill -l` (4.4)  
+`$ man 7 signal` (4.4)  
+`$ kill 1991` (4.5)  
+`$ kill -9 1991` (4.5)  
+`$ kill -SIGKILL 1991` (4.5)  
+`$ killall bash` (4.6)  
+`$ killall -9 bash` (4.6)  
+`$ killall -SIGKILL bash` (4.6)  
+`$ pkill [-signal] [options] [pattern]` (4.6)  
+`$ pkill -u libby foobar` (4.6)  
+`$ pkill -HUP rsyslogd` (4.6)  
+`$ gcc -o signals signals.c` (Lab 4)
+
+## Available Signals for the x86 Platform
+Signal  | Value | Default Action | POSIX? | Meaning
+------  | ----- |--------------- | ------ | -------
+SIGHUP  | 1     | Terminate      | Yes    | Hangup detected on controlling terminal or death of controlling process.
+SIGINT  | 2     | Terminate      | Yes    | Interrupt from keyboard.
+SIGQUIT | 3     | Core dump      | Yes    | Quit from keyboard.
+SIGILL  | 4     | Core dump      | Yes    | Illegal Instruction. 
+SIGTRAP | 5     | Core dump      | No     | Trace/breakpoint trap for debugging. 
+SIGABRT | 6     | Core dump      | Yes    | Abnormal termination
+SIGIOT  | 6     | Core dump      | Yes    | Abnormal termination. 
+SIGBUS  | 7     | Core dump      | Yes    | Bus error.
+SIGFPE  | 8     | Core dump      | Yes    | Floating point exception. 
+SIGKILL | 9     | Terminate      | Yes    | Kill signal (can not be caught or ignored). 
+SIGUSR1 | 10    | Terminate      | Yes    | User-defined signal 1. 
+SIGSEGV | 11    | Core dump      | Yes    | Invalid memory reference. 
+SIGUSR2 | 12    | Terminate      | Yes    | User-defined signal 2. 
+SIGPIPE | 13    | Terminate      | Yes    | Broken pipe: write to pipe with no readers. 
