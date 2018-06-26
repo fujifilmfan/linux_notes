@@ -662,6 +662,49 @@ One signal, SIGCONT (18 on **x86**) may not get through; can you figure out why?
 On some **Linux** distributions signals 32 and 33 can not be blocked and will cause the program to fail. Even though system header files indicate SIGRTMIN=32, the command kill -l indicates SIGRTMIN=34.
 Note that **POSIX** says one should use signal names, not numbers, which are allowed to be completely implementation dependent. You should generally avoid sending these signals.
 
+Chapter 5: Package Management Systems
+-----
+### Introduction 5
+
+### Goals 5
+By the end of this chapter, you should be able to:
+* Explain why software package management systems should be used.
+* Understand the role of both binary and source packages.
+* List the main available package management systems.
+* Understand why two levels of utilities are needed; one that deals with just bare packages, and one that deals with dependencies among packages.
+* Explain how creating your own package enhances the control you have over exactly what goes in software and how it is installed.
+* Understand the role of source control systems and git in particular.
+
+### Notes 5
+
+#### 5.3 Software Packaging Concepts
+**Package management systems** supply the tools that allow system administrators to automate installing, upgrading, configuring and removing software packages in a known, predictable and consistent manner. These systems:
+* Gather and compress associated software files into a single package (archive), which may require one or more other packages to be installed first.​
+* Allow for easy software installation or removal.​
+* Can verify file integrity via an internal database.​
+* Can authenticate the origin of packages.​
+* Facilitate upgrades.​
+* Group packages by logical features.​
+* Manage dependencies between packages.
+A given package may contain executable files, data files, documentation, installation scripts and configuration files. Also included are **metadata** attributes such as version numbers, checksums, vendor information, dependencies, descriptions, etc.  
+Upon installation, all that information is stored locally into an internal database which can be conveniently queried
+
+#### 5.4 Why Use Packages
+Features include:
+* Automation:  No need for manual installs and upgrades.
+* Scalability:  Install packages on one system, or 10,000 systems.
+* Repeatability and predictability.
+* Security and auditing.
+
+
+### Labs 5
+
+Chapter 6: 
+-----
+### Introduction 6
+### Goals 6
+### Notes 6
+### Labs 6
 
 Linux filesystem and paths
 =====
