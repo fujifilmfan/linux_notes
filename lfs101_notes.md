@@ -316,6 +316,18 @@ I used `$ sudo systemctl stop gdm`
 I used `$ sudo telinit 5`; GUI reinstated in VT 1; got message that last login was on tty2, so I guess that refers to the terminal
 
 ### 7.2: Basic Operations
+
+#### Logging In and Out
+* **text terminal** will prompt for username and password
+* **Secure Shell (SSH)** mentioned
+
+#### Rebooting and Shutting Down
+* **shutdown** is the preferred method; **init** then controls shutdown or reboot
+* **halt** and **poweroff** commands issue a `shutdown -h` to halt the system, while **reboot** issues `shutdown -r`; both require superuser (root) access, as in:
+  * `$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."`
+
+#### Locating Applications
+
 ### 7.3: Working with Files
 ### 7.4: Searching for Files
 ### 7.5: Installing Software
@@ -326,15 +338,16 @@ I used `$ sudo telinit 5`; GUI reinstated in VT 1; got message that last login w
 
 Linux commands
 =====
-`$ gnome-tweak-tool`
-`$ cat [FILE]`
-`$ head [FILE]`
-`$ tail [FILE]`
-`$ man _name_`
-**pipe** |
-`[student@centos ~]$ su
-Password: 
-[root@centos student]#`
-`$ sudo systemctl stop gdm`  (or `$ sudo telinit 3`)
-`$ sudo systemctl start gdm`  (or `$ sudo telinit 5`)
-(use **lightdm** instead of **gdm** on Ubuntu)
+`$ gnome-tweak-tool`  
+`$ cat [FILE]`  
+`$ head [FILE]`  
+`$ tail [FILE]`  
+`$ man _name_`  
+**pipe** |  
+`[student@centos ~]$ su  
+Password:  
+[root@centos student]#`  
+`$ sudo systemctl stop gdm`  (or `$ sudo telinit 3`)  
+`$ sudo systemctl start gdm`  (or `$ sudo telinit 5`)  
+(use **lightdm** instead of **gdm** on Ubuntu)  
+`$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."` (7.2)
