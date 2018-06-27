@@ -327,8 +327,23 @@ I used `$ sudo telinit 5`; GUI reinstated in VT 1; got message that last login w
   * `$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."`
 
 #### Locating Applications
+* most executables should live in `/bin`, `/usr/bin`, `/sbin`, `/usr/sbin`, or `/opt`
+* use **which** to find programs
+  * example: `$ which python`
+  > /usr/bin/python
+* use **whereis** to search a broader range of directories; includes **source** and **man** files packaged with the program
+  * example: `$ whereis python`
+  > python: /usr/bin/python2.7 /usr/bin/python /usr/lib/python2.7 /usr/lib64/python2.7 /etc/python /usr/include/python2.7 /usr/share/man/man1/python.1.gz
+
+#### Accessing Directories
+* `$ echo $HOME` to see path of default directory
+* `$ pwd` to see present working directory
+* `$ cd ~` or `$ cd` to change to home directory
+* `$ cd ..` to change to parent directory
+* `$ cd -` to change to previous directory
 
 ### 7.3: Working with Files
+
 ### 7.4: Searching for Files
 ### 7.5: Installing Software
 ### 7.6: Summary
