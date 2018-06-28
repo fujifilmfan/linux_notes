@@ -696,6 +696,43 @@ Features include:
 * Repeatability and predictability.
 * Security and auditing.
 
+#### 5.5 Package Types
+Packages come in several different types:
+* **Binary** packages contain files ready for deployment, including executable files and libraries. These are architecture-dependent and must be compiled for each type of machine.
+* **Source** packages are used to generate binary packages; one should always be able to rebuild a binary package (for example, by using `rpmbuild --rebuild` on **RPM**-based systems) from the source package. One source package can be used for multiple architectures.
+* **Architecture-independent** packages contain files and scripts that run under script interpreters, as well as documentation and configuration files.
+* **Meta-packages** are essentially groups of associated packages that collect everything needed to install a relatively large subsystem, such as a desktop environment, or an office suite, etc.
+Binary packages are the ones that system administrators have to deal with most of the time.  
+On 64-bit systems that can run 32-bit programs, one may have two binary packages installed for a given program, perhaps one with **x86_64** or **amd64** in its name, and the other with **i386** or **i686**** in its name.  
+Source packages can be helpful in keeping track of changes and source code used to come up with binary packages. 
+
+#### 5.6 Available Package Management Systems
+There are two very common package management systems:
+
+* **RPM** (**Red Hat Package Manager**)
+  * This system is used by all Red Hat-derived distributions, such as **Red Hat Enterprise Linux**, **CentOS**, and **Scientific Linux**, as well as by **SUSE** and its related community **openSUSE** distribution.
+* **dpkg** (**Debian Package**)
+  * This system is used by all **Debian**-derived distributions ,including **Debian**, **Ubuntu**, and **Linux Mint**.
+There are other package management systems, such as **portage/emerge** used by **Gentoo**, **pacman**** used by **Arch**, and specialized ones used by **Embedded Linux** systems and **Android**.
+
+#### 5.7 Packaging Tool Levels and Varieties
+Two levels to packaging systems:
+1. **Low Level Utility**
+* installs or removes a single package or list of packages; dependencies not fully handled
+  * if another package needs to be installed, first installation will fail
+  * if the package is needed by another package, removal will fail
+  * the **rpm** and **dpkg** utilities play this role for the packaging systems that use them
+
+2. **High Level Utility**
+* solves the dependency problems
+  * if another package or group of packages needs to be installed before software can be installed, such needs will be satisfied
+  * if removing a package interferes with another installed package, the administrator will be given the choice of either aborting, or removing all affected software
+  * the **yum**, **dnf**, and **zypper** utilities (and more recently, **PackageKit**) take care of the dependency resolution for rpm systems, and **apt-get** and **apt-cache** and other utilities take care of it for dpkg systems
+
+#### 5.8 Package Sources
+* every distribution has one or more package **repositories** where system utilities go to obtain software and to update with new versions
+* there are always other, external repositories, which can be added to the standard distribution-supported list; sometimes, these are closely associated with the distribution, and only rarely produce significant problems; an example would be the **EPEL** (**E**xtra **Pa**ckages for **E**nterprise **L**inux) set of version-dependent repositories, which fit well with **RHEL** since their source is **Fedora** and the maintainers are close to **Red Hat**. 
+* when a package is updated in the main repository, dependent packages may not be updated in the external one, which can lead to one form of **dependency hell** 
 
 ### Labs 5
 
