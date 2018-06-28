@@ -342,6 +342,14 @@ I used `$ sudo telinit 5`; GUI reinstated in VT 1; got message that last login w
 * `$ cd ..` to change to parent directory
 * `$ cd -` to change to previous directory
 
+#### Understanding Absolute and Relative Paths
+* an **absolute pathname** always begins with `/`
+* a **relative pathname** never starts with `/`
+* `////usr//bin` is seen as `/usr/bin` by the system
+* `.` == present directory
+* `..` == parent directory
+* `~` == home directory
+
 ### 7.3: Working with Files
 
 ### 7.4: Searching for Files
