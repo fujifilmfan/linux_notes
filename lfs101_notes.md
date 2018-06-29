@@ -350,17 +350,85 @@ I used `$ sudo telinit 5`; GUI reinstated in VT 1; got message that last login w
 * `..` == parent directory
 * `~` == home directory
 
+#### Exploring the FileSystem
+* `$ cd /` change to root directory
+* `$ ls` list contents of present working directory
+* `$ ls -a` list all files including **hidden** files (those whose name starts with .)
+* `$ tree` display a tree view of filesystem
+* `$ tree -d` show only directories and not file names
+
+#### Hard File Links
+* `$ ln file1 file2` creates a **hard link**
+  * file1 is the original file
+  * file2 is created
+* `$ ls -li file1 file2` indicates that the **inode** number, a unique quantity for each file object, is the same for both, so really it's **one** file
+  * `-i` flag for showing inode
+  * the 2 in the results indicates there are two names associated with the file
+* deleting one of the files, the **inode object** and other file name will remain
+* when editing, **vi** and **gedit** will retain the link, but other editors might break it, resulting in creation of two objects
+
+#### Soft (Symbolic) Links
+* `$ ln -s file1 file3`
+  * file3 has a different **inode** number
+* symbolic links take no extra space on filesystem
+* can point to objects on different filesystems or partitions; if source is not available or does not exist, link is called a **dangling** link
+
+#### Navigating the Directory History
+* `$ cd -` will go to last directory visited
+* `$ pushd .` pushes starting directory to a list
+* `$ popd .` move to directories on list in reverse order (most recent first)
+* `$ dirs` to see the list
+
+### Lab 7.2: Locating Applications
+Find out the location of the ip network utility.  
+My solution:
+* `$ which ip`
+> /usr/sbin/ip
+* `$ whereis ip`
+> ip: /usr/sbin/ip /usr/share/man/man7/ip.7.gz /usr/share/man/man8/ip.8.gz
+
+### 7.3 Working with Files
+
+#### Working with Files
+
+
+#### Viewing Files
+
+#### touch and mkdir
+
+#### Removing a File
+
+#### Renaming or Removing a Directory
+
+#### Modifying the Command Line Prompt
+
+#### Try-It-Yourself: Working with Files and Directories Using the Command Prompt
+
+### Lab 7.3: Creating, Moving, and Removing Files
+
+* `$ `
+
+
+
 ### 7.3: Working with Files
 
 ### 7.4: Searching for Files
 ### 7.5: Installing Software
 ### 7.6: Summary
 
+Linux filesystem and paths
+=====
 
+Linux paths
+-----
+`////usr//bin` (7.2)  
+`.` (7.2)  
+`..` (7.2)  
+`~` (7.2)  
 
 
 Linux commands
-=====
+-----
 `$ gnome-tweak-tool`  
 `$ cat [FILE]`  
 `$ head [FILE]`  
@@ -373,4 +441,21 @@ Password:
 `$ sudo systemctl stop gdm`  (or `$ sudo telinit 3`)  
 `$ sudo systemctl start gdm`  (or `$ sudo telinit 5`)  
 (use **lightdm** instead of **gdm** on Ubuntu)  
-`$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."` (7.2)
+`$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."` (7.2)  
+`$ halt` (7.2)  
+`$ poweroff` (7.2)  
+`$ shutdown -r` (7.2)  
+`$ cd /` (7.2)  
+`$ ls` (7.2)  
+`$ ls -a` (7.2)  
+`$ tree` (7.2)  
+`$ tree -d` (7.2)  
+`$ ln file1 file2` (7.2)  
+`$ ls -li file1 file2` (7.2)  
+`$ ln -s file1 file3` (7.2)  
+`$ cd -` (7.2)  
+`$ pushd .` (7.2)  
+`$ popd .` (7.2)  
+`$ dirs` (7.2)  
+
+
