@@ -776,9 +776,13 @@ Git arose from the Linux kernel development community
   * **commits**: Changesets describing tree snapshots
 * directory cache captures the state of the directory tree
 
-
-
 ### Labs 5
+
+#### Lab 5.1
+Basic git stuff; nothing to note  
+
+
+
 
 Chapter 6: 
 -----
