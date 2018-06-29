@@ -734,6 +734,50 @@ Two levels to packaging systems:
 * there are always other, external repositories, which can be added to the standard distribution-supported list; sometimes, these are closely associated with the distribution, and only rarely produce significant problems; an example would be the **EPEL** (**E**xtra **Pa**ckages for **E**nterprise **L**inux) set of version-dependent repositories, which fit well with **RHEL** since their source is **Fedora** and the maintainers are close to **Red Hat**. 
 * when a package is updated in the main repository, dependent packages may not be updated in the external one, which can lead to one form of **dependency hell** 
 
+#### 5.9 Creating Software Packages
+* Building your own package allows you to control exactly what goes in the software and exactly how it is installed; can automate tasks like:
+  * creating needed symbolic links
+  * creating directories as needed
+  * setting permissions
+  * anything that can be scripted
+* mechanisms of how to build **.rpm** or **.deb** packages will not be discussed
+
+#### 5.10 Revision Control System
+* **Source Control Systems** (or Revision Control Systems) coordinate cooperative development
+
+#### 5.11 Available Source Control Systems
+Some products released under **GPL** license:  
+**Product**| **URL**
+-----------| -------
+RCS        | http://www.gnu.org/software/rcs
+CVS        | http://ximbiot.com/cvs/wiki 
+Subversion | http://subversion.tigris.org 
+git        | http://www.kernel.org/pub/software/scm/git
+GNU Arch   | http://www.gnu.org/software/gnu-arch 
+Monotone   | http://www.monotone.ca
+Mercurial  | http://mercurial-scm.org/
+PRCS       | http://prcs.sourceforge.net
+
+Git arose from the Linux kernel development community  
+
+#### 5.12 The Linux Kernel and the Birth of git
+* see the section for details
+* original author was Linus Torvalds
+* links:
+  * source code: http://www.kernel.org/pub/software/scm/git/
+  * documentation: http://www.kernel.org/pub/software/scm/git/docs/
+
+#### 5.13 How git Works
+* **git** is not a source control management system in the usual sense, and basic units it works with are not files
+* two important data structures: an **object** database and a directory cache
+* object database contains objects of three varieties:
+  * **blobs**: chunks of binary data containing file contents
+  * **trees**: sets of blobs including file names and attributes, giving the directory structure
+  * **commits**: Changesets describing tree snapshots
+* directory cache captures the state of the directory tree
+
+
+
 ### Labs 5
 
 Chapter 6: 
@@ -746,7 +790,8 @@ Chapter 6:
 Linux filesystem and paths
 =====
 
-## Main Directory Layout (2.6)
+Main Directory Layout (2.6)
+-----
 Directory | In FHS? | Purpose
 --------- | ------- | -------
 /         | Yes     | primary directory of entire FH
@@ -772,7 +817,8 @@ Directory | In FHS? | Purpose
 /run      | No      | some distros (see 2.6b); pseudo-filesystem
 /tftpboot | No      | some distros (see 2.6b)
 
-## Linux paths
+Linux paths
+-----
 `/etc/security/limits.conf` (3.18)
 
 ## Linux commands
@@ -807,9 +853,11 @@ Directory | In FHS? | Purpose
 `$ pkill [-signal] [options] [pattern]` (4.6)  
 `$ pkill -u libby foobar` (4.6)  
 `$ pkill -HUP rsyslogd` (4.6)  
-`$ gcc -o signals signals.c` (Lab 4)
+`$ gcc -o signals signals.c` (Lab 4)  
+`$ gnome-software` a Linux app store (5.14)  
 
-## Available Signals for the x86 Platform
+Available Signals for the x86 Platform
+-----
 Signal    | Value | Default Action | POSIX? | Meaning
 ------    | ----- |--------------- | ------ | -------
 SIGHUP    | 1     | Terminate      | Yes    | Hangup detected on controlling terminal or death of controlling process.
