@@ -746,7 +746,8 @@ Two levels to packaging systems:
 * **Source Control Systems** (or Revision Control Systems) coordinate cooperative development
 
 #### 5.11 Available Source Control Systems
-Some products released under **GPL** license:  
+Some products released under **GPL** license:
+   
 **Product**| **URL**
 -----------| -------
 RCS        | http://www.gnu.org/software/rcs
