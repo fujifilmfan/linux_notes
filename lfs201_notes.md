@@ -747,7 +747,7 @@ Two levels to packaging systems:
 
 #### 5.11 Available Source Control Systems
 Some products released under **GPL** license:
-   
+
 **Product**| **URL**
 -----------| -------
 RCS        | http://www.gnu.org/software/rcs
@@ -782,14 +782,29 @@ Git arose from the Linux kernel development community
 #### Lab 5.1
 Basic git stuff; nothing to note  
 
-
-
-
 Chapter 6: 
 -----
 ### Introduction 6
+
 ### Goals 6
+By the end of this chapter, you should be able to:
+* Understand how the **RPM** system is organized and what major operations the **rp** program can accomplish.
+* Explain the naming conventions used for both binary and source **rpm** files.
+* Know how to query, verify, install, uninstall, upgrade and freshen packages.
+* Grasp why new kernels should be installed rather than upgraded.
+* Know how to use **rpm2cpio** to copy packaged files into a **cpio** archive, as well as to extract the files without installing them.
+
 ### Notes 6
+
+#### 6.3 RPM
+* RPM == the Red Hat Package Manage
+  * all files related to a specific task are packaged into a single rpm file
+  * contains information about how and where to install and uninstall files
+  * new versions of software lead to new rpm files which are then used for updating
+* rpm files contain dependency information
+* rpm does not retrieve from the network, but only from the local machine using absolute or relative paths
+* rpm files are usually distribution-dependent
+
 ### Labs 6
 
 Linux filesystem and paths
