@@ -389,6 +389,18 @@ My solution:
 
 ### 7.3 Working with Files
 
+#### Viewing Files
+
+**Command** | **Usage**
+----------- | ---------
+cat         | used for viewing files that aren't long
+tac         | used to look at a file backwards, starting with last line
+less        | used to view larger files; pauses at each screen full of text; use / to search forward and ? to search backward; **more** is an older program that is similar
+tail        | used to print last 10 lines of file by default; use -n 15 or -15 to look at last 15 lines, for instance
+head        | opposite of tail
+
+
+
 #### Working with Files
 
 
@@ -457,5 +469,11 @@ Password:
 `$ pushd .` (7.2)  
 `$ popd .` (7.2)  
 `$ dirs` (7.2)  
-
+`$ cat` (7.3)  
+`$ tac` (7.3)  
+`$ less` (7.3)  
+`$ tail` (7.3)  
+`$ tail -n 15` (7.3)  
+`$ tail -15` (7.3)  
+`$ head` (7.3)  
 
