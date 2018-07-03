@@ -399,33 +399,134 @@ less        | used to view larger files; pauses at each screen full of text; use
 tail        | used to print last 10 lines of file by default; use -n 15 or -15 to look at last 15 lines, for instance
 head        | opposite of tail
 
-
-
-#### Working with Files
-
-
-#### Viewing Files
-
 #### touch and mkdir
+* **touch** is often used to set or update the access, change, and modify times of files; it resets a file's time stamp to match the current time
+  * also used to create an empty file: `$ touch <filename>`
+  * can set timestamp of file: `$ touch -t 06302000 <filename>` # June 30, 20:00
+* **mkdir** is used to create directories
+* **rmdir** is used to remove empty directories, use `$ rm -rf` for directories with data
 
 #### Removing a File
 
+**Command** | **Usage**
+----------- | ---------
+mv          | rename a file
+rm          | remove a file
+rm -f       | forcefully remove a file
+rm -i       | interactively remove a file (good practice when using patterns)
+
 #### Renaming or Removing a Directory
 
-#### Modifying the Command Line Prompt
+**Command** | **Usage**
+----------- | ---------
+mv          | rename a directory
+rmdir       | remove an empty directory
+rm -rf      | forcefully remove a directory recursively
 
-#### Try-It-Yourself: Working with Files and Directories Using the Command Prompt
+#### Modifying the Command Line Prompt
+* the **PS1** variable is the character string that is displayed as the prompt on the command line
+* example: `student@quad32 $` could be set with `\u@\h \$`
+`$ echo $PS1`
+> \$
+`$ PS1="\u@\h \$ "`
+`coop@quad64 $ echo $PS1`
+> \u@\h \$
+`coop@quad64 $` 
 
 ### Lab 7.3: Creating, Moving, and Removing Files
+*  Create an empty file named exercise.txt and move this file to the /tmp directory, using a relative pathname from your home directory. Then, delete this file using an absolute pathname.
+* My solution:
+  * `$ touch exercise.txt`
+  * `$ mv exercise.txt ../../../../tmp/`
+  * `$ rm /tmp/exercise.txt`
+
 
 * `$ `
 
 
 
-### 7.3: Working with Files
-
 ### 7.4: Searching for Files
+
+#### Standard File Streams
+Three standard **file streams** (or **descriptors**) are always open for use:  
+
+**Name**        | **Symbolic Name** | **Value** | **Example**
+--------        | ----------------- | --------- | -----------
+standard input  | stdin             | 0         | keyboard
+standard output | stdout            | 1         | terminal
+standard error  | stderr            | 2         | log file
+
+* **stdin** is your keyboard or supplied from output of a previous commmand via a **pipe**
+* **stdout** is printed on the terminal or redirected into a file
+* **stderr** is usually redirected to an error logging file
+* Other open files will start at file descriptor 3 and increase from there
+
+#### I/O Redirection
+* assume we have a program called **do_something** that reads from **stdin** and writes to **stdout** and **stderr**
+  * change its input source:
+`$ do_something < input-file`
+  * send its output to a file:
+`$ do_something > output-file`
+  * send its error messages to a file using the file descriptor:
+`$ do_something 2> error-file`
+  * put error messages to the same place as file descriptor 1:
+`$ do_something > all-output-file 2>&1`
+  * the previous in **bash**:
+`$ do_something >& all-output-file`
+
+#### Pipes
+* a **pipeline**:
+`$ command1 | command2 | command3`
+  * _command2 and command3 do not have to wait for previous commands to complete_
+  * this allows short and simple programs to be combined to produce complex results
+
+#### locate
+* **locate** searches a database constructed by **updatedb** (usually run once per day)
+* example: `$ locate zip | grep bin`
+
+#### Wildcards and Matching File Names
+
+**Wildcard** | **Result**
+------------ | ----------
+?            | matches any single character
+*            | matches any string of characters
+[set]        | matches any character in the set
+[!set]       | matches any character not in the set
+
+This is just regex  
+
+#### Finding Files
+
+#### Using find
+
+#### Using Advanced find Options
+
+#### Finding Files Based on Time and Size
+
+#### Finding Files in a Directory
+
+#### Try-It-Yourself: Using find
+
+### Lab 4: Finding Directories and Creating Symbolic Links
+
+
 ### 7.5: Installing Software
+
+#### Package Management Systems on Linux
+
+#### Package Managers: Two Levels
+
+#### Working with Different Package Management Systems
+
+#### Managing Software Packages on Ubuntu
+
+#### Managing Software Packages on CentOS
+
+#### Managing Software Packages on openSUSE
+
+### Lab 5: Installing and Removing Software Packages
+
+
 ### 7.6: Summary
 
 Linux filesystem and paths
@@ -476,4 +577,23 @@ Password:
 `$ tail -n 15` (7.3)  
 `$ tail -15` (7.3)  
 `$ head` (7.3)  
+`$ touch <filename>` (7.3)  
+`$ touch -t 06302000 <filename>` (7.3)  
+`$ mkdir <dirname>` (7.3)  
+`$ rmdir <dirname>` (7.3)  
+`$ rm -rf` (7.3)  
+`$ mv <original> <new>` (7.3)  
+`$ rm` (7.3)  
+`$ rm -f` (7.3)  
+`$ rm -i` (7.3)  
+`$ PS1="\u@\h \$ "` (7.3)  
+`$ do_something < input-file` (7.4)  
+`$ do_something > output-file` (7.4)  
+`$ do_something 2> error-file` (7.4)  
+`$ do_something > all-output-file 2>&1` (7.4)  
+`$ do_something >& all-output-file` (7.4)  
+`$ locate zip | grep bin` (7.4)  
+`$ cp <original_file> <new_file>` (7.4)  
+
+
 
