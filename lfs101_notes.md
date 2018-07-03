@@ -495,13 +495,36 @@ standard error  | stderr            | 2         | log file
 
 This is just regex  
 
-#### Finding Files
-
 #### Using find
+* without args, `$ find` lists all files in current directory and all of its subdirectories7.4 - find
+* common options:
+  * `-name` for file name
+  * `-iname` ignore case of file name
+  * `-type` (`d` for directory, `l` for link, `f` for file)
+* example use:
+  * `$ find /usr -name gcc`
+  * `$ find /usr -type d -name gcc`
+  * `$ find /usr -type f -name gcc`
 
 #### Using Advanced find Options
+* `-exec` to run commands on matched files
+* example: find and remove all files ending with .swp:
+  * `$ find -name "*.swp" -exec rm {} ';'`7.4 - a
+  * {} place holder for file names resulting from search
+  * must end with ';' or '\;'
+* `-ok` acts like exec but prompts for permission
 
 #### Finding Files Based on Time and Size
+* time, such as `$ find / -ctime 3`
+  * `-ctime` for inode metadata (e.g., file ownership, permissions, etc.) last changed
+  * `-atime` for last accessed or read
+  * `-mtime` for last modified or written
+  * the number **n** is for days, **+n** for larger than n, **-n** for less than n
+  * for minutes, use `-cmin`, `-amin`, `-mmin`
+* size, such as `$ find / -size 0`
+  * default number is in 512-byte blocks
+  * **c** for bytes, **k** for kilobytes, **M** for megabytes, **G** for gigabytes, etc.
+  * can also use exact numbers as with time, **n**, **+n**, or **-n**
 
 #### Finding Files in a Directory
 
@@ -594,6 +617,13 @@ Password:
 `$ do_something >& all-output-file` (7.4)  
 `$ locate zip | grep bin` (7.4)  
 `$ cp <original_file> <new_file>` (7.4)  
+`$ find` with `-name`, `-iname`, `-type` (`d` for directory, `l` for link, `f` for file), `-exec` (7.4)  
+`$ find /usr -name gcc` (7.4)  
+`$ find /usr -type d -name gcc` (7.4)  
+`$ find /usr -type f -name gcc` (7.4)  
+`$ find -name "*.swp" -exec rm {} ';'` or `-ok` instead (7.4)  
+`$ find / -ctime 3` or `-atime`, `-mtime` with **n**, **+n**, or **-n**; `-cmin`, `-amin`, `-mmin` (7.4)  
+`$ find / -size 0` with **c**, **k**, **M**, **G**, etc. or with **n**, **+n**, or **-n** (7.4)  
 
 
 
