@@ -782,7 +782,7 @@ Git arose from the Linux kernel development community
 #### Lab 5.1
 Basic git stuff; nothing to note  
 
-Chapter 6: 
+Chapter 6: RPM
 -----
 ### Introduction 6
 
@@ -797,13 +797,72 @@ By the end of this chapter, you should be able to:
 ### Notes 6
 
 #### 6.3 RPM
-* RPM == the Red Hat Package Manage
+* **RPM** == the **R**ed **H**at **P**ackage **M**anager
   * all files related to a specific task are packaged into a single rpm file
   * contains information about how and where to install and uninstall files
   * new versions of software lead to new rpm files which are then used for updating
 * rpm files contain dependency information
 * rpm does not retrieve from the network, but only from the local machine using absolute or relative paths
 * rpm files are usually distribution-dependent
+
+#### 6.4 Advantages of Using RPM
+For system administrators, RPM makes it easy to:  
+  * determine what package (if any) any file on the system is part of
+  * determine what version is installed
+  * install and uninstall (erase) packages without leaving debris behind
+  * verify that a package was installed correctly; this is useful for both troubleshooting and system auditing
+  * distinguish documentation files from the rest of the package and optionally decide not to install them to save space
+  * use ftp or HTTP to install packages over the Internet
+For developers RPM offers advantages as well:  
+  * software often is made available on more than one operating system; with RPM the original full and unmodified source is used as the basis, but a developer can separate out the changes needed to build on Linux
+  * more than one architecture can be built using only one source package
+
+#### 6.5 Package File Names
+RPM package file names are based on fields that represent specific information, as documented in the RPM standard  (http://www.rpm.org/)  
+  * the standard naming format for a binary package is:
+    * <name>-<version>-<release>.<distro>.<architecture>.rpm
+    * sed-4.2.1-10.el6.x86_64.rpm
+  * the standard naming format for a source package is:
+    * <name>-<version>-<release>.<distro>.src.rpm
+    * sed-4.2.1-10.el6.src.rpm
+Note that the distro field often actually specifies the repository that the package came from, as a given installation may use a number of different package repositories as we shall discuss when we discuss yum and zypper which work above RPM.  
+
+#### 6.6 Database Directory
+* `/var/lib/rpm` is the default system directory which holds RPM database files in the form of **Berkeley DB** hash files; database files should not be manually modified; updates should be done only through use of the rpm program
+* an alternative database directory can be specified with the **--dbpath** option to the rpm program; one might do this, for example, to examine an RPM database copied from another system
+* you can use the **--rebuilddb** option to rebuild the database indices from the installed package headers; this is more of a repair, and not a rebuild from scratch
+
+#### 6.7 Helper Programs and Modifying Settings
+* Helper programs and scripts used by RPM reside in /usr/lib/rpm; there are quite a few; for example on a RHEL 7 system:  
+`$ ls /usr/lib/rpm | wc -l`
+> 73
+where wc is reporting the number of lines of output
+* you can create an rpmrc file to specify default settings for rpm; by default, rpm looks for the following in order:
+  * `/usr/lib/rpm/rpmrc`
+  * `/etc/rpmrc`
+  * `~/.rpmrc`
+* note all these files are read; rpm does not stop as soon as it finds that one exists; an alternative rpmrc file can be specified using the **--rcfile** option
+
+#### 6.8 Queries
+All rpm inquiries include the **-q** option, which can be combined with numerous sub-options, as in:
+  * Which version of a package is installed?
+    `$ rpm -q bash`
+  * Which package did this file come from?
+    `$ rpm -qf /bin/bash`
+  * What files were installed by this package?
+    `$ rpm -ql bash`
+  * Show information about this package.
+    `$ rpm -qi bash`
+  * Show information about this package from the package file, not the package database.
+    `$ rpm -qip foo-1.0.0-1.noarch.rpm` (didn't work for me, and not when using packages on my system, either - "No such file or directory")
+  * List all installed packages on this system.
+    `$ rpm -qa`
+  * Return a list of prerequisites for a package:
+    `$ rpm -qp --requires foo-1.0.0-1.noarch.rpm`
+  * Show what installed package provides a particular requisite package:
+    `$ rpm -q --whatprovides libc.so.6`
+
+#### 6.9 Verifying Packages
 
 ### Labs 6
 
@@ -848,7 +907,7 @@ Linux paths
 `$ ls -lF` # difference from `lf -al` ? '-F' appends a symbol at the end of the name corresponding to the type  
 `$ ulimit -a` displays or resets resource limits associated with processes running under a shell  
 `$ ulimit [options] [limit]` as in `$ ulimit -n 1600` (changes maximum number of file descriptors)  
-? What's a file descriptor?  
+? What's a file descriptor? (same as file streams? stdin, stdout, stderr)  
 `&` at end of command for background processing (see 3.14)  
 `$ ps -elf` to see kernel created processes  
 `$ nice -n 5 command [ARGS]` (3.17)  
@@ -861,7 +920,7 @@ Linux paths
 `$ ulimit -H -n 2048` (Lab 3.1)  
 `$ ipcs` (Lab 3.2)  
 `$ ipcs -p` (Lab 3.2)  
-`$ ps aux |grep -e 11737 -e 11044`  (Lab 3.2) the `-e` option is to match a pattern; also `--regexp`  
+`$ ps aux | grep -e 11737 -e 11044`  (Lab 3.2) the `-e` option is to match a pattern; also `--regexp`  
 `$ kill -l` (4.4)  
 `$ man 7 signal` (4.4)  
 `$ kill 1991` (4.5)  
@@ -875,6 +934,15 @@ Linux paths
 `$ pkill -HUP rsyslogd` (4.6)  
 `$ gcc -o signals signals.c` (Lab 4)  
 `$ gnome-software` a Linux app store (5.14)  
+`$ rpm -q bash` (6.8)  
+`$ rpm -qf /bin/bash` (6.8)  
+`$ rpm -ql bash` (6.8)  
+`$ rpm -qi bash` (6.8)  
+`$ rpm -qip foo-1.0.0-1.noarch.rpm` (6.8)  
+`$ rpm -qa` (6.8)  
+
+
+
 
 Available Signals for the x86 Platform
 -----
