@@ -863,6 +863,28 @@ All rpm inquiries include the **-q** option, which can be combined with numerous
     `$ rpm -q --whatprovides libc.so.6`
 
 #### 6.9 Verifying Packages
+* **-V** option to **rpm** lets you verify whether files from package are consistent with database
+* to verify all packages on system:
+  * `$ rpm -Va`
+* output generated only when there is a probem (my CentOS7 packages seem to have a lot of problems, then)
+* codes (in order):
+
+Character | Meaning
+--------- | -------
+S         | file size differs
+M         | file permissions and/or type differs
+5         | MD5 checksum differs
+D         | device major/minor number mismatch
+L         | symbolic link path mismatch
+U         | user ownership differs
+G         | group ownership differs
+T         | modification time differs
+P         | capabilities differ
+.         | (at any of the above positions) test passed
+?         | (at any of the above positions) test cannot be performed
+
+* these do not necessarily indicate a problem; for example, many config files are modified as system evolves 
+
 
 ### Labs 6
 
