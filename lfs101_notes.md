@@ -542,6 +542,14 @@ My solution:
 `$ ln -s /etc/rc.d/init.d .`  
 
 ### 7.5: Installing Software
+See LFS201 Chapters 5-7 for more details  
+
+#### Package Managers: Two Levels
+Both package management systems provide two tool levels:  
+* a low-level tool (such as dpkg or rpm) takes care of the details of unpacking individual packages, running scripts, and getting the software installed correctly
+* a high-level tool (such as apt-get, yum, or zypper) works with groups of packages, downloads packages from the vendor, and figures out dependencies.  
+
+#### Working with Different Package Management Systems
 
 #### Package Management Systems on Linux
 
@@ -556,9 +564,35 @@ My solution:
 #### Managing Software Packages on openSUSE
 
 ### Lab 5: Installing and Removing Software Packages
-
+Using the upper level package management system appropriate for your Linux distribution, do the following:
+  * Install the dump package on your system.
+  * Remove the dump package from your system.
+NOTE: If dump is already installed (you will be told so when you try to install), then do things in opposite order, i.e., remove and then install.
+  * My solution:
+  * `sudo yum install dump`
+  * `sudo yum remove dump`
 
 ### 7.6: Summary
+Key concepts covered:
+  * Virtual terminals (VT) in Linux are consoles, or command line terminals that use the connected monitor and keyboard.
+  * Different Linux distributions start and stop the graphical desktop in different ways.
+  * A terminal emulator program on the graphical desktop works by emulating a terminal within a window on the desktop.
+  * The Linux system allows you to either log in via text terminal or remotely via the console.
+  * When typing your password, nothing is printed to the terminal, not even a generic symbol to indicate that you typed.
+  * The preferred method to shut down or reboot the system is to use the **shutdown** command.
+  * There are two types of **pathnames**: absolute and relative.
+    * An absolute pathname begins with the root directory and follows the tree, branch by branch, until it reaches the desired directory or file.
+    * A relative pathname starts from the present working directory.
+    * Using **hard** and **soft** (**symbolic**) links is extremely useful in Linux.
+  * **cd** remembers where you were last, and lets you get back there with `cd -`.
+  * **locate** performs a database search to find all file names that match a given pattern.
+  * **find** locates files recursively from a given directory or set of directories.
+  * **find** is able to run commands on the files that it lists, when used with the `-exec` option.
+  * **touch** is used to set the access, change, and edit times of files, as well as to create empty files.
+  * The **Advanced Packaging Tool** (**apt**) package management system is used to manage installed software on Debian-based systems.
+  * You can use the **Yellowdog Updater Modified** (**yum**) open source command-line package-management utility for **RPM**-compatible Linux operating systems.
+  * The **zypper** package management system is based on RPM and used for openSUSE.
+
 
 Linux filesystem and paths
 =====
