@@ -793,6 +793,7 @@ By the end of this chapter, you should be able to:
 * Know how to query, verify, install, uninstall, upgrade and freshen packages.
 * Grasp why new kernels should be installed rather than upgraded.
 * Know how to use **rpm2cpio** to copy packaged files into a **cpio** archive, as well as to extract the files without installing them.
+* **yum** and **zypper** hanlded dependencies in a more robust fashion; rpm more for packages listed on command line (?)
 
 ### Notes 6
 
@@ -848,7 +849,7 @@ All rpm inquiries include the **-q** option, which can be combined with numerous
   * Which version of a package is installed?
     `$ rpm -q bash`
   * Which package did this file come from?
-    `$ rpm -qf /bin/bash`
+    `$ rpm -qf /bin/bash` # **-f** for file
   * What files were installed by this package?
     `$ rpm -ql bash`
   * Show information about this package.
@@ -896,7 +897,7 @@ P         | capabilities differ
 
 #### 6.10 Installing Packages
 Installing a package is as simple as:  
-`$ sudo rpm -ivh foo-1.0.0-1.noarch.rpm`  where the -i is for install, -v is for verbose, and -h just means print out hash marks while doing to show progress.
+`$ sudo rpm -ivh foo-1.0.0-1.noarch.rpm`  where the **-i** is for install, **-v** is for verbose, and **-h** just means print out hash marks while doing to show progress.
 
 RPM performs a number of tasks when installing a package:
   * performs dependency checks
@@ -907,7 +908,178 @@ RPM performs a number of tasks when installing a package:
   * executes commands required after installation
   * updates the system RPM database; uses info in database when checking for conflicts
 
+#### 6.11 Uninstalling Packages
+* a successful uninstall produces no output
+* errors occur when the package isn't installed or is required by other packages
+`$ sudo rpm -e system-config-lvm` where **-e** is for erase and 'system-config-lvm' is the package name, not rpm file name
+`$ sudo rpm -e --test -vv system-config-lvm` where **--test** will tell you whether the install would succeed or fail w/o actually doing it and **-vv** gives more information
+* do not uninstall the rpm package itself! (would require booting into rescue env. or reinstalling OS)
+
+#### 6.12 Using the 'rpm' Command Demo
+`$ rpm -qa | grep bzip2` # **-q** for query, **-a** for all 
+> bzip2-libs-1.0.6-13.el7.x86_64 # libraries  
+> bzip2-1.0.6-13.el7.x86_64 # actual program  
+`$ find / -name "bzip2*" -type d 2>&1 | grep -v 'Permission denied'`  
+> /usr/share/doc/bzip2-libs-1.0.6  
+> /usr/share/doc/perl-IO-Compress-2.061/io/bzip2  
+> /usr/share/doc/bzip2-1.0.6  
+`$ rpm -qil bzip2 | less` # **-i** for information, **l** for list  
+`$ ls -lF $(rpm -ql bzip2)` # make it a shell command (pipe through less if too much output)  
+? Why doesn't `$ rpm -ql bzip2 | ls -lF` work?  
+`$ sudo rpm -e --test bzip2`  
+> error: Failed dependencies:  
+>  bzip2 is needed by (installed) libvirt-daemon-driver-qemu-3.9.0-14.el7_5.5.x86_64  
+>  bzip2 is needed by (installed) sos-3.5-7.el7.centos.noarch  
+>  /usr/bin/bzip2 is needed by (installed) file-roller-3.22.3-1.el7.x86_64  
+`$ rpm -q --whatprovides bzip2`  
+> bzip2-1.0.6-13.el7.x86_64  
+`$ rpm -q --whatrequires bzip2`  
+> libvirt-daemon-driver-qemu-3.9.0-14.el7_5.5.x86_64  
+> sos-3.5-7.el7.centos.noarch  
+
+#### 6.13 Upgrading Packages
+* upgrading replaces the original package if installed:
+`$ sudo rpm -Uvh bash-4.2.45-5.el7_0.4.x86_64.rpm` # **-U** for Upgrade
+* old packaged removed after newer version is installed except for config from original, which is saved with an **.rpmsave** extension
+* **-U** allows installation without error if the package is not already installed
+* **-i** not designed for upgrades
+* however, different versions can be installed if each version does not contain the same files (typically kernel packages and library packages from alternative architectures)
+* use **--oldpackage** with **rpm -U** to replace current version with an earlier one
+
+#### 6.14 Freshening Packages
+`$ sudo rpm -Fvh *.rpm`# **-F** for Freshen
+1. if an older version of a package is installed, it will be upgraded to the newer version in the directory
+2. if the version on the system is the same as the one in the directory, nothing happens
+3. if there is no version of a package installed, the package in the directory is ignored
+* useful for applying a lot of patches (i.e., upgraded packages) at once
+
+#### 6.15 Upgrading the Kernel
+When you install a new kernel on your system, it requires a reboot (one of the few updates that do) to take effect. You should not do an upgrade (-U) of a kernel: an upgrade would remove the old currently running kernel.  
+This in and of itself won't stop the system, but if, after a reboot, you have any problems, you will no longer be able to reboot into the old kernel, since it has been removed from the system. However, if you install (**-i**), both kernels coexist and you can choose to boot into either one; i.e., you can revert back to the old one if need be.  
+To install a new kernel do:  
+`$ sudo rpm -ivh kernel-{version}.{arch}.rpm` filling in the correct version and architecture names.  
+When you do this, the **GRUB** configuration file will automatically be updated to include the new version; it will be the default choice at boot, unless you reconfigure the system to do something else.  
+Once the new kernel version has been tested, you may remove the old version if you wish, though this is not necessary. Unless you are short on space, it is recommended that you keep one or more older kernels available.  
+
+#### 6.16 Using rpm2cpio
+Suppose you have a need to extract files from an rpm but do not want to actually install the package? The **rpm2cpio** program can be used to copy the files from an **rpm** to a **cpio** archive, and also extract the files if so desired.  
+* Create the cpio archive with:
+`$ rpm2cpio foobar.rpm > foobar.cpio`
+* To list files in an rpm:
+`$ rpm2cpio foobar.rpm | cpio -t`
+* but a better way is to do:
+`$  rpm -qilp foobar.rpm`
+* To extract onto the system:
+`$ rpm2cpio bash-4.2.45-5.el7_0.4.x86_64.rpm |  cpio -ivd bin/bash`  
+`$ rpm2cpio foobar.rpm | cpio --extract --make-directories`
+
 ### Labs 6
+
+#### Lab 6.1 Using RPM
+
+1. Find out what package the file /etc/logrotate.conf belongs to.
+  * My solution: 
+  * `$ rpm -qf /etc/logrotate.conf`
+> logrotate-3.8.6-15.el7.x86_64
+
+2. List information about the package including all the files it contains.
+  * My solution:
+  * `$ rpm -qil logrotate-3.8.6-15.el7.x86_64`
+> Name        : logrotate
+> V> ersion     : 3.8.6
+> Release     : 15.el7
+> Architecture: x86_64
+> Install Date: Thu 10 May 2018 09:57:07 AM PDT
+> Group       : System Environment/Base
+> Size        : 106988
+> License     : GPL+
+> Signature   : RSA/SHA256, Wed 25 Apr 2018 04:25:49 AM PDT, Key ID 24c6a8a7f4a80eb5
+> Source RPM  : logrotate-3.8.6-15.el7.src.rpm
+> Build Date  : Tue 10 Apr 2018 05:51:42 PM PDT
+> Build Host  : x86-01.bsys.centos.org
+> Relocations : (not relocatable)
+> Packager    : CentOS BuildSystem <http://bugs.centos.org>
+> Vendor      : CentOS
+> URL         : https://github.com/logrotate/logrotate
+> Summary     : Rotates, compresses, removes and mails system log files
+> Description :
+> The logrotate utility is designed to simplify the administration of
+> log files on a system which generates a lot of log files.  Logrotate
+> allows for the automatic rotation compression, removal and mailing of
+> log files.  Logrotate can be set to handle a log file daily, weekly,
+> monthly or when the log file gets to a certain size.  Normally,
+> logrotate runs as a daily cron job.
+> 
+> Install the logrotate package if you need a utility to deal with the
+> log files on your system.
+> /etc/cron.daily/logrotate
+> /etc/logrotate.conf
+> /etc/logrotate.d
+> /etc/rwtab.d/logrotate
+> /usr/sbin/logrotate
+> /usr/share/doc/logrotate-3.8.6
+> /usr/share/doc/logrotate-3.8.6/CHANGES
+> /usr/share/doc/logrotate-3.8.6/COPYING
+> /usr/share/man/man5/logrotate.conf.5.gz
+> /usr/share/man/man8/logrotate.8.gz
+> /var/lib/logrotate
+> /var/lib/logrotate/logrotate.status
+  * Fancier solution from the book which combines 1 and 2:
+  * `$ rpm -qil $(rpm -qf /etc/logrotate.conf)`
+
+3. Verify the package installation.
+  * My solution: 
+  * $ rpm -V logrotate-3.8.6-15.el7.x86_64
+> ..?......  c /etc/cron.daily/logrotate
+  * means MD5 checksum test cannot be performed
+
+4. Try to remove the package.
+  * My solution: 
+  * `$ rpm -e --test logrotate-3.8.6-15.el7.x86_64`
+> error: Failed dependencies:
+>   logrotate is needed by (installed) vsftpd-3.0.2-22.el7.x86_64
+>   logrotate >= 3.5.2 is needed by (installed) rsyslog-8.24.0-16.el7_5.4.x86_64
+
+
+#### Lab 6.2 Rebuilding the RPM Database
+There are conditions (which?) under which the RPM database stored in /var/lib/rpm can be corrupted. In this exercise we will construct a new one and verify its integrity.
+
+1. Backup the contents of /var/lib/rpm as the rebuild process will overwrite the contents. If you neglect to do this and something goes wrong you are in serious trouble.
+  * My solution: 
+  * `sudo /bin/rm -f /var/lib/rpm/__db*`
+  * `sudo tar czvf $(hostname).rpmdatabase.tar.gz /var/lib/rpm`
+  * `sudo mv centos.rpmdatabase.tar.gz /var/lib/`
+  * Correct solution:
+  * `$ sudo cp -a rpm rpm_BACKUP` # then the questions 3 and 5 can use **ls** in a straightforward way
+
+2. Rebuild the data base.
+  * My solution:
+  * `$ sudo rpm --rebuilddb`
+
+3. Compare the new contents of the directory with the backed up contents; don’t examine the actual file contents as they are binary data, but note the number and names of the files.
+  * My solution:
+  * `$ tar -xzvf centos.rpmdatabase.tar.gz` # that unpacked the files into the original directory instead of my current directory
+  * `$ tar -xzvf centos.rpmdatabase.tar.gz -C ~/rpm`
+  * `$ ls -al | wc`
+>   18     155    1054
+  * `$ ls -al /var/lib/rpm | wc`
+>     18     155     986
+
+4. Get a listing of all rpms on the system. You may want to compare this list with one generated before you actually do the rebuild procedure. If the query command worked, your new database files should be fine.
+  * My solution:
+  * `$ rpm -qa | wc -l`
+> 1627
+  * Book solution:
+  * `$ rpm -qa | tee /tmp/rpm-qa.output`
+
+5. Compare again the two directory contents. Do they have the same files now?
+  * I didn't get a count before the rebuild
+
+6. You could delete the backup (probably about 100MB in size) but you may want to keep it around for a while to make sure your system is behaving properly before trashing it.
+You may want to look at http://www.rpm.org/wiki/Docs/RpmRecovery for a more complete examination of steps you can take to verify and/or recover the database integrity.
+  * That link gives a 404 currently
+
+
 
 Linux filesystem and paths
 =====
@@ -984,6 +1156,28 @@ Linux paths
 `$ rpm -qip foo-1.0.0-1.noarch.rpm` (6.8)  
 `$ rpm -qa` (6.8)  
 `$ rpm -Va` (6.9)  
+`$ rpm -V bash` (6.9)  
+`$ rpm -V talk` (6.9)  
+`$ sudo rpm -ivh foo-1.0.0-1.noarch.rpm`  where the **-i** is for install, **-v** is for verbose, and **-h** just means print out hash marks while doing to show progress. (6.10)  
+`$ sudo rpm -e system-config-lvm` where **-e** is for erase and 'system-config-lvm' is the package name, not rpm file name (6.11)  
+`$ sudo rpm -e --test -vv system-config-lvm` where **--test** will tell you whether the install would succeed or fail w/o actually doing it and **-vv** gives more information (6.11)  
+`$ rpm -qa | grep bzip2` # **-q** for query, **-a** for all (6.12)  
+`$ find / -name "bzip2*" -type d 2>&1 | grep -v 'Permission denied'` (6.12)  
+`$ rpm -qil bzip2 | less` # **-i** for information, **l** for list (6.12)  
+`$ ls -lF $(rpm -ql bzip2)` # make it a shell command (pipe through less if too much output) (6.12)  
+? Why doesn't `$ rpm -ql bzip2 | ls -lF` work? (6.12)  
+`$ sudo rpm -e --test bzip2` (6.12)  
+`$ rpm -q --whatprovides bzip2` (6.12)  
+`$ rpm -q --whatrequires bzip2` (6.12)  
+`$ sudo rpm -Uvh bash-4.2.45-5.el7_0.4.x86_64.rpm` # **-U** for Upgrade (6.13)  
+`$ sudo rpm -Fvh *.rpm`# **-F** for Freshen (6.14)  
+`$ sudo rpm -ivh kernel-{version}.{arch}.rpm` (6.15)  
+`$ rpm2cpio foobar.rpm > foobar.cpio` (6.16)  
+`$ rpm2cpio foobar.rpm | cpio -t` (6.16)  
+`$  rpm -qilp foobar.rpm` (6.16)  
+`$ rpm2cpio bash-4.2.45-5.el7_0.4.x86_64.rpm |  cpio -ivd bin/bash` with
+`$ rpm2cpio foobar.rpm | cpio --extract --make-directories` (6.16)  
+
 
 
 
