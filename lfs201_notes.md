@@ -884,7 +884,28 @@ P         | capabilities differ
 ?         | (at any of the above positions) test cannot be performed
 
 * these do not necessarily indicate a problem; for example, many config files are modified as system evolves 
+* if you specify one or more package names as arguments, you examine only that package:
+  * no output when everything is okay: 
+  `$ rpm -V bash`  
+  * output indicating that a file's size, checksum, and modification time have changed:
+  `$ rpm -V talk`  
+  > S.5....T in.ntalkd.8  
+  * output indicating that a file is missing:
+  `$ rpm -V talk`  
+  > missing /usr/bin/talk  
 
+#### 6.10 Installing Packages
+Installing a package is as simple as:  
+`$ sudo rpm -ivh foo-1.0.0-1.noarch.rpm`  where the -i is for install, -v is for verbose, and -h just means print out hash marks while doing to show progress.
+
+RPM performs a number of tasks when installing a package:
+  * performs dependency checks
+  * performs conflict checks
+  * executes commands required before installation
+  * deals intelligently with configuration files: when installing a configuration file, if the file exists and has been changed since the previous version of the package was installed, RPM saves the old version with the **suffix .rpmsave**; allows you to integrate the changes in the old config file into the new version of the file
+  * unpacks the files from packages and installs them with correct attributes
+  * executes commands required after installation
+  * updates the system RPM database; uses info in database when checking for conflicts
 
 ### Labs 6
 
@@ -962,7 +983,7 @@ Linux paths
 `$ rpm -qi bash` (6.8)  
 `$ rpm -qip foo-1.0.0-1.noarch.rpm` (6.8)  
 `$ rpm -qa` (6.8)  
-
+`$ rpm -Va` (6.9)  
 
 
 
