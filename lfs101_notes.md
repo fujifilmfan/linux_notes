@@ -526,12 +526,20 @@ This is just regex
   * **c** for bytes, **k** for kilobytes, **M** for megabytes, **G** for gigabytes, etc.
   * can also use exact numbers as with time, **n**, **+n**, or **-n**
 
-#### Finding Files in a Directory
-
 #### Try-It-Yourself: Using find
+Tasks to be performed:
+  * earch for a file with name gcc in the /usr folder using find command.
+  * earch for a directory with filename gcc, in the /usr folder using find command.
+  * earch for files in the current directory which were modified today.
+  * Search for files with size 0 bytes.
 
 ### Lab 4: Finding Directories and Creating Symbolic Links
-
+Find the init.d directory, starting from /, and then create a symbolic link from within your home directory to this directory.  
+(Note that this SysVinit directory is no longer used much in systemd-based systems, but is kept for backwards compatibility reasons.)  
+My solution:  
+`$ find / -name init.d -type d 2>&1 | grep -v 'Permission denied'` (I could also use **sudo** to not see the Permission denied errors)  
+`$ cd ~`  
+`$ ln -s /etc/rc.d/init.d .`  
 
 ### 7.5: Installing Software
 
@@ -624,6 +632,6 @@ Password:
 `$ find -name "*.swp" -exec rm {} ';'` or `-ok` instead (7.4)  
 `$ find / -ctime 3` or `-atime`, `-mtime` with **n**, **+n**, or **-n**; `-cmin`, `-amin`, `-mmin` (7.4)  
 `$ find / -size 0` with **c**, **k**, **M**, **G**, etc. or with **n**, **+n**, or **-n** (7.4)  
-
+`$ find / -name init.d -type d 2>&1 | grep -v 'Permission denied'` (7.4)  
 
 
