@@ -219,7 +219,7 @@ By the end of this chapter, you should be able to:
 * can do this via settings or gnome-tweak-tool
 * this link doesn't seem to work anymore: http://art.gnome.org/themes/
 
-### Lab 1: Customizing the Desktop
+### Lab 4.1: Customizing the Desktop
 
 ### 4.2: Session Management
 ### 4.3: Basic Operations
@@ -441,10 +441,6 @@ rm -rf      | forcefully remove a directory recursively
   * `$ rm /tmp/exercise.txt`
 
 
-* `$ `
-
-
-
 ### 7.4: Searching for Files
 
 #### Standard File Streams
@@ -528,12 +524,12 @@ This is just regex
 
 #### Try-It-Yourself: Using find
 Tasks to be performed:
-  * earch for a file with name gcc in the /usr folder using find command.
-  * earch for a directory with filename gcc, in the /usr folder using find command.
-  * earch for files in the current directory which were modified today.
-  * Search for files with size 0 bytes.
+* earch for a file with name gcc in the /usr folder using find command.
+* earch for a directory with filename gcc, in the /usr folder using find command.
+* earch for files in the current directory which were modified today.
+* Search for files with size 0 bytes.
 
-### Lab 4: Finding Directories and Creating Symbolic Links
+### Lab 7.4: Finding Directories and Creating Symbolic Links
 Find the init.d directory, starting from /, and then create a symbolic link from within your home directory to this directory.  
 (Note that this SysVinit directory is no longer used much in systemd-based systems, but is kept for backwards compatibility reasons.)  
 My solution:  
@@ -549,50 +545,209 @@ Both package management systems provide two tool levels:
 * a low-level tool (such as dpkg or rpm) takes care of the details of unpacking individual packages, running scripts, and getting the software installed correctly
 * a high-level tool (such as apt-get, yum, or zypper) works with groups of packages, downloads packages from the vendor, and figures out dependencies.  
 
-#### Working with Different Package Management Systems
-
-#### Package Management Systems on Linux
-
-#### Package Managers: Two Levels
-
-#### Working with Different Package Management Systems
-
-#### Managing Software Packages on Ubuntu
-
-#### Managing Software Packages on CentOS
-
-#### Managing Software Packages on openSUSE
-
-### Lab 5: Installing and Removing Software Packages
+### Lab 7.5: Installing and Removing Software Packages
 Using the upper level package management system appropriate for your Linux distribution, do the following:
-  * Install the dump package on your system.
-  * Remove the dump package from your system.
+* Install the dump package on your system.
+* Remove the dump package from your system.
 NOTE: If dump is already installed (you will be told so when you try to install), then do things in opposite order, i.e., remove and then install.
-  * My solution:
-  * `sudo yum install dump`
-  * `sudo yum remove dump`
+* My solution:
+* `sudo yum install dump`
+* `sudo yum remove dump`
 
 ### 7.6: Summary
 Key concepts covered:
-  * Virtual terminals (VT) in Linux are consoles, or command line terminals that use the connected monitor and keyboard.
-  * Different Linux distributions start and stop the graphical desktop in different ways.
-  * A terminal emulator program on the graphical desktop works by emulating a terminal within a window on the desktop.
-  * The Linux system allows you to either log in via text terminal or remotely via the console.
-  * When typing your password, nothing is printed to the terminal, not even a generic symbol to indicate that you typed.
-  * The preferred method to shut down or reboot the system is to use the **shutdown** command.
-  * There are two types of **pathnames**: absolute and relative.
-    * An absolute pathname begins with the root directory and follows the tree, branch by branch, until it reaches the desired directory or file.
-    * A relative pathname starts from the present working directory.
-    * Using **hard** and **soft** (**symbolic**) links is extremely useful in Linux.
-  * **cd** remembers where you were last, and lets you get back there with `cd -`.
-  * **locate** performs a database search to find all file names that match a given pattern.
-  * **find** locates files recursively from a given directory or set of directories.
-  * **find** is able to run commands on the files that it lists, when used with the `-exec` option.
-  * **touch** is used to set the access, change, and edit times of files, as well as to create empty files.
-  * The **Advanced Packaging Tool** (**apt**) package management system is used to manage installed software on Debian-based systems.
-  * You can use the **Yellowdog Updater Modified** (**yum**) open source command-line package-management utility for **RPM**-compatible Linux operating systems.
-  * The **zypper** package management system is based on RPM and used for openSUSE.
+* Virtual terminals (VT) in Linux are consoles, or command line terminals that use the connected monitor and keyboard.
+* Different Linux distributions start and stop the graphical desktop in different ways.
+* A terminal emulator program on the graphical desktop works by emulating a terminal within a window on the desktop.
+* The Linux system allows you to either log in via text terminal or remotely via the console.
+* When typing your password, nothing is printed to the terminal, not even a generic symbol to indicate that you typed.
+* The preferred method to shut down or reboot the system is to use the **shutdown** command.
+* There are two types of **pathnames**: absolute and relative.
+  * An absolute pathname begins with the root directory and follows the tree, branch by branch, until it reaches the desired directory or file.
+  * A relative pathname starts from the present working directory.
+  * Using **hard** and **soft** (**symbolic**) links is extremely useful in Linux.
+* **cd** remembers where you were last, and lets you get back there with `cd -`.
+* **locate** performs a database search to find all file names that match a given pattern.
+* **find** locates files recursively from a given directory or set of directories.
+* **find** is able to run commands on the files that it lists, when used with the `-exec` option.
+* **touch** is used to set the access, change, and edit times of files, as well as to create empty files.
+* The **Advanced Packaging Tool** (**apt**) package management system is used to manage installed software on Debian-based systems.
+* You can use the **Yellowdog Updater Modified** (**yum**) open source command-line package-management utility for **RPM**-compatible Linux operating systems.
+* The **zypper** package management system is based on RPM and used for openSUSE.
 
+Chapter 8: Finding Linux Documentation
+-----
+### 8.0: Introduction/ Learning Objectives
+By the end of this chapter, you should be able to:
+* Use different sources of documentation.
+* Use the **man pages**.
+* Access the GNU **info** system.
+* Use the **help** command and `--help` option.
+* Use other documentation sources.
+
+### 8.1: Documentation Sources
+
+#### Introduction to Linux Documenation Sources
+Important Linux documentation sources include:
+* The **man pages** (short for manual pages)
+* GNU **Info**
+* The **help** command and `--help` option
+* Other Documentation Sources, e.g. https://www.gentoo.org/doc/en/ or https://help.ubuntu.com/community/CommunityHelpWiki
+
+### 8.2: The man pages
+
+#### The man pages
+Some Linux distributions require every installed program to have a corresponding **man** page, which explains the depth of coverage.  
+**man** pages are often converted to:
+* web pages (See http://man7.org/linux/man-pages/)
+* published books
+* graphical help
+* other formats
+
+#### man
+* with no options, you see only the dedicated page about the topic
+* with `-f`, view all pages containing a string in their name
+* with `-k`, view all pages that discuss a specfied subject (even if subject not in name)
+* `$ man -f` same as typing **whatis**
+* `$ man -k` same as typing **apropos**
+
+#### Manual Chapters
+* **man pages** are divided into nine numbered chapters
+* `$ man 3 printf` # shows chapter 3 of the printf man page
+* `$ man -a printf` # shows all manual pages with the name printf
+> --Man-- next: printf(1p) [ view (return) | skip (Ctrl-D) | quit (Ctrl-C) ]  
+> --Man-- next: printf(3) [ view (return) | skip (Ctrl-D) | quit (Ctrl-C) ]  
+> --Man-- next: printf(3p) [ view (return) | skip (Ctrl-D) | quit (Ctrl-C) ]  
+
+### Lab 8.2 (Lab 1): Working with man
+1. Finding man pages
+From the command line, bring up the man page for man itself. Scroll down to the EXAMPLES section.
+  * My solution:
+  * `$ man man`
+2. Finding man Pages by Topic
+What man pages are available that document file compression?
+  * My solution:
+  * `$ man -k compression`
+> Compress::Raw::Bzip2 (3pm) - Low-Level Interface to bzip2 compression library
+> Compress::Raw::Zlib (3pm) - Low-Level Interface to zlib compression library
+> Compress::Zlib (3pm) - Interface to zlib compression library
+> SSL_COMP_add_compression_method (3ssl) - handle SSL/TLS integrated compression methods
+> SSL_COMP_free_compression_methods (3ssl) - handle SSL/TLS integrated compression methods
+>  zlib (3)             - compression/decompression library
+
+3. man Pages by Section
+From the command line, bring up the man page for the printf library function. In which manual page section are library functions found?
+  * My solution:
+  * `$ man printf` # Section 1 - this is the command line utility
+  * Correct solution:
+  * `$ man 3 printf` # Section 3
+
+Here are the sections from the man man page:
+1. Executable programs or shell commands
+2. System calls (functions provided by the kernel)
+3. Library calls (functions within program libraries)
+4. Special files (usually found in /dev)
+5. File formats and conventions eg /etc/passwd
+6. Games
+7. Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
+8. System administration commands (usually only for root)
+9. Kernel routines [Non standard]
+
+### 8.3: GNU Info
+
+#### GNU Info System
+* alternative to **man**
+* topics connected by links
+* accessible via command line, graphical help utility, printed, or viewed online
+
+#### Command Line Info Browser
+* typing info with no arguments in a terminal window displays an index of available topics
+* you can view help for a particular topic by typing `info <topic name>`
+
+#### info Page Structure
+* topic which you view in the info page is called a **node**
+* nodes might contain menus and linked subtopics, or **items**, are like hyperlinks and identified by an asterisk (**\***) at the beginning of the item name
+* named items outside a menu are identified with double-colons(**::**) at the end of the item name
+* items can refer to other nodes within the file or to other files
+Helpful keystrokes:
+Key   | Function
+----- | --------
+n     | go to next node
+p     | go to previous node
+u     | move one node up in the index
+q     | quit
+h     | help
+Enter | select a menu item
+
+### Lab 8.3 (Lab 2): Working with info
+From the command line, bring up the info page for cpio. Bring up the tutorial.
+* My solution:
+* `$ info cpio`, then select "Tutorial" from the menu
+
+### 8.4: The --help Option and Help Command
+
+#### Introduction to the --help Option
+* short description accessed with the **--help** or **-h** flags
+
+#### The help Command
+* type `$ help` to see a synopsis of built-in commands
+* type `$ help <command>`
+* for these built-in commands, help performs the same basic function as the **-h** and **--help** arguments perform for stand-alone programs
+
+### Lab 8.4 (Lab 3): Working with Command Line help
+List the available options for the mkdir command, in more than one way.  
+* My solution:
+* `$ help mkdir`
+> no help topics match 'mkdir'
+* `$ man -k mkdir`
+> gvfs-mkdir (1)       - Create directories
+> mkdir (1)            - make directories
+> mkdir (1p)           - make directories
+> mkdir (2)            - create a directory
+> mkdir (3p)           - make a directory
+> mkdirat (2)          - create a directory relative to a directory file descriptor
+* `$ man -f mkdir`
+> mkdir (1)            - make directories
+> mkdir (1p)           - make directories
+> mkdir (3p)           - make a directory
+> mkdir (2)            - create a directory
+* `$ man mkdir`
+* `$ info mkdir`
+* Another answer:
+* `$ mkdir --help`
+
+### 8.5: Other Documentation Sources
+
+#### Other Documentation Sources
+* desktop help system
+  * GNOME: within graphical terminal, type `$ gnome-help` or `$ yelp`
+  * KDE: `$ khelpcenter`
+* package documentation
+  * found in `/usr/share/doc`
+* online resources
+  * LinuxCommand.org: http://linuxcommand.org/tlcl.php
+  * Ubuntu: https://help.ubuntu.com/
+  * CentOS: https://www.centos.org/docs/ points user to https://access.redhat.com/documentation/en-us/
+  * OpenSUSE: http://en.opensuse.org/Portal:Documentation
+  * GENTOO: http://www.gentoo.org/doc/en
+
+### Lab 8.5 (Lab 4): Working with Graphical Help Systems
+Find the graphical help system on your desktop, and try to locate within it the **man** pages for **printf**. This may be difficult, so do not waste too much time before looking at the suggestions below. 
+* My solution:
+  * I couldn't find any man pages in the gnome help
+  * I used the tip in the lab and ran `$ yelp man:printf`
+  * in location bar, hit **CTRL-l** and then type **man:printf**, and it works fine (bug?)
+  * do the same for info pages as well
+
+### 8.6: Summary
+Key concepts covered:
+* The main sources of Linux documentation are the **man pages**, **GNU Info**, the **help** options and command, and a rich variety of online documentation sources. 
+* The **man** utility searches, formats, and displays **man pages**.
+* The **man pages** provide in-depth documentation about programs and other topics about the system, including configuration files, system calls, library routines, and the kernel.
+* The **GNU Info System** was created by the **GNU** project as its standard documentation. It is robust and is accessible via command line, web, and graphical tools using info.
+* Short descriptions for commands are usually displayed with the `-h` or `--help` argument.
+* You can type **help** at the command line to display a synopsis of built-in commands.
+* There are many other help resources both on your system and on the Internet.
 
 Linux filesystem and paths
 =====
@@ -667,5 +822,21 @@ Password:
 `$ find / -ctime 3` or `-atime`, `-mtime` with **n**, **+n**, or **-n**; `-cmin`, `-amin`, `-mmin` (7.4)  
 `$ find / -size 0` with **c**, **k**, **M**, **G**, etc. or with **n**, **+n**, or **-n** (7.4)  
 `$ find / -name init.d -type d 2>&1 | grep -v 'Permission denied'` (7.4)  
+`$ man -f` same as typing **whatis** (8.2)  
+`$ man -k` same as typing **apropos** (8.2)  
+`$ man 3 printf` (8.2)  
+`$ man -a printf` (8.2)  
+`$ info cpio` (8.3)  
+`$ help` (8.4)  
+`$ help <command>` (8.4)  
+`$ mkdir --help` (8.4)  
+`$ gnome-help` or `$ yelp` (8.5)  
+`$ khelpcenter` (8.5)  
+`$ yelp man:printf` (8.5)  
+
+
+
+
+
 
 
