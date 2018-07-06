@@ -703,7 +703,7 @@ Packages come in several different types:
 * **Architecture-independent** packages contain files and scripts that run under script interpreters, as well as documentation and configuration files.
 * **Meta-packages** are essentially groups of associated packages that collect everything needed to install a relatively large subsystem, such as a desktop environment, or an office suite, etc.
 Binary packages are the ones that system administrators have to deal with most of the time.  
-On 64-bit systems that can run 32-bit programs, one may have two binary packages installed for a given program, perhaps one with **x86_64** or **amd64** in its name, and the other with **i386** or **i686**** in its name.  
+On 64-bit systems that can run 32-bit programs, one may have two binary packages installed for a given program, perhaps one with **x86_64** or **amd64** in its name, and the other with **i386** or **i686** in its name.  
 Source packages can be helpful in keeping track of changes and source code used to come up with binary packages. 
 
 #### 5.6 Available Package Management Systems
@@ -1079,6 +1079,106 @@ There are conditions (which?) under which the RPM database stored in /var/lib/rp
 You may want to look at http://www.rpm.org/wiki/Docs/RpmRecovery for a more complete examination of steps you can take to verify and/or recover the database integrity.
   * That link gives a 404 currently
 
+Chapter 7: DPKG
+-----
+Skip
+
+Chapter 8: yum
+-----
+### Introduction 8
+The **yum** program provides a higher level of intelligent services for using the underlying **rpm** program. It can automatically resolve dependencies when installing, updating and removing packages. It accesses external software **repositories**, synchronizing with them and retrieving and installing software as needed.
+
+### Goals 8
+By the end of this chapter, you should be able to: 
+* Discuss package installers and their characteristics.
+* Explain what **yum** is.
+* Configure **yum** to use repositories.
+* Discuss the queries **yum** can be used for.
+* Verify, install, remove, and upgrade packages using **yum**.
+
+### Notes 8
+
+#### 8.3 Package Installers
+The higher-level package management systems:
+* Can use both local and remote **repositories** as a source to install and update binary as well as source software packages.
+* Are used to automate the install, upgrade, and removal of software packages.
+* Resolve dependencies automatically.
+* Save time because there is no need to either download packages manually or search out dependency information separately.
+
+#### 8.4 What Is yum?
+* yum is used by the majority of distributions that use **rpm**, including **RHEL**, **CentOS**, **Scientific Linux**, and **Fedora**
+* yum caches info and databases to speed performance; to remove cached information:
+`$ yum clean [ packages | metadata | expire-cache | rpmdb | plugins | all ]`
+* yum has a number of modular extensions (plugins) and companion programs that can be found under `/usr/bin/yum*` and `/usr/sbin/yum*`
+
+#### 8.5 Configuring yum to Use Repositories
+Repository configuration files are kept in `/etc/yum.repos.d/` and have a **.repo** extension.
+
+#### 8.6 Repository Files
+* A very simple repository file might look like:  
+**[repo-name]**  
+**name=Description of the repository**  
+**baseurl=http://somesystem.com/path/to/repo**  
+**enabled=1**  
+**gpgcheck=1**  
+* Here's an example:  
+`$ cat CentOS-Base.repo`
+> [base]
+> name=CentOS-$releasever - Base
+> mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra
+> #baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+> gpgcheck=1
+> gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+One can toggle the use of a particular repository on or off by changing the value of enabled to 0 or 1, or using the **--disablerepo=somerepo** and **--enablerepo=somerepo** options when using **yum**. One can (but should not) also turn off integrity checking with the **gpgcheck** variable.
+
+#### 8.7 Queries
+* Search for packages with keyword in name:
+`$ sudo yum search keyword` # tells about packages
+> Loaded plugins: fastestmirror, langpacks  
+> Loading mirror speeds from cached hostfile  
+>  * base: repos.lax.quadranet.com  
+>  * epel: mirrors.develooper.com  
+>  * extras: mirror.sjc02.svwh.net  
+>  * updates: centos.sonn.com  
+> ============================================= N/S matched: keyword ==============================================  
+> perl-B-Keywords.noarch : Lists of reserved barewords and symbol names  
+> perl-Devel-Declare.x86_64 : Adding keywords to perl, in perl  
+> rednotebook.noarch : Daily journal with calendar, templates and keyword searching  
+>   
+>   Name and summary matches only, use "search all" for everything.  
+>   
+`$ sudo yum list "*keyword*"` # tells what is installed and what else is available  
+> Loaded plugins: fastestmirror, langpacks  
+> Loading mirror speeds from cached hostfile  
+>  * base: repos.lax.quadranet.com  
+>  * epel: mirrors.develooper.com  
+>  * extras: mirror.sjc02.svwh.net  
+>  * updates: centos.sonn.com  
+> Available Packages  
+> perl-B-Keywords.noarch  
+* Display information about a package:
+`$ sudo yum info keyword`  
+> Loaded plugins: fastestmirror, langpacks  
+> Loading mirror speeds from cached hostfile  
+>  * base: repos.lax.quadranet.com  
+>  * epel: mirrors.develooper.com  
+>  * extras: mirror.sjc02.svwh.net  
+>  * updates: centos.sonn.com  
+> Error: No matching Packages to list  
+Information includes size, version, what repository it came from, a source URL, and a longer description. Wildcards can be given, as in **yum info "libc\*"**, for this and most **yum** commands. Note that the package need not be installed, unlike queries made with **rpm -q**.
+### Labs 8
+
+
+Chapter 11: System Monitoring
+-----
+### Introduction 11
+
+### Goals 11
+
+### Notes 11
+
+### Labs 11
 
 
 Linux filesystem and paths
@@ -1113,7 +1213,9 @@ Directory | In FHS? | Purpose
 
 Linux paths
 -----
-`/etc/security/limits.conf` (3.18)
+`/etc/security/limits.conf` (3.18)  
+`/usr/bin/yum*` and `/usr/sbin/yum*` (8.4)  
+`/etc/yum.repos.d/` (8.5)  
 
 ## Linux commands
 `$ sudo du -shxc --exclude=proc *`  
@@ -1177,7 +1279,11 @@ Linux paths
 `$  rpm -qilp foobar.rpm` (6.16)  
 `$ rpm2cpio bash-4.2.45-5.el7_0.4.x86_64.rpm |  cpio -ivd bin/bash` with
 `$ rpm2cpio foobar.rpm | cpio --extract --make-directories` (6.16)  
-
+`$ yum clean [ packages | metadata | expire-cache | rpmdb | plugins | all ]` (8.4)  
+`$ cat CentOS-Base.repo` (8.6)  
+`$ sudo yum search keyword` (8.7)  
+`$ sudo yum list "*keyword*"` (8.7)  
+`$ sudo yum info keyword` or `$ yum info "libc*` (8.7)  
 
 
 
