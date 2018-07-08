@@ -749,6 +749,97 @@ Key concepts covered:
 * You can type **help** at the command line to display a synopsis of built-in commands.
 * There are many other help resources both on your system and on the Internet.
 
+Chapter 9: Processes
+-----
+### 9.0: Introduction/ Learning Objectives
+By the end of this chapter, you should be able to:
+* Describe what a process is and distinguish between types of processes.
+* Enumerate process attributes.
+* Manage processes using **ps** and **top**.
+* Understand the use of load averages and other process metrics.
+* Manipulate processes by putting them in **background** and restoring them to **foreground**.
+* Use **at**, **cron**, and **sleep** to schedule processes in the future or pause them.
+
+### 9.1: Introduction to Processes and Process Attributes
+
+#### What Is a Process?
+* **process**: an instance of one or more related **tasks** (**threads**) executing on the computer
+* not the same as  **program** or a **command**; a single program can start several processes simultaneously
+* some are related to others, some are independent
+* the OS, especially the kernel, allocate resources to processes
+
+#### Process Types
+* a terminal window is a process; allows users to run programs
+* programs can also be run in the **background**, **detached** from the shell
+Process Type          | Description | Example
+------------          | ----------- | -------
+Interactive Processes | Need to be started by a user, either at a command line or through a graphical interface such as an icon or a menu selection. | **bash, firefox, top**
+Batch Processes       | Automatic processes which are scheduled from and then disconnected from the terminal. These tasks are queued and work on a **FIFO** (First In, First Out) basis. | **updatedb**
+Daemons               | Server processes that run continuously. Many are launched during system startup and then wait for a user or system request indicating that their service is required. | **httpd, xinetd, sshd**
+Threads               | Lightweight processes. These are **tasks** that run under the umbrella of a main process, sharing memory and other resources, but are scheduled and run by the system on an individual basis. An individual thread can end without terminating the whole process and a process can create new threads at any time. Many non-trivial programs are multi-threaded. | **firefox, gnome-terminal-server**
+Kernel Threads        | Kernel tasks that users neither start nor terminate and have little control over. These may perform actions like moving a thread from one CPU to another, or making sure input/output operations to disk are completed. | **kthreadd, migration, ksoftirqd**
+
+### 9.2: Process Metrics and Process Control
+
+
+### 9.3: Listing Processes: ps and top
+
+
+### 9.4: Starting Processes in the Future
+
+
+### 9.5: Summary
+
+
+Chapter 10: File Operations
+-----
+### 10.0: Introduction/ Learning Objectives
+
+
+Chapter 11: Text Editors
+-----
+### 11.0: Introduction/ Learning Objectives
+
+
+Chapter 12: User Environment
+-----
+### 12.0: Introduction/ Learning Objectives
+
+
+Chapter 13: Manipulating Text
+-----
+### 13.0: Introduction/ Learning Objectives
+
+
+Chapter 14: Network Operations
+-----
+### 14.0: Introduction/ Learning Objectives
+
+
+Chapter 15: Bash Shell Scripting I
+-----
+### 15.0: Introduction/ Learning Objectives
+
+
+Chapter 16: Bash Shell Scripting II
+-----
+### 16.0: Introduction/ Learning Objectives
+
+
+Chapter 17: Printing
+-----
+### 17.0: Introduction/ Learning Objectives
+
+
+Chapter 18: Local Security Principles
+-----
+### 18.0: Introduction/ Learning Objectives
+
+
+Final Exam
+-----
+### 
+
 Linux filesystem and paths
 =====
 
