@@ -1167,6 +1167,59 @@ One can toggle the use of a particular repository on or off by changing the valu
 >  * updates: centos.sonn.com  
 > Error: No matching Packages to list  
 Information includes size, version, what repository it came from, a source URL, and a longer description. Wildcards can be given, as in **yum info "libc\*"**, for this and most **yum** commands. Note that the package need not be installed, unlike queries made with **rpm -q**.
+* List all packages, or just those installed, available, or updates that have not yet been installed:
+`$ sudo yum list [installed | updates | available ]`  
+* Show information about package groups installed or available, etc.:
+`$ sudo yum grouplist`  
+`$ sudo yum groupinfo group1` like `$ sudo yum groupinfo "Development Tools"`  
+* Show packages that contain a certain file name:
+`$ sudo yum provides` as in `$ sudo yum provides "/logrotate.conf"`  
+
+#### 8.8 Verifying Pacakges
+* Package verification requires installation of the **yum-plugin-verify** package (a yum plugin, not an executable - plugins extend the possible set of commands and arguments yum can take); to install:
+`$ sudo yum install yum-plugin-verify`  
+* To verify a package, giving the most information:
+`$ sudo yum verify [package]`  
+* To mimic **rpm -V** exactly:
+`$ sudo yum verify-rpm [package]`  
+* To list all differences, including configuration files:
+`$ sudo yum verify-all [package]`  
+* Without arguments, the above commands will verify all packages installed on the system.
+* By default, the verification commands ignore configuration files which may change through normal and safe usage. There are some other options: see man yum-verify.
+
+#### 8.9 Installing/Removing/Upgrading Packages
+* Install one or more packages from repositories, resolving and installing any necessary dependencies:
+`$ sudo yum install package1 [package2]`
+* Install from a local rpm:
+`$ sudo yum localinstall package-file`; this will attempt to resolve dependencies by accessing remote repositories unlike `$ rpm -i package-file`
+* Install a specific software group from a repository, resolving and installing any necessary dependencies for each package in the group:
+`$ sudo yum groupinstall group-name` or `$ sudo yum install @group-name`  
+* Remove packages from the system:
+`$ sudo yum remove package1 [package2]`  
+  * One must be careful with package removal, as yum will not only remove requested packages, but all packages that depend on them! This may not be what you want, so never run yum remove with the -y option, which assumes automatic confirmation of removal.
+* Update a package from a repository:
+`$ sudo yum update [package]`  
+  * If no package name is given, all packages are updated.
+* During installation (or update), if a package has a configuration file which is updated, it will rename the old configuration file with an **.rpmsave** extension. If the old configuration file will still work with the new software, it will name the new configuration file with an **.rpmnew** extension. You can search for these filename extensions (almost always in the /etc subdirectory tree) to see if you need to do any reconciliation, by doing:
+`$ sudo find /etc -name "*.rpm*"`  
+
+#### 8.10 Additional Commands
+* List plugins:
+`$ sudo yum list "yum-plugin*"`
+* Show a list of all enabled repositories:
+`$ sudo yum repolist`
+* Initiate an interactive shell in which to run multiple YUM commands:
+`$ sudo yum shell [text-file]`
+  * If **text-file** is given, yum will read and execute commands from that file instead of from the terminal.
+* Download packages, but do not install them; just store them under the /var/cache/yum directory, or another directory you can specify:
+`$ sudo yum install --downloadonly package`
+  * or you can type "d" instead of "y" or "n" when prompted after issuing an install command. The package(s) will be downloaded under `/var/cache/yum` in a location depending on the repository from which the download proceeds, unless the **--downloaddir=** option is used. Any other necessary packages will also be downloaded to satisfy dependencies.
+* You can view the history of yum commands, and, with the correct options, even undo or redo previous commands:
+`$ sudo yum history`
+
+
+
+
 ### Labs 8
 
 
@@ -1284,7 +1337,27 @@ Linux paths
 `$ sudo yum search keyword` (8.7)  
 `$ sudo yum list "*keyword*"` (8.7)  
 `$ sudo yum info keyword` or `$ yum info "libc*` (8.7)  
-
+`$ sudo yum list [installed | updates | available ]` (8.7)  
+`$ sudo yum grouplist`  (8.7)  
+`$ sudo yum groupinfo group1` (8.7)  
+`$ sudo yum groupinfo "Development Tools"` (8.7)  
+`$ sudo yum provides` (8.7)  
+`$ sudo yum provides "/logrotate.conf"` (8.7)  
+`$ sudo yum install yum-plugin-verify` (8.8)  
+`$ sudo yum verify [package]` (8.8)  
+`$ sudo yum verify-rpm [package]` (8.8)  
+`$ sudo yum verify-all [package]` (8.8)  
+`$ sudo yum install package1 [package2]`
+`$ sudo yum localinstall package-file` (8.9)  
+`$ sudo yum groupinstall group-name` or `$ sudo yum install @group-name` (8.9)  
+`$ sudo yum remove package1 [package2]` (8.9)  
+`$ sudo yum update [package]` (8.9)  
+`$ sudo find /etc -name "*.rpm*"` (8.9)  
+`$ sudo yum list "yum-plugin*"` (8.10)  
+`$ sudo yum repolist` (8.10)  
+`$ sudo yum shell [text-file]` (8.10)  
+`$ sudo yum install --downloadonly package` (8.10)  
+`$ sudo yum history` (8.10)  
 
 
 Available Signals for the x86 Platform
