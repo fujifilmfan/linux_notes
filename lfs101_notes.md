@@ -485,7 +485,7 @@ standard error  | stderr            | 2         | log file
 **Wildcard** | **Result**
 ------------ | ----------
 ?            | matches any single character
-*            | matches any string of characters
+\*           | matches any string of characters
 [set]        | matches any character in the set
 [!set]       | matches any character not in the set
 
@@ -771,6 +771,7 @@ By the end of this chapter, you should be able to:
 #### Process Types
 * a terminal window is a process; allows users to run programs
 * programs can also be run in the **background**, **detached** from the shell
+
 Process Type          | Description | Example
 ------------          | ----------- | -------
 Interactive Processes | Need to be started by a user, either at a command line or through a graphical interface such as an icon or a menu selection. | **bash, firefox, top**
