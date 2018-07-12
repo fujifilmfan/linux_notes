@@ -1133,7 +1133,7 @@ Repository configuration files are kept in `/etc/yum.repos.d/` and have a **.rep
 One can toggle the use of a particular repository on or off by changing the value of enabled to 0 or 1, or using the **--disablerepo=somerepo** and **--enablerepo=somerepo** options when using **yum**. One can (but should not) also turn off integrity checking with the **gpgcheck** variable.
 
 #### 8.7 Queries
-* Search for packages with keyword in name:
+* Search for packages with keyword in name:  
 `$ sudo yum search keyword` # tells about packages
 > Loaded plugins: fastestmirror, langpacks  
 > Loading mirror speeds from cached hostfile  
@@ -1157,7 +1157,7 @@ One can toggle the use of a particular repository on or off by changing the valu
 >  * updates: centos.sonn.com  
 > Available Packages  
 > perl-B-Keywords.noarch  
-* Display information about a package:
+* Display information about a package:  
 `$ sudo yum info keyword`  
 > Loaded plugins: fastestmirror, langpacks  
 > Loading mirror speeds from cached hostfile  
@@ -1166,13 +1166,13 @@ One can toggle the use of a particular repository on or off by changing the valu
 >  * extras: mirror.sjc02.svwh.net  
 >  * updates: centos.sonn.com  
 > Error: No matching Packages to list  
-Information includes size, version, what repository it came from, a source URL, and a longer description. Wildcards can be given, as in **yum info "libc\*"**, for this and most **yum** commands. Note that the package need not be installed, unlike queries made with **rpm -q**.
-* List all packages, or just those installed, available, or updates that have not yet been installed:
+Information includes size, version, what repository it came from, a source URL, and a longer description. Wildcards can be given, as in **yum info "libc\*"**, for this and most **yum** commands. Note that the package need not be installed, unlike queries made with **rpm -q**.  
+* List all packages, or just those installed, available, or updates that have not yet been installed:  
 `$ sudo yum list [installed | updates | available ]`  
-* Show information about package groups installed or available, etc.:
+* Show information about package groups installed or available, etc.:  
 `$ sudo yum grouplist`  
 `$ sudo yum groupinfo group1` like `$ sudo yum groupinfo "Development Tools"`  
-* Show packages that contain a certain file name:
+* Show packages that contain a certain file name:  
 `$ sudo yum provides` as in `$ sudo yum provides "/logrotate.conf"`  
 
 #### 8.8 Verifying Pacakges
@@ -1188,40 +1188,53 @@ Information includes size, version, what repository it came from, a source URL, 
 * By default, the verification commands ignore configuration files which may change through normal and safe usage. There are some other options: see man yum-verify.
 
 #### 8.9 Installing/Removing/Upgrading Packages
-* Install one or more packages from repositories, resolving and installing any necessary dependencies:
-`$ sudo yum install package1 [package2]`
-* Install from a local rpm:
-`$ sudo yum localinstall package-file`; this will attempt to resolve dependencies by accessing remote repositories unlike `$ rpm -i package-file`
-* Install a specific software group from a repository, resolving and installing any necessary dependencies for each package in the group:
+* Install one or more packages from repositories, resolving and installing any necessary dependencies:  
+`$ sudo yum install package1 [package2]`  
+* Install from a local rpm:  
+`$ sudo yum localinstall package-file`; this will attempt to resolve dependencies by accessing remote repositories unlike `$ rpm -i package-file`  
+* Install a specific software group from a repository, resolving and installing any necessary dependencies for each package in the group:  
 `$ sudo yum groupinstall group-name` or `$ sudo yum install @group-name`  
-* Remove packages from the system:
+* Remove packages from the system:  
 `$ sudo yum remove package1 [package2]`  
-  * One must be careful with package removal, as yum will not only remove requested packages, but all packages that depend on them! This may not be what you want, so never run yum remove with the -y option, which assumes automatic confirmation of removal.
-* Update a package from a repository:
+  * One must be careful with package removal, as yum will not only remove requested packages, but all packages that depend on them! This may not be what you want, so never run yum remove with the -y option, which assumes automatic confirmation of removal.  
+* Update a package from a repository:  
 `$ sudo yum update [package]`  
-  * If no package name is given, all packages are updated.
-* During installation (or update), if a package has a configuration file which is updated, it will rename the old configuration file with an **.rpmsave** extension. If the old configuration file will still work with the new software, it will name the new configuration file with an **.rpmnew** extension. You can search for these filename extensions (almost always in the /etc subdirectory tree) to see if you need to do any reconciliation, by doing:
+  * If no package name is given, all packages are updated.  
+* During installation (or update), if a package has a configuration file which is updated, it will rename the old configuration file with an **.rpmsave** extension. If the old configuration file will still work with the new software, it will name the new configuration file with an **.rpmnew** extension. You can search for these filename extensions (almost always in the /etc subdirectory tree) to see if you need to do any reconciliation, by doing:  
 `$ sudo find /etc -name "*.rpm*"`  
 
 #### 8.10 Additional Commands
-* List plugins:
-`$ sudo yum list "yum-plugin*"`
-* Show a list of all enabled repositories:
-`$ sudo yum repolist`
-* Initiate an interactive shell in which to run multiple YUM commands:
-`$ sudo yum shell [text-file]`
+* List plugins:  
+`$ sudo yum list "yum-plugin*"`  
+* Show a list of all enabled repositories:  
+`$ sudo yum repolist`  
+* Initiate an interactive shell in which to run multiple YUM commands:  
+`$ sudo yum shell [text-file]`  
   * If **text-file** is given, yum will read and execute commands from that file instead of from the terminal.
-* Download packages, but do not install them; just store them under the /var/cache/yum directory, or another directory you can specify:
-`$ sudo yum install --downloadonly package`
-  * or you can type "d" instead of "y" or "n" when prompted after issuing an install command. The package(s) will be downloaded under `/var/cache/yum` in a location depending on the repository from which the download proceeds, unless the **--downloaddir=** option is used. Any other necessary packages will also be downloaded to satisfy dependencies.
-* You can view the history of yum commands, and, with the correct options, even undo or redo previous commands:
-`$ sudo yum history`
+* Download packages, but do not install them; just store them under the /var/cache/yum directory, or another directory you can specify:  
+`$ sudo yum install --downloadonly package`  
+  * or you can type "d" instead of "y" or "n" when prompted after issuing an install command. The package(s) will be downloaded under `/var/cache/yum` in a location depending on the repository from which the download proceeds, unless the **--downloaddir=** option is used. Any other necessary packages will also be downloaded to satisfy dependencies.  
+* You can view the history of yum commands, and, with the correct options, even undo or redo previous commands:  
+`$ sudo yum history`  
 
+#### 8.11 dnf
+* **dnf** is intended to be a next generation replacement for **yum**
+* not widely adopted
+* [Part II. Package Management](https://docs-old.fedoraproject.org/en-US/Fedora/24/html/System_Administrators_Guide/part-Package_Management.html)
 
-
+#### 8.12 Using the yum and dnf Utilities Demo
+* `$ yumex` for "Yum Extender" (yumex-dnf on Fedora), launches graphical yum interface
+* EPEL: Extra Packages for Enterprise Linux
 
 ### Labs 8
 
+#### Lab 8.1
+
+#### Lab 8.2
+
+#### Lab 8.3
+
+#### Lab 8.4
 
 Chapter 11: System Monitoring
 -----
@@ -1358,6 +1371,7 @@ Linux paths
 `$ sudo yum shell [text-file]` (8.10)  
 `$ sudo yum install --downloadonly package` (8.10)  
 `$ sudo yum history` (8.10)  
+`$ yumex` (8.12)  
 
 
 Available Signals for the x86 Platform
