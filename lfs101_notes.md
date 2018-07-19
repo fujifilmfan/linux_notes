@@ -826,7 +826,6 @@ Effective User ID (**EUID): determines access rights of the user | Effective Gro
 * unlike UNIX-like operating systems, Linux includes sleeping processes; it only includes **uninterruptible** sleepers, those which cannot be awakened easily
 * load average can be viewed by running **w**, **top**, or **uptime**
 
-
 #### Interpreting Load Averages
 The load average is displayed using three different sets of numbers.  
 Assuming our system is a single-CPU system, the three load average numbers are interpreted as follows:  
@@ -861,7 +860,7 @@ The background jobs are connected to the terminal window, so, if you log off, th
 >  14:28:34 up 1 day,  1:19,  2 users,  load average: 0.91, 0.82, 0.45  
 2. Display its load averages.  
 * My solution:
-* `$ 2`  
+* `$ w`  
 >  14:28:45 up 1 day,  1:19,  2 users,  load average: 0.92, 0.83, 0.45  
 > USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT  
 > student  :0       :0               Sat16   ?xdm?  12:39   0.78s /usr/libexec/gnome-session-binary --session gnome-classic  
@@ -911,37 +910,176 @@ The screenshot shows a sample output of **ps** with the `aux` and `axo` qualifie
 **pstree** displays the processes running on the system in the form of a **tree diagram** showing the relationship between a process and its parent process and any other processes that it created. Repeated entries of a process are not displayed, and threads are displayed in curly braces.
 
 #### top
-* **top** gives constant real-time updates (every two seconds by default)
-* First Line of the top Output:
-  * uptime
-  * how many users are logged on
-  * load average
-* Second Line of the top Output:
-  * total number of processes
-  * the number of running, sleeping, stopped, and zombie processes
-* Third Line of the top Output:
-  * how the CPU time is being divided between the users (**us**) and the kernel (**sy**) by displaying the percentage of CPU time used for each
-  * percentage of user jobs running at a lower priority (niceness - **ni**)
-  * idle mode (**id**) should be low if the load average is high, and vice versa
-  * percentage of jobs waiting (**wa**) for I/O is listed
-  * interrupts include the percentage of hardware (**hi**) vs. software interrupts (**si**)
-  * steal time (**st**) is generally used with virtual machines, which has some of its idle CPU time taken for other uses
+**top** gives constant real-time updates (every two seconds by default)  
+First Line of the top Output:  
+* uptime
+* how many users are logged on
+* load average
+Second Line of the top Output:  
+* total number of processes
+* the number of running, sleeping, stopped, and zombie processes
+Third Line of the top Output:  
+* how the CPU time is being divided between the users (**us**) and the kernel (**sy**) by displaying the percentage of CPU time used for each
+* percentage of user jobs running at a lower priority (niceness - **ni**)
+* idle mode (**id**) should be low if the load average is high, and vice versa
+* percentage of jobs waiting (**wa**) for I/O is listed
+* interrupts include the percentage of hardware (**hi**) vs. software interrupts (**si**)
+* steal time (**st**) is generally used with virtual machines, which has some of its idle CPU time taken for other uses
+Fourth and Fifth Lines of the top Output  
+* memory usage divided into two categories:
+  * physical memory (RAM) (line 4)
+  * swap space (line 5) (temporary storage on the hard drive)
+* both show total memory, used memory, and free space
+Process List of the top Output  
+* by default, ordered by highest CPU usage
+* the following info is displayed:
+  * Process Identification Number (PID)
+  * Process owner (USER)
+  * Priority (PR) and nice values (NI)
+  * Virtual (VIRT), physical (RES), and shared memory (SHR)
+  * Status (S)
+  * Percentage of CPU (%CPU) and memory (%MEM) used
+  * Execution time (TIME+)
+  * Command (COMMAND)
+Interactive Keys with top  
 
-#### Fourth and Fifth Lines of the top Output
-
-
-#### Process List of the top Output
-
-
-#### Interactive Keys with top
-
+Command | Output
+------- | ------
+t       | Display or hide summary information (rows 2 and 3)
+m       | Display or hide memory information (rows 4 and 5)
+A       | Sort the process list by top resource consumers
+r       | Renice (change the priority of) specific processes
+k       | Kill a specific process
+f       | Enter the top configuration screen
+o       | Interactively select a new sort order in the process list
+n       | Specifies the maximum number of iterations, or frames, top should produce before ending
 
 ### 9.4: Starting Processes in the Future
 
+#### Scheduling Future Processes using at
+* use the **at** utility program to execute any non-interactive command at a specified time; example:
+`$ at now + 2 days`  
+`at> top`  
+`at> <EOT>` # enter **CTRL-D** here  
+> job 1 at Wed Jul 18 13:59:00 2018  
+`$ atq`  
+> 1 Wed Jul 18 13:59:00 2018 a student  
+`$ atrm 1`  
+`$ atq`  
+`$ `  
 
+#### cron
+* **cron** is a time-based scheduling utility program; it can launch routine background jobs at specific times and/or days on an on-going basis
+* **cron** is driven by a configuration file called `/etc/crontab` (cron table), which contains the various shell commands that need to be run at the properly scheduled times
+* there are both system-wide crontab files and individual user-based ones
+* each line of a crontab file represents a job, and is composed of a so-called CRON expression, followed by a shell command to execute
+* the `crontab -e` command will open the crontab editor to edit existing jobs or to create new jobs
+* each line of the crontab file will contain 6 fields:
+
+Field | Description  | Values
+----- | -----------  | ------
+MIN   | Minutes      | 0 to 59
+HOUR  | Hour field   | 0 to 23
+DOM   | Day of Month | 1-31
+MON   | Month field  | 1-12
+DOW   | Day of Week  | 0-6 (0 = Sunday)
+CMD   | Command      | Any command to be executed
+
+* examples:
+1. `* * * * * /usr/local/bin/execute/this/script.sh` will schedule a job to execute 'script.sh' every minute of every hour of every day of the month, and every month and every day in the week  
+2. `30 08 10 06 * /home/sysadmin/full-backup` will schedule a full-backup at 8.30am, 10-June, irrespective of the day of the week  
+
+#### sleep
+* **sleep** suspends execution for at least the specified period of time, which can be given as the number of seconds (the default), minutes, hours, or days
+* after that time has passed (or an interrupting signal has been received), execution will resume
+* syntax:  
+`$ sleep NUMBER[SUFFIX]...`  
+where SUFFIX may be:  
+1. `s` for seconds (the default)  
+2. `m` for minutes  
+3. `h` for hours  
+4. `d` for days  
+* **sleep** and **at** are quite different; **sleep** delays execution for a specific period, while **at** starts execution at a later time
+
+### Lab 9.4a (Lab 3): Using at for Future Batch Processing
+Schedule a very simple task to run at a future time from now. This can be as simple as running ls or date and saving the output. (You can use a time as short as one minute in the future.)  
+  
+Note that the command will run in the directory from which you schedule it with at.  
+  
+Do this:
+1. From a short bash script.  
+2. Interactively.  
+  
+* My solution (interactive):
+`$ at now + 1 minute`  
+`at> top`  
+`at> <EOT>` # enter **CTRL-D** here  
+> job 1 at Wed Jul 18 13:59:00 2018  
+`$ atq`  
+> 1 Wed Jul 18 13:59:00 2018 a student  
+`$ atrm 1`  
+`$ atq`  
+`$ `  
+> Results were in mail, I think  
+  
+* My implementation of lab solution (script):  
+> 705  touch testat.sh  
+> 706  vim testat.sh  
+> 707  ls -al  
+> 708  chmod +x testat.sh  
+> 709  ls -al  
+> 710  at now + 1 minute -f testat.sh  
+> 711  atq  
+> 712  cat /tmp/datestamp  
+
+### Lab 9.4b (Lab 4): Scheduling a Periodic Task with cron
+Set up a cron job to do some simple task every day at 10 AM.  
+  
+* My solution:  
+`$ crontab -e`  
+`00 10 * * * /home/student/testat.sh`  
+  
+* Lab solution:
+Set up a cron job to do some simple task every day at 10 AM. Create a file named mycrontab with the following content:  
+`0 10 * * * /tmp/myjob.sh`  
+and then create /tmp/myjob.sh containing:  
+```bash
+#!/bin/bash
+echo Hello I am running $0 at $(date)
+```
+and make it executable:  
+`$ chmod +x /tmp/myjob.sh`  
+
+Put it in the crontab system with:  
+`$ crontab mycrontab`  
+and verify it was loaded with:  
+`$ crontab -l`  
+> 0 10 * * * /tmp/myjob.sh  
+`$ sudo ls -l /var/spool/cron/student`  
+> -rw------- 1 student student 25 Apr 22 09:59 /var/spool/cron/student  
+`$ sudo cat /var/spool/cron/student`  
+> 0 10 * * * /tmp/myjob.sh  
+  
+Note you if don't really want this running every day, printing out messages like:  
+> Hello I am running /tmp/myjob.sh at Wed Apr 22 10:03:48 CDT 2015  
+and mailing them to you, you can remove it with:  
+`$ crontab -r`  
+If the machine is not up at 10 AM on a given day, **anacron** will run the job at a suitable time.  
+  
 ### 9.5: Summary
-
-
+Key concepts covered:
+* Processes are used to perform various tasks on the system.
+* Processes can be single-threaded or multi-threaded.
+* Processes can be of different types, such as interactive and non-interactive.
+* Every process has a unique identifier (PID) to enable the operating system to keep track of it.
+* The **nice value**, or **niceness**, can be used to set priority.
+* **ps** provides information about the currently running processes.
+* You can use **top** to get constant real-time updates about overall system performance, as well as information about the processes running on the system.
+* Load average indicates the amount of utilization the system is under at particular times.
+* Linux supports background and foreground processing for a job.
+* **at** executes any non-interactive command at a specified time.
+* **cron** is used to schedule tasks that need to be performed at regular intervals.
+  
 Chapter 10: File Operations
 -----
 ### 10.0: Introduction/ Learning Objectives
@@ -1077,23 +1215,45 @@ Password:
 `$ yelp man:printf` (8.5)  
 `$ kill -SIGKILL <pid>` (9.1)  
 `$ kill -9 <pid>` (9.1)  
-`$ w` (9.2)  
-`$ top` (9.2)  
-`$ uptime` (9.2)  
-`$ updatedb &` (9.2)  
-`$ fg <job>` (9.2)  
-`$ bg <job>` (9.2)  
-`$ jobs` (9.2)  
-`$ jobs -l` (9.2)  
-`$ top | head` (9.2)  
-`$ ps` (9.3)  
-`$ ps -u <username>` (9.3)  
-`$ ps -ef` (9.3)  
-`$ ps -eLf` (9.3)  
-`$ ps aux` (9.3)  
-`$ ps axo <attributes>` (9.3)  
-`$ pstree` (9.3)  
-`$ ` ()  
-`$ ` ()  
-
-`$ ` ()  
+#### 9.2
+`$ w`  
+`$ top`  
+`$ uptime`  
+`$ updatedb &`  
+`$ fg <job>`  
+`$ bg <job>`  
+`$ jobs`  
+`$ jobs -l`  
+`$ top | head`  
+#### 9.3
+`$ ps`  
+`$ ps -u <username>`  
+`$ ps -ef`  
+`$ ps -eLf`  
+`$ ps aux`  
+`$ ps axo <attributes>`  
+`$ pstree`  
+`$ top`  
+#### 9.4
+`$ at now + 2 days`  
+`$ at now + 1 minute`  
+`$ atq`  
+`$ atrm 1`  
+`$ crontab -e`  
+`$ crontab -l`  
+`$ sudo ls -l /var/spool/cron/student`  
+`$ sudo cat /var/spool/cron/student`  
+`$ crontab -r`  
+`$ sleep NUMBER[SUFFIX]...`  
+`$ `  
+`$ `  
+`$ `  
+`$ `  
+`$ `  
+`$ `  
+`$ `  
+`$ `  
+`$ `  
+`$ `  
+`$ `  
+`$ `  
