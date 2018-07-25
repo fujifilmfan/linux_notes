@@ -1228,14 +1228,85 @@ Information includes size, version, what repository it came from, a source URL, 
 
 ### Labs 8
 
-#### Lab 8.1
+#### Lab 8.1 Basic YUM Commands
+1. Check to see if there are any available updates for your system.
+* My solution:  
+`$ sudo yum list updates`  
+* Lab solution (in addition to above):  
+`$ sudo yum check-update`  
 
-#### Lab 8.2
+2. Update a particular package.
+* My solution:  
+`$ sudo yum update docker.x86_64`  
+`$ sudo yum update`  
+  
+3. List all installed kernel-related packages, and list all installed or available ones.
+* My solution:  
+* Lab solution:  
+`$ sudo yum list installed "kernel*"`  
+`$ sudo yum list "kernel*"`  
 
-#### Lab 8.3
+4. Install the httpd-devel package, or anything else you might not have installed yet. Doing a simple:
+`$ sudo yum list`  
+will let you see a complete list; you may want to give a wildcard argument to narrow the list.  
+* My solution:  
+`$ sudo yum install httpd-devel`  
+  
+#### Lab 8.2 Using yum to Find Information about a Package
+ Using yum (and not rpm directly), find:  
+1. All packages that contain a reference to bash in their name or description.  
+* My solution:  
+`$ sudo yum search bash`  
 
-#### Lab 8.4
+2. Installed and available bash packages.  
+* My solution:  
+`$ sudo yum list installed "bash*"`  
+`$ sudo yum list installed "*bash*"`  
+`$ sudo yum list available "bash*"`  
+`$ sudo yum list available "*bash*"`  
+  
+3. The package information for bash.  
+* My solution:  
+`$ sudo yum info "bash*"`  
 
+4. The dependencies for the bash package.  
+* My solution:  
+* Correct solution:  
+`$ sudo yum deplist bash`  
+  
+Try the commands you used above both as root and as a regular user. Do you notice any difference?  
+* Not really
+  
+#### Lab 8.3 Managing Groups of Packages with **yum**
+1. Use the following command to list all package groups available on your system:  
+`$ yum grouplist`  
+
+2. Identify the Backup Client group and generate the information about this group using the command  
+`$ yum groupinfo "Backup Client"`  
+
+3. Install using:  
+`$ sudo yum groupinstall "Backup Client"`  
+
+4. Identify a package group that’s currently installed on your system and that you don’t need. Remove it using yum groupremove as in:  
+`$ sudo yum groupremove "Backup Client"`  
+Note you will be prompted to confirm removal so you can safely type the command to see how it works.
+You may find that the groupremove does not remove everything that was installed; whether this is a bug or a feature can be discussed.  
+  
+#### Lab 8.4 Adding a New **yum** Repository
+According to its authors (at http://www.webmin.com/index.htm):  
+> “Webmin is a web-based interface for system administration for Unix. Using any modern web browser, you can setup user accounts, Apache, DNS, file sharing and much more. Webmin removes the need to manually edit Unix configuration files like /etc/passwd, and lets you manage a system from the console or remotely.”  
+We are going to create a repository for installation and upgrade. While we could simply go the download page and get the current rpm, that would not automatically give us any upgrades.  
+1. Create a new repository file called webmin.repo in the /etc/yum.repos.d directory. It should contain the following:  
+  [Webmin]  
+  name=Webmin Distribution Neutral  
+  baseurl=http://download.webmin.com/download/yum  
+  mirrorlist=http://download.webmin.com/download/yum/mirrorlist  
+  enabled=1  
+  gpgcheck=0  
+(Note you can also cut and paste the contents from http://www.webmin.com/download.html.)  
+2. Install the webmin package.  
+`$ sudo yum install webmin`  
+  
 Chapter 11: System Monitoring
 -----
 ### Introduction 11
@@ -1280,10 +1351,14 @@ Directory | In FHS? | Purpose
 Linux paths
 -----
 `/etc/security/limits.conf` (3.18)  
-`/usr/bin/yum*` and `/usr/sbin/yum*` (8.4)  
+#### 8.4 What Is yum?
+`/usr/bin/yum*` and `/usr/sbin/yum*`  
+#### 8.5 Configuring yum to Use Repositories
 `/etc/yum.repos.d/` (8.5)  
-
-## Linux commands
+  
+  
+Linux commands
+-----
 `$ sudo du -shxc --exclude=proc *`  
 `$ du -shc share/*`  
 `$ file *cgi-bin/*` # in `/usr/lib/cups` (should be in lib64)  
@@ -1345,33 +1420,50 @@ Linux paths
 `$  rpm -qilp foobar.rpm` (6.16)  
 `$ rpm2cpio bash-4.2.45-5.el7_0.4.x86_64.rpm |  cpio -ivd bin/bash` with
 `$ rpm2cpio foobar.rpm | cpio --extract --make-directories` (6.16)  
-`$ yum clean [ packages | metadata | expire-cache | rpmdb | plugins | all ]` (8.4)  
-`$ cat CentOS-Base.repo` (8.6)  
-`$ sudo yum search keyword` (8.7)  
-`$ sudo yum list "*keyword*"` (8.7)  
-`$ sudo yum info keyword` or `$ yum info "libc*` (8.7)  
-`$ sudo yum list [installed | updates | available ]` (8.7)  
-`$ sudo yum grouplist`  (8.7)  
-`$ sudo yum groupinfo group1` (8.7)  
-`$ sudo yum groupinfo "Development Tools"` (8.7)  
-`$ sudo yum provides` (8.7)  
-`$ sudo yum provides "/logrotate.conf"` (8.7)  
-`$ sudo yum install yum-plugin-verify` (8.8)  
-`$ sudo yum verify [package]` (8.8)  
-`$ sudo yum verify-rpm [package]` (8.8)  
-`$ sudo yum verify-all [package]` (8.8)  
-`$ sudo yum install package1 [package2]`
-`$ sudo yum localinstall package-file` (8.9)  
-`$ sudo yum groupinstall group-name` or `$ sudo yum install @group-name` (8.9)  
-`$ sudo yum remove package1 [package2]` (8.9)  
-`$ sudo yum update [package]` (8.9)  
-`$ sudo find /etc -name "*.rpm*"` (8.9)  
-`$ sudo yum list "yum-plugin*"` (8.10)  
-`$ sudo yum repolist` (8.10)  
-`$ sudo yum shell [text-file]` (8.10)  
-`$ sudo yum install --downloadonly package` (8.10)  
-`$ sudo yum history` (8.10)  
-`$ yumex` (8.12)  
+#### 8.4 What Is yum?
+`$ yum clean [ packages | metadata | expire-cache | rpmdb | plugins | all ]`  
+#### 8.6 Repository Files
+`$ cat CentOS-Base.repo`  
+#### 8.7 Queries
+`$ sudo yum search keyword`  
+`$ sudo yum list "*keyword*"`  
+`$ sudo yum info keyword` or `$ yum info "libc*"`  
+`$ sudo yum list [installed | updates | available ]`  
+`$ sudo yum grouplist`  
+`$ sudo yum groupinfo group1`  
+`$ sudo yum groupinfo "Development Tools"` 
+`$ sudo yum provides`  
+`$ sudo yum provides "/logrotate.conf"`  
+#### 8.8 Verifying Pacakges
+`$ sudo yum install yum-plugin-verify`  
+`$ sudo yum verify [package]`  
+`$ sudo yum verify-rpm [package]`  
+`$ sudo yum verify-all [package]`  
+#### 8.9 Installing/Removing/Upgrading Packages
+`$ sudo yum install package1 [package2]`  
+`$ sudo yum localinstall package-file`  
+`$ sudo yum groupinstall group-name` or `$ sudo yum install @group-name`  
+`$ sudo yum remove package1 [package2]`  
+`$ sudo yum update [package]`  
+`$ sudo find /etc -name "*.rpm*"`  
+#### 8.10 Additional Commands
+`$ sudo yum list "yum-plugin*"`  
+`$ sudo yum repolist`  
+`$ sudo yum shell [text-file]`  
+`$ sudo yum install --downloadonly package`  
+`$ sudo yum history`  
+#### 8.12 Using the yum and dnf Utilities Demo
+`$ yumex`  
+#### Lab 8.2 Using yum to Find Information about a Package
+`$ sudo yum deplist bash`  
+#### Lab 8.3 Managing Groups of Packages with **yum**
+`$ yum grouplist`  
+`$ yum groupinfo "Backup Client"`  
+`$ sudo yum groupinstall "Backup Client"`  
+`$ sudo yum groupremove "Backup Client"`  
+#### Lab 8.4 Adding a New **yum** Repository
+`$ sudo yum install webmin`  
+
 
 
 Available Signals for the x86 Platform
