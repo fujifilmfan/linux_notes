@@ -1,12 +1,12 @@
 Chapter 12: User Environment
-----------------------------
+-----
   
-[12.0: Introduction/ Learning Objectives](#12.0:-Introduction/-Learning-Objectives)  
-[12.1: Accounts, Users, and Groups](#12.1:-Accounts,-Users,-and-Groups)  
-[12.2: Environment Variables](#12.2:-Environment-Variables)  
-[12.3: Recalling Previous Commands](#12.3:-Recalling-Previous-Commands)  
-[12.4: File Permissions](#12.4:-File-Permissions)  
-[12.5: Summary](#12.5:-Summary)  
+[12.0: Introduction/ Learning Objectives](#120-introduction-learning-objectives)  
+[12.1: Accounts, Users, and Groups](#121-accounts-users-and-groups)  
+[12.2: Environment Variables](#122-environment-variables)  
+[12.3: Recalling Previous Commands](#123-recalling-previous-commands)  
+[12.4: File Permissions](#124-file-permissions)  
+[12.5: Summary](#125-summary)  
   
 ### 12.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:  

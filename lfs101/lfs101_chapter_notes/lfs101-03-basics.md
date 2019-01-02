@@ -1,12 +1,12 @@
 Chapter 3: Linux Basics and System Startup
 -----
 
-[3.0: Introduction/ Learning Objectives](#3.0:-Introduction/-Learning-Objectives)  
-[3.1: The Boot Process](#3.1:-The-Boot-Process)  
-[3.2: Kernel, init, and Services](#3.2:-Kernel,-init,-and-Services)  
-[3.3: Linux Filesystem Basics](#3.3:-Linux-Filesystem-Basics)  
-[3.4: Linux Distribution Installation](#3.4:-Linux-Distribution-Installation)  
-[3.5: Summary](#3.5:-Summary)  
+[3.0: Introduction/ Learning Objectives](#30-introduction-learning-objectives)  
+[3.1: The Boot Process](#31-the-boot-process)  
+[3.2: Kernel, init, and Services](#32-kernel-init-and-services)  
+[3.3: Linux Filesystem Basics](#33-linux-filesystem-basics)  
+[3.4: Linux Distribution Installation](#34-linux-distribution-installation)  
+[3.5: Summary](#35-summary)  
 
 ### 3.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:

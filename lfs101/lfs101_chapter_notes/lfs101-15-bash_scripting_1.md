@@ -1,11 +1,11 @@
 Chapter 15: Bash Shell Scripting I
-----------------------------------
+-----
 
-[15.0: Introduction/ Learning Objectives](#15.0:-Introduction/-Learning-Objectives)  
-[15.1: Features and Capabilities](#15.1:-Features-and-Capabilities)  
-[15.2: Syntax](#15.2:-Syntax)  
-[15.3: Constructs](#15.3:-Constructs)  
-[15.4: Summary](#15.4:-Summary)  
+[15.0: Introduction/ Learning Objectives](#150-introduction-learning-objectives)  
+[15.1: Features and Capabilities](#151-features-and-capabilities)  
+[15.2: Syntax](#152-syntax)  
+[15.3: Constructs](#153-constructs)  
+[15.4: Summary](#154-summary)  
   
 ### 15.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:

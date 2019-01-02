@@ -1,13 +1,13 @@
 Chapter 7: Command Line Operations
-----------------------------------
+-----
 
-[7.0: Introduction/ Learning Objectives](#7.0:-Introduction/-Learning-Objectives)  
-[7.1: Command Line Mode Options](#7.1:-Command-Line-Mode-Options)  
-[7.2: Basic Operations](#7.2:-Basic-Operations)  
-[7.3 Working with Files](#7.3-Working-with-Files)  
-[7.4: Searching for Files](#7.4:-Searching-for-Files)  
-[7.5: Installing Software](#7.5:-Installing-Software)  
-[7.6: Summary](#7.6:-Summary)  
+[7.0: Introduction/ Learning Objectives](#70-introduction-learning-objectives)  
+[7.1: Command Line Mode Options](#71-command-line-mode-options)  
+[7.2: Basic Operations](#72-basic-operations)  
+[7.3 Working with Files](#73-working-with-files)  
+[7.4: Searching for Files](#74-searching-for-files)  
+[7.5: Installing Software](#75-installing-software)  
+[7.6: Summary](#76-summary)  
 
 ### 7.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:

@@ -1,12 +1,12 @@
 Chapter 14: Network Operations
-------------------------------
+-----
 
-[14.0: Introduction/ Learning Objectives](#14.0:-Introduction/-Learning-Objectives)  
-[14.1: Network Addresses and DNS](#14.1:-Network-Addresses-and-DNS)  
-[14.2: Network Configuration and Tools](#14.2:-Network-Configuration-and-Tools)  
-[14.3: Browsers](#14.3:-Browsers)  
-[14.4: Transferring Files](#14.4:-Transferring-Files)  
-[14.5: Summary](#14.5:-Summary)  
+[14.0: Introduction/ Learning Objectives](#140-introduction-learning-objectives)  
+[14.1: Network Addresses and DNS](#141-network-addresses-and-dns)  
+[14.2: Network Configuration and Tools](#142-network-configuration-and-tools)  
+[14.3: Browsers](#143-browsers)  
+[14.4: Transferring Files](#144-transferring-files)  
+[14.5: Summary](#145-summary)  
   
 ### 14.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:

@@ -1,14 +1,14 @@
 Chapter 13: Manipulating Text
------------------------------
+-----
 
-[13.0: Introduction/ Learning Objectives](#13.0:-Introduction/-Learning-Objectives)  
-[13.1: cat and echo](#13.1:-cat-and-echo)  
-[13.2: Working with Large and Compressed Files](#13.2:-Working-with-Large-and-Compressed-Files)  
-[13.3: sed and awk](#13.3:-sed-and-awk)  
-[13.4: File Manipulation Utilities](#13.4:-File-Manipulation-Utilities)  
-[13.5: grep and strings](#13.5:-grep-and-strings)  
-[13.6: Miscellaneous Text Utilities](#13.6:-Miscellaneous-Text-Utilities)  
-[13.7: Summary](#13.7:-Summary)  
+[13.0: Introduction/ Learning Objectives](#130-introduction-learning-objectives)  
+[13.1: cat and echo](#131-cat-and-echo)  
+[13.2: Working with Large and Compressed Files](#132-working-with-large-and-compressed-files)  
+[13.3: sed and awk](#133-sed-and-awk)  
+[13.4: File Manipulation Utilities](#134-file-manipulation-utilities)  
+[13.5: grep and strings](#135-grep-and-strings)  
+[13.6: Miscellaneous Text Utilities](#136-miscellaneous-text-utilities)  
+[13.7: Summary](#137-summary)  
   
 ### 13.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:  

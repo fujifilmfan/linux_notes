@@ -1,11 +1,11 @@
 Chapter 4: Graphical Interface
-------------------------------
+-----
 
-[4.0: Introduction/ Learning Objectives](#4.0:-Introduction/-Learning-Objectives)  
-[4.1: Graphical Desktop](#4.1:-Graphical-Desktop)  
-[4.2: Session Management](#4.2:-Session-Management)  
-[4.3: Basic Operations](#4.3:-Basic-Operations)  
-[4.4: Summary](#4.4:-Summary)  
+[4.0: Introduction/ Learning Objectives](#40-introduction-learning-objectives)  
+[4.1: Graphical Desktop](#41-graphical-desktop)  
+[4.2: Session Management](#42-session-management)  
+[4.3: Basic Operations](#43-basic-operations)  
+[4.4: Summary](#44-summary)  
 
 ### 4.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:

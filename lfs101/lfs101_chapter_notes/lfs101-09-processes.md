@@ -1,12 +1,12 @@
 Chapter 9: Processes
---------------------
+-----
 
-[9.0: Introduction/ Learning Objectives](#9.0:-Introduction/-Learning-Objectives)  
-[9.1: Introduction to Processes and Process Attributes](#9.1:-Introduction-to-Processes-and-Process-Attributes)  
-[9.2: Process Metrics and Process Control](#9.2:-Process-Metrics-and-Process-Control)  
-[9.3: Listing Processes: ps and top](#9.3:-Listing-Processes:-ps-and-top)  
-[9.4: Starting Processes in the Future](#9.4:-Starting-Processes-in-the-Future)  
-[9.5: Summary](#9.5:-Summary)  
+[9.0: Introduction/ Learning Objectives](#90-introduction-learning-objectives)  
+[9.1: Introduction to Processes and Process Attributes](#91-introduction-to-processes-and-process-attributes)  
+[9.2: Process Metrics and Process Control](#92-process-metrics-and-process-control)  
+[9.3: Listing Processes: ps and top](#93-listing-processes-ps-and-top)  
+[9.4: Starting Processes in the Future](#94-starting-processes-in-the-future)  
+[9.5: Summary](#95-summary)  
 
 ### 9.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:

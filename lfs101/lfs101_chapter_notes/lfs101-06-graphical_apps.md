@@ -1,5 +1,6 @@
 Chapter 6: Common Applications
 -----
+
 ### 6.0: Introduction/ Learning Objectives
 ### 6.1: Internet Applications
 ### 6.2: Productivity and Development Applications

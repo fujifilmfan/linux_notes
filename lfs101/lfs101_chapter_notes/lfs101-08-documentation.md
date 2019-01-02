@@ -1,13 +1,13 @@
 Chapter 8: Finding Linux Documentation
---------------------------------------
+-----
 
-[8.0: Introduction/ Learning Objectives](#8.0:-Introduction/-Learning-Objectives)  
-[8.1: Documentation Sources](#8.1:-Documentation-Sources)  
-[8.2: The man pages](#8.2:-The-man-pages)  
-[8.3: GNU Info](#8.3:-GNU-Info)  
-[8.4: The --help Option and Help Command](#8.4:-The---help-Option-and-Help-Command)  
-[8.5: Other Documentation Sources](#8.5:-Other-Documentation-Sources)  
-[8.6: Summary](#8.6:-Summary)  
+[8.0: Introduction/ Learning Objectives](#80-introduction-learning-objectives)  
+[8.1: Documentation Sources](#81-documentation-sources)  
+[8.2: The man pages](#82-the-man-pages)  
+[8.3: GNU Info](#83-gnu-info)  
+[8.4: The --help Option and Help Command](#84-the-help-option-and-help-command)  
+[8.5: Other Documentation Sources](#85-other-documentation-sources)  
+[8.6: Summary](#86-summary)  
 
 ### 8.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be able to:

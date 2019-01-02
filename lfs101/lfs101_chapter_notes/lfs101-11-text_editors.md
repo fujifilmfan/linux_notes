@@ -1,10 +1,10 @@
 Chapter 11: Text Editors
-------------------------
+-----
 
-[11.0: Introduction/ Learning Objectives](#11.0:-Introduction/-Learning-Objectives)  
-[11.1: Basic Editors: nano and gedit](#11.1:-Basic-Editors:-nano-and-gedit)  
-[11.2: More Advanced Editors: vi and emacs](#10.2:-More-Advanced-Editors:-vi-and-emacs)  
-[11.3: Summary](#11.3:-Summary)  
+[11.0: Introduction/ Learning Objectives](#110-introduction-learning-objectives)  
+[11.1: Basic Editors: nano and gedit](#111-basic-editors:-nano-and-gedit)  
+[11.2: More Advanced Editors: vi and emacs](#102-more-advanced-editors-vi-and-emacs)  
+[11.3: Summary](#113-summary)  
   
 ### 11.0: Introduction/ Learning Objectives
 By the end of this chapter, you should be familiar with:
