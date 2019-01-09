@@ -845,6 +845,7 @@ You have completed this chapter. Let’s summarize the key concepts covered:
 * Arithmetic expressions consist of numbers and arithmetic operators, such as +, -, and *.  
 
 PATHS:  
+15.1  
 `/etc/shells`  
 
 COMMANDS:  
