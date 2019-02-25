@@ -1,13 +1,20 @@
 LFS101 Introduction to Linux
 =====
 
-[Chapter 3: Linux Basics and System Startup](lfs101-03-basics.md)  
-[Chapter 4: Graphical Interface](lfs101-04-graphical_interface.md)  
-[Chapter 7: Command Line Operations](lfs101-07-command_line.md)  
-[Chapter 8: Finding Linux Documentation](lfs101-08-documentation.md)  
-[Chapter 9: Processes](lfs101-09-processes.md)  
-[Chapter 10: File Operations](lfs101-10-file_operations.md)  
-
+[Chapter 3: Linux Basics and System Startup](lfs101_chapter_notes/lfs101-03-basics.md)  
+[Chapter 4: Graphical Interface](lfs101_chapter_notes/lfs101-04-graphical_interface.md)  
+[Chapter 7: Command Line Operations](lfs101_chapter_notes/lfs101-07-command_line.md)  
+[Chapter 8: Finding Linux Documentation](lfs101_chapter_notes/lfs101-08-documentation.md)  
+[Chapter 9: Processes](lfs101_chapter_notes/lfs101-09-processes.md)  
+[Chapter 10: File Operations](lfs101_chapter_notes/lfs101-10-file_operations.md)  
+[Chapter 11: Text Editors](lfs101_chapter_notes/lfs101-11-text_editors.md)  
+[Chapter 12: User Environment](lfs101_chapter_notes/lfs101-12-user_environment.md)  
+[Chapter 13: Manipulating Text](lfs101_chapter_notes/lfs101-13-manipulating_text.md)  
+[Chapter 14: Network Operations](lfs101_chapter_notes/lfs101-14-network_operations.md)  
+[Chapter 15: Bash Shell Scripting I](lfs101_chapter_notes/lfs101-15-bash_scripting_1.md)  
+[Chapter 16: Bash Shell Scripting II](lfs101_chapter_notes/lfs101-16-bash_scripting_2.md)  
+[Chapter 17: Printing](lfs101_chapter_notes/lfs101-17-printing.md)  
+[Chapter 18: Local Security Principles](lfs101_chapter_notes/lfs101-18-security_principles.md)  
 
 Linux filesystem and paths
 -----
