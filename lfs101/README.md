@@ -2,7 +2,13 @@ LFS101 Introduction to Linux
 =====
 
 [Chapter 3: Linux Basics and System Startup](lfs101_chapter_notes/lfs101-03-basics.md)  
+   * [3.1: The Boot Process](lfs101_chapter_notes/lfs101-03-basics.md#31-the-boot-process)  
+   * [3.2: Kernel, init, and Services](lfs101_chapter_notes/lfs101-03-basics.md#32-kernel-init-and-services)  
+   * [3.3: Linux Filesystem Basics](lfs101_chapter_notes/lfs101-03-basics.md#33-linux-filesystem-basics)  
+   * [3.4: Linux Distribution Installation](lfs101_chapter_notes/lfs101-03-basics.md#34-linux-distribution-installation)  
+   
 [Chapter 4: Graphical Interface](lfs101_chapter_notes/lfs101-04-graphical_interface.md)  
+   * 
 [Chapter 7: Command Line Operations](lfs101_chapter_notes/lfs101-07-command_line.md)  
 [Chapter 8: Finding Linux Documentation](lfs101_chapter_notes/lfs101-08-documentation.md)  
 [Chapter 9: Processes](lfs101_chapter_notes/lfs101-09-processes.md)  
