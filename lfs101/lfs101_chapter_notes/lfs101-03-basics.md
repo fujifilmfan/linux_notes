@@ -69,7 +69,7 @@ The Linux **boot process** is the procedure for initializing the system, everyth
 * the kernel initializes and configures the computer's memory and all attached hardware (processors, I/O subsystems, storage devices, etc.) in addition to some user space applications
 
 #### /sbin/init and Services
-* the kernel runs the `/sbin/init` program, which becomes the origin of all other processors except those started byt he kernel itself
+* the kernel runs the `/sbin/init` program, which becomes the origin of all other processors except those started by the kernel itself
 * **init** starts other processes to get the system running, keeps it running, and shuts it down cleanly
 * old way of doing it: **System V UNIX** with **runlevels**
 

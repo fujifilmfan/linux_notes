@@ -165,14 +165,17 @@ The screenshot shows a sample output of **ps** with the `aux` and `axo` qualifie
 **pstree** displays the processes running on the system in the form of a **tree diagram** showing the relationship between a process and its parent process and any other processes that it created. Repeated entries of a process are not displayed, and threads are displayed in curly braces.
 
 #### top
-**top** gives constant real-time updates (every two seconds by default)  
+**top** gives constant real-time updates (every two seconds by default)
+
 First Line of the top Output:  
 * uptime
 * how many users are logged on
 * load average
+
 Second Line of the top Output:  
 * total number of processes
 * the number of running, sleeping, stopped, and zombie processes
+
 Third Line of the top Output:  
 * how the CPU time is being divided between the users (**us**) and the kernel (**sy**) by displaying the percentage of CPU time used for each
 * percentage of user jobs running at a lower priority (niceness - **ni**)
@@ -180,11 +183,13 @@ Third Line of the top Output:
 * percentage of jobs waiting (**wa**) for I/O is listed
 * interrupts include the percentage of hardware (**hi**) vs. software interrupts (**si**)
 * steal time (**st**) is generally used with virtual machines, which has some of its idle CPU time taken for other uses
+
 Fourth and Fifth Lines of the top Output  
 * memory usage divided into two categories:
   * physical memory (RAM) (line 4)
   * swap space (line 5) (temporary storage on the hard drive)
 * both show total memory, used memory, and free space
+
 Process List of the top Output  
 * by default, ordered by highest CPU usage
 * the following info is displayed:
@@ -196,6 +201,7 @@ Process List of the top Output
   * Percentage of CPU (%CPU) and memory (%MEM) used
   * Execution time (TIME+)
   * Command (COMMAND)
+
 Interactive Keys with top  
 
 Command | Output
