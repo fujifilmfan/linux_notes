@@ -1,5 +1,5 @@
 Chapter 14: Network Operations
------
+------------------------------
 
 [14.0: Introduction/ Learning Objectives](#140-introduction-learning-objectives)  
 [14.1: Network Addresses and DNS](#141-network-addresses-and-dns)  
@@ -9,6 +9,7 @@ Chapter 14: Network Operations
 [14.5: Summary](#145-summary)  
   
 ### 14.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:
 * Explain basic networking concepts, including types of networks and addressing issues.
 * Configure network interfaces and use basic networking utilities, such as **ifconfig**, **ip**, **ping**, **route** & **traceroute**.
@@ -16,7 +17,7 @@ By the end of this chapter, you should be able to:
 * Transfer files to and from clients and servers using both graphical and text mode applications, such as **Filezilla**, **ftp**, **sftp**, **curl** and **wget**.
 
 ### 14.1: Network Addresses and DNS
-
+----
 #### Introduction to Networking
 
 #### IP Addresses
@@ -125,7 +126,7 @@ linuxfoundation.org.    286     IN      A       23.185.0.2
 ```
 
 ### 14.2: Network Configuration and Tools
-
+----
 #### Network Configuration Files
 * you can use **Network Manager**, like **nmtui** or **nmcli**  
 
@@ -196,7 +197,7 @@ dig              | Tests DNS workings. A good replacement for host and nslookup.
 * `$ sudo hostname LFstudent` changes system's hostname
 
 ### 14.3: Browsers
-
+----
 #### Graphical and Non-Graphical Browsers
 * graphical:  
    * Firefox  
@@ -231,7 +232,7 @@ w3m                    | Another text-based web browser with many features.
 (done)  
 
 ### 14.4: Transferring Files
-
+----
 #### FTP (File Transfer Protocol)
 (nothing new)  
 
@@ -278,7 +279,7 @@ w3m                    | Another text-based web browser with many features.
 * **Secure Copy (scp)** is used to copy files securely via SSH  
 * `$ scp <localfile> <user@remotesystem>:/home/user>`  
     
-### Lab 1: Network Troubleshooting
+#### Lab 14.1: Network Troubleshooting
 ```
 Troubleshooting network problems is something that you will often encounter if you haven't already. We are going to practice some of the previously discussed tools, that can help you isolate, troubleshoot and fix problems in your network.
 
@@ -644,7 +645,7 @@ Suppose you need to perform an Internet search, but your web browser can not fin
 Hopefully, running through some of these commands helped. It actually helps to see what the correct output for your system looks like. Practice using these commands; it is very likely that you will need them someday. 
 ```
 
-### Lab 2: Non-graphical Browsers
+#### Lab 14.2: Non-graphical Browsers
 ```
 There are times when a graphical browser is not available, but you need to look up or download a resource. In this exercise, we are going to experiment with using non-graphical web browsers. 
 
@@ -691,6 +692,7 @@ You can now quit your non-graphical browser. If you used links, then click on th
 ```
 
 ### 14.5: Summary
+----
 You have completed this chapter. Let’s summarize the key concepts covered:
 * The **IP** (Internet Protocol) **address** is a unique logical network address that is assigned to a device on a network.
 * **IPv4** uses 32-bits for addresses and **IPv6** uses 128-bits for addresses.
@@ -755,7 +757,7 @@ COMMANDS:
 `$ ssh some_system my_command`  
 `$ scp <localfile> <user@remotesystem>:/home/user>`  
     
-Lab 1  
+Lab 14.1  
 `$ /sbin/ifconfig`  
 `$ sudo systemctl restart NetworkManager`  
 `$ student:/tmp> sudo systemctl restart network`  

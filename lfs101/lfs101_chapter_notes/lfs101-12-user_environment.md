@@ -1,5 +1,5 @@
 Chapter 12: User Environment
------
+----------------------------
   
 [12.0: Introduction/ Learning Objectives](#120-introduction-learning-objectives)  
 [12.1: Accounts, Users, and Groups](#121-accounts-users-and-groups)  
@@ -9,6 +9,7 @@ Chapter 12: User Environment
 [12.5: Summary](#125-summary)  
   
 ### 12.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:  
 * Use and configure user accounts and user groups.  
 * Use and set environment variables.  
@@ -18,7 +19,7 @@ By the end of this chapter, you should be able to:
 * Use and set file permissions and ownership.  
 
 ### 12.1: Accounts, Users, and Groups
-
+----
 #### Identifying the Current User
 * logged-on users: `$ who` (for more detail, use `$ who -a`)
 * current user: `$ whoami`
@@ -80,7 +81,7 @@ By the end of this chapter, you should be able to:
 * using **sudo** is less dangerous and preferred
    * must be enabled on a per-user basis on most distributions
    
-### Elevating to root Account
+#### Elevating to root Account
 * type **su** and then enter root password
 * for one command with root privilege: `$ sudo <commmand>`
 * **sudo** config files in `/etc/sudoers` and `/etc/sudoers.d/`
@@ -110,7 +111,7 @@ By the end of this chapter, you should be able to:
 #### Try-It-Yourself: Identify the Currently Logged-In User and User
 Okay
 
-### Lab 1: Deploying aliases
+#### Lab 12.1 (Lab 1): Deploying aliases
 Typing long commands and filenames over and over gain gets rather tedious, and leads to a lot of trivial errors, such as typos.  
 Deploying aliases allows us to define shortcuts to alleviate the pain of all of this typing.  
 Suppose you are a member of a project team that works in a common, shared directory for your project. This directory is located in `/home/staff/RandD/projects/projectX/src`.  
@@ -123,7 +124,7 @@ My solution: `alias projx='cd /home/staff/RandD/projects/projectX/src'`
 Lab solution: double quotes could also be used (or no quotes since there is no white space in the alias)  
 
 ### 12.2: Environment Variables
-
+----
 #### Environment Variables
 Three ways to see currently set environment variables (each has different output):
 * `$ set`
@@ -182,7 +183,7 @@ Character | Meaning
 #### The SHELL Variable
 * SHELL points to user's default command shell
 
-### Lab 2: Adding /tmp to Your Path
+#### Lab 12.2a (Lab 2): Adding /tmp to Your Path
 ```
 Create a small file, **/tmp/ls**, which contains just the line:  
 **echo HELLO, this is the phony ls program.**  
@@ -222,7 +223,7 @@ For the next two steps it is a good idea to work in another terminal window, or 
 Note the second form is a very dangerous thing to do, and is a trivial way to insert a Trojan Horse program; if someone can put a malicious program in /tmp, they can trick you into running it accidentally. 
 ```
 
-### Lab 3: Changing the Command Line Prompt
+#### Lab 12.2b (Lab 3): Changing the Command Line Prompt
 ```
 It is nice to have your current working directory as part of your prompt so that a quick glance will give you some information without typing pwd every time.
 If you often work on multiple computers, especially if you network from one into another with ssh, it is very convenient to have the computer name be part of your prompt.
@@ -254,7 +255,7 @@ Lab solution:
 ```
 
 ### 12.3: Recalling Previous Commands
-
+----
 #### Recalling Previous Commands
 * **Up** and **Down** cursor keys or `$ history` can be used to see previous commands
 * history stored in `~/.bash_history`
@@ -323,7 +324,7 @@ CTRL-U            | Deletes from beginning of line to cursor position
 CTRL-E            | Goes to the end of the line
 Tab               | Auto-completes files, directories, and binaries
 
-### Lab 4: Command History
+#### Lab 12.3 (Lab 4): Command History
 ```
 You have been busy working with your Linux workstation long enough to have typed in about 100 commands in one particular bash command shell.  
 At some point earlier, you used a new command, but the exact name has slipped your mind.  
@@ -365,7 +366,7 @@ now that you remember the command name that you typed. Finally, if you had typed
 ```
 
 ### 12.4: File Permissions
-
+----
 #### File Ownership
 * every file is associated with a user who is the **owner**
 * every file also associated with a **group**
@@ -408,6 +409,7 @@ Tasks to be performed:
 Done  
 
 ### 12.5: Summary
+----
 You have completed this chapter. Let's summarize the key concepts covered:
 * Linux is a multi-user system.
 * To find the currently logged on users, you can use the **who** command.

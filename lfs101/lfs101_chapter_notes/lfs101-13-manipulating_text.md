@@ -1,5 +1,5 @@
 Chapter 13: Manipulating Text
------
+-----------------------------
 
 [13.0: Introduction/ Learning Objectives](#130-introduction-learning-objectives)  
 [13.1: cat and echo](#131-cat-and-echo)  
@@ -11,6 +11,7 @@ Chapter 13: Manipulating Text
 [13.7: Summary](#137-summary)  
   
 ### 13.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:  
 * Display and append to file contents using **cat** and **echo**. 
 * Edit and print file contents using **sed** and **awk**.
@@ -19,7 +20,7 @@ By the end of this chapter, you should be able to:
 
 
 ### 13.1: cat and echo
-
+----
 #### Command Line Tools
 
 #### cat
@@ -73,7 +74,7 @@ Command                         | Usage
 done  
 
 ### 13.2: Working with Large and Compressed Files
-
+----
 #### Working with Large Files
 * **less** is used to view large files without reading the whole thing into memory  
    `$ less <filename>`  
@@ -108,7 +109,7 @@ Command                                            | Description
 done  
 
 ### 13.3: sed and awk
-
+----
 #### Introduction to sed and awk
 
 #### sed
@@ -179,7 +180,7 @@ Command                                   | Usage
 #### Try-It-Yourself : Using awk
 done  
 
-### Lab 1: Using sed
+#### Lab 13.3 (Lab 1): Using sed
 ```
 Search for all instances of the user command interpreter (shell) equal to **/sbin/nologin** in **/etc/passwd** and 
 replace them with **/bin/bash**.  
@@ -201,7 +202,7 @@ Note this is kind of painful and obscure because we are trying to use the forwar
 ```
 
 ### 13.4: File Manipulation Utilities
-
+----
 #### File Manipulation Utilities
 * in this section:
    * **sort**  
@@ -286,7 +287,7 @@ l.\*     | matches lazy dog
 l.\*y    | matches lazy  
 the.\*   | matches the whole sentence  
 
-### Lab 2: Parsing Files with awk (and sort and uniq)
+#### Lab 13.4 (Lab 2): Parsing Files with awk (and sort and uniq)
 ```
 Generate a column containing a unique list of all the shells used for users in /etc/passwd.
 You may need to consult the manual page for /etc/passwd as in:
@@ -322,7 +323,7 @@ $ awk -F: '{print $7}' /etc/passwd | sort -u
 ```
 
 ### 13.5: grep and strings
-
+----
 #### grep
 * **grep** is used to search text  
 * grep commands:  
@@ -339,7 +340,7 @@ Command                            | Usage
 * for example, to search for *my_string* in a spreadsheet:  
    `$ strings book1.xls | grep my_string`  
 
-### Lab 3: Using grep
+#### Lab 13.5 (Lab 3): Using grep
 ```
 In the following we give some examples of things you can do with the grep command; your task is to experiment with these examples and extend them.
 1. Search for your username in file /etc/passwd .
@@ -380,7 +381,7 @@ In the following we give some examples of things you can do with the grep comman
 ```
 
 ### 13.6: Miscellaneous Text Utilities
-
+----
 #### tr
 * **tr** is used to **translate** specified characters into others or delete them  
 * syntax (optional items in brackets):  
@@ -426,7 +427,7 @@ done
 * to display third column delimited by a blank space:  
    `$ ls -l | cut -d" " -f3`
 
-### Lab 4: Using tee
+#### Lab 13.6a (Lab 4): Using tee
 ```
 The tee utility is very useful for saving a copy of your output while you are watching it being generated.
 Execute a command such as doing a directory listing of the /etc directory:
@@ -465,7 +466,7 @@ drwxr-xr-x   2 root root    12288 Nov  3 07:26 brltty
 :
 ```
 
-### Lab 5: Using wc
+#### Lab 13.6b (Lab 5): Using wc
 ```
 Using wc (word count), find out how many lines, words, and characters there are in all the files in /var/log that have the .log extension.
 ```
@@ -503,6 +504,7 @@ wc: /var/log/yum.log: Permission denied
 ```
 
 ### 13.7: Summary
+----
 You have completed this chapter. Let’s summarize the key concepts covered:
 * The **command line** often allows the users to perform tasks more efficiently than the GUI.
 * **cat**, short for **concatenate**, is used to read, print, and combine files.

@@ -1,5 +1,5 @@
 Chapter 10: File Operations
------
+---------------------------
 
 [10.0: Introduction/ Learning Objectives](#100-introduction-learning-objectives)  
 [10.1: Filesystems](#101-filesystems)  
@@ -9,6 +9,7 @@ Chapter 10: File Operations
 [10.5: Summary](#105-summary)  
 
 ### 10.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:
 * Explore the filesystem and its hierarchy.
 * Explain the filesystem architecture.
@@ -16,7 +17,7 @@ By the end of this chapter, you should be able to:
 * Back up and compress data.
 
 ### 10.1: Filesystems
-
+----
 #### Introduction to Filesystems
 * in Linux (and all UNIX-like operating systems), "everything is a file"
 * the root directory, `/`, is also called the **trunk**
@@ -71,7 +72,7 @@ By the end of this chapter, you should be able to:
    * example entry: `servername:/projects /mnt/nfs/projects nfs defaults 0 0`
 * mount without a reboot or as a one-time mount: `$ sudo mount servername:/projects /mnt/nfs/projects`
 
-### Lab 1: Exploring Mounted Filesystems
+#### Lab 10.1: Exploring Mounted Filesystems
 1. Compare output of `$ cat /etc/fstab` and `$ mount`  
    * differences: fstab only shows preconfigured filesystems while mount shows all currently mounted filesystems
 2. Find another way to view mounted filesystems by examining `/proc`
@@ -79,7 +80,7 @@ By the end of this chapter, you should be able to:
    * `$ cat /proc/filesystems`  
 
 ### 10.2: Filesystem Architecture
-
+----
 #### Overview of User Home Directories
 * `/root` is just the home directory of the root users
 * non-root users get `/home`
@@ -178,7 +179,7 @@ Directory name | Usage
 * ? `/usr/bin` primary ?
 
 ### 10.3: Comparing Files and File Types
-
+----
 #### Comparing Files with diff
 * **diff** is used to compare files and directories; usage: `$ diff [options] <filename1> <filename2>`  
 * for binaries, use **cmp**  
@@ -204,7 +205,7 @@ diff Option | Usage
 * **file** can be used to determine the type of file (works on directories, too)  
 * examines the contents and certain characteristics to determine whether the files are plain text, shared libraries, executable programs, scripts, or something else
 
-#### Lab 2: Using diff and patch
+#### Lab 10.2: Using diff and patch
 Copy a file to /tmp, convert the contents to uppercase and save in a new file, prepare a patch, and apply the patch to the first file.  
 My solution:  
 * `$ cd /tmp`  
@@ -271,7 +272,7 @@ For this exercise, you could use any text file, but we will use /etc/group as de
 ```
 
 ### 10.4: Backing Up and Compressing Data
-
+----
 #### Backing Up Data
 * both **cp** and **rsync** can be used for backup, but
 * **rsync** is more efficient b/c it only copies what has changed and can walk directory tree recursively (`-r` option)  
@@ -365,7 +366,7 @@ Command                                    | Usage
 `dd if=/dev/sda of=sda.mbr bs=512 count=1` | back up Master Boot Record (MBR)  
 `dd if=/dev/sda of=/dev/sdb`               | make a copy of one disk onto another, erasing everything that existed on second disk  
 
-### Lab 3: Archiving (Backing Up) the Home Directory
+#### Lab 10.3: Archiving (Backing Up) the Home Directory
 Create tar backups of the home directory, move to /tmp, compare sizes between different types of backups.  
 My solution:  
 * `tar -jcvf home.tar.bz2 ~`  
@@ -440,6 +441,7 @@ which shows xz did best, followed by bz2 and then gz. You may have noticed, howe
 ```
 
 ### 10.5: Summary
+----
 The key concepts we covered in this chapter are:
 * The filesystem tree starts at what is often called the root directory (or trunk, or /).
 * The **Filesystem Hierarchy Standard** (**FHS**) provides Linux developers and system administrators a standard directory structure for the filesystem.

@@ -1,5 +1,5 @@
 Chapter 11: Text Editors
------
+------------------------
 
 [11.0: Introduction/ Learning Objectives](#110-introduction-learning-objectives)  
 [11.1: Basic Editors: nano and gedit](#111-basic-editors:-nano-and-gedit)  
@@ -7,6 +7,7 @@ Chapter 11: Text Editors
 [11.3: Summary](#113-summary)  
   
 ### 11.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be familiar with:
 * How to create and edit files using the available Linux text editors.
 * **nano**, a simple text-based editor.
@@ -14,7 +15,7 @@ By the end of this chapter, you should be familiar with:
 * **vi** and **emacs**, two advanced editors with both text-based and graphical interfaces.
 
 ### 11.1 Basic Editors: nano and gedit
-
+----
 #### Overview of Text Editors in Linux
 
 #### Creating Files Without Using an Editor
@@ -43,7 +44,7 @@ Two ways:
 * very configurable
 * lots of plugins
 
-### Lab 1: Using nano
+#### Lab 11.1a (Lab 1): Using nano
 1. Start nano by typing nano myfile.txt.
 2. Add your name in the first line of the file.
 3. Add the date in the last line of the file.
@@ -51,7 +52,7 @@ Two ways:
 
 Okay  
 
-### Lab 2: Using gedit
+#### Lab 11.1b (Lab 2): Using gedit
 1. Start gedit by typing gedit myfile.txt.
 2. Add your street address in the second line of the file.
 3. Add the name of your city on the last line of the file.
@@ -60,7 +61,7 @@ Okay
 Okay  
 
 ### 11.2 More Advanced Editors: vi and emacs
-
+----
 #### vi and emacs  
 * steep learning curve but more efficient once learned  
 
@@ -215,12 +216,12 @@ CTRL- (space or CTRL-@) | Mark the beginning of the selected region. The end wil
 CTRL-w                  | Delete the current marked text and write it to the buffer
 CTRL-y                  | Insert at current cursor location whatever was most recently deleted
 
-### Lab 3: vi and emacs Tutorials
+#### Lab 11.2a (Lab 3): vi and emacs Tutorials
 1. Familiarize yourself with these tutorials  
 
 Okay
 
-### Lab 4: Working with vi
+#### Lab 11.2b (Lab 4): Working with vi
 1. Practice vi since it is on every Linux system and because it's harder than emacs.
 #### Navigating in vi  
 1. Assuming **myfile** does not exist, create it and open it by typing:  
@@ -315,6 +316,7 @@ The following situation, where you may lose quite a bit of work before it is sav
      It is good to know these techniques because this will likely come up sometime while you are working with Linux. Play around with both techniques and become comfortable with both.  
   
 ### 11.3: Summary
+----
 You have completed this chapter. Let’s summarize the key concepts covered:  
 * **Text editors** (rather than word processing programs) are used quite often in Linux, for tasks such as creating or modifying system configuration files, writing scripts, developing source code, etc.
 * **nano** is an easy-to-use text-based editor that utilizes on-screen prompts.
@@ -327,9 +329,6 @@ You have completed this chapter. Let’s summarize the key concepts covered:
 * Both editors use various combinations of keystrokes to accomplish tasks; the learning curve to master these can be long, but once mastered using either editor is extremely efficient.
   
   
-  
-  
-    
 COMMANDS:  
 11.1  
 `$ echo line one > myfile`  
@@ -344,25 +343,6 @@ COMMANDS:
 from within vi:
 `: sh`  
 `: ! wc %`  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
-`$ `  
 `$ `  
 
 

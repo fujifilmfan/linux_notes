@@ -5,8 +5,8 @@ Chapter 18: Local Security Principles
 [18.1: Understanding Linux Secuirty](#181-understanding-linux-secuirty)  
 [18.2: When Are root Privileges Required?](#182-when-are-root-privileges-required?)  
 [18.3: sudo, Process Isolation, Limiting Hardware Access and Keeping Systems` Current](#183-sudo-process-isolation-limiting-hardware-access-and-keeping-systems-current)  
-[18.4: Working with passwords](#184-working-with-passwords)
-[18.5: Securing the Boot Process and Hardware Resources](#185-securing-the-boot-process-and-hardware-resources)
+[18.4: Working with passwords](#184-working-with-passwords)  
+[18.5: Securing the Boot Process and Hardware Resources](#185-securing-the-boot-process-and-hardware-resources)  
 [18.6: Summary](#186-summary)  
   
 ### 18.0: Introduction/ Learning Objectives

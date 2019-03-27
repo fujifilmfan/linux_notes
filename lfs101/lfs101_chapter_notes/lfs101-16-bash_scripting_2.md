@@ -10,6 +10,7 @@ Chapter 16: Bash Shell Scripting II
 [16.6: Summary](#166-summary)  
   
 ### 16.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:
 * Manipulate strings to perform actions such as comparison and sorting.
 * Use Boolean expressions when working with multiple data types, including strings or numbers, as well as files.
@@ -20,7 +21,7 @@ By the end of this chapter, you should be able to:
 * Create and use random numbers.
 
 ### 16.1: String Manipulation
-
+----
 #### String Manipulation  
 * **string variable** examples: **abcde**, **123**, **abcde 123**, **abcde-123**, **&acbde=%123**  
 * **string operators**:  
@@ -45,7 +46,7 @@ myLen1=${#string1}       | Saves the length of string1 in the variable myLen1.
 (video)  
 #### Knowledge Check
 
-### Lab 1: String Tests and Operations
+#### Lab 16.1: String Tests and Operations
 ```
 Write a script which reads two strings as arguments and then:
 1. Tests to see if the first string is of zero length, and if the other is of non-zero length, telling the user of both results.
@@ -170,7 +171,7 @@ student:/tmp>
 ```
 
 ### 16.2: The Case Statement
-
+----
 #### The case Statement
 * **case** statements are often used to handle command-line options  
 * advantages:  
@@ -194,7 +195,7 @@ esac
 #### Example of Use of the case Construct
 * see "16.2 - test case.png"  
 
-### Lab 2: Using the case Statement
+#### Lab 16.2: Using the case Statement
 ```
 Write a script that takes as an argument a month in numerical form (i.e., between 1 and 12), and translates this to the month name and displays the result on standard out (the terminal).
 If no argument is given, or a bad number is given, the script should report the error and exit.
@@ -284,7 +285,7 @@ student:/tmp>
 ```
 
 ### 16.3: Looping Constructs
-
+----
 #### Looping Constructs
 * three main types:  
    * for  
@@ -333,7 +334,7 @@ done
 (video)  
 
 ### 16.4: Script Debugging
-
+----
 #### Introduction to Script Debugging
 
 #### More About Script Debugging
@@ -360,7 +361,7 @@ stdout      | Standard output, by default the screen for programs run from the c
 stderr      | Standard error, where output error messages are shown or saved                          | 2  
 
 ### 16.5: Some Additional Useful Techniques
-
+----
 #### Creating Temporary Files and Directories
 * for temporary files created while a script is running and removed afterwards, the best practice is to create random and unpredictable filenames   
 * **mktemp** can be used to do this  
@@ -407,7 +408,7 @@ Randomizing temporary file names helps:
    * `/dev/random` # used where very high quality randomness is required, but slower; won't work when entropy pool is empty and waits for additional environmental noise  
    * `/dev/urandom` # faster and good enough for most crytographic purposes; reuses internal pool  
    
-#### Lab 3: Using Random Numbers
+#### Lab 16.5: Using Random Numbers
 ```
 Write a script which:
 1. Takes a word as an argument.
@@ -454,6 +455,7 @@ student:/tmp>
 ```
 
 ### 16.6: Summary
+----
 You have completed this chapter. Let’s summarize the key concepts covered:
 * You can manipulate strings to perform actions such as comparison, sorting, and finding length.
 * You can use Boolean expressions when working with multiple data types, including strings or numbers, as well as files.

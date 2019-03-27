@@ -1,5 +1,5 @@
 Chapter 3: Linux Basics and System Startup
------
+------------------------------------------
 
 [3.0: Introduction/ Learning Objectives](#30-introduction-learning-objectives)  
 [3.1: The Boot Process](#31-the-boot-process)  
@@ -9,6 +9,7 @@ Chapter 3: Linux Basics and System Startup
 [3.5: Summary](#35-summary)  
 
 ### 3.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:
 * Identify Linux filesystems.
 * Identify the differences between partitions and filesystems.
@@ -16,6 +17,7 @@ By the end of this chapter, you should be able to:
 * Install Linux on a computer.
 
 ### 3.1: The Boot Process
+----
 The Linux **boot process** is the procedure for initializing the system, everything that happens from power on until the UI is fully operational.
 1. **BIOS** (**Basis Input/Output System**)
    * initializes hardware, including screen and keyboard, and tests main memory (**POST** or **POwer On Self Test**)
@@ -61,7 +63,7 @@ The Linux **boot process** is the procedure for initializing the system, everyth
   ? What is a 'terminal' in this context?
    * **bash** (the **GNU Bourne Again Shell**) is the usual, default command shell
 ### 3.2: Kernel, init, and Services
-
+----
 #### The Linux Kernel
 * the boot loader loads the kernel and a RAM-based file system (**initramfs**) into memory
 * the kernel initializes and configures the computer's memory and all attached hardware (processors, I/O subsystems, storage devices, etc.) in addition to some user space applications
@@ -91,7 +93,7 @@ The Linux **boot process** is the procedure for initializing the system, everyth
   * enabling or disabling a system service from starting up at system boot: `$ sudo systemctl enable/disable fooservice`
 
 ### 3.3: Linux Filesystem Basics
-
+----
 #### Linux Filesystems
 * filesystems store and organize arbitrary collections of data in a human-usable form
 * types of filesystems supported by Linux:
@@ -125,7 +127,7 @@ Base folder where OS is stored | C:\         | /
 * viewing FSH in GUI: click 'Home' -> 'Computer' -> 'etc' -> 'avahi' and CTRL-L to see the path (all major distros use the same File Manager program, so this is basically the same across distros)
 
 ### 3.4: Linux Distribution Installation
-
+----
 #### Choosing a Linux Distribution / Questions to Ask When Choosing
 *  What is the main function of the system (server or desktop)?
 *  What types of packages are important to the organization? For example, web server, word processing, etc.
@@ -167,4 +169,5 @@ Nothing to see here
   * booting off of and using a Live CD or USB stick and not writing to the hard disk at all
 
 ### 3.5: Summary
+----
 * The boot process has multiple steps, starting with **BIOS**, which triggers the **boot loader** to start up the Linux kernel. From there, the **initramfs** filesystem is invoked, which triggers the **init** program to complete the startup process.

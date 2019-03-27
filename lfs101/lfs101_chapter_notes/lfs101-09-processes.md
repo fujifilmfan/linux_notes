@@ -1,5 +1,5 @@
 Chapter 9: Processes
------
+--------------------
 
 [9.0: Introduction/ Learning Objectives](#90-introduction-learning-objectives)  
 [9.1: Introduction to Processes and Process Attributes](#91-introduction-to-processes-and-process-attributes)  
@@ -9,6 +9,7 @@ Chapter 9: Processes
 [9.5: Summary](#95-summary)  
 
 ### 9.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:
 * Describe what a process is and distinguish between types of processes.
 * Enumerate process attributes.
@@ -18,7 +19,7 @@ By the end of this chapter, you should be able to:
 * Use **at**, **cron**, and **sleep** to schedule processes in the future or pause them.
 
 ### 9.1: Introduction to Processes and Process Attributes
-
+----
 #### What Is a Process?
 * **process**: an instance of one or more related **tasks** (**threads**) executing on the computer
 * not the same as  **program** or a **command**; a single program can start several processes simultaneously
@@ -73,7 +74,7 @@ Effective User ID (**EUID): determines access rights of the user | Effective Gro
 * **hard real time** is conceptually different; involves making sure a job is complete within a well-defined time window
 
 ### 9.2: Process Metrics and Process Control
-
+----
 #### Load Averages
 * **load average** is the average of the **load number**; takes into account processes that are:
   * actively running on CPU
@@ -110,7 +111,7 @@ The **jobs** utility displays all jobs running in background. The display shows 
 
 The background jobs are connected to the terminal window, so, if you log off, the jobs utility will not show the ones started from that window.
 
-### Lab 9.2a (Lab 1): Getting Uptime and Load Averages
+#### Lab 9.2a (Lab 1): Getting Uptime and Load Averages
 1. Ascertain how long your system has been up.  
    * My solution: `$ uptime`  
      >  14:28:34 up 1 day,  1:19,  2 users,  load average: 0.91, 0.82, 0.45  
@@ -132,7 +133,7 @@ The background jobs are connected to the terminal window, so, if you log off, th
      >    782 root      20   0  396324   4096   3184 S  12.5  0.1   1:02.49 accounts-daemon  
      >    785 dbus      20   0   61892   4076   1856 S   6.2  0.1   1:19.45 dbus-daemon  
 
-### Lab 9.2b (Lab 2): Background and Foreground Jobs
+#### Lab 9.2b (Lab 2): Background and Foreground Jobs
 We are going to launch a graphical program from a terminal window, so that one can no longer type in the window. **gedit** is an easy choice, but you can substitute any other program that does this.  
   
 The Solution file contains a step-by-step procedure for putting jobs in background, bringing them back to foreground, etc. Please repeat the steps, substituting the program you are using if it is not **gedit**.  
@@ -147,7 +148,7 @@ The Solution file contains a step-by-step procedure for putting jobs in backgrou
    > 640  kill -9 72049  
   
 ### 9.3: Listing Processes: ps and top
-  
+----
 #### The ps Commmand (System V Style)
 **ps** provides information about currently running processes keyed by **PID**. If you want a repetitive update of this status, you can use **top** or other commonly installed variants, such as **htop** or **atop**, from the command line, or invoke your distribution's graphical system monitor application.  
   
@@ -209,7 +210,7 @@ o       | Interactively select a new sort order in the process list
 n       | Specifies the maximum number of iterations, or frames, top should produce before ending
 
 ### 9.4: Starting Processes in the Future
-
+----
 #### Scheduling Future Processes using at
 * use the **at** utility program to execute any non-interactive command at a specified time; example:  
    `$ at now + 2 days`  
@@ -257,7 +258,7 @@ where SUFFIX may be:
 4. `d` for days  
 * **sleep** and **at** are quite different; **sleep** delays execution for a specific period, while **at** starts execution at a later time
 
-### Lab 9.4a (Lab 3): Using at for Future Batch Processing
+#### Lab 9.4a (Lab 3): Using at for Future Batch Processing
 Schedule a very simple task to run at a future time from now. This can be as simple as running ls or date and saving the output. (You can use a time as short as one minute in the future.)  
   
 Note that the command will run in the directory from which you schedule it with at.  
@@ -289,7 +290,7 @@ Do this:
      > 710  at now + 1 minute -f testat.sh  
      > 712  cat /tmp/datestamp  
 
-### Lab 9.4b (Lab 4): Scheduling a Periodic Task with cron
+#### Lab 9.4b (Lab 4): Scheduling a Periodic Task with cron
 Set up a cron job to do some simple task every day at 10 AM.  
   
 * My solution:  
@@ -333,6 +334,7 @@ and mailing them to you, you can remove it with:
 If the machine is not up at 10 AM on a given day, **anacron** will run the job at a suitable time.  
   
 ### 9.5: Summary
+----
 Key concepts covered:
 * Processes are used to perform various tasks on the system.
 * Processes can be single-threaded or multi-threaded.
@@ -345,3 +347,38 @@ Key concepts covered:
 * Linux supports background and foreground processing for a job.
 * **at** executes any non-interactive command at a specified time.
 * **cron** is used to schedule tasks that need to be performed at regular intervals.
+
+COMMANDS
+9.1  
+`$ kill -SIGKILL <pid>`  
+`$ kill -9 <pid>`  
+9.2  
+`$ w`  
+`$ top`  
+`$ uptime`  
+`$ updatedb &`  
+`$ fg <job>`  
+`$ bg <job>`  
+`$ jobs`  
+`$ jobs -l`  
+`$ top | head`  
+9.3  
+`$ ps`  
+`$ ps -u <username>`  
+`$ ps -ef`  
+`$ ps -eLf`  
+`$ ps aux`  
+`$ ps axo <attributes>`  
+`$ pstree`  
+`$ top`  
+9.4  
+`$ at now + 2 days`  
+`$ at now + 1 minute`  
+`$ atq`  
+`$ atrm 1`  
+`$ crontab -e`  
+`$ crontab -l`  
+`$ sudo ls -l /var/spool/cron/student`  
+`$ sudo cat /var/spool/cron/student`  
+`$ crontab -r`  
+`$ sleep NUMBER[SUFFIX]...`  

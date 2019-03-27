@@ -1,5 +1,5 @@
 Chapter 7: Command Line Operations
------
+----------------------------------
 
 [7.0: Introduction/ Learning Objectives](#70-introduction-learning-objectives)  
 [7.1: Command Line Mode Options](#71-command-line-mode-options)  
@@ -10,6 +10,7 @@ Chapter 7: Command Line Operations
 [7.6: Summary](#76-summary)  
 
 ### 7.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:
   * Use the command line to perform operations in Linux.
   * Search for files.
@@ -17,7 +18,7 @@ By the end of this chapter, you should be able to:
   * Install and update software.
 
 ### 7.1: Command Line Mode Options
-
+----
 #### Introduction to Command Line
 "Graphical user interfaces make easy tasks easier, while command line interfaces make difficult tasks possible."
 
@@ -78,14 +79,14 @@ on newer **systemd**-based distros, the display manager is run as a service; it 
 * `$ sudo systemctl start gdm`  (or `$ sudo telinit 5`)
   (use **lightdm** instead of **gdm** on Ubuntu)
 
-### Lab 7.1 Killing the Graphical User Interface
+#### Lab 7.1 Killing the Graphical User Interface
 1. kill the current graphical desktop
 I used `$ sudo systemctl stop gdm`
 2. restart the GUI from the console
 I used `$ sudo telinit 5`; GUI reinstated in VT 1; got message that last login was on tty2, so I guess that refers to the terminal
 
 ### 7.2: Basic Operations
-
+----
 #### Logging In and Out
 * **text terminal** will prompt for username and password
 * **Secure Shell (SSH)** mentioned
@@ -148,7 +149,7 @@ I used `$ sudo telinit 5`; GUI reinstated in VT 1; got message that last login w
 * `$ popd .` move to directories on list in reverse order (most recent first)
 * `$ dirs` to see the list
 
-### Lab 7.2: Locating Applications
+#### Lab 7.2: Locating Applications
 Find out the location of the ip network utility.  
 My solution:
 * `$ which ip`
@@ -157,7 +158,7 @@ My solution:
 > ip: /usr/sbin/ip /usr/share/man/man7/ip.7.gz /usr/share/man/man8/ip.8.gz
 
 ### 7.3 Working with Files
-
+----
 #### Viewing Files
 
 **Command** | **Usage**
@@ -202,7 +203,7 @@ rm -rf      | forcefully remove a directory recursively
 > \u@\h \$
 `coop@quad64 $` 
 
-### Lab 7.3: Creating, Moving, and Removing Files
+#### Lab 7.3: Creating, Moving, and Removing Files
 *  Create an empty file named exercise.txt and move this file to the /tmp directory, using a relative pathname from your home directory. Then, delete this file using an absolute pathname.
 * My solution:
   * `$ touch exercise.txt`
@@ -211,7 +212,7 @@ rm -rf      | forcefully remove a directory recursively
 
 
 ### 7.4: Searching for Files
-
+----
 #### Standard File Streams
 Three standard **file streams** (or **descriptors**) are always open for use:  
 
@@ -298,7 +299,7 @@ Tasks to be performed:
 * earch for files in the current directory which were modified today.
 * Search for files with size 0 bytes.
 
-### Lab 7.4: Finding Directories and Creating Symbolic Links
+#### Lab 7.4: Finding Directories and Creating Symbolic Links
 Find the init.d directory, starting from /, and then create a symbolic link from within your home directory to this directory.  
 (Note that this SysVinit directory is no longer used much in systemd-based systems, but is kept for backwards compatibility reasons.)  
 My solution:  
@@ -307,6 +308,7 @@ My solution:
 `$ ln -s /etc/rc.d/init.d .`  
 
 ### 7.5: Installing Software
+----
 See LFS201 Chapters 5-7 for more details  
 
 #### Package Managers: Two Levels
@@ -314,7 +316,7 @@ Both package management systems provide two tool levels:
 * a low-level tool (such as dpkg or rpm) takes care of the details of unpacking individual packages, running scripts, and getting the software installed correctly
 * a high-level tool (such as apt-get, yum, or zypper) works with groups of packages, downloads packages from the vendor, and figures out dependencies.  
 
-### Lab 7.5: Installing and Removing Software Packages
+#### Lab 7.5: Installing and Removing Software Packages
 Using the upper level package management system appropriate for your Linux distribution, do the following:
 * Install the dump package on your system.
 * Remove the dump package from your system.
@@ -324,6 +326,7 @@ NOTE: If dump is already installed (you will be told so when you try to install)
 * `sudo yum remove dump`
 
 ### 7.6: Summary
+----
 Key concepts covered:
 * Virtual terminals (VT) in Linux are consoles, or command line terminals that use the connected monitor and keyboard.
 * Different Linux distributions start and stop the graphical desktop in different ways.
@@ -342,4 +345,64 @@ Key concepts covered:
 * **touch** is used to set the access, change, and edit times of files, as well as to create empty files.
 * The **Advanced Packaging Tool** (**apt**) package management system is used to manage installed software on Debian-based systems.
 * You can use the **Yellowdog Updater Modified** (**yum**) open source command-line package-management utility for **RPM**-compatible Linux operating systems.
-* The **zypper** package management system is based on RPM and used for openSUSE.
+* The **zypper** package management system is based on RPM and used for openSUSE.  
+
+PATHS  
+7.2  
+`////usr//bin`  
+`.`  
+`..`  
+`~`  
+
+COMMANDS  
+7.2  
+`$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."`  
+`$ halt`  
+`$ poweroff`  
+`$ shutdown -r`  
+`$ cd /`  
+`$ ls`  
+`$ ls -a`  
+`$ tree`  
+`$ tree -d`  
+`$ ln file1 file2`  
+`$ ls -li file1 file2`  
+`$ ln -s file1 file3`  
+`$ cd -`  
+`$ pushd .`  
+`$ popd .`  
+`$ dirs`  
+7.3  
+`$ cat`  
+`$ tac`  
+`$ less`  
+`$ tail`  
+`$ tail -n 15`  
+`$ tail -15`  
+`$ head`  
+`$ touch <filename>`  
+`$ touch -t 06302000 <filename>`  
+`$ mkdir <dirname>`  
+`$ rmdir <dirname>`  
+`$ rm -rf`  
+`$ mv <original> <new>`  
+`$ rm`  
+`$ rm -f`  
+`$ rm -i`  
+`$ PS1="\u@\h \$ "`  
+7.4  
+`$ do_something < input-file`  
+`$ do_something > output-file`  
+`$ do_something 2> error-file`  
+`$ do_something > all-output-file 2>&1`  
+`$ do_something >& all-output-file`  
+`$ locate zip | grep bin`  
+`$ cp <original_file> <new_file>`  
+`$ find` with `-name`, `-iname`, `-type` (`d` for directory, `l` for link, `f` for file), `-exec`  
+`$ find /usr -name gcc`  
+`$ find /usr -type d -name gcc`  
+`$ find /usr -type f -name gcc`  
+`$ find -name "*.swp" -exec rm {} ';'` or `-ok` instead  
+`$ find / -ctime 3` or `-atime`, `-mtime` with **n**, **+n**, or **-n**; `-cmin`, `-amin`, `-mmin`  
+`$ find / -size 0` with **c**, **k**, **M**, **G**, etc. or with **n**, **+n**, or **-n**  
+`$ find / -name init.d -type d 2>&1 | grep -v 'Permission denied'`  

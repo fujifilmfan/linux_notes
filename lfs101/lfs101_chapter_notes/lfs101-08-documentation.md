@@ -1,5 +1,5 @@
 Chapter 8: Finding Linux Documentation
------
+--------------------------------------
 
 [8.0: Introduction/ Learning Objectives](#80-introduction-learning-objectives)  
 [8.1: Documentation Sources](#81-documentation-sources)  
@@ -10,6 +10,7 @@ Chapter 8: Finding Linux Documentation
 [8.6: Summary](#86-summary)  
 
 ### 8.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:
 * Use different sources of documentation.
 * Use the **man pages**.
@@ -18,7 +19,7 @@ By the end of this chapter, you should be able to:
 * Use other documentation sources.
 
 ### 8.1: Documentation Sources
-
+----
 #### Introduction to Linux Documenation Sources
 Important Linux documentation sources include:
 * The **man pages** (short for manual pages)
@@ -27,7 +28,7 @@ Important Linux documentation sources include:
 * Other Documentation Sources, e.g. https://www.gentoo.org/doc/en/ or https://help.ubuntu.com/community/CommunityHelpWiki
 
 ### 8.2: The man pages
-
+----
 #### The man pages
 Some Linux distributions require every installed program to have a corresponding **man** page, which explains the depth of coverage.  
 **man** pages are often converted to:
@@ -51,7 +52,7 @@ Some Linux distributions require every installed program to have a corresponding
 > --Man-- next: printf(3) [ view (return) | skip (Ctrl-D) | quit (Ctrl-C) ]  
 > --Man-- next: printf(3p) [ view (return) | skip (Ctrl-D) | quit (Ctrl-C) ]  
 
-### Lab 8.2 (Lab 1): Working with man
+#### Lab 8.2 (Lab 1): Working with man
 1. Finding man pages
 From the command line, bring up the man page for man itself. Scroll down to the EXAMPLES section.
    * My solution:
@@ -86,7 +87,7 @@ Here are the sections from the man man page:
 9. Kernel routines [Non standard]
 
 ### 8.3: GNU Info
-
+----
 #### GNU Info System
 * alternative to **man**
 * topics connected by links
@@ -111,13 +112,13 @@ q     | quit
 h     | help
 Enter | select a menu item
 
-### Lab 8.3 (Lab 2): Working with info
+#### Lab 8.3 (Lab 2): Working with info
 From the command line, bring up the info page for cpio. Bring up the tutorial.
 * My solution:
 * `$ info cpio`, then select "Tutorial" from the menu
 
 ### 8.4: The --help Option and Help Command
-
+----
 #### Introduction to the --help Option
 * short description accessed with the **--help** or **-h** flags
 
@@ -126,7 +127,7 @@ From the command line, bring up the info page for cpio. Bring up the tutorial.
 * type `$ help <command>`
 * for these built-in commands, help performs the same basic function as the **-h** and **--help** arguments perform for stand-alone programs
 
-### Lab 8.4 (Lab 3): Working with Command Line help
+#### Lab 8.4 (Lab 3): Working with Command Line help
 List the available options for the mkdir command, in more than one way.  
 * My solution:
 * `$ help mkdir`
@@ -149,7 +150,7 @@ List the available options for the mkdir command, in more than one way.
 * `$ mkdir --help`
 
 ### 8.5: Other Documentation Sources
-
+----
 #### Other Documentation Sources
 * desktop help system
   * GNOME: within graphical terminal, type `$ gnome-help` or `$ yelp`
@@ -163,7 +164,7 @@ List the available options for the mkdir command, in more than one way.
   * OpenSUSE: http://en.opensuse.org/Portal:Documentation
   * GENTOO: http://www.gentoo.org/doc/en
 
-### Lab 8.5 (Lab 4): Working with Graphical Help Systems
+#### Lab 8.5 (Lab 4): Working with Graphical Help Systems
 Find the graphical help system on your desktop, and try to locate within it the **man** pages for **printf**. This may be difficult, so do not waste too much time before looking at the suggestions below. 
 * My solution:
   * I couldn't find any man pages in the gnome help
@@ -172,6 +173,7 @@ Find the graphical help system on your desktop, and try to locate within it the 
   * do the same for info pages as well
 
 ### 8.6: Summary
+----
 Key concepts covered:
 * The main sources of Linux documentation are the **man pages**, **GNU Info**, the **help** options and command, and a rich variety of online documentation sources. 
 * The **man** utility searches, formats, and displays **man pages**.
@@ -180,3 +182,19 @@ Key concepts covered:
 * Short descriptions for commands are usually displayed with the `-h` or `--help` argument.
 * You can type **help** at the command line to display a synopsis of built-in commands.
 * There are many other help resources both on your system and on the Internet.
+
+COMMANDS
+8.2  
+`$ man -f` same as typing **whatis**  
+`$ man -k` same as typing **apropos**  
+`$ man 3 printf`  
+`$ man -a printf`  
+8.3  
+`$ info cpio`  
+8.4  
+`$ help`  
+`$ help <command>`  
+`$ mkdir --help`  
+`$ gnome-help` or `$ yelp`  
+`$ khelpcenter`  
+`$ yelp man:printf`  

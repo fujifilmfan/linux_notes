@@ -1,5 +1,5 @@
 Chapter 17: Printing
------
+--------------------
 
 [17.0: Introduction/ Learning Objectives](#170-introduction-learning-objectives)  
 [17.1: Configuration](#171-configuration)  
@@ -8,14 +8,14 @@ Chapter 17: Printing
 [17.4: Summary](#174-summary)  
   
 ### 17.0: Introduction/ Learning Objectives
-
+----
 By the end of this chapter, you should know how to:
 * Configure a printer on a Linux machine.
 * Print documents.
 * Manipulate postscript and pdf files using command line utilities.
 
 ### 17.1: Configuration
-
+----
 #### Introduction to Printing
 The Linux standard for printing software is the **Common UNIX Printing System (CUPS)**.  
 
@@ -92,7 +92,7 @@ all management features are wrapped around the **cups** init script, which can b
 * the **CUPS** web interface is available at http://localhost:631
 
 ### 17.2: Printing Operations
-
+----
 #### Printing from the Graphical Interface
 
 #### Printing from the Command-Line Interface
@@ -132,7 +132,7 @@ Command                        | Usage
 done  
 
 ### 17.3: Manipulating Postscript and PDF Files
-
+----
 #### Working with PostScript
 * **PostScript** is a standard **page description language**. It effectively manages scaling of fonts and vector graphics to provide quality printouts.  
 * Postscript has been for the most part superseded by the **PDF** format (**P**ortable **D**ocument **F**ormat) which produces far smaller files...  
@@ -201,7 +201,7 @@ Command                                          | Usage
 * use **pdfmod** for a GUI for modifying PDF documents  
 * example: `$ pdfinfo /usr/share/doc/readme.pdf`  
 
-#### Lab 1: Creating PostScript and PDF from Text Files
+#### Lab 17.3a (Lab 1): Creating PostScript and PDF from Text Files
 ```
 1. Check to see if the enscript package has been installed on your system, and if not, install it.
 2. Using enscript, convert the text file /var/dmesg to PostScript format and name the result /tmp/dmesg.ps. (As an alternative, you can use any large text file on your system.) Make sure you can read the PostScript file (with evince for example) and compare to the original file.
@@ -289,7 +289,7 @@ GPL Ghostscript 9.07: Unrecoverable error, exit code 1
     File size:      28177 bytes
 ```
 
-#### Lab 2: Combining PDFs
+#### Lab 17.3b (Lab 2): Combining PDFs
 ```
 You can convert two text files (you can create them or use ones that already exist since this is non-destructive) into PDFs, or you can use two pre-exisiting ones. Combine them into one PDF, and view the result.
 If pdftk is not installed, you can try to install. However, if you are on a system for which it is not available (such as RHEL7/CentOS7), you will have to use gs.
@@ -327,6 +327,7 @@ How do the files compare?
 ```
 
 ### 17.4: Summary
+----
 You have completed this chapter. Let’s summarize the key concepts covered:
 * **CUPS** provides two command-line interfaces: the **System V** and **BSD** interfaces.
 * The CUPS interface is available at http://localhost:631

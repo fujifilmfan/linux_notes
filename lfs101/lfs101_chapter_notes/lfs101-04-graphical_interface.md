@@ -1,5 +1,5 @@
 Chapter 4: Graphical Interface
------
+------------------------------
 
 [4.0: Introduction/ Learning Objectives](#40-introduction-learning-objectives)  
 [4.1: Graphical Desktop](#41-graphical-desktop)  
@@ -8,13 +8,14 @@ Chapter 4: Graphical Interface
 [4.4: Summary](#44-summary)  
 
 ### 4.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:
   * Manage graphical interface sessions.
   * Perform basic operations using the graphical interface.
   * Change the graphical desktop to suit your needs.
 
 ### 4.1: Graphical Desktop
-
+----
 #### Introduction
 * **CLI**: Command Line Interface
 * **GUI**: Graphical User Interface
@@ -57,8 +58,11 @@ By the end of this chapter, you should be able to:
 * can do this via settings or gnome-tweak-tool
 * this link doesn't seem to work anymore: http://art.gnome.org/themes/
 
-### Lab 4.1: Customizing the Desktop
+#### Lab 4.1: Customizing the Desktop
 
 ### 4.2: Session Management
+----
 ### 4.3: Basic Operations
+----
 ### 4.4: Summary
+----

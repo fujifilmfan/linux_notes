@@ -1,5 +1,5 @@
 Chapter 15: Bash Shell Scripting I
------
+----------------------------------
 
 [15.0: Introduction/ Learning Objectives](#150-introduction-learning-objectives)  
 [15.1: Features and Capabilities](#151-features-and-capabilities)  
@@ -8,6 +8,7 @@ Chapter 15: Bash Shell Scripting I
 [15.4: Summary](#154-summary)  
   
 ### 15.0: Introduction/ Learning Objectives
+----
 By the end of this chapter, you should be able to:
 * Explain the features and capabilities of **bash shell scripting**.
 * Know the basic syntax of scripting statements.
@@ -17,7 +18,7 @@ By the end of this chapter, you should be able to:
 * Perform arithmetic operations using scripting language.
 
 ### 15.1: Features and Capabilities
-
+----
 #### Introduction to Scripting
 
 #### Introduction to Shell Scripts
@@ -74,7 +75,7 @@ $ cat > hello.sh
    * `$ echo $?`  
      > 1  
 
-### Lab 1: Exit Status Codes
+#### Lab 15.1 (Lab 1): Exit Status Codes
 ```
 Write a script which:
  * Does ls for a non-existent file, and then displays the resulting exit status.
@@ -136,7 +137,7 @@ status: 0
 ```
 
 ### 15.2: Syntax
-
+----
 #### Basic Syntax and Special Characters
 * special character usages within bash scripts:  
   
@@ -252,7 +253,7 @@ display () {
 }
 ```
 
-### Lab 2: Working with Files and Directories in a Script
+#### Lab 15.2a (Lab 2): Working with Files and Directories in a Script
 ```
 Write a script which:
 1. Prompts the user for a directory name and then creates it with mkdir.
@@ -348,7 +349,7 @@ This file is named file4
 Goodbye My Friend
 ```
 
-### Lab 3: Passing Arguments
+#### Lab 15.2b (Lab 3): Passing Arguments
 ```
 Write a script that takes exactly one argument, and prints it back out to standard output. Make sure the script generates a usage message if it is run without giving an argument.
 ```
@@ -392,7 +393,7 @@ Usage: ./testarg.sh argument
 student:/tmp>
 ```
 
-### Lab 4: Environment Variables
+#### Lab 15.2c (Lab 4): Environment Variables
 ```
 Write a script which:
 1. Asks the user for a number, which should be "1" or "2". Any other input should lead to an error report.
@@ -468,7 +469,7 @@ Enter 1 or 2, to set the environmental variable EVAR to Yes or No
 The value of EVAR is: Unknown 
 ```
 
-### Lab 5: Working with Functions
+#### Lab 15.2d (Lab 5): Working with Functions
 ```
 Write a script which:
 1. Asks the user for a number (1 , 2 or 3).
@@ -544,7 +545,7 @@ Enter a number from 1 to 3
 ```
 
 ### 15.3: Constructs
-
+----
 #### The if Statement
 * syntax:  
    * `$ if TEST-COMMANDS; then CONSEQUENT-COMMANDS; fi`  
@@ -654,7 +655,7 @@ Arithmetic expressions can be evaluated in the following three ways:
 1. using built-in shell command **let**  
    * `let x=( 1 + 2 ); echo $x`  
 
-### Lab 5: Arithmetic and Functions
+#### Lab 15.3 (Lab 6): Arithmetic and Functions
 ```
 Write a script that will act as a simple calculator for add, subtract, multiply and divide.
 1. Each operation should have its own function.
@@ -832,6 +833,7 @@ x is not a, s, m, or d, aborting
 ```
 
 ### 15.4: Summary
+----
 You have completed this chapter. Let’s summarize the key concepts covered:  
 * Scripts are a sequence of statements and commands stored in a file that can be executed by a shell. The most commonly used shell in Linux is **bash**.  
 * Command substitution allows you to substitute the result of a command as a portion of another command.  

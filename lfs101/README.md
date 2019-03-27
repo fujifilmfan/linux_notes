@@ -1,6 +1,9 @@
 LFS101 Introduction to Linux
 =====
 
+Contents
+--------
+
 [Chapter 3: Linux Basics and System Startup](lfs101_chapter_notes/lfs101-03-basics.md)  
    * [3.1: The Boot Process](lfs101_chapter_notes/lfs101-03-basics.md#31-the-boot-process)  
    * [3.2: Kernel, init, and Services](lfs101_chapter_notes/lfs101-03-basics.md#32-kernel-init-and-services)  
@@ -87,7 +90,8 @@ LFS101 Introduction to Linux
    * [18.5: Securing the Boot Process and Hardware Resources](lfs101_chapter_notes/lfs101-18-security_principles.md#185-securing-the-boot-process-and-hardware-resources)  
 
 Linux filesystem and paths
------
+--------------------------
+
 
 ### Linux paths
 `////usr//bin` (7.2)  
