@@ -1,5 +1,5 @@
 Chapter 6: Common Applications
-------------------------------w
+------------------------------
 
 ### 6.0: Introduction/ Learning Objectives
 ----
