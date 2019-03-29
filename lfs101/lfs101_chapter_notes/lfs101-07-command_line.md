@@ -369,7 +369,7 @@ users | `# echo "student ALL=(ALL) ALL" > /etc/sudoers.d/student` | add permissi
 gui | `$ sudo systemctl stop gdm`  (or `$ sudo telinit 3`) | stop graphical desktop | LFS101 7.1
 gui | `$ sudo systemctl start gdm`  (or `$ sudo telinit 5`) | start graphical desktop | LFS101 7.1
 shutdown | `shutdown -h` | used by **halt** and **poweroff**; example: `$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."` | LFS101 7.2
-shutdown | `shutdown -r' | used by **reboot** | LFS101 7.2
+shutdown | `shutdown -r` | used by **reboot** | LFS101 7.2
 apps | `$ which python` | find programs | LFS101 7.2
 apps | `$ whereis python` | find programs, including source and man files | LFS101 7.2
 dirs | `$ echo $HOME` | see path of default directory | LFS101 7.2
@@ -410,7 +410,7 @@ files, i/o | `$ do_something > output-file` | send program's output to a file | 
 files, i/o | `$ do_something 2> error-file` | send program's error messages to a file | LFS101 7.4
 files, i/o | `$ do_something > all-output-file 2>&1` | put error message to the same place as file descriptor 1 | LFS101 7.4
 files, i/o | `$ do_something >& all-output-file` | put error message to the same place as file descriptor 1, Bash | LFS101 7.4
-locate | `$ locate zip | grep bin`| searches a database constructed by updatedb | LFS101 7.4
+locate | `$ locate zip \| grep bin` | searches a database constructed by updatedb | LFS101 7.4
 files | `$ cp <original_file> <new_file>` | copy file from one location to another | LFS101 7.4
 find | `$ find` with `-name`, `-iname`, `-type` (`d` for directory, `l` for link, `f` for file), `-exec` |  | LFS101 7.4
 find | `$ find /usr -name gcc` |  | LFS101 7.4
@@ -419,6 +419,6 @@ find | `$ find /usr -type f -name gcc` |  | LFS101 7.4
 find | `$ find -name "*.swp" -exec rm {} ';'` or `-ok` instead | find and remove all files ending with .swp | LFS101 7.4
 find | `$ find / -ctime 3` or `-atime`, `-mtime` with **n**, **+n**, or **-n**; `-cmin`, `-amin`, `-mmin` |  | LFS101 7.4
 find | `$ find / -size 0` with **c**, **k**, **M**, **G**, etc. or with **n**, **+n**, or **-n** |  | LFS101 7.4
-find | `$ find / -name init.d -type d 2>&1 | grep -v 'Permission denied'` |  | LFS101 7.4
+find | `$ find / -name init.d -type d 2>&1 \| grep -v 'Permission denied'` |  | LFS101 7.4
 apps | `$ sudo yum install dump` | install application | LFS101 7.5
 apps | `$ sudo yum remove dump` | remove application | LFS101 7.5
