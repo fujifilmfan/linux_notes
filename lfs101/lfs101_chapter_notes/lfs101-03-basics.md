@@ -7,6 +7,7 @@ Chapter 3: Linux Basics and System Startup
 [3.3: Linux Filesystem Basics](#33-linux-filesystem-basics)  
 [3.4: Linux Distribution Installation](#34-linux-distribution-installation)  
 [3.5: Summary](#35-summary)  
+[Paths and Commands](#paths-and-commands)  
 
 ### 3.0: Introduction/ Learning Objectives
 ----
@@ -51,7 +52,7 @@ The Linux **boot process** is the procedure for initializing the system, everyth
    * the **initramfs** filesystem image contains programs and binary files that perform all actions needed to mount the proper root filesystem
    * provides device drivers for mass storage controllers with a facility called **udev** (for **U**ser **Device**), which figures out devices present, **drivers** they need, and loading them
    * root filesystem found, checked for errors, and mounted
-   * the **mount** program instructs OS that FS is ready for use and associates it with the **mount point**, a particular point in the overall heirarchy of the FS
+   * the **mount** program instructs OS that FS is ready for use and associates it with the **mount point**, a particular point in the overall heirarchy of the FS  
   ? What is an example of a mount point?
    * if success, **initramfs** is cleared from RAM and the **init** program on the root FS (`/sbin/init`) is executed
    * **init** handles mounting and pivoting to final real root FS; needed special hardware drivers must be in **initramfs** image
@@ -59,7 +60,7 @@ The Linux **boot process** is the procedure for initializing the system, everyth
    * text-mode login prompts, which enable you to type your username and password, are started by **init** (will not see these with a GUI at first)
    * most distros start six text terminals and one graphics terminal starting with **F1** or **F2**
   	 * access using **ALT** plus a **function** key
-  	 * within a graphical environment, switch to text console with **CTRL-ALT +** the appropriate function key (**F7** or **F1** lead to the GUI)
+  	 * within a graphical environment, switch to text console with **CTRL-ALT +** the appropriate function key (**F7** or **F1** lead to the GUI)  
   ? What is a 'terminal' in this context?
    * **bash** (the **GNU Bourne Again Shell**) is the usual, default command shell
 ### 3.2: Kernel, init, and Services
@@ -69,7 +70,7 @@ The Linux **boot process** is the procedure for initializing the system, everyth
 * the kernel initializes and configures the computer's memory and all attached hardware (processors, I/O subsystems, storage devices, etc.) in addition to some user space applications
 
 #### /sbin/init and Services
-* the kernel runs the `/sbin/init` program, which becomes the origin of all other processors except those started by the kernel itself
+* the kernel runs the `/sbin/init` program, which becomes the origin of all other processes except those started by the kernel itself
 * **init** starts other processes to get the system running, keeps it running, and shuts it down cleanly
 * old way of doing it: **System V UNIX** with **runlevels**
 
@@ -171,3 +172,20 @@ Nothing to see here
 ### 3.5: Summary
 ----
 * The boot process has multiple steps, starting with **BIOS**, which triggers the **boot loader** to start up the Linux kernel. From there, the **initramfs** filesystem is invoked, which triggers the **init** program to complete the startup process.
+
+### Paths and Commands
+----
+
+PATHS  
+
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+boot | `/boot` | contains second stage boot loader | LFS101 3.1
+boot | `/sbin/init` | handles mounting and pivoting to FS during boot | LFS101 3.1
+
+COMMANDS  
+
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+services | `$ sudo systemctl start/stop/restart fooservice` | starting, stopping, restarting a service | LFS101 3.2
+services, boot | `$ sudo systemctl enable/disable fooservice` | enabling or disabling a system service from starting up at system boot | LFS101 3.2
