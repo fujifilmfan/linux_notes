@@ -8,6 +8,7 @@ Chapter 7: Command Line Operations
 [7.4: Searching for Files](#74-searching-for-files)  
 [7.5: Installing Software](#75-installing-software)  
 [7.6: Summary](#76-summary)  
+[Paths and Commands](#paths-and-commands)  
 
 ### 7.0: Introduction/ Learning Objectives
 ----
@@ -347,62 +348,77 @@ Key concepts covered:
 * You can use the **Yellowdog Updater Modified** (**yum**) open source command-line package-management utility for **RPM**-compatible Linux operating systems.
 * The **zypper** package management system is based on RPM and used for openSUSE.  
 
-PATHS  
-7.2  
-`////usr//bin`  
-`.`  
-`..`  
-`~`  
+### Paths and Commands
+----
 
-COMMANDS  
-7.2  
-`$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."`  
-`$ halt`  
-`$ poweroff`  
-`$ shutdown -r`  
-`$ cd /`  
-`$ ls`  
-`$ ls -a`  
-`$ tree`  
-`$ tree -d`  
-`$ ln file1 file2`  
-`$ ls -li file1 file2`  
-`$ ln -s file1 file3`  
-`$ cd -`  
-`$ pushd .`  
-`$ popd .`  
-`$ dirs`  
-7.3  
-`$ cat`  
-`$ tac`  
-`$ less`  
-`$ tail`  
-`$ tail -n 15`  
-`$ tail -15`  
-`$ head`  
-`$ touch <filename>`  
-`$ touch -t 06302000 <filename>`  
-`$ mkdir <dirname>`  
-`$ rmdir <dirname>`  
-`$ rm -rf`  
-`$ mv <original> <new>`  
-`$ rm`  
-`$ rm -f`  
-`$ rm -i`  
-`$ PS1="\u@\h \$ "`  
-7.4  
-`$ do_something < input-file`  
-`$ do_something > output-file`  
-`$ do_something 2> error-file`  
-`$ do_something > all-output-file 2>&1`  
-`$ do_something >& all-output-file`  
-`$ locate zip | grep bin`  
-`$ cp <original_file> <new_file>`  
-`$ find` with `-name`, `-iname`, `-type` (`d` for directory, `l` for link, `f` for file), `-exec`  
-`$ find /usr -name gcc`  
-`$ find /usr -type d -name gcc`  
-`$ find /usr -type f -name gcc`  
-`$ find -name "*.swp" -exec rm {} ';'` or `-ok` instead  
-`$ find / -ctime 3` or `-atime`, `-mtime` with **n**, **+n**, or **-n**; `-cmin`, `-amin`, `-mmin`  
-`$ find / -size 0` with **c**, **k**, **M**, **G**, etc. or with **n**, **+n**, or **-n**  
-`$ find / -name init.d -type d 2>&1 | grep -v 'Permission denied'`  
+#### Paths  
+
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+users | `/etc/sudoers.d` | config file for user permissions | LFS101 7.1
+executables | `/bin`, `/usr/bin`, `/sbin`, `/usr/sbin`, or `/opt` | typical executable locations | LFS101 7.2
+paths | `.` | present directory | LFS101 7.2
+paths | `..` | parent directory | LFS101 7.2
+paths | `~` | home directory | LFS101 7.2
+
+#### Commands  
+
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+users | `# echo "student ALL=(ALL) ALL" > /etc/sudoers.d/student` | add permissions to sudoers.d | LFS101 7.1
+gui | `$ sudo systemctl stop gdm`  (or `$ sudo telinit 3`) | stop graphical desktop | LFS101 7.1
+gui | `$ sudo systemctl start gdm`  (or `$ sudo telinit 5`) | start graphical desktop | LFS101 7.1
+shutdown | `shutdown -h` | used by **halt** and **poweroff**; example: `$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."` | LFS101 7.2
+shutdown | `shutdown -r' | used by **reboot** | LFS101 7.2
+apps | `$ which python` | find programs | LFS101 7.2
+apps | `$ whereis python` | find programs, including source and man files | LFS101 7.2
+dirs | `$ echo $HOME` | see path of default directory | LFS101 7.2
+dirs, paths | `$ pwd` | see present working directory | LFS101 7.2
+dirs | `$ cd ~` or `$ cd` | change to home directory | LFS101 7.2
+dirs | `$ cd ..` | change to parent directory | LFS101 7.2
+dirs, history | `$ cd -` | change to previous directory | LFS101 7.2
+dirs | `$ cd /` | change to root directory | LFS101 7.2
+dirs | `$ ls` | list contents of present working directory | LFS101 7.2
+dirs | `$ ls -a` | list all files including hidden files (those whose name starts with .) | LFS101 7.2
+dirs | `$ tree` | display a tree view of filesystem | LFS101 7.2
+dirs | `$ tree -d` | show only directories and not file names | LFS101 7.2
+links | `$ ln file1 file2` | creates a hard link | LFS101 7.2
+links | `$ ls -li file1 file2` | indicates that the inode number, a unique quantity for each file object, is the same for both files | LFS101 7.2
+links | `$ ln -s file1 file3` | creates a soft (symbolic) link | LFS101 7.2
+dirs, history | `$ pushd .` | pushes starting directory to a list | LFS101 7.2
+dirs, history | `$ popd .` | move to directories on list in reverse order (most recent first) | LFS101 7.2
+dirs, history | `$ dirs` | see the list | LFS101 7.2
+files | `$ cat` | used for viewing files that aren't long | LFS101 7.3
+files | `$ tac` | used to look at a file backwards, starting with last line | LFS101 7.3
+files | `$ less` | used to view larger files; pauses at each screen full of text; use / to search forward and ? to search backward; more is an older program that is similar | LFS101 7.3
+files | `$ tail` | used to print last 10 lines of file by default | LFS101 7.3
+files | `$ tail -n 15` | look at last 15 lines | LFS101 7.3
+files | `$ tail -15` | look at last 15 lines | LFS101 7.3
+files | `$ head` | opposite of tail | LFS101 7.3
+files | `$ touch <filename>` | create an empty file | LFS101 7.3
+files | `$ touch -t 06302000 <filename>` | set timestamp of file: | LFS101 7.3
+dirs | `$ mkdir <dirname>` | create directory | LFS101 7.3
+dirs | `$ rmdir <dirname>` | remove empty directory | LFS101 7.3
+dirs | `$ rm -rf` | remove directory with data | LFS101 7.3
+files | `$ mv <original> <new>` | rename a file | LFS101 7.3
+files | `$ rm` | remove a file | LFS101 7.3
+files | `$ rm -f` | forcefully remove a file | LFS101 7.3
+files | `$ rm -i` | interactively remove a file (good practice when using patterns) | LFS101 7.3
+prompt | `$ PS1="\u@\h \$ "` | the PS1 variable is the character string that is displayed as the prompt on the command line | LFS101 7.3
+files, i/o | `$ do_something < input-file` | change program's input source | LFS101 7.4
+files, i/o | `$ do_something > output-file` | send program's output to a file | LFS101 7.4
+files, i/o | `$ do_something 2> error-file` | send program's error messages to a file | LFS101 7.4
+files, i/o | `$ do_something > all-output-file 2>&1` | put error message to the same place as file descriptor 1 | LFS101 7.4
+files, i/o | `$ do_something >& all-output-file` | put error message to the same place as file descriptor 1, Bash | LFS101 7.4
+locate | `$ locate zip | grep bin`| searches a database constructed by updatedb | LFS101 7.4
+files | `$ cp <original_file> <new_file>` | copy file from one location to another | LFS101 7.4
+find | `$ find` with `-name`, `-iname`, `-type` (`d` for directory, `l` for link, `f` for file), `-exec` |  | LFS101 7.4
+find | `$ find /usr -name gcc` |  | LFS101 7.4
+find | `$ find /usr -type d -name gcc` |  | LFS101 7.4
+find | `$ find /usr -type f -name gcc` |  | LFS101 7.4
+find | `$ find -name "*.swp" -exec rm {} ';'` or `-ok` instead | find and remove all files ending with .swp | LFS101 7.4
+find | `$ find / -ctime 3` or `-atime`, `-mtime` with **n**, **+n**, or **-n**; `-cmin`, `-amin`, `-mmin` |  | LFS101 7.4
+find | `$ find / -size 0` with **c**, **k**, **M**, **G**, etc. or with **n**, **+n**, or **-n** |  | LFS101 7.4
+find | `$ find / -name init.d -type d 2>&1 | grep -v 'Permission denied'` |  | LFS101 7.4
+apps | `$ sudo yum install dump` | install application | LFS101 7.5
+apps | `$ sudo yum remove dump` | remove application | LFS101 7.5

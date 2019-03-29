@@ -176,14 +176,14 @@ Nothing to see here
 ### Paths and Commands
 ----
 
-PATHS  
+#### Paths
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 boot | `/boot` | contains second stage boot loader | LFS101 3.1
 boot | `/sbin/init` | handles mounting and pivoting to FS during boot | LFS101 3.1
 
-COMMANDS  
+#### Commands 
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
