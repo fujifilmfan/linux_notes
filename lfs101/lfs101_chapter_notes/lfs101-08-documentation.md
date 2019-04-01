@@ -8,6 +8,7 @@ Chapter 8: Finding Linux Documentation
 [8.4: The --help Option and Help Command](#84-the-help-option-and-help-command)  
 [8.5: Other Documentation Sources](#85-other-documentation-sources)  
 [8.6: Summary](#86-summary)  
+[Paths and Commands](#paths-and-commands)  
 
 ### 8.0: Introduction/ Learning Objectives
 ----
@@ -53,12 +54,12 @@ Some Linux distributions require every installed program to have a corresponding
 > --Man-- next: printf(3p) [ view (return) | skip (Ctrl-D) | quit (Ctrl-C) ]  
 
 #### Lab 8.2 (Lab 1): Working with man
-1. Finding man pages
-From the command line, bring up the man page for man itself. Scroll down to the EXAMPLES section.
+1. Finding man pages  
+From the command line, bring up the man page for man itself. Scroll down to the EXAMPLES section.  
    * My solution:
    * `$ man man`
-2. Finding man Pages by Topic
-What man pages are available that document file compression?
+2. Finding man Pages by Topic  
+What man pages are available that document file compression?  
    * My solution:
    * `$ man -k compression`
 > Compress::Raw::Bzip2 (3pm) - Low-Level Interface to bzip2 compression library  
@@ -102,7 +103,8 @@ Here are the sections from the man man page:
 * nodes might contain menus and linked subtopics, or **items**, are like hyperlinks and identified by an asterisk (**\***) at the beginning of the item name
 * named items outside a menu are identified with double-colons(**::**) at the end of the item name
 * items can refer to other nodes within the file or to other files
-Helpful keystrokes:
+Helpful keystrokes:  
+
 Key   | Function
 ----- | --------
 n     | go to next node
@@ -183,18 +185,21 @@ Key concepts covered:
 * You can type **help** at the command line to display a synopsis of built-in commands.
 * There are many other help resources both on your system and on the Internet.
 
-COMMANDS
-8.2  
-`$ man -f` same as typing **whatis**  
-`$ man -k` same as typing **apropos**  
-`$ man 3 printf`  
-`$ man -a printf`  
-8.3  
-`$ info cpio`  
-8.4  
-`$ help`  
-`$ help <command>`  
-`$ mkdir --help`  
-`$ gnome-help` or `$ yelp`  
-`$ khelpcenter`  
-`$ yelp man:printf`  
+### Paths and Commands
+----
+
+#### Commands  
+
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+docs | `$ man -f <string>` | find by string; same as typing **whatis** | LFS101 8.2
+docs | `$ man -k <subject>` | find by subject; same as typing **apropos** | LFS101 8.2
+docs | `$ man <command> | view man page for the command | LFS101 8.2
+docs | `$ man 3 printf` | shows chapter 3 of the printf man page | LFS101 8.2
+docs | `$ man -a printf` | shows all manual pages with the name printf | LFS101 8.2
+docs | `$ info cpio` | show info page for cpio | LFS101 8.3
+docs | `$ help` or `$ <command> -h` or `$ <command> --help` | see synopsis of built-in commands | LFS101 8.4
+docs | `$ help <command>` | find programs, including source and man files | LFS101 8.4
+docs | `$ gnome-help` or `$ yelp` | desktop help for GNOME | LFS101 8.5
+docs | `$ khelpcenter` | desktop help for KDE | LFS101 8.5
+docs | `$ yelp man:printf` | find the man pages for printf withing graphical help system on desktop | LFS101 8.5
