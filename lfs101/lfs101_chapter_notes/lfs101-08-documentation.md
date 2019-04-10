@@ -194,7 +194,7 @@ Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 docs | `$ man -f <string>` | find by string; same as typing **whatis** | LFS101 8.2
 docs | `$ man -k <subject>` | find by subject; same as typing **apropos** | LFS101 8.2
-docs | `$ man <command> | view man page for the command | LFS101 8.2
+docs | `$ man <command>` | view man page for the command | LFS101 8.2
 docs | `$ man 3 printf` | shows chapter 3 of the printf man page | LFS101 8.2
 docs | `$ man -a printf` | shows all manual pages with the name printf | LFS101 8.2
 docs | `$ info cpio` | show info page for cpio | LFS101 8.3
