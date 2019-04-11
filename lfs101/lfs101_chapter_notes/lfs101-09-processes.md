@@ -7,6 +7,7 @@ Chapter 9: Processes
 [9.3: Listing Processes: ps and top](#93-listing-processes-ps-and-top)  
 [9.4: Starting Processes in the Future](#94-starting-processes-in-the-future)  
 [9.5: Summary](#95-summary)  
+[Paths and Commands](#paths-and-commands)  
 
 ### 9.0: Introduction/ Learning Objectives
 ----
@@ -100,7 +101,7 @@ Short-term increases are usually not a problem. A high peak you see is likely a 
 #### Background and Foreground Processes
 Linux supports **background** and **foreground** job processing. (A job in this context is just a command launched from a terminal window.) **Foreground** jobs run directly from the shell, and when one foreground job is running, other jobs need to wait for shell access (at least in that terminal window if using the GUI) until it is completed. This is fine when jobs complete quickly. But this can have an adverse effect if the current job is going to take a long time (even several hours) to complete.  
   
-In such cases, you can run the job in the **background** and free the shell for other tasks. The background job will be executed at lower priority, which, in turn, will allow smooth execution of the interactive tasks, and you can type other commands in the terminal window while the background job is running. By default, all jobs are executed in the foreground. You can put a job in the background by suffixing & to the command, for example: `$ updatedb &`  
+In such cases, you can run the job in the **background** and free the shell for other tasks. The background job will be executed at lower priority, which, in turn, will allow smooth execution of the interactive tasks, and you can type other commands in the terminal window while the background job is running. By default, all jobs are executed in the foreground. You can put a job in the background by suffixing `&` to the command, for example: `$ updatedb &`  
   
 You can either use **CTRL-Z** to suspend a foreground job or **CTRL-C** to terminate a foreground job and can always use the **bg** and **fg** commands to run a process in the background and foreground, respectively.  
 
@@ -139,13 +140,22 @@ We are going to launch a graphical program from a terminal window, so that one c
 The Solution file contains a step-by-step procedure for putting jobs in background, bringing them back to foreground, etc. Please repeat the steps, substituting the program you are using if it is not **gedit**.  
   
 * My solution:  
-   > 629  gedit file1  
-   > 631  jobs -l  
-   > 632  bg  
-   > 633  jobs -l  
-   > 634  fg  
-   > 635  jobs -l  
-   > 640  kill -9 72049  
+   > `$ gedit file1`  
+   >  
+   > `CTRL-Z`  
+   > ^Z  
+   > [1]+  Stopped                 gedit file1  
+   > `$ jobs -l`  
+   > [1]+  Stopped                 gedit file1  
+   > `$ bg` or `$ bg 1`  
+   > [1]+ gedit file1 &  
+   > `$ jobs -l`  
+   > [2]- 19997 Running                 gedit file1 &  
+   > `$ fg`  
+   > `CTRL-Z`  
+   > `$ jobs -l`  
+   > `$ kill -9 72049`  
+   > [1]+  Killed                  gedit file1    
   
 ### 9.3: Listing Processes: ps and top
 ----
@@ -354,37 +364,49 @@ Key concepts covered:
 * **at** executes any non-interactive command at a specified time.
 * **cron** is used to schedule tasks that need to be performed at regular intervals.
 
-COMMANDS
-9.1  
-`$ kill -SIGKILL <pid>`  
-`$ kill -9 <pid>`  
-9.2  
-`$ w`  
-`$ top`  
-`$ uptime`  
-`$ updatedb &`  
-`$ fg <job>`  
-`$ bg <job>`  
-`$ jobs`  
-`$ jobs -l`  
-`$ top | head`  
-9.3  
-`$ ps`  
-`$ ps -u <username>`  
-`$ ps -ef`  
-`$ ps -eLf`  
-`$ ps aux`  
-`$ ps axo <attributes>`  
-`$ pstree`  
-`$ top`  
-9.4  
-`$ at now + 2 days`  
-`$ at now + 1 minute`  
-`$ atq`  
-`$ atrm 1`  
-`$ crontab -e`  
-`$ crontab -l`  
-`$ sudo ls -l /var/spool/cron/student`  
-`$ sudo cat /var/spool/cron/student`  
-`$ crontab -r`  
-`$ sleep NUMBER[SUFFIX]...`  
+### Paths and Commands
+----
+
+#### Paths  
+
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+processes | `/etc/crontab` | configuration file (cron table) | LFS101 9.4
+processes | `/var/spool/cron/<username>` | currently loaded crontab | LFS101 9.4
+
+#### Commands  
+
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+processes | `$ kill -SIGKILL <pid>` | terminate a process | LFS101 9.1
+processes | `$ kill -9 <pid>` | terminate a process | LFS101 9.1
+processes | `$ w` | display who is logged in and what they are doing (also uptime and load in header) | LFS101 9.2
+processes | `$ uptime` | print system uptime and load | LFS101 9.2
+processes | `$ updatedb &` | run process in background | LFS101 9.2
+processes | `CTRL-Z` | suspend a foreground job, place in background as a stopped job | LFS101 9.2
+processes | `CTRL-C` | terminate a foreground job | LFS101 9.2
+processes | `$ fg <job>` | move background job to foreground | LFS101 9.2
+processes | `$ bg <job>` | move stopped job to background | LFS101 9.2
+processes | `$ jobs` | list active jobs launched from this terminal window | LFS101 9.2
+processes | `$ jobs -l` | include PID in active jobs list | LFS101 9.2
+processes | `$ ps` | provides information about currently running processes keyed by PID | LFS101 9.3
+processes | `$ ps -u <username>` | display information of processes for a specified username | LFS101 9.3
+processes | `$ ps -ef` | displays all the processes in the system in full detail | LFS101 9.3
+processes | `$ ps -eLf` | displays one line of information for every thread | LFS101 9.3
+processes | `$ ps aux` | displays all processes of all users | LFS101 9.3
+processes | `$ ps axo <attributes>` | allows you to specify which attributes you want to view | LFS101 9.3
+processes | `$ pstree` | displays the processes running on the system in the form of a tree diagram | LFS101 9.3
+apps, processes | `$ top` | display and update sorted information about processes | LFS101 9.3
+apps, processes | `$ top | head` | show just the top header | LFS101 9.3
+processes | `$ at ...` | starts execution at a later time; contrast with `sleep` | LFS101 9.4
+processes | `$ at now + 2 days` at> top  at> <EOT> CTRL-D | schedule top to run in two days  | LFS101 9.4
+processes | `$ at now + 1 minute` | schedule program to run in one minute | LFS101 9.4
+processes | `$ atq` | view scheduled jobs | LFS101 9.4
+processes | `$ atrm 1` | remove schedule job | LFS101 9.4
+processes | `$ crontab -e` | open the crontab editor to edit existing jobs or to create new jobs | LFS101 9.4
+processes | `$ crontab -l` | displays the current crontab on STDOUT | LFS101 9.4
+processes | `$ crontab <filename>` | add file to crontab system | LFS101 9.4
+processes | `$ sudo ls -l /var/spool/cron/student` | view currently loaded crontab files | LFS101 9.4
+processes | `$ sudo cat /var/spool/cron/student` | view currently loaded crontab file contents | LFS101 9.4
+processes | `$ crontab -r` | removes the current crontab | LFS101 9.4
+processes | `$ sleep NUMBER[SUFFIX]...` | delays execution for a specific period; contrast with `at` | LFS101 9.4
