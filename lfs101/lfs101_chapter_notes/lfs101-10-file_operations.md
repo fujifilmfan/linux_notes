@@ -7,6 +7,7 @@ Chapter 10: File Operations
 [10.3: Comparing Files and File Types](#103-comparing-files-and-file-types)  
 [10.4: Backing Up and Compressing Data](#104-backing-up-and-compressing-data)  
 [10.5: Summary](#105-summary)  
+Paths and Commands](#paths-and-commands)  
 
 ### 10.0: Introduction/ Learning Objectives
 ----
@@ -302,7 +303,7 @@ Command            | Usage
 -------            | -----  
 `gzip *`           | Compresses all files in the current directory; each file is compressed and renamed with a .gz extension.  
 `gzip -r projectX` | Compresses all files in the projectX directory, along with all files in all of the directories under projectX.  
-`gunzip foo`       | De-compresses foo found in the file foo.gz. Under the hood, the gunzip command is actually the same as gzip –d.  
+`gunzip foo`       | Decompresses foo found in the file foo.gz. Under the hood, the gunzip command is actually the same as gzip –d.  
 
 #### Compressing Data Using bzip2
 * produces smaller files than gzip but takes more time  
@@ -333,6 +334,7 @@ Command                             | Usage
 * usage examples:  
 
 Command               | Usage
+-------               | -----
 `zip backup *`        | Compresses all files in the current directory and places them in the file backup.zip.
 `zip -r backup.zip ~` | Archives your login directory (~) and all files and directories under it in the file backup.zip.
 `unzip backup.zip`    | Extracts all files in the file backup.zip and places them in the current directory.
@@ -459,109 +461,112 @@ The key concepts we covered in this chapter are:
 * **tar** allows you to create or extract files from an archive file, often called a tarball. You can optionally compress while creating the archive, and decompress while extracting its contents.
 * **dd** can be used to make large exact copies, even of entire disk partitions, efficiently.
   
-PATHS:  
-10.1  
-`/etc/fstab`  
-`/etc/exports`  
-`/proc/self/mounts`  
-`/proc/filesystems`  
-  
-10.2  
-`/root`  
-`/home`  
-`/bin`  
-`/sbin`  
-`/usr/bin`  
-`/usr/sbin`  
-`/proc`  
-`/proc/cpuinfo`  
-`/proc/interrupts`  
-`/proc/meminfo`  
-`/proc/mounts`  
-`/proc/partitions`  
-`/proc/version`  
-`/proc/<Process-ID-#>`  
-`/proc/sys`  
-`/dev`  
-`/dev/sda1`  
-`/dev/lp1`  
-`/dev/dvd1`  
-`/var`  
-`/var/log`  
-`/var/lib`  
-`/var/spool`  
-`/var/tmp`  
-`/var/ftp`  
-`/var/www`  
-`/etc`  
-`/boot`  
-`/lib`  
-`/lib64`  
-`/lib/modules/<kernel-version-number>`  
-`/media`  
-`/run`  
-`/run/media/student/myusbdrive`  
-`/mnt`  
-`/opt`  
-`/sys`  
-`/srv`  
-`/tmp`  
-`/usr`  
-`/usr/include`  
-`/usr/lib`  
-`/usr/lib64`  
-`/usr/sbin`  
-`/usr/share`  
-`/usr/src`  
-`/usr/local`  
-`/usr/bin`  
-  
-COMMANDS:  
-10.1  
-`$ mount /dev/sda5 /home`  
-`$ mount`  
-`$ umount /home`  
-`$ df -Th`  
-`$ sudo systemctl start nfs`  
-`$ exportfs -av`  
-`$ sudo systemctl enable nfs`  
-`$ sudo mount servername:/projects /mnt/nfs/projects`  
-10.3  
-`$ diff [options] <filename1> <filename2>`  
-`$ diff3 MY-FILE COMMON-FILE YOUR-FILE`  
-`$ diff -Nur originalfile newfile > patchfile`  
-`$ patch -p1 < patchfile`  
-`$ patch originalfile patchfile`  
-`$ file <FILE NAME>`  
-`$ dd if=/tmp/group of=/tmp/GROUP conv=ucase`  
-`$ diff group GROUP`  
-`$ diff -Nur group GROUP > patchfile`  ; I tried running patch before this step:  
-`$ patch --dry-run group patchfile`  
-`$ patch group patchfile`  
-10.4  
-`$ rsync sourcefile destinationfile`  
-`$ rsync -r project-X archive-machine:archives/project-X`  
-`$ gzip *`  
-`$ gzip -r projectX`  
-`$ gunzip foo` == `$ gzip -d foo`  
-`$ bzip2 *`  
-`$ bunzip2 *.bz2` == `$ bzip2 -d *.bz2`  
-`$ xz *`  
-`$ xz foo`  
-`$ xz -dk bar.xz`  
-`$ xz -d *.xz`  
-`$ zip backup *`  
-`$ zip -r backup.zip ~`  
-`$ unzip backup.zip`  
-`$ tar xvf mydir.tar`  
-`$ tar zcvf mydir.tar.gz mydir`  
-`$ tar jcvf mydir.tar.bz2 mydir`  
-`$ tar Jcvf mydir.tar.xz mydir`  
-`$ tar xvf mydir.tar.gz`  
-`$ tar cvf mydir.tar mydir ; gzip mydir.tar`  
-`$ gunzip mydir.tar.gz ; tar xvf mydir.tar`  
-`$ dd if=/dev/sda of=sda.mbr bs=512 count=1`  
-`$ dd if=/dev/sda of=/dev/sdb`  
-`$ `  
-`$ `  
-`$ `  
+### Paths and Commands
+----
+
+#### Paths  
+
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+filesystem | `/` | root directory ("trunk"); contains important programs required to run the system | LFS101 10.1
+filesystem | `/etc/fstab` | Filesystem Table; shows the configuration of all pre-configured filesystems | LFS101 10.1
+filesystem | `/etc/exports` | contains the directories and permissions that a host is willing to share with other systems over NFS | LFS101 10.1
+filesystem | `/proc/self/mounts` | contains list of mounted filesystems | LFS101 10.1
+filesystem | `/proc/filesystems` | contains list of mounted filesystems | LFS101 10.1
+filesystem | `/root` | home directory of root users | LFS101 10.2
+filesystem | `/home` | contains files owned by regular users of the system | LFS101 10.2
+filesystem | `/bin` | contains executable binaries and essential commands required by all system users | LFS101 10.2
+filesystem | `/sbin` | intended for essential binaries related to system administration, such as fsck and shutdown | LFS101 10.2
+filesystem | `/usr/bin` | non-essential commands for system boot or operation in single-user mode | LFS101 10.2
+filesystem | `/usr/sbin` | non-essential commands for system boot or operation in single-user mode | LFS101 10.2
+filesystem | `/proc` | psuedo filesystem that contains runtime system information | LFS101 10.2
+filesystem | `/proc/cpuinfo` |  | LFS101 10.2
+filesystem | `/proc/interrupts` |  | LFS101 10.2
+filesystem | `/proc/meminfo` |  | LFS101 10.2
+filesystem | `/proc/mounts` |  | LFS101 10.2
+filesystem | `/proc/partitions` |  | LFS101 10.2
+filesystem | `/proc/version` |  | LFS101 10.2
+filesystem | `/proc/<Process-ID-#>` | directory for every process running on system | LFS101 10.2
+filesystem | `/proc/sys` | information about the entire system, in particular its hardware and configuration | LFS101 10.2
+filesystem | `/dev` | contains device nodes | LFS101 10.2
+filesystem | `/dev/sda1` | first partition on the first hard disk | LFS101 10.2
+filesystem | `/dev/lp1` | second printer | LFS101 10.2
+filesystem | `/dev/dvd1` | first DVD drive | LFS101 10.2
+filesystem | `/var` | contains files that are expected to change in size and content as the system is running | LFS101 10.2
+filesystem | `/var/log` | system log files | LFS101 10.2
+filesystem | `/var/lib` | packages and database files | LFS101 10.2
+filesystem | `/var/spool` | print queues | LFS101 10.2
+filesystem | `/var/tmp` | temp files | LFS101 10.2
+filesystem | `/var/ftp` | FTP service | LFS101 10.2
+filesystem | `/var/www` | HTTP service | LFS101 10.2
+filesystem | `/etc` | home for system configuration files | LFS101 10.2
+filesystem | `/boot` | essential files for booting | LFS101 10.2
+filesystem | `/lib` | libraries needed by programs in /bin and /sbin | LFS101 10.2
+filesystem | `/lib64` | 64-bit libraries | LFS101 10.2
+filesystem | `/lib/modules/<kernel-version-number>` | kernel modules | LFS101 10.2
+filesystem | `/media` | where USB, CD, DVD used to be mounted | LFS101 10.2
+filesystem | `/run` | where USB, CD, DVD are usually mounted | LFS101 10.2
+filesystem | `/run/media/student/myusbdrive` |  | LFS101 10.2
+filesystem | `/mnt` | used since the early days of UNIX for temporarily mounting filesystems | LFS101 10.2
+filesystem | `/opt` | optional application software packages | LFS101 10.2
+filesystem | `/sys` | virtual pseudo-filesystem giving information about the system and the hardware | LFS101 10.2
+filesystem | `/srv` | site-specific data served up by the system | LFS101 10.2
+filesystem | `/tmp` | temporary files | LFS101 10.2
+filesystem | `/usr` | multi-user applications, utilities, and data; contains theoretically non-essential programs and scripts | LFS101 10.2
+filesystem | `/usr/include` | header files used to compile applications | LFS101 10.2
+filesystem | `/usr/lib` | libraries for programs in /usr/bin and /usr/sbin | LFS101 10.2
+filesystem | `/usr/lib64` | 64-bit libraries for 64-bit programs in /usr/bin and /usr/sbin | LFS101 10.2
+filesystem | `/usr/sbin` | non-essential system binaries, such as system daemons | LFS101 10.2
+filesystem | `/usr/share` | shared data used by applications, generally architecture-independent | LFS101 10.2
+filesystem | `/usr/src` | source code, usually for the Linux kernel | LFS101 10.2
+filesystem | `/usr/local` | data and programs specific to the local machine; subdirectories include bin, sbin, lib, share, include, etc | LFS101 10.2
+filesystem | `/usr/bin` | primary directory of executable commands on the system | LFS101 10.2
+
+#### Commands  
+
+Topics | Command | Notes | Reference
+------ | ------- | ----- | ---------
+filesystem | `$ mount <device node> <mount point` like `$ mount /dev/sda5 /home` | attach a filesystem with the fs tree | LFS101 10.1
+filesystem | `$ mount` | show presently mounted filesystems | LFS101 10.1
+filesystem | `$ umount /home` | unmount a partition | LFS101 10.1
+filesystem | `$ df -Th` | disk-free; display information about mounted filesystems, including usage statistics about currently used and available space | LFS101 10.1
+filesystem | `$ sudo systemctl start nfs` | start NFS daemons | LFS101 10.1
+filesystem | `$ exportfs -av` | notify Linux after modifying `/etc/exports` | LFS101 10.1
+filesystem | `$ sudo systemctl enable nfs` | ensure NFS service starts whenever the system is booted | LFS101 10.1
+filesystem | `$ sudo mount servername:/projects /mnt/nfs/projects` | mount without a reboot or as a one-time mount | LFS101 10.1
+files | `$ diff [options] <filename1> <filename2>` | compare files and directories | LFS101 10.3
+files | `$ cmp ...` | compare binaries | LFS101 10.3
+files | `$ diff3 MY-FILE COMMON-FILE YOUR-FILE` | compare three files at once | LFS101 10.3
+files | `$ diff -Nur originalfile newfile > patchfile` | create patchfile using diff | LFS101 10.3
+files | `$ patch -p1 < patchfile` | apply a patch | LFS101 10.3
+files | `$ patch originalfile patchfile` | apply a patch | LFS101 10.3
+files | `$ file <FILE NAME>` | determine type of file | LFS101 10.3
+files | `$ dd if=/tmp/group of=/tmp/GROUP conv=ucase` | convert and copy a file | LFS101 10.3
+files | `$ diff group GROUP` | compare two files | LFS101 10.3
+files | `$ diff -Nur group GROUP > patchfile` | create patchfile using diff | LFS101 10.3
+files | `$ patch --dry-run group patchfile` | run patch dry run | LFS101 10.3
+files | `$ patch group patchfile` | apply a patch | LFS101 10.3
+files | `$ rsync <source file> <destination file>` | backup data; basic syntax | LFS101 10.4
+files | `$ rsync -r project-X archive-machine:archives/project-X` | backup data; example use | LFS101 10.4
+files | `$ gzip *` | compresses all files in the current directory; each file is compressed and renamed with a .gz extension | LFS101 10.4
+files | `$ gzip -r projectX` | compresses all files in the projectX directory, along with all files in all of the directories under projectX | LFS101 10.4
+files | `$ gunzip foo` == `$ gzip -d foo` | decompresses foo found in the file foo.gz; actually the same as `gzip –d` | LFS101 10.4
+files | `$ bzip2 *` | compresses all of the files in the current directory and replaces each file with a file renamed with a .bz2 extension | LFS101 10.4
+files | `$ bunzip2 *.bz2` == `$ bzip2 -d *.bz2` | decompresses all of the files with an extension of .bz2 in the current directory; the same as calling `bzip2 -d` | LFS101 10.4
+files | `$ xz *` | compresses all of the files in the current directory and replaces each file with one with a .xz extension | LFS101 10.4
+files | `$ xz foo` | compresses the file foo into foo.xz using the default compression level (-6), and removes foo if compression succeeds | LFS101 10.4
+files | `$ xz -dk bar.xz` | decompresses bar.xz into bar and does not remove bar.xz even if decompression is successful | LFS101 10.4
+files | `$ xz -dcf a.txt b.text.xz > abcd.text` | decompresses a mix of compressed and uncompressed files to standard output, using a single command | LFS101 10.4
+files | `$ xz -d *.xz` | decompresses the files compressed using xz | LFS101 10.4
+files | `$ zip backup *` | compresses all files in the current directory and places them in the file backup.zip | LFS101 10.4
+files | `$ zip -r backup.zip ~` | archives your login directory (~) and all files and directories under it in the file backup.zip | LFS101 10.4
+files | `$ unzip backup.zip` | extracts all files in the file backup.zip and places them in the current directory | LFS101 10.4
+files | `$ tar xvf mydir.tar` | extract all the files in mydir.tar into the mydir directory | LFS101 10.4
+files | `$ tar zcvf mydir.tar.gz mydir` | create the archive and compress with gzip | LFS101 10.4
+files | `$ tar jcvf mydir.tar.bz2 mydir` | create the archive and compress with bz2 | LFS101 10.4
+files | `$ tar Jcvf mydir.tar.xz mydir` | create the archive and compress with xz | LFS101 10.4
+files | `$ tar xvf mydir.tar.gz` | extract all the files in mydir.tar.gz into the mydir directory | LFS101 10.4
+files | `$ tar cvf mydir.tar mydir` then `gzip mydir.tar` | archive and compress files in separate steps | LFS101 10.4
+files | `$ gunzip mydir.tar.gz` then `tar xvf mydir.tar` | decompress and extract files in separate steps | LFS101 10.4
+files | `$ dd if=/dev/sda of=sda.mbr bs=512 count=1` | back up Master Boot Record (MBR) | LFS101 10.4
+files | `$ dd if=/dev/sda of=/dev/sdb` | make a copy of one disk onto another, erasing everything that existed on second disk | LFS101 10.4
