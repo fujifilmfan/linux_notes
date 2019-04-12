@@ -8,11 +8,12 @@ Chapter 12: Process Monitoring
 [12.7: ps Output Fields](#127-ps-output-fields)  
 [12.8: UNIX Option Format for ps](#128-unix-option-format-for-ps)  
 [12.9: Customizing the ps Output](#129-customizing-the-ps-output)  
-[12.10: /proc/sys](#1210-procsys)  
-[12.11: /sys Basics](#1211-sys-basics)
-[12.12: A Survey of /sys](#1212-a-survey-of-sys)
+[12.10: Using pstree](#1210-using-pstree)  
+[12.11: Viewing System Loads with top](#1211-viewing-system-loads-with-top)
+[12.12: top Options](#1212-top-options)
 [12.13: sar](#1213-sar)
-[Lab 12.1: Using Stress](#lab-121-using-stress)
+[Lab 12.1: Processes](#lab-121-processes)
+[Lab 12.2: Monitoring Process States](#lab-122-monitoring-process-states)
 [Paths and Commands](#paths-and-commands)  
 
 ### 12.3: Learning Objectives
@@ -98,19 +99,45 @@ cmd     | command with all arguments
 cputime | cumulative CPU time
 pmem    | ratio of the process's resident set size to the physical memory on the machine, expressed as a percentage
 
-
-### Lab 11.1: Using Stress
+### 12.10: Using pstree
 ----
-* **stress** is designed to place a configurable amount of stress on the system  
-* example: `$ stress -c 8 -i 4 -m 6 -t 20s`
-   * fork off 8 CPU-intensive processes, each spinning on a sqrt() calculation
-   * fork off 4 I/O-intensive process, each spinning on sync()
-   * fork off 6 memory-intensive processes, each spinning on malloc(), allocating 256 MB by default; size can be changed as in `--vm-bytes 128M`
-   * run the stress test for 20 s
+* `$ pstree -aAp 2408` shows the process tree for PID 2408
+   * -a shows command line arguments
+   * -A uses ASCII characters
+   * -p shows PIDs
+* example:  
+[student@centos ~]$ pstree -ap 10525  
+ibus-daemon,10525 --xim --panel disable  
+  ├─ibus-dconf,10530  
+  │   ├─{ibus-dconf},10531  
+  │   ├─{ibus-dconf},10535  
+  │   └─{ibus-dconf},10537  
+  ├─{ibus-daemon},10527  
+  └─{ibus-daemon},10536  
+* another way to see that child process 10530 has children of its own is `$ ls -l /proc/10530/task`: 
+
+### 12.11: Viewing System Loads with top
+----
+* by default, top refreshes itself every 3.0 seconds
+
+### 12.12: top Options
+----
+* top is interactive
+   * press **1** to see each CPU shown separately
+   * press **i** to see only active processes
+   * press **h** or **?** to see a list of interactive commands
+   * press **q** to exit
+   * press **k** to kill a task
+   * press **r** to renice a task
+* variations: **htop**, **ntop**, and **atop**
+* grapical monitors: **gnome-system-monitor**, **ksysguard**
+
+### Lab 12.1: Processes
+----
+
+### Lab 12.2: Monitoring Process States
+----
   
-My solution:  
-* `$ sudo yum install stress`
-* `$ stress -c 8 -i 4 -m 6 -t 20s`
 
 ### Paths and Commands
 ----
@@ -140,4 +167,8 @@ Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 monitoring, processes | `$ ps aux` | shows all processes | LFS201 12.6
 monitoring, processes | `$ ps auxf` | adding **f** flag shows how processes relate by ancestry | LFS201 12.7
-  `$ ps -elf` | show processes in UNIX option format | LFS201 12.8
+monitoring, processes | `$ ps -elf` | show processes in UNIX option format | LFS201 12.8
+monitoring, processes | `$ ps -o pid,uid,cputime,pmem,command` | specific the fields in the output | LFS201 12.9
+monitoring, processes | `$ pstree` | show processes in tree form | LFS201 12.10
+monitoring, processes | `$ pstree -aAp 2408` | shows the process tree for PID 2408 | LFS201 12.10
+monitoring, processes | `$ ls -l /proc/10530/task` | see child processes of 10530 | LFS201 12.10
