@@ -185,7 +185,7 @@ boot | `/sbin/init` | handles mounting and pivoting to FS during boot | LFS101 3
 
 #### Commands 
 
-Topics | Path | Notes | Reference
------- | ---- | ----- | ---------
+Topics | Command | Notes | Reference
+------ | ------- | ----- | ---------
 services | `$ sudo systemctl start/stop/restart fooservice` | starting, stopping, restarting a service | LFS101 3.2
 services, boot | `$ sudo systemctl enable/disable fooservice` | enabling or disabling a system service from starting up at system boot | LFS101 3.2

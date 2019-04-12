@@ -363,8 +363,8 @@ paths | `~` | home directory | LFS101 7.2
 
 #### Commands  
 
-Topics | Path | Notes | Reference
------- | ---- | ----- | ---------
+Topics | Command | Notes | Reference
+------ | ------- | ----- | ---------
 users | `# echo "student ALL=(ALL) ALL" > /etc/sudoers.d/student` | add permissions to sudoers.d | LFS101 7.1
 gui | `$ sudo systemctl stop gdm`  (or `$ sudo telinit 3`) | stop graphical desktop | LFS101 7.1
 gui | `$ sudo systemctl start gdm`  (or `$ sudo telinit 5`) | start graphical desktop | LFS101 7.1
@@ -420,5 +420,5 @@ find | `$ find -name "*.swp" -exec rm {} ';'` or `-ok` instead | find and remove
 find | `$ find / -ctime 3` or `-atime`, `-mtime` with **n**, **+n**, or **-n**; `-cmin`, `-amin`, `-mmin` |  | LFS101 7.4
 find | `$ find / -size 0` with **c**, **k**, **M**, **G**, etc. or with **n**, **+n**, or **-n** |  | LFS101 7.4
 find | `$ find / -name init.d -type d 2>&1 \| grep -v 'Permission denied'` |  | LFS101 7.4
-apps | `$ sudo yum install dump` | install application | LFS101 7.5
-apps | `$ sudo yum remove dump` | remove application | LFS101 7.5
+packages | `$ sudo yum install dump` | install application | LFS101 7.5
+packages | `$ sudo yum remove dump` | remove application | LFS101 7.5

@@ -376,8 +376,8 @@ processes | `/var/spool/cron/<username>` | currently loaded crontab | LFS101 9.4
 
 #### Commands  
 
-Topics | Path | Notes | Reference
------- | ---- | ----- | ---------
+Topics | Command | Notes | Reference
+------ | ------- | ----- | ---------
 processes | `$ kill -SIGKILL <pid>` | terminate a process | LFS101 9.1
 processes | `$ kill -9 <pid>` | terminate a process | LFS101 9.1
 processes | `$ w` | display who is logged in and what they are doing (also uptime and load in header) | LFS101 9.2
