@@ -3,15 +3,15 @@ Chapter 11: System Monitoring
 
 [11.3: Learning Objectives](#113-learning-objectives)  
 [11.4: Available Monitoring Tools](#114-available-monitoring-tools)  
-[11.5 System Log Files](#115-system-log-files)  
-[11.6 Important Log Files in /var/log](#116-important-log-files-in-varlog)  
-[11.7 The /proc and /sys Pseudo-filesystems](#117-the-proc-and-sys-pseudo-filesystems)  
-[11.8 /proc Basics](#118-proc-basics)  
-[11.9 A Survey of /proc](#119-a-survey-of-proc)  
-[11.10 /proc/sys](#1110-procsys)  
-[11.11 /sys Basics](#1111-sys-basics)  
-[11.12 A Survey of /sys](#1112-a-survey-of-sys)  
-[11.13 sar](#1113-sar)  
+[11.5: System Log Files](#115-system-log-files)  
+[11.6: Important Log Files in /var/log](#116-important-log-files-in-varlog)  
+[11.7: The /proc and /sys Pseudo-filesystems](#117-the-proc-and-sys-pseudo-filesystems)  
+[11.8: /proc Basics](#118-proc-basics)  
+[11.9: A Survey of /proc](#119-a-survey-of-proc)  
+[11.10: /proc/sys](#1110-procsys)  
+[11.11: /sys Basics](#1111-sys-basics)  
+[11.12: A Survey of /sys](#1112-a-survey-of-sys)  
+[11.13: sar](#1113-sar)  
 [Lab 11.1: Using Stress](#lab-111-using-stress)  
 [Paths and Commands](#paths-and-commands)  
 
@@ -23,7 +23,7 @@ By the end of this chapter, you should be able to:
   * Use the `/proc` and `/sys` pseudo-filesystems.
   * Use **sar** to gather system activity and performance data and create reports that are readable by humans.
 
-### 11.4 Available Monitoring Tools
+### 11.4: Available Monitoring Tools
 ----
 Most monitoring tools make use of `/proc` and `/sys`.  
   
@@ -66,14 +66,14 @@ iptraf    | Gather information on network interfaces         | iptraf
 tcpdump   | Detailed analysis of network packets and traffic | tcpdump
 wireshark | Detailed network traffic analysis                | wireshark
   
-### 11.5 System Log Files
+### 11.5: System Log Files
 ----
 * log files are typically found in `/var/log`
 * control of messages is by the **syslogd** daemon (or **rsyslogd** on modern systems) or **journalctl** on newer **systemd**-based systems
 * messages can be seen on system console window, too
 * view new messages continually: `$ sudo tail -f /var/log/messages` or `$ sudo tail -f /var/log/syslog` or `$ dmesg -w`
 
-### 11.6 Important Log Files in /var/log
+### 11.6: Important Log Files in /var/log
 ----
 * log files can be viewed on a GNOME desktop, too
 * important files in /var/log:
@@ -87,22 +87,22 @@ secure             | Security related messages
 
 * **logrotate** keeps four previous copies of logs by default; controlled by `/etc/logrotate.conf`
 
-### 11.7 The /proc and /sys Pseudo-filesystems
+### 11.7: The /proc and /sys Pseudo-filesystems
 ----
 * these are pseudo-filesystems because they exist totally in memory
 * information is gathered only when looked at; no constant or periodic polling to update entries
 
-### 11.8 /proc Basics
+### 11.8: /proc Basics
 ----
 * originally about system processes
 * now includes info about system properties such as interrupts, memory, networking, etc.
 
-### 11.9 A Survey of /proc
+### 11.9: A Survey of /proc
 ----
 * subdirectory for each process on the system
 * for interrupts, we see what type it is, how many times it has been handled by each CPU, and which devices are registered to respond to it
 
-### 11.10 /proc/sys
+### 11.10: /proc/sys
 ----
 * `/proc/sys` shows tunable system parameters
 * see [Paths and Commands](#paths-and-commands) for a summary of the subdirectories
@@ -111,18 +111,18 @@ secure             | Security related messages
    * change maximum number of threads: `$ sudo bash -c 'echo 100000 > /proc/sys/kernel/threads-max'`
    * same thing using **sysctl**: `$ sudo sysctl kernel.threads-max=100000`
 
-### 11.11 /sys Basics
+### 11.11: /sys Basics
 ----
 * the `/sys` pseudo-filesystem is an integral part of the **Unified Device Model**
 * conceptually based on a **device tree**
 * more tightly defined structure than `/proc`
 
-### 11.12 A Survey of /sys
+### 11.12: A Survey of /sys
 ----
 * the **sysfs** virtual filesystem should be mounted under `/sys`
 * network devices can be examined with `$ ls -lF /sys/class/net`
 
-### 11.13 sar
+### 11.13: sar
 ----
 * **S**ystems **A**ctivity **R**eporter; gathers system activity and performance data and creates human-readable reports
 * supported on the backend by **sadc** (system activity data collector)
