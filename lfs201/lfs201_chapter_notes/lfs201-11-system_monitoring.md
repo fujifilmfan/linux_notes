@@ -1,5 +1,5 @@
 Chapter 11: System Monitoring
-----------------------------------
+-----------------------------
 
 [11.3: Learning Objectives](#113-learning-objectives)  
 [11.4: Available Monitoring Tools](#114-available-monitoring-tools)  
@@ -9,10 +9,10 @@ Chapter 11: System Monitoring
 [11.8 /proc Basics](#118-proc-basics)  
 [11.9 A Survey of /proc](#119-a-survey-of-proc)  
 [11.10 /proc/sys](#1110-procsys)  
-[11.11 /sys Basics](#1111-sys-basics)
-[11.12 A Survey of /sys](#1112-a-survey-of-sys)
-[11.13 sar](#1113-sar)
-[Lab 11.1: Using Stress](#lab-111-using-stress)
+[11.11 /sys Basics](#1111-sys-basics)  
+[11.12 A Survey of /sys](#1112-a-survey-of-sys)  
+[11.13 sar](#1113-sar)  
+[Lab 11.1: Using Stress](#lab-111-using-stress)  
 [Paths and Commands](#paths-and-commands)  
 
 ### 11.3: Learning Objectives
