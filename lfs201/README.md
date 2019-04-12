@@ -13,8 +13,8 @@ Contents
 ### Links to Chapter Notes
 ----
 
-[Chapter 11: System Monitoring](lfs201_chapter_notes/lfs201-11-system-monitoring.md)  
-[Chapter 12: Process Monitoring](lfs201_chapter_notes/lfs201-12-process-monitoring.md)  5-securing-the-boot-process-and-hardware-resources)  
+[Chapter 11: System Monitoring](lfs201_chapter_notes/lfs201-11-system_monitoring.md)  
+[Chapter 12: Process Monitoring](lfs201_chapter_notes/lfs201-12-process_monitoring.md)  
 
 ### Paths
 ----
