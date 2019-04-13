@@ -15,6 +15,8 @@ Contents
 
 [Chapter 11: System Monitoring](lfs201_chapter_notes/lfs201-11-system_monitoring.md)  
 [Chapter 12: Process Monitoring](lfs201_chapter_notes/lfs201-12-process_monitoring.md)  
+[Chapter 13: Memory: Monitoring Usage and Tuning](lfs201_chapter_notes/lfs201-13-memory-monitoring_usage_and_tuning.md)  
+[Chapter 14: I/O Monitoring and Tuning](lfs201_chapter_notes/lfs201-14-i-o_monitoring_and_tuning.md)
 
 ### Paths
 ----
