@@ -20,7 +20,7 @@ By the end of this chapter, you should be able to:
   * Explain the importance of I/O scheduling and describe the conflicting requirements that need to be satisfied.
   * Delineate and contrast the options available under Linux.  
   * Understand how the **CFQ** (**C**ompletely **F**air **Q**ueue) and **Deadline** algorithms work.
-
+  
 ### 15.4: I/O Scheduling
 ----
 * the I/O scheduler provides the interface between the generic block layer and low-level physical device drivers  
@@ -46,12 +46,12 @@ running `$ ls -l /dev` gives results w/ a preceding **c** for character special 
 * the default can be configured; modern systems use CFQ or Deadline
 * `$ cat /sys/block/sda/queue/scheduler` shows which I/O schedulers are available on `/dev/sda`
 * my system for sda and sr0 (cdrom): noop [deadline] cfq (deadline is normal for HDDs)
-
+  
 ### 15.6: I/O Scheduling and SSD Devices
 ----
 * SSDs do not require an elevator scheme and benefit from **wear leveling** (they have limited write/erase cycles)
 * run `$ cat /sys/block/<device>/queue/rotational` to check whether the device is an SSD (1 == HDD)
-
+  
 ### 15.7: Tunables and Switching the I/O Scheduler at Runtime
 ----
 * to change I/O scheduler on the command line:
@@ -69,7 +69,7 @@ running `$ ls -l /dev` gives results w/ a preceding **c** for character special 
   > -rw-r--r-- 1 root root 4096 Apr 12 22:14 read_expire  
   > -rw-r--r-- 1 root root 4096 Apr 12 22:14 write_expire  
   > -rw-r--r-- 1 root root 4096 Apr 12 22:14 writes_starved  
-
+  
 ### 15.8: I/O Schedulers Demo
 ----
 * `$ cd /sys/block`
@@ -85,23 +85,47 @@ running `$ ls -l /dev` gives results w/ a preceding **c** for character special 
 * `$ ls -l iosched/`
 * `$ ls -l rotational
 * `$ cat scheduler 
-
+  
 ### 15.9: CFQ (Completey Fair Queue) Scheduler
 ----
-
+* goal of equal spreading of I/O bandwidth among all processes submitting requests
+* number of queues fixed at 64
+* dequeuing of requests is done round robin style on all the queues, each one of which works in **FIFO** (**F**irst **I**n **F**irst **O**ut) order
+  
 ### 15.10: CFQ Tunables
 ----
-
+* in the examples below, the parameter HZ is a kernel-configured quantity, that corresponds to the number of jiffies per second, which the kernel uses as a coarse measure of time
+* time units HZ/2 is 0.5 seconds and 5 * HZ is 5 seconds etc.
+   * **quantum**: Maximum queue length in one round of service.  (Default = 4);
+   * **queued**: Minimum request allocation per queue.  (Default = 8);
+   * **fifo_expire_sync**: FIFO timeout for sync requests.  (Default = HZ/2);
+   * **fifo_expire_async**: FIFO timeout for async requests.  (Default = 5  *  HZ);
+   * **fifo_batch_expire**: Rate at which the FIFO's expire.  (Default = HZ/8);
+   * **back_seek_max**: Maximum backwards seek, in KB. (Default = 16K);
+   * **back_seek_penalty**: Penalty for a backwards seek.  (Default = 2).
+  
 ### 15.11: Deadline Scheduler
 ----
-
+* the Deadline I/O scheduler aggressively reorders requests with the simultaneous goals of improving overall performance and preventing large latencies for individual requests; i.e., limiting starvation
+* with each and every request, the kernel associates a deadline
+* read requests get higher priority than write requests
+* five separate I/O queues are maintained:
+   * two sorted lists are maintained, one for reading and one for writing, and arranged by starting block.
+   * two **FIFO** lists are maintained, again one for reading and one for writing; these lists are sorted by submission time.
+   * a fifth queue contains the requests that are to be shoveled to the device driver itself; this is called the dispatch queue.
+* exactly how the requests are peeled off the first four queues and placed on the fifth (dispatch queue) is where the art of the algorithm is
+  
 ### 15.12: Deadline Tunables
 ----
-
+* available tunables for the **Deadline** scheduler:
+   * **read_expire**: How long (in milliseconds) a read request is guaranteed to occur within. (Default = HZ/2 = 500). 
+   * **write_expire**: How long (in milliseconds) a write request is guaranteed to occur within. (Default = 5 * HZ = 5000).
+   * **writes_starved**: How many requests we should give preference to reads over writes. (Default = 2).
+   * **fifo_batch**: How many requests should be moved from the sorted scheduler list to the dispatch queue, when the deadlines have expired. (Default = 16).
+   * **front_merges**: Back merges are more common than front merges as a contiguous request usually continues to the next block. Setting this parameter to 0 disables front merges and can give a boost if you know they are unlikely to be needed. (Default = 1)
+  
 ### Lab 15.1: Comparing I/O Schedulers
 ----
-
-  
 
 ### Paths and Commands
 ----
