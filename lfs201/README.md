@@ -18,6 +18,7 @@ Contents
 [Chapter 13: Memory: Monitoring Usage and Tuning](lfs201_chapter_notes/lfs201-13-memory-monitoring_usage_and_tuning.md)  
 [Chapter 14: I/O Monitoring and Tuning](lfs201_chapter_notes/lfs201-14-i-o_monitoring_and_tuning.md)
 [Chapter 15: I/O Scheduling](lfs201_chapter_notes/lfs201-15-i-o_scheduling.md)
+[Chapter 16: Linux Filesystems and the VFS](lfs201_chapter_notes/lfs201-16-linux_filesystems_and_vfs.md)
 
 ### Paths
 ----
