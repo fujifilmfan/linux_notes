@@ -17,9 +17,10 @@ Contents
 [Chapter 12: Process Monitoring](lfs201_chapter_notes/lfs201-12-process_monitoring.md)  
 [Chapter 13: Memory: Monitoring Usage and Tuning](lfs201_chapter_notes/lfs201-13-memory-monitoring_usage_and_tuning.md)  
 [Chapter 14: I/O Monitoring and Tuning](lfs201_chapter_notes/lfs201-14-i-o_monitoring_and_tuning.md)
-[Chapter 15: I/O Scheduling](lfs201_chapter_notes/lfs201-15-i-o_scheduling.md)
-[Chapter 16: Linux Filesystems and the VFS](lfs201_chapter_notes/lfs201-16-linux_filesystems_and_vfs.md)
-[lfs201-17-disk_partitioning.md](lfs201_chapter_notes/lfs201-17-disk_partitioning.md)
+[Chapter 15: I/O Scheduling](lfs201_chapter_notes/lfs201-15-i-o_scheduling.md)  
+[Chapter 16: Linux Filesystems and the VFS](lfs201_chapter_notes/lfs201-16-linux_filesystems_and_vfs.md)  
+[Chapter 17: Disk Partitioning](lfs201_chapter_notes/lfs201-17-disk_partitioning.md)  
+[Chapter 18: Filesystem Features](lfs201_chapter_notes/lfs201-18-filesystem_features.md)  
 
 ### Paths
 ----
