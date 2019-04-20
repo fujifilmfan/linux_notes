@@ -276,6 +276,7 @@ q | Quit without making changes
    ```
    * if something is wrong, exit with **q**
 * new partition table will not be used until reboot
+   * **partprobe** informs the OS of partition table changes  
    * `sudo partprobe -s` try and read in the revised partition table (not recommended)
 * `$ cat /proc/partitions` shows partitions the OS is aware of; for me:
    ```
@@ -291,7 +292,7 @@ q | Quit without making changes
 ----
 See video.  
   
-### 17.9 Knowledge Check 17.1
+### 17.19 Knowledge Check 17.1
 ----
 When adding a new internal disk to an existing server, in which best logical order should the following steps be executed to have the disk persistently mounted after rebooting the system?
 1. Create a new partition
@@ -319,7 +320,8 @@ I got it right. :)
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-  
+filesystem, partitions | `/etc/fstab` | configuration file containing the necessary information to automate the process of mounting partitions | LFS201 17.19
+
 #### Commands  
 
 Topics | Command | Notes | Reference
