@@ -1,5 +1,5 @@
-Chapter 16: Linux Filesystems and the VFS
------------------------------------------
+Chapter 17: Disk Partitioning
+-----------------------------
 
 [17.3: Learning Objectives](#173-learning-objectives)  
 [17.4: Common Disk Types](#174-common-disk-types)  
