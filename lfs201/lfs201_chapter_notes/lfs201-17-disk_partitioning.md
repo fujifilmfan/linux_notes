@@ -319,8 +319,6 @@ I got it right. :)
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-filesystem | `/proc/filesystems` | currently registered filesystems | LFS201 16.10
-filesystem | `/dev/zero` | special file in Unix-like operating systems that provides null characters | LFS201 16.10
   
 #### Commands  
 
