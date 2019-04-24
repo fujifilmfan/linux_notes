@@ -1,4 +1,4 @@
-Chapter 21: Encrypting Disks
+Chapter 22: Encrypting Disks
 ----------------------------
 
 [22.3: Learning Objectives](#223-learning-objectives)  
