@@ -25,6 +25,7 @@ Contents
 [Chapter 20: The ext2/ext3/ext4 Filesystems](lfs201_chapter_notes/lfs201-20-the_ext_filesystems.md)  
 [Chapter 21: The XFS and btrfs Filesystems](lfs201_chapter_notes/lfs201-21-the_xfs_and_btrfs_filesystems.md)  
 [Chapter 22: Encrypting Disks](lfs201_chapter_notes/lfs201-22-encrypting_disks.md)  
+[Chapter 23: Logical Volume Management (LVM)](#lfs201_chapter_notes/lfs201-23-logical_volume_management_lvm.md)  
 
 
 ### Paths
