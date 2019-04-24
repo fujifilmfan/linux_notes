@@ -23,6 +23,7 @@ Contents
 [Chapter 18: Filesystem Features I: Attributes, Creating, Checking, Mounting](lfs201_chapter_notes/lfs201-18-filesystem_features_i.md)  
 [Chapter 19: Filesystem Features II: Swap, Quatas, Usage](lfs201_chapter_notes/lfs201-19-filesystem_features_ii.md)  
 [Chapter 20: The ext2/ext3/ext4 Filesystems](lfs201_chapter_notes/lfs201-20-the_ext_filesystems.md)  
+[Chapter 21: The XFS and btrfs Filesystems](lfs201_chapter_notes/lfs201-21-the_xfs_and_btrfs_filesystems.md)  
 
 
 ### Paths
