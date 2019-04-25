@@ -12,6 +12,8 @@ Chapter 23: Logical Volume Management (LVM)
 [23.11: Examples of Resizing](#2311-examples-of-resizing)  
 [23.12: LVM Snapshots](#2312-lvm-snapshots)  
 [23.13: LVM Demo](#2313-lvm-demo)  
+[23.14: Knowledge Check 23.1](#2314-knowledge-check-231)
+[23.14: Knowledge Check 23.2](#2314-knowledge-check-232)
 [Lab 23.1: Logical Volumes](#lab-231-logical-volumes)  
 [Paths and Commands](#paths-and-commands)  
   
@@ -83,16 +85,74 @@ By the end of this chapter, you should be able to:
 
 ### 23.9: Displaying Logical Volumes
 ----
+* `$ pvdisplay /dev/sda5` shows physical volumes; leave off physical volume name to list all
+* `*$ vgdisplay /dev/vg0` shows volume groups; leave off volume group name to list all
+* `*$ lvdisplay /dev/vg0/lvm1` shows logical volumes; leave off logical volume name to list all
+
 ### 23.10: Resizing Logical Volumes
 ----
+* if the volume contains a filesystem, then the filesystem needs to be shrunk or expanded before shrinking or resizing the volume, respectively
+* `$ sudo lvresive -r -L 20 GB /dev/VG/mylvm` resizes the volume
+    * **-r** causes resizing of the filesystem at the same time
+    * from the man page: `-L|--size [+|-]Size[m|UNIT]`
+    * the filesystem cannot be mounted while being shrunk, but some can be expanded while mounted
+* the exact utilities to change filesystem size are filesystem dependents; examples: **lvresize**, **lvextend**, and **lvreduce** with **resize2fs**
+
 ### 23.11: Examples of Resizing
 ----
+* grow a logical volume with ext4 filesytem:
+    * `$ sudo lvextend -L +500M /dev/vg/mylvm`
+    * `$ sudo resize2fs /dev/vg/mylvm`
+* shrink the filesystem:
+    * `$ sudo umount /mylvm`
+    * `$ sudo fsck -f /dev/vg/mylvm`
+    * `$ sudo resize2fs /dev/vg/mylvm 200M`
+    * `$ sudo lvreduce -L 200M /dev/vg/mylvm`
+    * `$ sudo mount /dev/vg/mylvm`
+* recent versions of the **lvm** utilities allow one to expand or shrink with one step instead of two (instead of using resize2fs)
+    * `$ sudo lvextend -r -L +100M /dev/vg/mylvm`
+    * `$ sudo lvreduce -r -L -100M /dev/vg/mylvm`
+    * these use the underlying **fsadm** utility
+* reduce a volume group:
+    * `$ sudo pvmove /dev/sdc1`
+    * `$ sudo vgreduce vg /dev/sdc1`
+
 ### 23.12: LVM Snapshots
 ----
+* LVM snapshots create an exact copy of an existing logical volume
+    * they are useful for backups, application testing, and deploying VMs (Virtual Machines)
+    * the original state of the snapshot is kept as the block map
+    * snapshots only use space for storing deltas
+* example use:
+    * `$ sudo lvcreate -l 128 -s -n mysnap /dev/vg/mylvm` create a snapshot of an existing logical volume
+    * `$ mkdir /mysnap` make a mount point
+    * `$ mount -o ro /dev/vg/mysnap /mysnap` mount the snapshot
+    * `$ sudo umount /mysnap` unmount the snapshot
+    * `$ sudo lvremove /dev/vg/mysnap` remove the snapshot
+* always be sure to remove the snapshot when you are through with it
+    * if you do not remove the snapshot and it fills up because of changes, it will be automatically disabled
+    * a snapshot with the size of the original will never overflow
+
 ### 23.13: LVM Demo
 ----
+
+### 23.14: Knowledge Check 23.1
+----
+PVs are grouped into VGs. VGs are split into LVs.
+
+### 23.14: Knowledge Check 23.2
+----
+What is the best logical order of actions needed to make a new disk available using **LVM**?
+1. Partition the disk
+2. Create a physical volume
+3. Create a volume group
+4. Allocate a logical volume
+5. Format the logical volume
+6. Mount the logical volume
+
 ### Lab 23.1: Logical Volumes
 ----
+
 ### Paths and Commands
 ----
   
@@ -122,4 +182,23 @@ lvm | `$ sudo pvcreate /dev/sdc1` | initializes a PV so that it is recognized as
 lvm | `$ sudo vgcreate -s 16M vg /dev/sdb1` | creates a new VG on block devices | LFS201 23.8
 lvm | `$ sudo vgextend vg /dev/sdc1` | adds one or more PVs to a VG | LFS201 23.8
 lvm | `$ sudo lvcreate -L 50G -n mylvm vg` | creates a logical volume | LFS201 23.8
-
+lvm | `$ pvdisplay /dev/sda5` | shows physical volumes; leave off physical volume name to list all | LFS201 23.9
+lvm | `*$ vgdisplay /dev/vg0` | shows volume groups; leave off volume group name to list all | LFS201 23.9
+lvm | `*$ lvdisplay /dev/vg0/lvm1` | shows logical volumes; leave off logical volume name to list all | LFS201 23.9
+lvm | `$ sudo lvresive -r -L 20 GB /dev/VG/mylvm` | resizes the volume, where **-r** also resizes the filesystem | LFS201 23.10
+lvm | 1 `$ sudo lvextend -L +500M /dev/vg/mylvm` | grow a logical volume with ext4 filesytem | LFS201 23.11
+lvm | 2 `$ sudo resize2fs /dev/vg/mylvm` | grow a logical volume with ext4 filesytem | LFS201 23.11
+lvm | 1 `$ sudo umount /mylvm` | shrink the filesystem | LFS201 23.11
+lvm | 2 `$ sudo fsck -f /dev/vg/mylvm` | shrink the filesystem | LFS201 23.11
+lvm | 3 `$ sudo resize2fs /dev/vg/mylvm 200M` | shrink the filesystem | LFS201 23.11
+lvm | 4 `$ sudo lvreduce -L 200M /dev/vg/mylvm` | shrink the filesystem | LFS201 23.11
+lvm | 5 `$ sudo mount /dev/vg/mylvm` | shrink the filesystem | LFS201 23.11
+lvm | `$ sudo lvextend -r -L +100M /dev/vg/mylvm` | expand in one step (without **resize2fs** directly) | LFS201 23.11
+lvm | `$ sudo lvreduce -r -L -100M /dev/vg/mylvm` | shrink in one step (without **resize2fs** directly) | LFS201 23.11
+lvm | 1 `$ sudo pvmove /dev/sdc1` | reduce a volume group | LFS201 23.11
+lvm | 2 `$ sudo vgreduce vg /dev/sdc1` | reduce a volume group | LFS201 23.11
+lvm | 1 `$ sudo lvcreate -l 128 -s -n mysnap /dev/vg/mylvm` | create a snapshot of an existing logical volume | LFS201 23.12
+lvm | 2 `$ mkdir /mysnap` | make a mount point | LFS201 23.12
+lvm | 3 `$ mount -o ro /dev/vg/mysnap /mysnap` | mount the snapshot | LFS201 23.12
+lvm | 4 `$ sudo umount /mysnap` | unmount the snapshot | LFS201 23.12
+lvm | 5 `$ sudo lvremove /dev/vg/mysnap` | remove the snapshot | LFS201 23.12
