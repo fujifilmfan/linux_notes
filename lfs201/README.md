@@ -28,7 +28,7 @@ Contents
 [Chapter 23: Logical Volume Management (LVM)](lfs201_chapter_notes/lfs201-23-logical_volume_management_lvm.md)  
 [Chapter 24: RAID](lfs201_chapter_notes/lfs201-24-raid.md)  
 [Chapter 25: Kernel Services and Configuration](lfs201_chapter_notes/lfs201-25-kernel_services_config.md)  
-
+[Chapter 26: Kernel Modules](lfs201_chapter_notes/lfs201-26-kernel_modules.md)  
 
 ### Paths
 ----
