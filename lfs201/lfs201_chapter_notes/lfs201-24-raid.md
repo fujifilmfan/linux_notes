@@ -2,18 +2,13 @@ Chapter 24: RAID
 ----------------
 
 [24.3: Learning Objectives](#243-learning-objectives)  
-[24.4: RAID](#24.4: RAID)   
-[24.5: RAID levels](#24.5: RAID levels)  
-[24.6: Software RAID Configuration](#24.6: Software RAID Configuration)  
-[24.7: Monitoring RAIDs](#24.7: Monitoring RAIDs)  
-[24.8: RAID Hot Spares](#24.8: RAID Hot Spares)  
-[Lab 24.1: Creating a RAID Device](#Lab 24.1: Creating a RAID Device)  
-[](#)  
-[](#)  
-[](#)  
-[](#)  
-[](#)  
-
+[24.4: RAID](#244-raid)   
+[24.5: RAID Levels](#245-raid-levels)  
+[24.6: Software RAID Configuration](#246-software-raid-configuration)  
+[24.7: Monitoring RAIDs](#247-monitoring-raids)  
+[24.8: RAID Hot Spares](#248-raid-hot-spares)  
+[24.9: Knowldege Check 24.1](#249-knowldege-check-241)  
+[Lab 24.1: Creating a RAID Device](#lab-241-creating-a-raid-device)  
 [Paths and Commands](#paths-and-commands)  
   
 ### 24.3: Learning Objectives
@@ -36,7 +31,7 @@ By the end of this chapter, you should be able to:
 * **mdadm** is used to create and manage RAID devices
 * once created, the array name, `/dev/mdX` can be used like any other device
 
-### 24.5: RAID levels
+### 24.5: RAID Levels
 ----
 * **RAID 0** uses only striping; data is spread across multiple disks; no redundancy; no stability or recovery capabilities; performance can be improved significantly because of parallelization of I/O tasks
 * **RAID 1** uses only mirroring; each disk has a duplicate; good for recovery; at least two disks are required
@@ -80,8 +75,28 @@ By the end of this chapter, you should be able to:
 
 ### 24.7: Monitoring RAIDs
 ----
+* `$ sudo mdadm --detail /dev/md0` monitor RAID device
+* `$ cat /pro/mdstat` monitor RAID device
+* `$ sudo systemctl start mdmonitor` start monitoring RAID device with **mdmonitor**
+* `$ sudo systemctl enable mdmonitor` ensure **mdmonitor** starts at boot
+
 ### 24.8: RAID Hot Spares
 ----
+* **hot spares** help ensure reduction in redundancy is fixed quickly
+* `$ sudo mdadm --create /dev/md0 -l 5 -n3 -x 1 /dev/sda8 /dev/sda9 /dev/sda10 /dev/sda11` create a hot spare when creating the RAID array (** -x 1** switch)
+* `$ sudo mdadm --fail /dev/md0 /dev/sdb2` test redundancy and hot spare of the array
+* `$ sudo mdadm --remove /dev/md0 /dev/sdb2` remove faulty drive in test or failure situation
+* `$ sudo mdadm --add /dev/md0 /dev/sde2` add new drive in test or failure situation
+
+### 24.9: Knowldege Check 24.1
+----
+You added two new disks to a server. In which order would you use the following commands to create a RAID device with `/dev/sdb1` and `/dev/sdc1`, and then make the RAID device available using an ext4 filesystem?
+1. `$ fdisk /dev/sdb; fdisk /dev/sdc`
+2. `$ mdadm --create /dev/md0 ... /dev/sdb1 /dev/sdc1`
+3. `$ mkfs.ext4 /dev/md0`
+4. `$ mdadm --detail --scan >> /etc/mdadm.conf`
+5. `$ reboot`
+
 ### Lab 24.1: Creating a RAID Device
 ----
 
@@ -93,9 +108,27 @@ By the end of this chapter, you should be able to:
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 raid | `/dev/mdX` | RAID device | LFS201 24.4
+raid | `/proc/mdstat` | RAID status | LFS201 24.6
 
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 raid | `$ sudo mdadm -S` | stop RAID | LFS201 24.6
+raid | 1 `$ sudo fdisk /dev/sdb; sudo fdisk /dev/sdc` | create partitions | LFS201 24.6
+raid | 2 `$ sudo mdadm --create /dev/md0 --level=1 --raid-disks=2 /dev/sdbX /dev/sdcX` or `$ mdadm --create /dev/md0 ... /dev/sdb1 /dev/sdc1` | set up array | LFS201 24.6
+raid | 3 `$ sudo mkfs.ext4 /dev/md0` | format array | LFS201 24.6
+raid | 4 `$ sudo bash -c "mdadm --detail --scan >> /etc/mdadm.conf"` | add array to configuration | LFS201 24.6
+raid | 5 `$ sudo mkdir /myraid` | create RAID directory | LFS201 24.6
+raid | 6 `$ sudo mount /dev/md0 /myraid` | mount RAID directory | LFS201 24.6
+raid | 7 `$ sudo vim /etc/fstab` | add a line (`/dev/md0 /myraid ext4 defaults 0 2`) for the mount point | LFS201 24.6
+raid | `$ cat /proc/mdstat` | check RAID status | LFS201 24.6
+raid | `$ sudo mdadm -S /dev/md0` | stop RAID device | LFS201 24.6
+raid | `$ sudo mdadm --detail /dev/md0` | monitor RAID device | LFS201 24.7
+raid | `$ cat /pro/mdstat` | monitor RAID device | LFS201 24.7
+raid | `$ sudo systemctl start mdmonitor` | start monitoring RAID device with **mdmonitor** | LFS201 24.7
+raid | `$ sudo systemctl enable mdmonitor` | ensure **mdmonitor** starts at boot | LFS201 24.7
+raid | `$ sudo mdadm --create /dev/md0 -l 5 -n3 -x 1 /dev/sda8 /dev/sda9 /dev/sda10 /dev/sda11` | create a hot spare when creating the RAID array (** -x 1** switch) | LFS201 24.8
+raid | `$ sudo mdadm --fail /dev/md0 /dev/sdb2` | test redundancy and hot spare of the array | LFS201 24.8
+raid | `$ sudo mdadm --remove /dev/md0 /dev/sdb2` | remove faulty drive in test or failure situation | LFS201 24.8
+raid | `$ sudo mdadm --add /dev/md0 /dev/sde2` | add new drive in test or failure situation | LFS201 24.8
