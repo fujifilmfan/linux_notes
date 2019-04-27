@@ -1,4 +1,4 @@
-Chapter 19: Filesystem Features II: Swap, Quatas, Usage
+Chapter 19: Filesystem Features II: Swap, Quotas, Usage
 -------------------------------------------------------
 
 [19.3: Learning Objectives](#193-learning-objectives)  
