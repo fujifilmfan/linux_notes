@@ -158,7 +158,8 @@ By the end of this chapter, you should be able to:
 
 ### 28.19: Managing KVM
 ----
-
+No notes  
+  
 ### Lab 28.1: Ensuring KVM Is Properly Set Up
 ----
 
@@ -175,12 +176,12 @@ By the end of this chapter, you should be able to:
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-`/proc/cpuinfo` has CPU information, including virtualization abilities | LFS201 28.9
+virtualization | `/proc/cpuinfo` has CPU information, including virtualization abilities | LFS201 28.9
 
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-`$ ls -lF /usr/bin/virt*` | see which utilities are using *libvirt* (?) | LFS201 28.14
-`$ qemu-img --help | grep formats:` | get list of supported formats | LFS201 28.17
-`$ qemu-img convert -O vmdk myvm.qcow2 myvm.vmdk` | translate between disk image file formats | LFS201 28.17
+virtualization | `$ ls -lF /usr/bin/virt*` | see which utilities are using *libvirt* (?) | LFS201 28.14
+virtualization | `$ qemu-img --help | grep formats:` | get list of supported formats | LFS201 28.17
+virtualization | `$ qemu-img convert -O vmdk myvm.qcow2 myvm.vmdk` | translate between disk image file formats | LFS201 28.17
