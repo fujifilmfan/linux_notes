@@ -5,6 +5,7 @@ Chapter 11: Text Editors
 [11.1: Basic Editors: nano and gedit](#111-basic-editors:-nano-and-gedit)  
 [11.2: More Advanced Editors: vi and emacs](#102-more-advanced-editors-vi-and-emacs)  
 [11.3: Summary](#113-summary)  
+[Paths and Commands](#paths-and-commands)  
   
 ### 11.0: Introduction/ Learning Objectives
 ----
@@ -328,21 +329,32 @@ You have completed this chapter. Let’s summarize the key concepts covered:
 * vi has three modes: **Command**, **Insert**, and **Line**; **emacs** has only one, but requires use of special keys, such as **Control** and **Escape**.
 * Both editors use various combinations of keystrokes to accomplish tasks; the learning curve to master these can be long, but once mastered using either editor is extremely efficient.
   
+### Paths and Commands
+----
   
-COMMANDS:  
-11.1  
-`$ echo line one > myfile`  
-`$ echo line two >> myfile`  
-`$ echo line three >> myfile`  
-`$ cat << EOF > myfile`  
-`> line one`  
-`> line two`  
-`> line three`  
-`> EOF`  
-11.2  
-from within vi:
-`: sh`  
-`: ! wc %`  
-`$ `  
+#### Paths  
 
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
 
+  
+#### Commands  
+
+Topics | Command | Notes | Reference
+------ | ------- | ----- | ---------
+files, text | 1 `$ echo line one > myfile` | create file and write a line to it| LFS101 11.1  
+files, text | 2 `$ echo line two >> myfile` | add a second line to the file | LFS101 11.1  
+files, text | 3 `$ echo line three >> myfile` | add a third line to the file | LFS101 11.1  
+files, text | 1 `$ cat << EOF > myfile` | create and add lines to a file using **cat** | LFS101 11.1  
+files, text | 2 `> line one` | create and add lines to a file using **cat** | LFS101 11.1  
+files, text | 3 `> line two` | create and add lines to a file using **cat** | LFS101 11.1  
+files, text | 4 `> line three` | create and add lines to a file using **cat** | LFS101 11.1  
+files, text | 5 `> EOF` | create and add lines to a file using **cat** | LFS101 11.1  
+apps | `$ vimtutor` | opens **vim** tutorial | LFS101 11.2
+apps, files, text | `$ nano ...` | edit files | LFS101 11.2
+apps, files, text | `$ gedit ...` | edit files in GNOME desktop | LFS101 11.2
+apps, files, text | `$ kwrite ...` | edit files | LFS101 11.2
+apps, files, text | `$ vi ...` or `$ vim ...` | edit files | LFS101 11.2
+apps, files, text | `$ emacs ...` | edit files | LFS101 11.2
+apps, text | **vi** `: sh` | open an external command shell | LFS101 11.2  
+apps, text | **vi** `: ! wc %` | runs word count on current file| LFS101 11.2  
