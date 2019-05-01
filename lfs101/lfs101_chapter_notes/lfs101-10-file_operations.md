@@ -7,7 +7,7 @@ Chapter 10: File Operations
 [10.3: Comparing Files and File Types](#103-comparing-files-and-file-types)  
 [10.4: Backing Up and Compressing Data](#104-backing-up-and-compressing-data)  
 [10.5: Summary](#105-summary)  
-Paths and Commands](#paths-and-commands)  
+[Paths and Commands](#paths-and-commands)  
 
 ### 10.0: Introduction/ Learning Objectives
 ----
