@@ -7,6 +7,7 @@ Chapter 12: User Environment
 [12.3: Recalling Previous Commands](#123-recalling-previous-commands)  
 [12.4: File Permissions](#124-file-permissions)  
 [12.5: Summary](#125-summary)  
+[Paths and Commands](#paths-and-commands)  
   
 ### 12.0: Introduction/ Learning Objectives
 ----
@@ -17,13 +18,13 @@ By the end of this chapter, you should be able to:
 * Use keyboard shortcuts.  
 * Use and define aliases.  
 * Use and set file permissions and ownership.  
-
+  
 ### 12.1: Accounts, Users, and Groups
 ----
 #### Identifying the Current User
 * logged-on users: `$ who` (for more detail, use `$ who -a`)
 * current user: `$ whoami`
-
+  
 #### Basics of Users and Groups
 * users are assigned a user ID (**uid**); normal users have a **uid** of 1000 or greater
 * **groups** organize users
@@ -32,7 +33,7 @@ By the end of this chapter, you should be able to:
 * users can have one or more group IDs (**gid**)
    * default one is same as the **uid**
    * numbers are associated with names through `/etc/passwd` and `/etc/group`
-   
+  
 #### Adding and Removing Users
 * only root user can add and remove users and groups
 * `$ sudo useradd bjmoose`
@@ -45,7 +46,7 @@ By the end of this chapter, you should be able to:
    * use `$ userdel -r bjmoose` to remove home dir, too
 * `$ id` info about current user
 * `$ id guardian999` info about another user
-
+  
 #### Adding and Removing Groups
 * `$ sudo /usr/sbin/groupadd anewgroup`  
 * `$ sudo /usr/sbin/groupdel anewgroup`  
@@ -56,7 +57,7 @@ By the end of this chapter, you should be able to:
      `$ groups rjsquirrel`  
      > bjmoose : rjsquirrel  
    * add new group:  
-     `$ sudo /usr/sbin/usermod -a -G a newgroup rjsquirrel`  
+     `$ sudo /usr/sbin/usermod -a -G anewgroup rjsquirrel`  
      `-a` avoids removing existing groups  
      `-g` change group properties by group ID  
      `-n` change group properties by name  
@@ -67,34 +68,34 @@ By the end of this chapter, you should be able to:
      `-G` takes complete list of groups (any not written will be removed)
    * `$ groups rjsquirrel`
      > rjsquirrel : rjsquirrel  
-     
+  
 #### The root Account
 * aka **administrator** or **superuser**
 * **sudo**:
    * temporary
    * only for a specific set of commands
-
+  
 #### su and sudo
 * use **su** to become root in a new shell
    * dangerous
    * not recommended
 * using **sudo** is less dangerous and preferred
    * must be enabled on a per-user basis on most distributions
-   
+  
 #### Elevating to root Account
 * type **su** and then enter root password
 * for one command with root privilege: `$ sudo <commmand>`
 * **sudo** config files in `/etc/sudoers` and `/etc/sudoers.d/`
-
+  
 #### User Startup Files
 * global settings for all users defined in `/etc`
 * other initialization files in user's home directory
 * startup files can be used for:
-   * Customizing the  prompt
+   * Customizing the prompt
    * Defining command-line shortcuts and aliases
    * Setting the default text editor
    * Setting the path for where to find executable programs.
-
+  
 #### Order of the Startup Files
 * `/etc/profile` read and evaluated, then these startup files in order:
 * `~/.bash_profile`
@@ -104,14 +105,15 @@ By the end of this chapter, you should be able to:
 * when opening a new shell or window, only `~/.bashrc` is read and evaluated
    * for **Ubuntu**, **openSUSE**, and **CentOS**, the user must make appropriate changes in `~/.bash_profile` to have it include  `~/.bashrc`.
    * since `~/.bash_profile` is only executed at login, many users only fiddle with `~/.bashrc`
-
+  
 #### Creating Aliases
 * `$ alias` to see currently defined aliases
-
+  
 #### Try-It-Yourself: Identify the Currently Logged-In User and User
 Okay
-
+  
 #### Lab 12.1 (Lab 1): Deploying aliases
+```
 Typing long commands and filenames over and over gain gets rather tedious, and leads to a lot of trivial errors, such as typos.  
 Deploying aliases allows us to define shortcuts to alleviate the pain of all of this typing.  
 Suppose you are a member of a project team that works in a common, shared directory for your project. This directory is located in `/home/staff/RandD/projects/projectX/src`.  
@@ -119,10 +121,11 @@ When you are working on Project X, you often need to create and modify your file
    `cd /home/staff/RandD/projects/projectX/src`  
 gets tedious.  
 Define and use an alias named **projx** to do the above **cd** command for you.  
+```
   
 My solution: `alias projx='cd /home/staff/RandD/projects/projectX/src'`  
 Lab solution: double quotes could also be used (or no quotes since there is no white space in the alias)  
-
+  
 ### 12.2: Environment Variables
 ----
 #### Environment Variables
@@ -130,18 +133,18 @@ Three ways to see currently set environment variables (each has different output
 * `$ set`
 * `$ env`
 * `$ export` 
-
+  
 #### Setting Environment Variables
 * variables created within script are only available to current shell, not **child processes** (sub-shells)
 * use **export** to allow child processes to see the values
-
+  
 Task                                  | Command
 ----                                  | -------
 Show the value of a specific variable | `$ echo $SHELL`
 Export a new variable value           | `$ export VARIABLE=value` (or `VARIABLE=value; export VARIABLE`)
 Add a variable permanently 	          | 1. Edit `~/.bashrc` and add the line `export VARIABLE=value`
 *cont.*                               | 2. Type `$ source ~/.bashrc` or just `$ . ~/.bashrc` (dot ~/.bashrc); or just start a new shell by typing `$ bash`
-
+  
 #### The HOME Variable
 * **HOME** represents the home directory  
 * **~** is often used to abbreviate `$HOME`  
@@ -156,7 +159,7 @@ Command        | Explanation
 `$ cd`         | Change directory without an argument...
 `$ pwd`        | ...takes us back to HOME
 `/home/me`     | as you can now see
-
+  
 #### The PATH Variable
 * PATH is an ordered list of directories
 * null directory or `./` indicates current directory at any given time
@@ -166,7 +169,7 @@ Command        | Explanation
    * `$ export PATH=$HOME/bin:$PATH`  
    * `$ echo $PATH`  
      > /home/me/bin:/usr/local/bin:/usr/bin:/bin/usr
-     
+  
 #### The PS1 Variable and the Command Line Prompt
 * **prompt statement** (PS) used to customize **prompt** string  
 * `PS1` is the primary prompt variable; special characters:  
@@ -179,10 +182,10 @@ Character | Meaning
 `\w`      | current working directory
 `\!`      | history number of this command
 `\d`      | date
-
+  
 #### The SHELL Variable
 * SHELL points to user's default command shell
-
+  
 #### Lab 12.2a (Lab 2): Adding /tmp to Your Path
 ```
 Create a small file, **/tmp/ls**, which contains just the line:  
@@ -197,7 +200,7 @@ What are the security considerations in altering the path this way?
 My solution:  
 1. `$ export PATH=$PATH:/tmp` - the usual ls runs  
 2. `$ export PATH=/tmp:$PATH` - the fake ls runs  
-
+  
 Lab solution:  
 ```
 First create the phony ls program, using an editor, or just simply doing:
@@ -222,7 +225,7 @@ For the next two steps it is a good idea to work in another terminal window, or 
 
 Note the second form is a very dangerous thing to do, and is a trivial way to insert a Trojan Horse program; if someone can put a malicious program in /tmp, they can trick you into running it accidentally. 
 ```
-
+  
 #### Lab 12.2b (Lab 3): Changing the Command Line Prompt
 ```
 It is nice to have your current working directory as part of your prompt so that a quick glance will give you some information without typing pwd every time.
@@ -238,7 +241,7 @@ My solution:
 1. export PS1='\w $ '
 2. export PS1='\h $ '
 3. export PS1='\u@\h \w $ '
-
+  
 This can be made persistent by putting the commands in `~/.bash_profile` or `~/.bashrc`  
 Lab solution:  
 ```
@@ -253,15 +256,15 @@ Lab solution:
 3. $ PS1='\h:\w>'
    > student:/tmp>
 ```
-
+  
 ### 12.3: Recalling Previous Commands
 ----
 #### Recalling Previous Commands
 * **Up** and **Down** cursor keys or `$ history` can be used to see previous commands
 * history stored in `~/.bash_history`
-
+  
 #### Using History Environment Variables
-
+  
 Variable     | Meaning
 --------     | -------
 HISTFILE     | The location of the history file. 
@@ -269,9 +272,9 @@ HISTFILESIZE | The maximum number of lines in the history file (default 500).
 HISTSIZE     | The maximum number of commands in the history file. 
 HISTCONTROL  | How commands are stored. 
 HISTIGNORE   | Which command lines can be unsaved.
-
+  
 #### Finding and Using Previous Commands
-
+  
 Key                                | Usage
 ---                                | -----
 **Up**/**Down** arrow keys         | Browse through the list of commands previously executed
@@ -283,7 +286,7 @@ Using `CTRL-R`:
   > (reverse-i-search)'s': sleep 1000  # Searched for 's'; matched "sleep"  
 * `$ sleep 1000`                       # Pressed Enter to execute the searched command.  
 * `$ `  
-
+  
 #### Executing Previous Commands
 Syntax    | Task
 ------    | ----
@@ -291,7 +294,7 @@ Syntax    | Task
 `!$`      | Refer to the last argument in a line
 `!n`      | Refer to the nth command line
 `!string` | Refer to the most recent command starting with string
-
+  
 * all history substitutions begin with `!`  
 * in the line `$ ls -l /bin /etc /var`, `!$` refers to `/var`  
 * example:  
@@ -309,7 +312,7 @@ Syntax    | Task
    * `$ !sl`  # Execute the command beginning with "sl"
       * sleep 1000
    * `$ `
-
+  
 #### Keyboard Shortcuts
 Keyboard Shortcut | Task
 ----------------- | ----
@@ -323,7 +326,7 @@ CTRL-W            | Deletes the word before the cursor
 CTRL-U            | Deletes from beginning of line to cursor position
 CTRL-E            | Goes to the end of the line
 Tab               | Auto-completes files, directories, and binaries
-
+  
 #### Lab 12.3 (Lab 4): Command History
 ```
 You have been busy working with your Linux workstation long enough to have typed in about 100 commands in one particular bash command shell.  
@@ -364,18 +367,18 @@ student:/tmp> !man
 
 now that you remember the command name that you typed. Finally, if you had typed a few man commands, you could use CTRL-R to search backward in your history to find the specific man command that you want to re-run, and then just hit Return to execute it. 
 ```
-
+  
 ### 12.4: File Permissions
 ----
 #### File Ownership
 * every file is associated with a user who is the **owner**
 * every file also associated with a **group**
-
+  
 Command | Usage
 `chown` | Used to change user ownership of a file or directory
 `chgrp` | Used to change group ownership
 `chmod` | Used to change the permissions on the file, which can be done separately for **owner**, **group** and the rest of the world (often named as **other**.)
-
+  
 #### File Permission Modes and chmod
 Example 1:  
 * `$ ls -l somefile`  
@@ -383,7 +386,7 @@ Example 1:
 * `$ chmod uo+x,g-w somefile`  
 * `$ ls -l somefile`  
   > -rwxr--r-x 1 coop coop 1601 Mar 9 15:04 somefile  
-
+  
 Example 2:  
 * `$ chmod 755 somefile`  
 * `$ ls -l somefile`  
@@ -391,10 +394,10 @@ Example 2:
   
 #### Example of chown
 See "12.4 - chown rhel7.png"
-
+  
 #### Example of chgrp
 See "12.4 - chgroup rhel7.png"
-
+  
 #### Try-It-Yourself: Using chmod to Change File Permissions
 ```
 Tasks to be performed:
@@ -407,7 +410,7 @@ Tasks to be performed:
 5. View the files present in the current directory in the long listing format.
 ```
 Done  
-
+  
 ### 12.5: Summary
 ----
 You have completed this chapter. Let's summarize the key concepts covered:
@@ -425,87 +428,85 @@ You have completed this chapter. Let's summarize the key concepts covered:
 * File permissions can be changed by typing `chmod permissions filename`.
 * File ownership is changed by typing `chown owner filename`.
 * File group ownership is changed by typing `chgrp group filename`.
+  
+### Paths and Commands
+----
+  
+#### Paths  
 
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+accounts, system | `/etc/group` | controls group membership | LFS101 12.1  
+accounts, system | `/etc/passwd` | associates IDs with usernames | LFS101 12.1  
+accounts, system | `/etc/skel` | basic files used to populate a new user account | LFS101 12.1  
+accounts | `/etc/sudoers` | contains config files for **sudo** | LFS101 12.1  
+accounts | `/etc/sudoers.d/` | contains config files for **sudo** | LFS101 12.1  
+accounts, system | `/etc` | contains global settings for all users | LFS101 12.1  
+accounts, environment | 1 `/etc/profile` | read and evaluated at login | LFS101 12.1  
+accounts, environment | 2 `~/.bash_profile` | then this startup file is read | LFS101 12.1  
+accounts, environment | 3 `~/.bash_login` | then this startup file is read | LFS101 12.1  
+accounts, environment | 4 `/.profile` | then this startup file is read | LFS101 12.1  
+accounts, environment | `~/.bashrc` | read when opening a new shell or window | LFS101 12.1  
+accounts, environment | `~/.bash_history` | stores Bash history | LFS101 12.3
+  
+#### Commands  
 
-PATHS:  
-12.1  
-`/etc/group`  
-`/etc/passwd`  
-`/etc/skel`  
-`/etc/sudoers`  
-`/etc/sudoers.d/`  
-`/etc/profile`  
-`~/.bash_profile`  
-`~/.bash_login`  
-`/.profile`  
-`~/.bashrc`  
-
-12.3  
-`~/.bash_history`  
-
-COMMANDS:  
-12.1  
-`$ who`  
-`$ who -a`  
-`$ whoami`  
-`$ sudo useradd bjmoose`  
-`$ userdel bjmoose`  
-`$ userdel -r bjmoose`  
-`$ id`  
-`$ id guardian999`  
-`$ sudo /usr/sbin/groupadd anewgroup`  
-`$ sudo /usr/sbin/groupdel anewgroup`  
-`$ groups` group membership of current user  
-`$ groups guardian999` groups of another user  
-`$ groups rjsquirrel`  
-`$ sudo /usr/sbin/usermod -a -G a newgroup rjsquirrel`  
-`$ sudo /usr/sbin/usermod -G rjsquirrel rjsquirrel`  
-`$ su`  
-`$ sudo <commmand>`  
-`$ alias`
-`$ alias somealias='somecommand'`  
-
-12.2 
-`$ set`  
-`$ env`  
-`$ export`  
-`$ echo $SHELL`  
-`$ export VARIABLE=value`  
-`$ VARIABLE=value; export VARIABLE`  
-`$ source ~/.bashrc`  
-`$ . ~/.bashrc`  
-`$ bash`  
-`$ echo $HOME`  
-`$ cd /bin`  
-`$ pwd`  
-`$ cd`  
-`$ export PATH=$HOME/bin:$PATH`  
-`$ echo $PATH`  
-`$ export PS1='\u@\h:\w$ '`  
-`$ chmod +x /tmp/ls`  
-
-12.3  
-`$ history`  
-`$ !!`  
-`$ ^R`  
-`$ !`  
-`$ !$`  
-`$ !n`  
-`$ !string`  
-`$ ^L`  
-`$ ^D`  
-`$ ^Z`  
-`$ ^C`  
-`$ ^H`  
-`$ ^A`  
-`$ ^W`  
-`$ ^U`  
-`$ ^E`  
-`$ ⇥`  
-
-12.4  
-`$ chmod <permissions> <filename>`  
-`$ chmod uo+x,g-w somefile`  
-`$ chmod 755 somefile`  
-`$ chown <owner> <filename>`
-`$ chgrp <group> <filename>`  
+Topics | Command | Notes | Reference
+------ | ------- | ----- | ---------
+bash, environment | `$ who` | shows logged-on users | LFS101 12.1  
+bash, environment | `$ who -a` | shows more detail about logged-on users | LFS101 12.1  
+bash, environment | `$ whoami` | shows the current user | LFS101 12.1  
+accounts | `$ sudo useradd bjmoose` | add user "bjmoose" | LFS101 12.1  
+accounts | `$ userdel bjmoose` | deletes user "bjmoose", leaves home directory intact | LFS101 12.1  
+accounts | `$ userdel -r bjmoose` | deletes user "bjmoose" and removes home directory | LFS101 12.1  
+accounts | `$ id` | shows info about current user | LFS101 12.1  
+accounts | `$ id guardian999` | shows info about another user | LFS101 12.1  
+accounts | `$ sudo /usr/sbin/groupadd anewgroup` | create a new group | LFS101 12.1  
+accounts | `$ sudo /usr/sbin/groupdel anewgroup` | delete a group | LFS101 12.1  
+accounts | `$ groups` | group membership of current user | LFS101 12.1  
+accounts | `$ groups guardian999` | groups of another user |  | LFS101 12.1  
+accounts | `$ sudo /usr/sbin/usermod -a -G anewgroup rjsquirrel` | add user to "rjsquirrel" to "anewgroup"; check current memberships | LFS101 12.1  
+accounts | `$ sudo /usr/sbin/usermod -G rjsquirrel rjsquirrel` | remove user from group by not adding full list of current memberships | LFS101 12.1  
+accounts | `$ su ...` | become root in a new shell | LFS101 12.1  
+accounts | `$ sudo <commmand>` | generic syntax | LFS101 12.1  
+bash, environment | `$ alias` | shows currently defined aliases | LFS101 12.1  
+bash, environment | `$ alias somealias='somecommand'` | create a new alias | LFS101 12.1  
+bash, environment | `$ set` | shows environment variables | LFS101 12.2  
+bash, environment | `$ env` | shows environment variables | LFS101 12.2  
+bash, environment | `$ export` | shows environment variables | LFS101 12.2  
+bash, environment | `$ echo $SHELL` | shows the value of the SHELL variable | LFS101 12.2  
+bash, environment | `$ export VARIABLE=value` | exports a new variable value | LFS101 12.2  
+bash, environment | `$ VARIABLE=value; export VARIABLE` | exports a new variable value | LFS101 12.2  
+accounts, environment | `$ source ~/.bashrc` | refresh environment after editing `.bashrc` | LFS101 12.2  
+accounts, environment | `$ . ~/.bashrc` | efresh environment after editing `.bashrc` | LFS101 12.2  
+bash, environment | `$ bash` | starts a new shell | LFS101 12.2  
+bash, environment | `$ echo $HOME` | shows the value of the HOME variable | LFS101 12.2  
+bash | `$ cd /bin` | change to `/bin` directory | LFS101 12.2  
+bash | `$ pwd` | show current working directory | LFS101 12.2  
+bash | `$ cd` | change to home directory | LFS101 12.2  
+bash, environment | `$ export PATH=$HOME/bin:$PATH` | prefix `$HOME/bin` to the PATH | LFS101 12.2  
+bash, environment | `$ echo $PATH` | shows the value of the PATH variable | LFS101 12.2  
+bash, environment | `$ export PS1='\u@\h:\w$ '` | sets prompt to `me@example.com:~$` | LFS101 12.2  
+accounts, files, permissions | `$ chmod +x /tmp/ls` | makes a file executable | LFS101 12.2  
+bash | `$ history` | shows Bash history | LFS101 12.3  
+bash | `$ !!` | executes the previous command | LFS101 12.3  
+bash | `$ ^R` | searches previously used commands | LFS101 12.3  
+bash | `$ !` | starts a history substitution | LFS101 12.3  
+bash | `$ !$` | refers to the last argument in a line, like `/var` in `$ ls -l /bin /etc /var` | LFS101 12.3  
+bash | `$ !n` | refers to the nth command line | LFS101 12.3  
+bash | `$ !string` | refers to the most recent command starting with string | LFS101 12.3  
+bash | `$ ^L` | clears the screen | LFS101 12.3  
+bash | `$ ^D` | exits the current shell | LFS101 12.3  
+bash | `$ ^Z` | puts the current process into suspended background | LFS101 12.3  
+bash | `$ ^C` | kills the current process | LFS101 12.3  
+bash | `$ ^H` | works the same as backspace | LFS101 12.3  
+bash | `$ ^A` | goes to the beginning of the line | LFS101 12.3  
+bash | `$ ^W` | deletes the word before the cursor | LFS101 12.3  
+bash | `$ ^U` | deletes from beginning of line to cursor position | LFS101 12.3  
+bash | `$ ^E` | goes to the end of the line | LFS101 12.3  
+bash | `$ ⇥` (Tab) | auto-completes files, directories, and binaries | LFS101 12.3  
+accounts, files, permissions | `$ chmod <permissions> <filename>` | changes file permissions | LFS101 12.4  
+accounts, files, permissions | `$ chmod uo+x,g-w somefile` | changes file permissions | LFS101 12.4  
+accounts, files, permissions | `$ chmod 755 somefile` | changes file permissions | LFS101 12.4  
+accounts, files, permissions | `$ chown <owner> <filename>` | changes file user ownership | LFS101 12.4  
+accounts, files, permissions | `$ chgrp <group> <filename>` | change file group ownership | LFS101 12.4  
