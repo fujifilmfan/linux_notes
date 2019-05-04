@@ -5,7 +5,7 @@ Chapter 30: User Account Management
 [30.4: User Accounts](#304-user-accounts)  
 [30.5: Attributes of a User Account](#305-attributes-of-a-user-account)  
 [30.6: Creating User Accounts with useradd](#306-creating-user-accounts-with-useradd)  
-[30.7:: Modifying and Deleting User Accounts](#307:-modifying-and-deleting-user-accounts)  
+[30.7: Modifying and Deleting User Accounts](#307:-modifying-and-deleting-user-accounts)  
 [30.8: Locked Accounts](#308-locked-accounts)  
 [30.9: User IDs and /etc/passwd](#309-user-ids-and-etcpasswd)  
 [30.10: Why Use /etc/shadow?](#3010-why-use-etcshadow)  
@@ -74,7 +74,7 @@ By the end of this chapter, you should be able to:
 * defaults can be overruled by using **useradd** options as in:
     * `$ sudo useradd -s /bin/csh -m -k /etc/skel -c "Bullwinkle J Moose" bmoose`
   
-### 30.7:: Modifying and Deleting User Accounts
+### 30.7: Modifying and Deleting User Accounts
 ----
 * `$ sudo userdel morgan` delete the user **morgan**
     * all references will be removed from `/etc/passwd`, `/etc/shadow`, and `/etc/group`

@@ -17,7 +17,7 @@ By the end of this chapter, you should be able to:
 * Describe User Private Groups.
 * Explain the concept of group membership.
   
-### 31.4. Groups
+### 31.4: Groups
 ----
 * users belong to one or more groups
 * users in the same group share certain files and directories
@@ -35,7 +35,7 @@ By the end of this chapter, you should be able to:
     * GID: group identifier; 0 - 99 for system groups, 100 - GID_MIN (defined in `/etc/login.defs`) are special, > GID_MIN are for **UPG** (User Privage Groups)
     * user1, user2, ...: comma-separated list of users who are members of the group; user need not be listed here if the group is the user's principal group
   
-### 31.5. Group Management
+### 31.5: Group Management
 ----
 * `$ groupadd ...` adds a new group
 * `$ groupdel ...` removes a group
@@ -49,7 +49,7 @@ By the end of this chapter, you should be able to:
     * `$ sudo usermod -G student,group1,group2 student` assign "student" to the comma-separated list of groups; the user will be removed from any groups not listed unless **-a** option is used
     * `$ useradd -G <group name>` adds a user to an existing group when creating the user
   
-### 31.6. User Private Groups
+### 31.6: User Private Groups
 ----
 * the idea of UPGs is that each user has their own group, but other users can be added, so they are not guaranteed to be private
 * user created with **useradd** have primary GID = UID, and the group name is the same as the user name
@@ -58,7 +58,7 @@ By the end of this chapter, you should be able to:
     * see Chapter 32 for notes on **umask**
 * `/etc/bashrc` contains system-wide functions and aliases
   
-### 31.7. Group Membership
+### 31.7: Group Membership
 ----
 * a user has one **primary** group, listed in `/etc/passwd` and in `/etc/group`
 *  a user may belong to 0 - 15 **secondary** groups
@@ -96,7 +96,7 @@ By the end of this chapter, you should be able to:
         student
         ```
   
-### 31.9. Lab 31.1: Working with Groups
+### 31.9: Lab 31.1: Working with Groups
 ----
 
 ### Paths and Commands
