@@ -137,22 +137,22 @@ Topics | Path | Notes | Reference
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-accounts, permissions | `$ chmod ...` | changes file permissions | LFS201 32.7
-accounts, permissions | `$ chomod uo+x,g-w a_file` | adds execution access for user and other and removes write access for group; symbolic form | LFS201 32.7
-accounts, permissions | `$ chmod 755 a_file` | gives all access to the user and read/execute to groups and other; octal form | LFS201 32.8
-accounts, permissions | `$ chown ...` | changes file ownership; only the superuser can do this | LFS201 32.9
-accounts, permissions | `$ chown wally somefile` | makes wally the owner of the file | LFS201 32.9
-accounts, permissions | `$ chgrp ...` | changes group ownership; you can only change group ownership to groups you are a member of | LFS201 32.9
-accounts, permissions | `$ chgrp cleavers somefile` | makes cleavers the group owner of the file | LFS201 32.9
-accounts, permissions | `$ chown wally:cleavers somefile` | changes both owner and group at the same time | LFS201 32.9
-accounts, permissions | `$ chown -R wally:cleavers ./` | changes owner and group recursively | LFS201 32.9
-accounts, permissions | `$ chown -R wally:wally subdir` | changes owner and group recursively | LFS201 32.9
-accounts, permissions | `$ umask` | shows which permissions should be denied (0002 on my machine) | LFS201 32.10
-accounts, permissions | `$ umask 0022` | changes the umask value | LFS201 32.10
-accounts, permissions | `$ getfacl <file|directory>` | see ACLs | LFS201 32.13
-accounts, permissions | `$ getfacl test` | see ACLs for test file | LFS201 32.13
-accounts, permissions | `$ setfacl <options> <permissions> <file|directory>` | sets ACLs | LFS201 32.13
-accounts, permissions | `$ setfacl -m u:isabelle:rx /home/stephane/file1` | modifies ACL of a file or directory | LFS201 32.13
-accounts, permissions | `$ setfacl -x u:isabelle /home/stephane/file` | removes ACL entries | LFS201 32.13
-accounts, permissions | `$ setfacl -m d:u:isabelle:rx somedir` | sets default on a directory | LFS201 32.13
+accounts, files, permissions | `$ chmod ...` | changes file permissions | LFS201 32.7
+accounts, files, permissions | `$ chomod uo+x,g-w a_file` | adds execution access for user and other and removes write access for group; symbolic form | LFS201 32.7
+accounts, files, permissions | `$ chmod 755 a_file` | gives all access to the user and read/execute to groups and other; octal form | LFS201 32.8
+accounts, files, permissions | `$ chown ...` | changes file ownership; only the superuser can do this | LFS201 32.9
+accounts, files, permissions | `$ chown wally somefile` | makes wally the owner of the file | LFS201 32.9
+accounts, files, permissions | `$ chgrp ...` | changes group ownership; you can only change group ownership to groups you are a member of | LFS201 32.9
+accounts, files, permissions | `$ chgrp cleavers somefile` | makes cleavers the group owner of the file | LFS201 32.9
+accounts, files, permissions | `$ chown wally:cleavers somefile` | changes both owner and group at the same time | LFS201 32.9
+accounts, files, permissions | `$ chown -R wally:cleavers ./` | changes owner and group recursively | LFS201 32.9
+accounts, files, permissions | `$ chown -R wally:wally subdir` | changes owner and group recursively | LFS201 32.9
+accounts, files, permissions | `$ umask` | shows which permissions should be denied (0002 on my machine) | LFS201 32.10
+accounts, files, permissions | `$ umask 0022` | changes the umask value | LFS201 32.10
+accounts, files, permissions | `$ getfacl <file|directory>` | see ACLs | LFS201 32.13
+accounts, files, permissions | `$ getfacl test` | see ACLs for test file | LFS201 32.13
+accounts, files, permissions | `$ setfacl <options> <permissions> <file|directory>` | sets ACLs | LFS201 32.13
+accounts, files, permissions | `$ setfacl -m u:isabelle:rx /home/stephane/file1` | modifies ACL of a file or directory | LFS201 32.13
+accounts, files, permissions | `$ setfacl -x u:isabelle /home/stephane/file` | removes ACL entries | LFS201 32.13
+accounts, files, permissions | `$ setfacl -m d:u:isabelle:rx somedir` | sets default on a directory | LFS201 32.13
   
