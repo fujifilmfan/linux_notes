@@ -130,9 +130,7 @@ By the end of this chapter, you should be able to:
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-
-
-
+  
 #### Commands  
 
 Topics | Command | Notes | Reference
