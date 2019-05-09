@@ -350,7 +350,30 @@ Image
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
+networks | `/etc/sysconfig/network` | stores persistent NIC configs on Red Hat | LFS201 35.11
+networks | `/etc/sysconfig/network-scripts/ifcfg-ethX` | stores persistent NIC configs on Red Hat | LFS201 35.11
+networks | `/etc/sysconfig/network-scripts/ifcfg-ethX:Y` | stores persistent NIC configs on Red Hat | LFS201 35.11
+networks | `/etc/sysconfig/network-scripts/route-ethX` | stores persistent NIC configs on Red Hat | LFS201 35.11
+networks | `/etc/network/interfaces` | stores persistent NIC configs on Debian | LFS201 35.11
+networks | `/etc/sysconfig/network` | stores persistent NIC configs on SUSE | LFS201 35.11
+networks | `/etc/sysconfig/network`, add **GATEWAY=x.x.x.x** | manually configure the default route directly on Red Hat-based systems | LFS201 35.18
+networks | `/etc/sysconfig/network-scripts/ifcfg-ethX`, add **GATEWAY=x.x.x.x** | manually configure the default route directly on Red Hat-based systems on a device-specific basis | LFS201 35.18
+networks | `/etc/network/interfaces`, add **gateway=x.x.x.x** | manually configure the default route directly on Debian-based systems | LFS201 35.18
+networks | `/etc/sysconfig/network-scripts/route-ethX` | edit this to set a persistent route on a Red Hat-based system | LFS201 35.19
+networks | `/etc/network/interfaces` | edit this to set a persistent route on a Debian-based system | LFS201 35.19
+networks | `/etc/sysconfig/network/ifroute-eth0` | edit this to set a persistent route on a SUSE-based system |  LFS201 35.19
+networks | `/etc/hosts` | used for static name resolution | LFS201 35.20
+networks | `/etc/hosts` | holds a local database of hostnames and IP addresses; maps IP addresses with corresponding hostnames and aliases | LFS201 35.21
+networks | `/etc/nsswitch.conf` | used to set DNS priority | LFS201 35.21
+networks | `/etc/hosts.deny` | searched after `allow` | LFS201 35.21
+networks | `/etc/hosts.allow` | searched first | LFS201 35.21
+networks | `/etc/host.conf` | contains general configuration information; rarely used | LFS201 35.21
+networks | `/etc/resolv.conf` | configures machine's usage of DNS | LFS201 35.22
+  
+#### Commands  
 
+Topics | Command | Notes | Reference
+------ | ------- | ----- | ---------
 networks | `$ ip ...` | used to configure, control and query interface parameters and control devices, routing, etc. | LFS201 35.5
 networks | `$ ip [ OPTIONS ] OBJECT { COMMAND | help }` | general syntax | LFS201 35.5
 networks | `$ ip [ -force ] -batch filename` | read and execute commands from FILENAME (**-batch**); don't terminate ip on errors in batch mode (**-force**) | LFS201 35.5
@@ -360,8 +383,6 @@ networks | `$ sudo ip addr add 192.168.1.7 dev eth0` | set the IP address for `e
 networks | `$ sudo ip link set eth0 down` | bring `eth0` down  | LFS201 35.6
 networks | `$ sudo ip link set eth0 mtu 1480` | set the **MTU** to 1480 bytes for `eth0` | LFS201 35.6
 networks | `$ sudo ip route add 172.16.1.0/24 via 192.168.1.5` | set the networking route | LFS201 35.6
-  
-
 networks | `$ ifconfig` | display information about all interfaces | LFS201 35.7
 networks | `$ ifconfig eth0` | display information about only `eth0` | LFS201 35.7
 networks | `$ sudo ifconfig eth0 192.168.1.50` | set the IP address to 192.168.1.50 on interface `eth0` | LFS201 35.7
@@ -369,16 +390,6 @@ networks | `$ sudo ifconfig eth0 netmask 255.255.255.0` | set the **netmask** to
 networks | `$ sudo ifconfig eth0 up` | bring interface `eth0` up | LFS201 35.7
 networks | `$ sudo ifconfig eth0 down` | bring interface `eth0` down | LFS201 35.7
 networks | `$ sudo ifconfig eth0 mtu 1480` | set the **MTU** to 1480 bytes for interface `eth0` | LFS201 35.7
-  
-networks | `/etc/sysconfig/network` | stores persistent NIC configs on Red Hat | LFS201 35.11
-networks | `/etc/sysconfig/network-scripts/ifcfg-ethX` | stores persistent NIC configs on Red Hat | LFS201 35.11
-networks | `/etc/sysconfig/network-scripts/ifcfg-ethX:Y` | stores persistent NIC configs on Red Hat | LFS201 35.11
-networks | `/etc/sysconfig/network-scripts/route-ethX` | stores persistent NIC configs on Red Hat | LFS201 35.11
-networks | `/etc/network/interfaces` | stores persistent NIC configs on Debian | LFS201 35.11
-networks | `/etc/sysconfig/network` | stores persistent NIC configs on SUSE | LFS201 35.11
-  
-  
-
 networks | `$ nmtui` | activates **nmtui** (NetworkManager Text User Interface) | LFS201 35.13
 networks | `$ nmcli ...` | NetworkManager Command Line Interface | LFS201 35.13
 networks | `$ man nmcli-examples` | get examples of **nmcli** use | LFS201 35.16
@@ -386,61 +397,17 @@ networks | `$ nmcli` | gives some device and connection information | LFS201 35.
 networks | `$ nmcli device show` | show detailed information about devices | LFS201 35.16
 networks | `$ nmcli connection show` | list in-memory and on-disk connection profiles | LFS201 35.16
 networks | `$ nmcli device status` | print status of devices | LFS201 35.16
-  
 networks | `$ route -n` | shows current routing table; **-n** is used to show numerical addresses instead of  symbolic host names | LFS201 35.17
 networks | `$ ip route` | shows current routing table | LFS201 35.17
 networks | `$ sudo nmcli con mod virbr0 ipv4.routes 192.168.10.0/24 +ipv4.gateway 192.168.122.0` | manually configure the default route | LFS201 35.18
 networks | `$ sudo nmcli con up virbr0` | manually configure the default route | LFS201 35.18
-networks | `/etc/sysconfig/network`, add **GATEWAY=x.x.x.x** | manually configure the default route directly on Red Hat-based systems | LFS201 35.18
-networks | `/etc/sysconfig/network-scripts/ifcfg-ethX`, add **GATEWAY=x.x.x.x** | manually configure the default route directly on Red Hat-based systems on a device-specific basis | LFS201 35.18
-networks | `/etc/network/interfaces`, add **gateway=x.x.x.x** | manually configure the default route directly on Debian-based systems | LFS201 35.18
 networks | `$ sudo route add default gw 192.168.1.10 enp2s0` | set default route at runtime | LFS201 35.18
 networks | `$ sudo route add default gw 192.168.1.1 enp2s0` | restore the default in the above example | LFS201 35.18
-
 networks | `$ sudo ip route add 10.5.0.0/16 via 192.168.1.100` | set a non-persistent route | LFS201 35.19
-networks | `/etc/sysconfig/network-scripts/route-ethX` | edit this to set a persistent route on a Red Hat-based system | LFS201 35.19
-networks | `/etc/network/interfaces` | edit this to set a persistent route on a Debian-based system | LFS201 networks | 35.19
-networks | `/etc/sysconfig/network/ifroute-eth0` | edit this to set a persistent route on a SUSE-based system |  LFS201 35.19
-networks | `/etc/hosts` | used for static name resolution | LFS201 35.20
 networks | `$ dig linuxfoundation.org` | resolves IP address; generates the most information and has many options | LFS201 35.20
 networks | `$ host linuxfoundation.org` | resolves IP address; more compact | LFS201 35.20
 networks | `$ nslookup linuxfoundation.org` | resolves IP address; older | LFS201 35.20
-networks | `/etc/hosts` | holds a local database of hostnames and IP addresses; maps IP addresses with corresponding hostnames and aliases | LFS201 35.21
-networks | `/etc/nsswitch.conf` | used to set DNS priority | LFS201 35.21
-networks | `/etc/hosts.deny` | searched after `allow` | LFS201 35.21
-networks | `/etc/hosts.allow` | searched first | LFS201 35.21
-networks | `/etc/host.conf` | contains general configuration information; rarely used | LFS201 35.21
+networks | `$ ping -c 10 linuxfoundation.org` | sends test packets to network hosts | LFS201 35.23
+networks | `$ traceroute linuxfoundation.org` | displays a network path to a destination | LFS201 35.23
+networks | `$ mtr linuxfoundation.org` | combines the functionality of ping and traceroute and creates a continuously updated display | LFS201 35.23
   
- |  | LFS201 35.22: DNS
-* if name resolution cannot be done locally using `/etc/hosts`, then the system will query a **DNS** (**D**omain **N**ame **S**erver) server
-* DNS is dynamic and consists of a network of servers which a client uses to look up names
-* the machine's usage of DNS is configured in `/etc/resolv.conf`, which historically has looked like:
-    ```
-    search example.com aps.org
-    nameserver 192.168.1.1
-    nameserver 8.8.8.8
-    ```
-* the `/etc/resolv.conf` file:
-    * can specify particular domains to search
-    * defines a strict order of nameservers to query
-    * may be manually configured or updated from a service such as **DHCP** (**D**ynamic **H**ost **C**onfiguration **P**rotocol)
-    * is automatically generated on most modern systems, in the following example, by NetworkManager invoking DHCP (Dynamic Host Configuration Protocol) on the primary network interface
-        ```
-        # Generated by NetworkManager
-        nameserver 192.168.1.1
-        ```
-  
- |  | LFS201 35.23: Network Diagnostics
-* **ping**: sends 64-byte test packets to designated network hosts and (if it finds them) tries to report back on the time required to reach it (in milliseconds), any lost packets, and some other parameters
-    * `$ ping -c 10 linuxfoundation.org`
-* **traceroute**: displays a network path to a destination; it shows the routers packets flow through to get to a host, as well as the time it takes for each hop
-    * `$ traceroute linuxfoundation.org`
-* **mtr** (**M**y **Tr**aceroute): combines the functionality of ping and traceroute and creates a continuously updated display, like top
-    * `$ mtr linuxfoundation.org`
-* **dig**: useful for testing DNS functionality
-  
-#### Commands  
-
-Topics | Command | Notes | Reference
------- | ------- | ----- | ---------
-
