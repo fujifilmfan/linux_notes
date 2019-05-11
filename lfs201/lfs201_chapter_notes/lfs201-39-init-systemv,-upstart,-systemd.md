@@ -1,8 +1,6 @@
 Chapter 39: init: SystemV, Upstart, systemd
 -------------------------------------------
 
-[39.1: init: SystemV, Upstart, systemd](#391-init-systemv,-upstart,-systemd)  
-[39.2: Chapter 39 Introduction](#392-chapter-39-introduction)  
 [39.3: Learning Objectives](#393-learning-objectives)  
 [39.4: The init Process](#394-the-init-process)  
 [39.5: Startup Alternatives](#395-startup-alternatives)  
