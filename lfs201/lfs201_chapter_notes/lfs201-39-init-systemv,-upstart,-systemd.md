@@ -145,29 +145,35 @@ S, s     | Same as 1
   
 ### 39.13: SysVinit Startup Scripts
 ----
-
-### 39.13.b: SysVinit Startup Scripts II
-----
-
+* first, `/etc/rc.d/rc.sysinit` is run (it often has a symbolic link to `/etc`)
+* second, `/etc/rc.d/rc` is run with the desired runlevel as an argument, causing the system to go to `rc.d/rc[0-6].d` and run the scripts there, as in:
+    * `$ ls -lF /etc/rc.d/rc5.d`
+* `/etc/rc.d/rc.local` script may be used to start system-specific applications
+    * all the actual scripts are in `/etc/init.d`; each runlevel directory just links back to them
+    * start scripts start with S in the name
+    * kill scripts start with K in the name
+    * the number following the K or S in each script's name determines the order in which the scripts are invoked
+    * the script name is the name of the service
+    * example:
+        ```
+        [student@centos /etc/rc.d/rc6.d]$ ls -l
+        total 0
+        lrwxrwxrwx. 1 root root 20 May 10  2018 K50netconsole -> ../init.d/netconsole
+        lrwxrwxrwx. 1 root root 17 May 10  2018 S10network -> ../init.d/network
+        ```
+* the existence or non-existence of a script's symbolic link in a runlevel directory determines whether or not the script is executed at that runlevel
+    * **chconfig** is used to manage these symbolic links
+  
 ### 39.14.a: chkconfig I
 ----
 
-### 39.14.b: chkconfig II
-----
-
 ### 39.15.a: service I
-----
-
-### 39.15.b: service II
 ----
 
 ### 39.16: chkconfig and service on Debian-based Systems
 ----
 
 ### 39.17.a: Upstart I
-----
-
-### 39.17.b: Upstart II
 ----
 
 ### 39.18: Upstart Utilities
