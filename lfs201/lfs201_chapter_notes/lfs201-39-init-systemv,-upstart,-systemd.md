@@ -162,41 +162,69 @@ S, s     | Same as 1
         lrwxrwxrwx. 1 root root 17 May 10  2018 S10network -> ../init.d/network
         ```
 * the existence or non-existence of a script's symbolic link in a runlevel directory determines whether or not the script is executed at that runlevel
-    * **chconfig** is used to manage these symbolic links
+    * **chkconfig** is used to manage these symbolic links
   
-### 39.14.a: chkconfig I
+### 39.14: chkconfig
 ----
-
-### 39.15.a: service I
+* **chkconfig** is used to query and configure what runlevels the various system services are to run in
+* example use:
+    * `$ chkconfig some_service` check a particular service to see if it is set up to run in the current runlevel; true if running, false otherwise
+    * `$ chkconfig --list [service names]` see what services are configured to run in each of the runlevels
+    * `$ sudo chkconfig some_service on` turn on a certain service next time the system boots (does not affect the current state)
+    * `$ chkconfig some_service off` do not turn a certain service on next time the system boots (does not affect the current state)
+    * `$ sudo service some_service [stop | start]` start or stop a service
+* add your own services and write your own startup scripts by placing a script in `/etc/init.d` which has to have certain features in it and then use `chkconfig --add` to enable or `chkconfig --del` to disable use of the on and off instructions
+* scripts contain lines like: **`# chkconfig: 2345 10 90`**
+    * first argument defines runlevels on which to have service on by default
+    * second argument is the numerical prefix in the start script, S10
+    * third argument is the numerical prefix in the stop script, K90
+  
+### 39.15: service
 ----
-
+* on a Linux system using or emulating SysVinit, the services are those in the /etc/init.d directory
+    * `$ sudo service network status` see the current status of a particular service
+        ```
+        Configured devices:
+        lo ens33
+        Currently active devices:
+        lo ens33 virbr0
+        ```
+    * `$ sudo service network` see available options for **service**, which vary by the particular service
+        ```
+        Usage: /etc/init.d/network {start|stop|restart|reload|status}
+        ```
+    * `$ sudo service --status-all` see status of all services on the system
+* all **service** really does is change directory to `/etc/init.d` and run the appropriate script in that directory with the supplied options
+* starting and stopping services with **service** is only effective during the current operation of the system
+  
 ### 39.16: chkconfig and service on Debian-based Systems
 ----
-
-### 39.17.a: Upstart I
+* on Debian-based systems, including Ubuntu, the utilities will work only if you have installed the **sysvinit-utils** and **chkconfig** packages, as in:
+    * `$ sudo apt install sysvinit-utils chkconfig` install sysvinit-utils and chkconfig on Debian-based system and older Ubuntu systems
+    * `$ sudo invoke-rc.d cups [ status | start | stop ]` equivalent of **service** on Ubuntu
+    * `$ sudo status cups` check or change the cups situation; **status** preferred over **invoke-rc.d**
+    * `$ sudo update-rc.d cups [ defaults | purge ]` equivalent of **chkconfig**
+    * `$ sudo sysv-rc-conf cups [ on | off ]` equivalent of **chkconfig**
+  
+### 39.17: Upstart
 ----
-
+* Upstart is **event-driven**, rather than being a set of serial procedures 
+    * event notifications are sent to the init process to tell it to execute certain commands at the right time after pre-requisites have been fulfilled
+* Upstart configuration files include:
+    * `/etc/init/rcS.conf`
+    * `/etc/rc.sysinit`
+    * `/etc/inittab`
+    * `/etc/init/rc.conf`
+    * `/etc/rc[0-5].d`
+    * `/etc/init/start-ttys.conf`
+* when the kernel starts the init process, this causes the **rcS.conf** script to be executed
+* this, in turn, causes **rc-sysinit.conf** to be run
+  
 ### 39.18: Upstart Utilities
 ----
-
-### 39.19.a: Knowledge Check 39.1
-----
-
-### 39.19.b: Knowledge Check 39.2
-----
-
-### 39.19.c: Knowledge Check 39.3
-----
-
-### 39.19.d: Knowledge Check 39.4
-----
-
-### 39.19.e: Knowledge Check 39.5
-----
-
-### 39.19.f: Knowledge Check 39.6
-----
-
+* using **initctl** you can view, start, stop jobs in much the same way that **service** does
+    * `$ initctl options command` general syntax
+  
 ### Lab 39.1: Adding a New Startup Service with SysVinit
 ----
 
@@ -207,13 +235,59 @@ S, s     | Same as 1
 ----
   
 #### Paths  
-
+  
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-`/sbin/init` | LFS201 39.4
-
+startup/shutdown | `/sbin/init` | coordinates later stages of the boot process, configures all aspects of the environment, and starts the processes needed for logging into the system | LFS201 39.4
+startup/shutdown | `/etc/sysconfig/network` | location for system hostname(?) in Red Hat | LFS201 39.7
+startup/shutdown | `/etc/HOSTNAME` | location for system hostname(?) in SUSE | LFS201 39.7
+startup/shutdown | `/etc/hostname` | systemd location for system hostname | LFS201 39.7
+startup/shutdown | `/etc/vconsole.conf` | systemd default keyboard mapping and console font | LFS201 39.7
+startup/shutdown | `/etc/sysctl.d/*.conf` | systemd drop-in directory for kernel sysctl parameters | LFS201 39.7
+startup/shutdown | `/etc/os-release` | systemd distribution ID file | LFS201 39.7
+startup/shutdown | `/etc/inittab` | read when the init process is started (SysVinit) | LFS201 39.12
+startup/shutdown | 1 `/etc/rc.d/rc.sysinit` | run first on SysVinit systems | LFS201 39.13
+startup/shutdown | 2 `/etc/rc.d/rc` | run second with the desired runlevel as an argument on SysVinit systems | LFS201 39.13
+startup/shutdown | 3 `rc.d/rc[0-6].d` | scripts here are run after `/etc/rc.d/rc` on SysVinit systems | LFS201 39.13
+startup/shutdown | `/etc/rc.d/rc.local` | script that may be used to start system-specific applications on SysVinit systems | LFS201 39.13
+startup/shutdown | `/etc/init.d` | hold all of the actual startup scripts on SysVinit systems | LFS201 39.13
+startup/shutdown | `/etc/init/rcS.conf` | Upstart configuration source; run when the kernel starts the init process | LFS201 39.17
+startup/shutdown | `/etc/rc.sysinit` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/inittab` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/init/rc.conf` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/rc[0-5].d` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/init/start-ttys.conf` | Upstart configuration source | LFS201 39.17
+    
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-
+startup/shutdown | `$ telinit ...` | used to send control commands to the init daemon | LFS201 39.6
+startup/shutdown | `$ systemctl [options] command [name]` | general syntax; main utility for managing services | LFS201 39.8
+startup/shutdown | `$ systemctl` | show the status of everything that systemd controls | LFS201 39.8
+startup/shutdown | `$ systemctl list-units -t service --all` | show all available services | LFS201 39.8
+startup/shutdown | `$ systemctl list-units -t service` | show only active services | LFS201 39.8
+startup/shutdown | `$ sudo systemctl start foo` | start (activate) one or more units, where a unit can be a service or a socket | LFS201 39.8
+startup/shutdown | `$ sudo systemctl start foo.service` | start (activate) one or more units, where a unit can be a service or a socket | LFS201 39.8
+startup/shutdown | `$ sudo systemctl start /path/to/foo.service` | start (activate) one or more units, where a unit can be a service or a socket | LFS201 39.8
+startup/shutdown | `$ sudo systemctl stop foo.service` | stop (deactivate) a service | LFS201 39.8
+startup/shutdown | `$ sudo systemctl enable sshd.service` | enable a service (equivalent of **chkconfig on/off** and doesn't actually start the service) | LFS201 39.8
+startup/shutdown | `$ sudo systemctl disable sshd.service` | disable a service | LFS201 39.8
+startup/shutdown | `$ runlevel` | display current runlevel, where first character is the previous level (N means unknown) | LFS201 39.11
+startup/shutdown | `$ sudo /sbin/telinit 5` | change from runlevel 3 to runlevel 5 | LFS201 39.11
+startup/shutdown | `$ chkconfig ...` | used to query and configure what runlevels the various system services are to run in; used to manage startup script symbolic links | LFS201 39.14
+startup/shutdown | `$ chkconfig some_service` | check a particular service to see if it is set up to run in the current runlevel; true if running, false otherwise | LFS201 39.14
+startup/shutdown | `$ chkconfig --list [service names]` | see what services are configured to run in each of the runlevels | LFS201 39.14
+startup/shutdown | `$ sudo chkconfig some_service on` | turn on a certain service next time the system boots (does not affect the current state) | LFS201 39.14
+startup/shutdown | `$ chkconfig some_service off` | do not turn a certain service on next time the system boots (does not affect the current state) | LFS201 39.14
+startup/shutdown | `$ sudo service some_service [stop | start]` | start or stop a service | LFS201 39.14
+startup/shutdown | `$ service ...` | used to run a System V init script (scripts stored in `/etc/init.d`) | LFS201 39.15
+startup/shutdown | `$ sudo service network status` | shows the current status of a particular service | LFS201 39.15
+startup/shutdown | `$ sudo service network` | shows available options for **service**, which vary by the particular service | LFS201 39.15
+startup/shutdown | `$ sudo service --status-all` | shows status of all services on the system | LFS201 39.15
+startup/shutdown | `$ sudo apt install sysvinit-utils chkconfig` | install sysvinit-utils and chkconfig on Debian-based system and older Ubuntu systems | LFS201 39.16
+startup/shutdown | `$ sudo invoke-rc.d cups [ status | start | stop ]` | equivalent of **service** on Ubuntu | LFS201 39.16
+startup/shutdown | `$ sudo status cups` | check or change the cups situation; **status** preferred over **invoke-rc.d** | LFS201 39.16
+startup/shutdown | `$ sudo update-rc.d cups [ defaults | purge ]` | equivalent of **chkconfig** | LFS201 39.16
+startup/shutdown | `$ sudo sysv-rc-conf cups [ on | off ]` | equivalent of **chkconfig** | LFS201 39.16
+startup/shutdown | `$ initctl options command` | general syntax; view, start, stop jobs (in Upstart) in much the same way that **service** does | LFS201 39.18
