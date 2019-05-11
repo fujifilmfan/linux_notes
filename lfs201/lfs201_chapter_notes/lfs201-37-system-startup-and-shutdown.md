@@ -119,23 +119,23 @@ Organize the basic steps of the boot sequence in the correct order.
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-startup/shutdown | `/usr/lib/systemd` | contains default configuration information | 37.7
-startup/shutdown | `/etc/systemd` | contains default configuration information | 37.7
-startup/shutdown | `/etc/sysconfig` | files used when starting, stopping, configuring or querying system services on RHEL 7 | 37.8
-startup/shutdown | `/etc/sysconfig/selinux` | reads and sets the **selinux** configuration at system startup on RHEL 7 | 37.8
-startup/shutdown | `/etc/default` | used by Ubuntu in a similar way as `/etc/sysconfig` on RHEL 7 | 37.9
-startup/shutdown | `/etc/default/useradd` | sets the defaults that are used when new user accounts are being created | 37.9
+startup/shutdown | `/usr/lib/systemd` | contains default configuration information | LFS201 37.7
+startup/shutdown | `/etc/systemd` | contains default configuration information | LFS201 37.7
+startup/shutdown | `/etc/sysconfig` | files used when starting, stopping, configuring or querying system services on RHEL 7 | LFS201 37.8
+startup/shutdown | `/etc/sysconfig/selinux` | reads and sets the **selinux** configuration at system startup on RHEL 7 | LFS201 37.8
+startup/shutdown | `/etc/default` | used by Ubuntu in a similar way as `/etc/sysconfig` on RHEL 7 | LFS201 37.9
+startup/shutdown | `/etc/default/useradd` | sets the defaults that are used when new user accounts are being created | LFS201 37.9
   
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-startup/shutdown | `$ shutdown [OPTIONS...] [TIME] [WALL...]` | generic syntax | 37.10
-startup/shutdown | `$ sudo shutdown -h +1 "Power Failure imminent"` | sends message to logged-in users(?) | 37.10
-startup/shutdown | `$ sudo shutdown -h now` | **-h** equivalent to **--poweroff** | 37.10
-startup/shutdown | `$ sudo shutdown -r now` | reboots the machine | 37.10
-startup/shutdown | `$ sudo shutdown now` | power off the system (but not Ubuntu, which goes to single user mode instead) | 37.10
-startup/shutdown | `$ reboot` | legacy command | 37.10
-startup/shutdown | `$ halt` | legacy command | 37.10
-startup/shutdown | `$ poweroff` | legacy command | 37.10
+startup/shutdown | `$ shutdown [OPTIONS...] [TIME] [WALL...]` | generic syntax | LFS201 37.10
+startup/shutdown | `$ sudo shutdown -h +1 "Power Failure imminent"` | sends message to logged-in users(?) | LFS201 37.10
+startup/shutdown | `$ sudo shutdown -h now` | **-h** equivalent to **--poweroff** | LFS201 37.10
+startup/shutdown | `$ sudo shutdown -r now` | reboots the machine | LFS201 37.10
+startup/shutdown | `$ sudo shutdown now` | power off the system (but not Ubuntu, which goes to single user mode instead) | LFS201 37.10
+startup/shutdown | `$ reboot` | legacy command | LFS201 37.10
+startup/shutdown | `$ halt` | legacy command | LFS201 37.10
+startup/shutdown | `$ poweroff` | legacy command | LFS201 37.10
   

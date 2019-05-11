@@ -74,20 +74,20 @@ By the end of this chapter, you should be able to:
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-startup/shutdown | `/boot/grub/grub.cfg` | GRUB configuration file | 38.4
-startup/shutdown | `/boot/grub2/grub.cfg` | GRUB configuration file | 38.4
-startup/shutdown | `/etc/grub.d` | used by **update-grub** or **grub2-mkconfig** to modify `grub.cfg` | 38.4
-startup/shutdown | `/etc/default/grub` | used by **update-grub** or **grub2-mkconfig** to modify `grub.cfg` | 38.4
-startup/shutdown | `/boot/grub` or `/boot/grub2` | GRUB files needed at boot time | 38.6
-startup/shutdown | `vmlinuz-*` | file needed by the Linux kernel | 38.6
-startup/shutdown | `initramfs-*` | file needed by the Linux kernel | 38.6
-startup/shutdown | 1 `/etc/default/grub` | file used to update GRUB configuration file `grub.cfg` | 38.8
-startup/shutdown | 2 `/etc/grub.d` | directory used to update GRUB configuration file `grub.cfg` | 38.8
+startup/shutdown | `/boot/grub/grub.cfg` | GRUB configuration file | LFS201 38.4
+startup/shutdown | `/boot/grub2/grub.cfg` | GRUB configuration file | LFS201 38.4
+startup/shutdown | `/etc/grub.d` | used by **update-grub** or **grub2-mkconfig** to modify `grub.cfg` | LFS201 38.4
+startup/shutdown | `/etc/default/grub` | used by **update-grub** or **grub2-mkconfig** to modify `grub.cfg` | LFS201 38.4
+startup/shutdown | `/boot/grub` or `/boot/grub2` | GRUB files needed at boot time | LFS201 38.6
+startup/shutdown | `vmlinuz-*` | file needed by the Linux kernel | LFS201 38.6
+startup/shutdown | `initramfs-*` | file needed by the Linux kernel | LFS201 38.6
+startup/shutdown | 1 `/etc/default/grub` | file used to update GRUB configuration file `grub.cfg` | LFS201 38.8
+startup/shutdown | 2 `/etc/grub.d` | directory used to update GRUB configuration file `grub.cfg` | LFS201 38.8
   
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-startup/shutdown | `$ update-grub ...` or `$ grub2-mkconfig ...` | modify `grub.cfg` | 38.4
-startup/shutdown | `$ sudo grub2-install /dev/sda` | install GRUB for version 2 (read the **man** first!!) | 38.6
+startup/shutdown | `$ update-grub ...` or `$ grub2-mkconfig ...` | modify `grub.cfg` | LFS201 38.4
+startup/shutdown | `$ sudo grub2-install /dev/sda` | install GRUB for version 2 (read the **man** first!!) | LFS201 38.6
   

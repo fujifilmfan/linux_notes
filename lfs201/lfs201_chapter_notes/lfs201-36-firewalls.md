@@ -202,41 +202,41 @@ public (default, active)
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-networks, security | `/etc/firewalld` | configuration files for **firewalld**; override those in `/usr/lib/firewalld` | 36.9
-networks, security | `/usr/lib/firewalld` | configuration files for **firewalld** `/etc/firewalld` | 36.9
-networks, security | `/etc/firewalld/zones/internal.xml` | created when assigning an interface to a particular zone permanently | 36.12
-networks, security | `/etc/firewalld/services` | add new services by editing this | 36.14
+networks, security | `/etc/firewalld` | configuration files for **firewalld**; override those in `/usr/lib/firewalld` | LFS201 36.9
+networks, security | `/usr/lib/firewalld` | configuration files for **firewalld** `/etc/firewalld` | LFS201 36.9
+networks, security | `/etc/firewalld/zones/internal.xml` | created when assigning an interface to a particular zone permanently | LFS201 36.12
+networks, security | `/etc/firewalld/services` | add new services by editing this | LFS201 36.14
   
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-networks, security | `$ firewall-cmd --help` | has lots of information | 36.9
-networks, security | `$ sudo systemctl [enable/disable] firewalld` | start **firewalld** | 36.10
-networks, security | `$ sudo systemctl [start/stop] firewalld` | stop **firewalld** | 36.10
-networks, security | `$ sudo systemctl status firewalld` | shows the current state of **firewalld** | 36.10
-networks, security | `$ sudo firewall-cmd --state` | shows the current state of **firewalld** | 36.10
-networks, security | `$ sudo sysctl net.ipv4.ip_forward=1` | turn on **ip forwarding** | 36.10
-networks, security | `$ echo 1 > /proc/sys/net/ipv4/ip_forward` | turn on **ip forwarding** | 36.10
-networks, security | 1 `/etc/sysctl.conf` | add **net.ipv4.ip_forward=1** to make **ip forwarding** persistent | 36.10
-networks, security | 2 `$ sudo sysctl -p` | to read in the new setting without rebooting (or just reboot) | 36.10
-networks, security | `$ sudo firewall-cmd --get-default-zone` | get the default zone | 36.12
-networks, security | `$ sudo firewall-cmd --get-active-zones` | obtain a list of zones currently being used | 36.12
-networks, security | `$ sudo firewall-cmd --get-zones` | list all available zones | 36.12
-networks, security | `$ sudo firewall-cmd --set-default-zone=trusted` | change the default zone to **trusted** | 36.12
-networks, security | `$ sudo firewall-cmd --set-default-zone=public` | change the default zone back to **public** | 36.12
-networks, security | `$ sudo firewall-cmd --zone=internal --change-interface=eno1` | assign an interface temporarily to a particular zone | 36.12
-networks, security | `$ sudo firewall-cmd --permanent --zone=internal --change-interface=eno1` | assign an interface to a particular zone permanently, which creates `/etc/firewalld/zones/internal.xml` | 36.12
-networks, security | `$ sudo firewall-cmd --get-zone-of-interface=eno1` | ascertain the zone associated with a particular interface | 36.12
+networks, security | `$ firewall-cmd --help` | has lots of information | LFS201 36.9
+networks, security | `$ sudo systemctl [enable/disable] firewalld` | start **firewalld** | LFS201 36.10
+networks, security | `$ sudo systemctl [start/stop] firewalld` | stop **firewalld** | LFS201 36.10
+networks, security | `$ sudo systemctl status firewalld` | shows the current state of **firewalld** | LFS201 36.10
+networks, security | `$ sudo firewall-cmd --state` | shows the current state of **firewalld** | LFS201 36.10
+networks, security | `$ sudo sysctl net.ipv4.ip_forward=1` | turn on **ip forwarding** | LFS201 36.10
+networks, security | `$ echo 1 > /proc/sys/net/ipv4/ip_forward` | turn on **ip forwarding** | LFS201 36.10
+networks, security | 1 `/etc/sysctl.conf` | add **net.ipv4.ip_forward=1** to make **ip forwarding** persistent | LFS201 36.10
+networks, security | 2 `$ sudo sysctl -p` | to read in the new setting without rebooting (or just reboot) | LFS201 36.10
+networks, security | `$ sudo firewall-cmd --get-default-zone` | get the default zone | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --get-active-zones` | obtain a list of zones currently being used | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --get-zones` | list all available zones | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --set-default-zone=trusted` | change the default zone to **trusted** | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --set-default-zone=public` | change the default zone back to **public** | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --zone=internal --change-interface=eno1` | assign an interface temporarily to a particular zone | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --permanent --zone=internal --change-interface=eno1` | assign an interface to a particular zone permanently, which creates `/etc/firewalld/zones/internal.xml` | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --get-zone-of-interface=eno1` | ascertain the zone associated with a particular interface | LFS201 36.12
 networks, security | `$ sudo firewall-cmd --zone=public --list-all` | get all details about a particular zone
-public (default, active) | 36.12
-networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --add-source=192.168.1.0/24` | assign anyone with an IP address of 192.168.1.x to the **trusted** zone | 36.13
-networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --list-sources` | list the sources bound to a zone | 36.13
-networks, security | `$ sudo firewall-cmd --get-services` | see all the services available | 36.14
-networks, security | `$ sudo firewall-cmd --list-services --zone=public` | see services currently accessible in a particular zone | 36.14
-networks, security | `$ sudo firewall-cmd --permanent --zone=home --add-service=dhcp` | add a service to a zone | 36.14
-networks, security | `$ sudo firewall-cmd --reload` | reload firewall rules and keep state information. Current permanent configuration will become new runtime configuration | 36.14
-networks, security | `$ sudo firewall-cmd --zone=home --add-port=21/tcp` | ?? | 36.15
-networks, security | `$ sudo firewall-cmd --zone=home --list-ports` | ?? | 36.15
-`/etc/services` | stores information about services on the machine, including name, port number, protocol, and aliases; a mapping between human-friendly textual names for internet services, and their underlying assigned port numbers and protocol types; every networking program should look into this file to get the port number (and protocol) for its service | 36.15
-networks, security | `$ grep " 21/tcp" /etc/services` | ascertain that port 21 corresponds to ftp | 36.15
+public (default, active) | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --add-source=192.168.1.0/24` | assign anyone with an IP address of 192.168.1.x to the **trusted** zone | LFS201 36.13
+networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --list-sources` | list the sources bound to a zone | LFS201 36.13
+networks, security | `$ sudo firewall-cmd --get-services` | see all the services available | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --list-services --zone=public` | see services currently accessible in a particular zone | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --permanent --zone=home --add-service=dhcp` | add a service to a zone | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --reload` | reload firewall rules and keep state information. Current permanent configuration will become new runtime configuration | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --zone=home --add-port=21/tcp` | ?? | LFS201 36.15
+networks, security | `$ sudo firewall-cmd --zone=home --list-ports` | ?? | LFS201 36.15
+`/etc/services` | stores information about services on the machine, including name, port number, protocol, and aliases; a mapping between human-friendly textual names for internet services, and their underlying assigned port numbers and protocol types; every networking program should look into this file to get the port number (and protocol) for its service | LFS201 36.15
+networks, security | `$ grep " 21/tcp" /etc/services` | ascertain that port 21 corresponds to ftp | LFS201 36.15
