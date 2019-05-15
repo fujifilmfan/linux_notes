@@ -230,7 +230,7 @@ By the end of this chapter, you should be able to:
         # grep httpd /var/log/audit/audit.log | audit2allow -M mypol
         # semodule -i mypol.pp
         ```
-    * [root@rhel7 ~]`#  sealert -l d51d34f9-91d5-4219-ad1e-5531e61a2dc3`
+    * [root@rhel7 ~]`# sealert -l d51d34f9-91d5-4219-ad1e-5531e61a2dc3`
         ```
         SELinux is preventing /usr/sbin/httpd from getattr access on the file .
         *****  Plugin catchall (100. confidence) suggests  **************************
@@ -291,10 +291,22 @@ By the end of this chapter, you should be able to:
   
 ### 41.18: AppArmor
 ----
-
+AppArmor:  
+* is an alternative to SELinux
+* provides Mandatory Access Control (MAC)
+* allows administrators to associate a security profile to a program which restricts its capabilities
+* is considered easier (by some but not all) to use than SELinux
+* is considered filesystem-neutral (no security labels required).
+* supplements the traditional UNIX Discretionary Access Control (DAC) model by providing (MAC)
+* has a learning mode, in which violations of the profile are logged, but not prevented, which can then be turned into a profile
+  
 ### 41.19: Checking Status
 ----
-
+* `$ sudo systemctl [start|stop|restart|status] apparmor` change or inquire about the current state of AppArmor operation
+​* `$ sudo systemctl [enable|disable} apparmor` cause AppArmor to be loaded or not loaded at boot
+* `$ sudo apparmor_status` see the current AppArmor status
+* **profiles** and **processes** are in either enforce or complain mode, directly analogous to SELinux's **enforcing** and **permissive** modes
+  
 ### 41.20: Modes and Profiles
 ----
 
