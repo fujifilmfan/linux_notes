@@ -22,10 +22,7 @@ Chapter 41: Linux Security Modules
 [41.18: AppArmor](#4118-apparmor)  
 [41.19: Checking Status](#4119-checking-status)  
 [41.20: Modes and Profiles](#4120-modes-and-profiles)  
-[41.21.a: AppArmor Utilities I](#4121a-apparmor-utilities-i)  
-[41.21.b: AppArmor Utilities II](#4121b-apparmor-utilities-ii)  
-[41.22.a: Knowledge Check 41.1](#4122a-knowledge-check-411)  
-[41.22.b: Knowledge Check 41.2](#4122b-knowledge-check-412)  
+[41.21: AppArmor Utilities](#4121-apparmor-utilities)   
 [Lab 41.1: SELinux: Contexts](#lab-411-selinux-contexts)  
 [Lab 41.2: Explore the apparmor Security](#lab-412-explore-the-apparmor-security)  
 [Paths and Commands](#paths-and-commands)  
@@ -309,19 +306,33 @@ AppArmor:
   
 ### 41.20: Modes and Profiles
 ----
-
-### 41.21.a: AppArmor Utilities I
+* processes can be run in either of the two modes:
+    * **Enforce Mode**: applications are prevented from acting in ways which are restricted
+        * attempted violations are reported to the system logging files
+        * default mode
+        * a profile can be set to this mode with **aa-enforce**
+    * **Complain Mode**: policies are not enforced
+        * attempted policy violations are reported
+        * also called the learning mode
+        * a profile can be set to this mode with **aa-complain**
+* profiles are stored in `/etc/apparmor.d`
+* full documentation on what can go in these files ​can be obtained by doing `$ man apparmor.d`
+  
+### 41.21: AppArmor Utilities
 ----
+* `$ rpm -qil apparmor-utils | grep bin​` view AppArmor utilities on OpenSUSE
 
-### 41.21.b: AppArmor Utilities II
-----
-
-### 41.22.a: Knowledge Check 41.1
-----
-
-### 41.22.b: Knowledge Check 41.2
-----
-
+**AppArmor Utilities**
+Program         | Use 
+-------         | ---
+apparmor_status | Show status of all profiles and processes with profiles
+apparmor_notify | Show a summary for AppArmor log messages
+complain        | Set a specified profile to complain mode
+enforce         | Set a specified profile to enforce mode
+disable         | Unload a specified profile from the current kernel and prevent from being loaded on system startup
+logprof         | Scan log files, and, if AppArmor events that are not covered by existing profiles have been recorded, suggest how to take into account, and, if approved, modify and reload
+easyprof        | Help set up a basic AppArmor profile for a program
+  
 ### Lab 41.1: SELinux: Contexts
 ----
 
@@ -335,33 +346,44 @@ AppArmor:
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-`/etc/selinux/config` | SELinux config file in which modes are selected and explained; also used to set the SELinux policy | LFS201 41.7
-`/etc/sysconfig/selinux` | contains symbolic link to `/etc/selinux/config` | LFS201 41.7
-`/etc/selinux/[SELINUXTYPE]` | stores SELinux policies | LFS201 41.8
-
+security, system | `/etc/selinux/config` | SELinux config file in which modes are selected and explained; also used to set the SELinux policy | LFS201 41.7
+security, system | `/etc/sysconfig/selinux` | contains symbolic link to `/etc/selinux/config` | LFS201 41.7
+security, system | `/etc/selinux/[SELINUXTYPE]` | stores SELinux policies | LFS201 41.8
+security, system | `/etc/apparmor.d` | contains AppArmor profiles | LFS201 41.20
+  
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-`$ sestatus` | used to display the current SELinux mode and policy | LFS201 41.7
-`$ getenforce` | show current SELinux mode | LFS201 41.7
-`$ sudo setenforce Permissive` | set SELinux mode to permissive | LFS201 41.7
-`$ ls -Z` | list files and show SELinux context | LFS201 41.9
-`$ ps auZ` | show processes with SELinux context | LFS201 41.9
-`$ chcon -t etc_t somefile` | change SELinux context | LFS201 41.9
-`$ chcon --reference somefile so` | change SELinux context | LFS201 41.9
-`$ restorecon ...` | resets file contexts based on parent directory settings | LFS201 41.12
-`$ restorecon -Rv /home/peter` | resets the default SELinux context recursively for all files at the home directory | LFS201 41.12
-`$ semanage ...` | used to change and display the default context of files and directories; does not apply the settings to existing objects | LFS201 41.13
-`# semanage fcontext -a -t httpd_sys_content_t /virtualHosts` | change context default file context | LFS201 41.13
-`# restorecon -RFv /virtualHosts` | apply context change to existing directory | LFS201 41.13
-`$ getsebool ...` | show SELinux booleans | LFS201 41.14
-`setsebool ...` | set SELinux booleans | LFS201 41.14
-`semanage boolean -i` | show persistent SELinux boolean settings | LFS201 41.14
-`$ getsebool -a` | prints the boolean name and current status; simpler output than what is given by **semanage** | LFS201 41.15
-`$ setsebool` | changes boolean status; use **-P** parameter to make the changes persistent | LFS201 41.15
-`$ getsebool ssh_chroot_rw_homedirs` | show boolean name and current status | LFS201 41.15
-`$ sudo setsebool ssh_chroot_rw_homedirs on` | change boolean status non-persistently | LFS201 41.15
-`$ sudo setsebool -P ssh_chroot_rw_homedirs on` | change boolean status persistently | LFS201 41.15
-
+security, system | `$ sestatus` | used to display the current SELinux mode and policy | LFS201 41.7
+security, system | `$ getenforce` | show current SELinux mode | LFS201 41.7
+security, system | `$ sudo setenforce Permissive` | set SELinux mode to permissive | LFS201 41.7
+security, system | `$ ls -Z` | list files and show SELinux context | LFS201 41.9
+security, system | `$ ps auZ` | show processes with SELinux context | LFS201 41.9
+security, system | `$ chcon -t etc_t somefile` | change SELinux context | LFS201 41.9
+security, system | `$ chcon --reference somefile so` | change SELinux context | LFS201 41.9
+security, system | `$ restorecon ...` | resets file contexts based on parent directory settings | LFS201 41.12
+security, system | `$ restorecon -Rv /home/peter` | resets the default SELinux context recursively for all files at the home directory | LFS201 41.12
+security, system | `$ semanage ...` | used to change and display the default context of files and directories; does not apply the settings to existing objects | LFS201 41.13
+security, system | `# semanage fcontext -a -t httpd_sys_content_t /virtualHosts` | change context default file context | LFS201 41.13
+security, system | `# restorecon -RFv /virtualHosts` | apply context change to existing directory | LFS201 41.13
+security, system | `$ getsebool ...` | show SELinux booleans | LFS201 41.14
+security, system | `$ setsebool ...` | set SELinux booleans | LFS201 41.14
+security, system | `$ semanage boolean -i` | show persistent SELinux boolean settings | LFS201 41.14
+security, system | `$ getsebool -a` | prints the boolean name and current status; simpler output than what is given by **semanage** | LFS201 41.15
+security, system | `$ setsebool` | changes boolean status; use **-P** parameter to make the changes persistent | LFS201 41.15
+security, system | `$ getsebool ssh_chroot_rw_homedirs` | show boolean name and current status | LFS201 41.15
+security, system | `$ sudo setsebool ssh_chroot_rw_homedirs on` | change boolean status non-persistently | LFS201 41.15
+security, system | `$ sudo setsebool -P ssh_chroot_rw_homedirs on` | change boolean status persistently | LFS201 41.15
+security, system | `# sealert -l d51d34f9-91d5-4219-ad1e-5531e61a2dc3` | view SELinux alert details(?) | LFS201 41.16
+security, system | `$ audit2allow ...` | generates SELinux policy rules from logs of denied operations | LFS201 41.16
+security, system | `$ audit2why ...` | translates SELinux audit messages into a description of why the access was denied | LFS201 41.16
+security, system | `# restorecon -Rv /var/www/html/` | apply context change to directory | LFS201 41.16
+security, system | `$ sudo systemctl [start|stop|restart|status] apparmor` | change or inquire about the current state of AppArmor operation | LFS201 41.19
+​security, system | `$ sudo systemctl [enable|disable} apparmor` | cause AppArmor to be loaded or not loaded at boot | LFS201 41.19
+security, system | `$ sudo apparmor_status` | see the current AppArmor status | LFS201 41.19
+security, system | `$ aa-enforce ...` | set an AppArmor profile to enforce mode | LFS201 41.20
+security, system | `$ aa-complain ...` | set an AppArmor profile to complain mode | LFS201 41.20
+security, system | `$ man apparmor.d` | documention for AppArmor, including what can go in a profile | LFS201 41.20
+security, system | `$ rpm -qil apparmor-utils | grep bin​` | view AppArmor utilities on OpenSUSE | LFS201 41.21
   
