@@ -57,18 +57,18 @@ Contents
 ### Main Directory Layout
 ----
 
-**Main Directory Layout (2.6)**
+**Main Directory Layout (LFS201 2.7)**
   
 Directory | In FHS? | Purpose
 --------- | ------- | -------
 /         | Yes     | primary directory of entire FH
 /bin      | Yes     | executables needed in **single user mode**
-/boot     | Yes     | files needed for boot, like kernel, initrd or initramfs, bootloaders
+/boot     | Yes     | files needed for boot, like kernel, **initrd** or **initramfs**, bootloaders
 /dev      | Yes     | **device nodes**; pseudo-filesystem
 /etc      | Yes     | system-wide config files
 /home     | Yes     | user **home directories**
-/lib      | Yes     | libraries required by binaries in /bin and /sbin; Linux kernel modules
-/lib64    | No      | 64-bit libraries required by binaries in /bin, /sbin
+/lib      | Yes     | libraries required by binaries in `/bin` and `/sbin`; Linux kernel modules
+/lib64    | No      | 64-bit libraries required by binaries in `/bin`, `/sbin`
 /media    | Yes     | mount points for removable media
 /mnt      | Yes     | temporarily mounted filesystems
 /opt      | Yes     | optional application software packages
@@ -80,9 +80,9 @@ Directory | In FHS? | Purpose
 /tmp      | Yes     | temporary files; lost on reboot in many distributions
 /usr      | Yes     | multi-user applications, utilities and data; theoretically read-only
 /var      | Yes     | variable data that changes during system operation
-/misc     | No      | some distros (see 2.6b)
-/run      | No      | some distros (see 2.6b); pseudo-filesystem
-/tftpboot | No      | some distros (see 2.6b)
+/misc     | No      | some distros (see LFS201 2.7)
+/run      | No      | some distros (see LFS201 2.7); pseudo-filesystem
+/tftpboot | No      | some distros (see LFS201 2.7)
   
 ### Signals
 ----
