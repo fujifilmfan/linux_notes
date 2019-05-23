@@ -119,7 +119,7 @@ Possible states:
 * Running; either executing on a CPU or CPU core or sitting in the **run queue**, waiting for a time slice
 * Sleeping (i.e., Waiting); waiting on a request (usually I/O); when request completed, kernel will put process back on run queue
 * Stopped; suspended, such as when programmer wants to examine the executing program's memory, CPU registers, flags, or other attributes; generally done when process is being run under a debugger or the user hits **Ctrl-Z**
-* Zombie; when process terminates and no other process (usually the parent) has inquired about its exit state, i.e. reaped it; called a **defunct** process; a zombie process has released all its resources except its exit state and its entry in the procss table; if parent dies, the process is **adopted** by **init** (PID = 1) or **kthreadd** (PID = 2)
+* Zombie; when process terminates and no other process (usually the parent) has inquired about its exit state, i.e. reaped it; called a **defunct** process; a zombie process has released all its resources except its exit state and its entry in the process table; if parent dies, the process is **adopted** by **init** (PID = 1) or **kthreadd** (PID = 2)
 
 ### 3.11: Execution Modes
 ----
@@ -185,7 +185,7 @@ The README in `/etc/init.d` says:
 
 ### 3.15: Creating Processes in a Command Shell
 ----
-when a user executed a command in a command shell interpreter, like **bash**:  
+when a user executes a command in a command shell interpreter, like **bash**:  
 * a new process is created (forked from the user's login shell)
 * a wait system call puts the parent shell process to sleep
 * the command is loaded onto the child process's space via the **exec** system call, i.e., the code for the command replaces the **bash** program in the child processes's memory space
@@ -208,7 +208,7 @@ the **Linux** kernel creates two kinds of processes on its own initiative (not c
     * run in user space like normal applications but which the kernel started
     * very few of these and usually short-lived  
   ? what is 'user space'?
-* run `$ ps -elf` to see processes of this nature
+* run `$ ps -elf` to list all processes on the system while showing the parent process IDs
     * they will have **PPID = 2**, corresponding to **kthreadd**
     * names encapsulated in square brackets, such as **[ksoftirqd/0]**
 
@@ -431,23 +431,34 @@ The `-p` option shows the PIDs of creator and last operator.
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-`/etc/security/limits.conf` (3.18)  
+processes | `/proc/sys/kernel/pid_max` | stores max pid, by default a 16-bit number, 32768 | LFS201 3.6
+processes | `/etc/security/limits.conf` | set resource limits for all logged-in users, not just current shell | LFS201 3.8 
+processes | `/etc/passwd` | changed by running `passwd` but not directly editable by normal user | LFS201 3.9
+processes | `/etc/shadow` | changed by running `passwd` but not directly editable by normal user | LFS201 3.9
+processes | `/etc/init.d` | scripts here start various daemons | LFS201 3.14
+processes | `/etc/init.d/functions` | contains functions used by scripts in `/etc/init.d` | LFS201 3.14
+processes | `/etc/security/limits.conf` | allow normal users to set niceness | LFS201 3.19
+processes | `/etc/ld.so.conf` | used by **ldconfig**; lists the directories searched for shared libraries | LFS201 3.23
 
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-
-`&` at end of command for background processing (see 3.14)  
-`$ ps -elf` to see kernel created processes  
-`$ nice -n 5 command [ARGS]` (3.17)  
-`$ nice -5 command [ARGS]` (3.17)  
-`$ renice +3 13848` (3.18)  
-`$ ldd /usr/bin/vi`  
-`$ ulimit -H -n` (Lab 3.1)  
-`$ ulimit -S -n` (Lab 3.1)  
-`$ ulimit -n 4096` (Lab 3.1)  
-`$ ulimit -H -n 2048` (Lab 3.1)  
-`$ ipcs` (Lab 3.2)  
-`$ ipcs -p` (Lab 3.2)  
-`$ ps aux | grep -e 11737 -e 11044`  (Lab 3.2) the `-e` option is to match a pattern; also `--regexp`  
+processes | `$ ulimit [options] [limit]` | generic syntax | LFS201 3.8
+processes | `$ ulimit -a` | displays or resets resource limits associated with processes running under a shell | LFS201 3.8
+processes | `$ ulimit -n 1600` | changes maximum number of file descriptors | LFS201 3.8
+processes | `$ passwd ...` | **setuid** program; changes password | LFS201 3.9
+processes | `&` | at end of command for background processing: LFS201 3.14
+processes | `$ ps -elf` | show kernel-created processes; list all processes on the system while showing the parent process IDs | LFS201 3.16
+processes | `$ nice -n 5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
+processes | `$ nice -5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
+processes | `$ renice +3 13848` | increase niceness by 3 of the process with pid = 13848, where 13848 is the pid of the process; 3 would be the new niceness, not the change | LFS201 3.19
+processes | `$ ps lf` | shows processes and priorities | LFS201 3.20
+processes | `$ ldd /usr/bin/vi` | shows shared libraries that executable requires | LFS201 3.23
+processes | `$ ulimit -H -n` | view hard limit | LFS201 Lab 3.1
+processes | `$ ulimit -S -n` | view soft limt | LFS201 Lab 3.1
+processes | `$ ulimit -n 4096` | set soft limit to hard limit value(??) | LFS201 Lab 3.1
+processes | `$ ulimit -H -n 2048` | set hard limit to 2048(??) | LFS201 Lab 3.1
+processes | `$ ipcs` |  | LFS201 Lab 3.2
+processes | `$ ipcs -p` |  | LFS201 Lab 3.2
+processes | `$ ps aux | grep -e 11737 -e 11044` | `-e` option is to match a pattern; also `--regexp` | LFS201 Lab 3.2
