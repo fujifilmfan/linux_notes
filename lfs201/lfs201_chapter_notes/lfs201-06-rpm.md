@@ -300,7 +300,7 @@ There are conditions (which?) under which the RPM database stored in /var/lib/rp
     * Correct solution:
     * `$ sudo cp -a rpm rpm_BACKUP` # then the questions 3 and 5 can use **ls** in a straightforward way
 
-2. Rebuild the data base.
+2. Rebuild the database.
     * My solution:
     * `$ sudo rpm --rebuilddb`
 
@@ -333,38 +333,53 @@ There are conditions (which?) under which the RPM database stored in /var/lib/rp
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-
+packages | `/var/lib/rpm` | default system directory which holds RPM database files in the form of **Berkeley DB** hash files | LFS201 6.7
 
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-
-`$ rpm -q bash` (6.8)  
-`$ rpm -qf /bin/bash` (6.8)  
-`$ rpm -ql bash` (6.8)  
-`$ rpm -qi bash` (6.8)  
-`$ rpm -qip foo-1.0.0-1.noarch.rpm` (6.8)  
-`$ rpm -qa` (6.8)  
-`$ rpm -Va` (6.9)  
-`$ rpm -V bash` (6.9)  
-`$ rpm -V talk` (6.9)  
-`$ sudo rpm -ivh foo-1.0.0-1.noarch.rpm`  where the **-i** is for install, **-v** is for verbose, and **-h** just means print out hash marks while doing to show progress. (6.10)  
-`$ sudo rpm -e system-config-lvm` where **-e** is for erase and 'system-config-lvm' is the package name, not rpm file name (6.11)  
-`$ sudo rpm -e --test -vv system-config-lvm` where **--test** will tell you whether the install would succeed or fail w/o actually doing it and **-vv** gives more information (6.11)  
-`$ rpm -qa | grep bzip2` # **-q** for query, **-a** for all (6.12)  
-`$ find / -name "bzip2*" -type d 2>&1 | grep -v 'Permission denied'` (6.12)  
-`$ rpm -qil bzip2 | less` # **-i** for information, **l** for list (6.12)  
-`$ ls -lF $(rpm -ql bzip2)` # make it a shell command (pipe through less if too much output) (6.12)  
-? Why doesn't `$ rpm -ql bzip2 | ls -lF` work? (6.12)  
-`$ sudo rpm -e --test bzip2` (6.12)  
-`$ rpm -q --whatprovides bzip2` (6.12)  
-`$ rpm -q --whatrequires bzip2` (6.12)  
-`$ sudo rpm -Uvh bash-4.2.45-5.el7_0.4.x86_64.rpm` # **-U** for Upgrade (6.13)  
-`$ sudo rpm -Fvh *.rpm`# **-F** for Freshen (6.14)  
-`$ sudo rpm -ivh kernel-{version}.{arch}.rpm` (6.15)  
-`$ rpm2cpio foobar.rpm > foobar.cpio` (6.16)  
-`$ rpm2cpio foobar.rpm | cpio -t` (6.16)  
-`$  rpm -qilp foobar.rpm` (6.16)  
-`$ rpm2cpio bash-4.2.45-5.el7_0.4.x86_64.rpm |  cpio -ivd bin/bash` with
-`$ rpm2cpio foobar.rpm | cpio --extract --make-directories` (6.16)  
+packages | `$ ls /usr/lib/rpm | wc -l` | shows programs and scripts used by RPM | LFS201 6.8
+packages | `/usr/lib/rpm` | holds programs and scripts used by RPM | LFS201 6.8
+packages | 1 `/usr/lib/rpm/rpmrc` | first place RPM looks for settings; each is read | LFS201 6.8
+packages | 2 `/etc/rpmrc` | second place RPM looks for settings; each is read | LFS201 6.8
+packages | 3 `~/.rpmrc` | third place RPM looks for settings; each is read | LFS201 6.8
+packages | `$ rpm -q ...` | make an RPM inquiry | LFS201 6.9
+packages | `$ rpm -q bash` | shows which version of a package is installed | LFS201 6.9
+packages | `$ rpm -qf /bin/bash` | shows which package a file came from; **-f** for file | LFS201 6.9
+packages | `$ rpm -ql bash` | shows what files were installed by this package | LFS201 6.9
+packages | `$ rpm -qi bash` | shows information about this package | LFS201 6.9
+packages | `$ rpm -qip foo-1.0.0-1.noarch.rpm` | shows information about this package from the package file, not the package database | LFS201 6.9
+packages | `$ rpm -qa` | lists all installed packages on this system | LFS201 6.9
+packages | `$ rpm -qp --requires foo-1.0.0-1.noarch.rpm` | return a list of prerequisites for a package | LFS201 6.9
+packages | `$ rpm -q --whatprovides libc.so.6` | shows what installed package provides a particular requisite package | LFS201 6.9
+packages | `$ rpm -Va` | verify all packages on system; output only when there is a problem | LFS201 6.10
+packages | `$ rpm -V bash` | verify **bash** package | LFS201 6.10
+packages | `$ rpm -V talk` | verify **talk** package | LFS201 6.10
+packages | `$ sudo rpm -ivh foo-1.0.0-1.noarch.rpm` | install the foo-1.0.0-1.noarch.rpm package | LFS201 6.11 
+packages | `$ sudo rpm -e system-config-lvm` | erase the **system-config-lvm** package | LFS201 6.12
+packages | `$ sudo rpm -e --test -vv system-config-lvm` | test whether erasing the **system-config-lvm** package will succeed or fail | LFS201 6.12
+packages | `$ rpm -qa | grep bzip2` | find **bzip2** packages | LFS201 6.13
+packages | `$ find / -name "bzip2*" -type d 2>&1 | grep -v 'Permission denied'` | find **bzip2** packages | LFS201 6.13
+packages | `$ rpm -qil bzip2 | less` | find **bzip2** packages | LFS201 6.13
+packages | `$ ls -lF $(rpm -ql bzip2)` | make it a shell command (pipe through less if too much output) | LFS201 6.13 
+packages | `$ sudo rpm -e --test bzip2` | test whether erasing **bzip2** will work | LFS201 6.13
+packages | `$ rpm -q --whatprovides bzip2` | check packages provide **bzip2** | LFS201 6.13
+packages | `$ rpm -q --whatrequires bzip2` | show prerequisites for **bzip2** | LFS201 6.13
+packages | `$ sudo rpm -Uvh bash-4.2.45-5.el7_0.4.x86_64.rpm` | upgrade package | LFS201 6.14
+packages | `$ sudo rpm -Fvh *.rpm` | freshen package; useful for applying a lot of patches at once | LFS201 6.15
+packages | `$ sudo rpm -ivh kernel-{version}.{arch}.rpm` | install a new kernel | LFS201 6.16
+packages | `$ rpm2cpio foobar.rpm > foobar.cpio` | creates the cpio archive | LFS201 6.17
+packages | `$ rpm2cpio foobar.rpm | cpio -t` | lists files in an RPM | LFS201 6.17
+packages | `$  rpm -qilp foobar.rpm` | better way to list files in an RPM | LFS201 6.17
+packages | 1 `$ rpm2cpio bash-4.2.45-5.el7_0.4.x86_64.rpm |  cpio -ivd bin/bash` | extract onto the system  | LFS201 6.17
+packages | 2 `$ rpm2cpio foobar.rpm | cpio --extract --make-directories` | extract onto the system | LFS201 6.17
+packages | `$ rpm -qf /etc/logrotate.conf` | find out what package the file `/etc/logrotate.conf` belongs to | LFS201 Lab 6.1
+packages | `$ rpm -qil logrotate-3.8.6-15.el7.x86_64` | lists information about the package including all the files it contains | LFS201 Lab 6.1
+packages | `$ rpm -qil $(rpm -qf /etc/logrotate.conf)` | find out the owner of `/etc/logrotate.conf` *and* list information about the package | LFS201 Lab 6.1
+packages | `$ rpm -V logrotate-3.8.6-15.el7.x86_64` | verify the package installation | LFS201 Lab 6.1
+packages | `$ sudo cp -a rpm rpm_BACKUP` | make a backup copy of the RPM database | LFS201 Lab 6.2
+packages | `$ sudo rpm --rebuilddb` | rebuild the RPM database | LFS201 Lab 6.2
+packages | `$ tar -xzvf centos.rpmdatabase.tar.gz -C ~/rpm` | unpack files into the `~/rpm` directory (**-C** for 'change') | LFS201 Lab 6.2
+packages | `$ rpm -qa | tee /tmp/rpm-qa.output` | get a listing of all RPMs on the system | LFS201 Lab 6.2
+  

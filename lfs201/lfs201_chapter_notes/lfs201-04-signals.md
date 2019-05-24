@@ -100,22 +100,21 @@ Note that **POSIX** says one should use signal names, not numbers, which are all
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-
-
+  
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-
-`$ kill -l` (4.4)  
-`$ man 7 signal` (4.4)  
-`$ kill 1991` (4.5)  
-`$ kill -9 1991` (4.5)  
-`$ kill -SIGKILL 1991` (4.5)  
-`$ killall bash` (4.6)  
-`$ killall -9 bash` (4.6)  
-`$ killall -SIGKILL bash` (4.6)  
-`$ pkill [-signal] [options] [pattern]` (4.6)  
-`$ pkill -u libby foobar` (4.6)  
-`$ pkill -HUP rsyslogd` (4.6)  
-`$ gcc -o signals signals.c` (Lab 4) 
+signals | `$ kill -l` | shows a list of signals with their numbers | LFS201 4.5
+documentation, signals | `$ man 7 signal` | documentation for signals | LFS201 4.5
+signals | `$ kill 1991` | sends a **SIGTERM (15)** to PID 1991, which can be handled | LFS201 4.6 
+signals | `$ kill -9 1991` | sends a **SIGKILL (9)** which cannot be ignored and causes termination with extreme prejudice | LFS201 4.6 
+signals | `$ kill -SIGKILL 1991` | sends a **SIGKILL (9)** which cannot be ignored and causes termination with extreme prejudice | LFS201 4.6
+signals | `$ kill ...` | used to send any all signals, even benign informative ones | LFS201 4.6
+signals | `$ killall bash` | kills all processes with the name **bash** using command name instead of PID | LFS201 4.7
+signals | `$ killall -9 bash` | kills all processes with the name **bash** | LFS201 4.7
+signals | `$ killall -SIGKILL bash` | kills all processes with the name **bash** | LFS201 4.7
+signals | `$ pkill [-signal] [options] [pattern]` | generic syntax; sends a signal to a process using selection criteria | LFS201 4.7
+signals | `$ pkill -u libby foobar`| kill all of **libby**'s processes with a name of **foobar** | LFS201 4.7
+signals | `$ pkill -HUP rsyslogd`| makes **rsyslog** re-read its config file  | LFS201 4.7
+packages | `$ gcc -o signals signals.c` | compiles the signals.c source code | LFS201 Lab 4.1

@@ -13,6 +13,7 @@ Chatper 5: Package Management Systems
 [5.12: Available Source Control Systems](#512-available-source-control-systems)  
 [5.13: The Linux Kernel and the Birth of git](#513-the-linux-kernel-and-the-birth-of-git)  
 [5.14: How git Works](#514-how-git-works)  
+[5.15: Package Management Systems Demo](#515-package-management-systems-demo)  
 [Lab 5.1: Version Control with git](#lab-51-version-control-with-git)  
 [Paths and Commands](#paths-and-commands)  
   
@@ -136,6 +137,9 @@ Git arose from the Linux kernel development community
     * **commits**: Changesets describing tree snapshots
 * directory cache captures the state of the directory tree
 
+### 5.15: Package Management Systems Demo
+----
+* `$ gnome-software` opens Application Installer, a sort of Linux app store
 ### Lab 5.1: Version Control with git
 ----
 Basic git stuff; nothing to note  
@@ -147,11 +151,11 @@ Basic git stuff; nothing to note
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-
-
+  
 #### Commands  
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-
-`$ gnome-software` a Linux app store (5.14)  
+packages | `$ rpmbuild --rebuild` | rebuild a binary package | LFS201 5.6
+apps, packages | `$ gnome-software` | opens Application Installer, a sort Linux app store | LFS201 5.15  
+  
