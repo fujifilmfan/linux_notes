@@ -454,6 +454,7 @@ processes | `$ nice -n 5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
 processes | `$ nice -5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
 processes | `$ renice +3 13848` | increase niceness by 3 of the process with pid = 13848, where 13848 is the pid of the process; 3 would be the new niceness, not the change | LFS201 3.19
 processes | `$ ps lf` | shows processes and priorities | LFS201 3.20
+processes | `$ gnome-system-monitor` | opens gui system monitor | LFS201 3.20
 processes | `$ ldd /usr/bin/vi` | shows shared libraries that executable requires | LFS201 3.23
 processes | `$ ulimit -H -n` | view hard limit | LFS201 Lab 3.1
 processes | `$ ulimit -S -n` | view soft limt | LFS201 Lab 3.1
