@@ -295,9 +295,9 @@ This is just regex
 
 #### Try-It-Yourself: Using find
 Tasks to be performed:
-* earch for a file with name gcc in the /usr folder using find command.
-* earch for a directory with filename gcc, in the /usr folder using find command.
-* earch for files in the current directory which were modified today.
+* Search for a file with name gcc in the /usr folder using find command.
+* Search for a directory with filename gcc, in the /usr folder using find command.
+* Search for files in the current directory which were modified today.
 * Search for files with size 0 bytes.
 
 #### Lab 7.4: Finding Directories and Creating Symbolic Links
