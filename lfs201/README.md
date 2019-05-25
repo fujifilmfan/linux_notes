@@ -13,6 +13,15 @@ Contents
 ### Links to Chapter Notes
 ----
 
+[Chapter 2: Linux Filesystem Tree Layout](lfs201_chapter_notes/lfs201-02-filesystem_tree.md)  
+[Chapter 3: Processes](lfs201_chapter_notes/lfs201-03-processes.md)  
+[Chapter 4: Signals](lfs201_chapter_notes/lfs201-04-signals.md)  
+[Chapter 5: Package Management Systems](lfs201_chapter_notes/lfs201-05-package_management_systems.md)  
+[Chapter 6: RPM](lfs201_chapter_notes/lfs201-06-rpm.md)  
+[Chapter 7: DPKG](lfs201_chapter_notes/lfs201-07-dpkg.md)  
+[Chapter 8: yum](lfs201_chapter_notes/lfs201-08-yum.md)  
+[Chapter 9: zypper](lfs201_chapter_notes/lfs201-09-zypper.md)  
+[Chapter 10: APT](lfs201_chapter_notes/lfs201-10-apt.md)  
 [Chapter 11: System Monitoring](lfs201_chapter_notes/lfs201-11-system_monitoring.md)  
 [Chapter 12: Process Monitoring](lfs201_chapter_notes/lfs201-12-process_monitoring.md)  
 [Chapter 13: Memory: Monitoring Usage and Tuning](lfs201_chapter_notes/lfs201-13-memory-monitoring_usage_and_tuning.md)  

@@ -1,4 +1,4 @@
-Chatper 5: Package Management Systems
+Chapter 5: Package Management Systems
 -------------------------------------
 
 [5.3: Learning Objectives](#53-learning-objectives)  
