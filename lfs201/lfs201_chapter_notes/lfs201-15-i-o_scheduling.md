@@ -7,11 +7,11 @@ Chapter 15: I/O Scheduling
 [15.6: I/O Scheduling and SSD Devices](#156-io-scheduling-and-ssd-devices)  
 [15.7: Tunables and Switching the I/O Scheduler at Runtime](#157-tunables-and-switching-the-io-scheduler-at-runtime)  
 [15.8: I/O Schedulers Demo](#158-io-schedulers-demo)  
-[15.9: CFQ (Completey Fair Queue) Scheduler](#15.9: CFQ (Completey Fair Queue) Scheduler)  
-[15.10: CFQ Tunables](#15.10: CFQ Tunables)  
-[15.11: Deadline Scheduler](#15.11: Deadline Scheduler)  
-[15.12: Deadline Tunables](#15.12: Deadline Tunables)  
-[Lab 15.1: Comparing I/O Schedulers](#Lab 15.1: Comparing I/O Schedulers)  
+[15.9: CFQ (Completey Fair Queue) Scheduler](#159-cfq-completey-fair-queue-scheduler)  
+[15.10: CFQ Tunables](#1510-cfq-tunables)  
+[15.11: Deadline Scheduler](#1511-deadline-scheduler)  
+[15.12: Deadline Tunables](#1512-deadline-tunables)  
+[Lab 15.1: Comparing I/O Schedulers](#lab-151-comparing-io-schedulers)  
 [Paths and Commands](#paths-and-commands)    
   
 ### 15.3: Learning Objectives
@@ -126,7 +126,53 @@ running `$ ls -l /dev` gives results w/ a preceding **c** for character special 
   
 ### Lab 15.1: Comparing I/O Schedulers
 ----
+* `lab iosched.sh` does the following:
+    * Cycle through the available I/O schedulers on a hard disk while doing a configurable number of parallel reads and writes of files of a configurable size.
+    * Test reads and writes as separate steps.
+    * When testing reads make sure you’re actually reading from disk and not from cached pages of memory; you can flush out the cache by doing: `$ echo 3 > /proc/sys/vm/drop_caches` before doing the reads. You can **cat** into `/dev/null` to avoid writing to disk.
+    * Make sure all reads are complete before obtaining timing information; this can be done by issuing a **wait** command under the shell.
+    * Test writes by simply copying a file (which will be in cached memory after the first read) multiple times simultaneously. To make sure you wait for all writes to complete before you get timing information you can issue a **sync** call.
+* takes two arguments:
+    * number of simultaneous reads and writes to perform
+    * size (in MB) of each file
+* This script must be run as root as it echoes values into the **/proc** and **/sys** directory trees.
+* Compare the results you obtain using different I/O schedulers.
+* Extra Credit: For additional exploring you might try changing some of the tunable parameters and see how results vary.
+* `$ sudo ./ioscript.sh 8 100`
+    ```
+    Doing: 8 parallel read/writes on: 100 MB size files
 
+    creating as needed random input files
+
+    doing timings of parallel reads
+
+    REAL    USER    SYS
+
+    testing IOSCHED = noop
+    [noop] deadline cfq 
+    0.296   0.009   0.989
+    testing IOSCHED = deadline
+    noop [deadline] cfq 
+    0.268   0.010   0.882
+    testing IOSCHED = cfq
+    noop deadline [cfq] 
+    0.432   0.006   0.433
+
+    doing timings of parallel writes
+
+    REAL    USER    SYS
+
+    testing IOSCHED = noop
+    [noop] deadline cfq 
+    8.388   0.027   1.303
+    testing IOSCHED = deadline
+    noop [deadline] cfq 
+    12.927   0.036   2.031
+    testing IOSCHED = cfq
+    noop deadline [cfq] 
+    24.573   0.023   1.337
+    ```
+  
 ### Paths and Commands
 ----
 
@@ -145,3 +191,4 @@ Topics | Command | Notes | Reference
 i/o | `$ cat /sys/block/sda/queue/scheduler` | shows which I/O schedulers are available on `/dev/sda` | LFS201 15.5
 i/o | `$ cat /sys/block/<device>/queue/rotational` | check whether a device is an SSD | LFS201 15.6
 i/o | `$ echo noop > /sys/block/sda/queue/scheduler` | change I/O scheduler to noop | LFS201 15.7
+i/o | `$ echo 3 > /proc/sys/vm/drop_caches` | flush cached pages of memory | LFS201 Lab 15.1

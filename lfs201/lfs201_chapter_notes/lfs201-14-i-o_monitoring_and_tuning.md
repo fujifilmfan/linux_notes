@@ -101,11 +101,94 @@ Idle                 | 3        | No access to disk I/O unless no other program 
 
 ### Lab 14.1: bonnie++
 ----
+* **bonnie++** is a widely available benchmarking program that tests and measures the performance of drives and filesystems. It
+is descended from **bonnie**, an earlier implementation.  
+* Results can be read from the terminal window or directed to a file, and also to a **csv** format (comma separated value).
+Companion programs, bon **csv2html** and **bon csv2txt**, can be used convert to html and plain text output formats.  
+* We recommend you read the **man** page for **bonnie++** before using as it has quite a few options regarding which tests to
+perform and how exhaustive and stressful they should be. A quick synopsis is obtained with:
+* `$ bonnie++ --help` gives a synopsis of commands
+* `$ time sudo bonnie++ -n 0 -u 0 -r 100 -f -b -d /mnt` run a system test where:
+    * **-n** 0 means don’t perform the file creation tests.
+    * **-u** 0 means run as root.
+    * **-r 100** means pretend you have 100 MB of RAM.
+    * **-f** means skip per character I/O tests.
+    * **-b** means do a **fsync** after every write, which forces flushing to disk rather than just writing to cache.
+    * **-d** `/mnt` just specifies the directory to place the temporary file created; make sure it has enough space, in this case 300
+MB, available.
+    * If you don’t supply a figure for your memory size, the program will figure out how much the system has and will create a testing
+file 2-3 times as large.
+    * running the command:
+        ```
+        Using uid:0, gid:0.
+        Writing intelligently...done
+        Rewriting...done
+        Reading intelligently...done
+        start 'em...done...done...done...done...done...
+        Version  1.97       ------Sequential Output------ --Sequential Input- --Random-
+        Concurrency   1     -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
+        Machine        Size K/sec %CP K/sec %CP K/sec %CP K/sec %CP K/sec %CP  /sec %CP
+        centos         300M           +++++ +++ +++++ +++           +++++ +++ +++++ +++
+        Latency                        8008us     177us               120us    1801us
+
+        1.97,1.97,centos,1,1558802244,300M,,,,+++++,+++,+++++,+++,,,+++++,+++,+++++,+++,,,,,,,,,,,,,,,,,,,8008us,177us,,120us,1801us,,,,,,
+
+        real	0m3.961s
+        user	0m0.046s
+        sys	0m0.885s
+        ```
+* `$ bon_csv2html < bonnie++.out > bonnie++.html` convert **bonnie++.out** to HTML
+    * that worked
+    * see "Screenshot-2019-5-25 Bonnie++ Benchmark results.png"
+* `$ bon_csv2txt < bonnie++.out > bonnie++.txt` convert **bonnie++.out** to plain text
+* Try longer and larger, more ambitious tests. Try some of the tests we turned off. If your system is behaving well, save the results for future benchmarking comparisons when the system is sick.
 
 ### Lab 14.2: fs_mark
 ----
-  
+* The **fs mark** benchmark gives a low level bashing to file systems, using heavily asynchronous I/O across multiple directories
+and drives. It’s a rather old program written by Rick Wheeler that has stood the test of time.
+* It can be downloaded from http://sourceforge.net/projects/fsmark/ Once you have obtained the tarball, you can unpack it and compile it with:
+    * `$ tar zxvf fs_mark-3.3.tgz`
+    * `$ cd fs_mark`
+    * `$ sudo yum install glibc-static` I had to do this first
+    * `$ make`
+* Read the README file as we are only going to touch the surface.
+* For a test we are going to create 1000 files, each 10 KB in size, and after each write we’ll perform an **fsync** to flush out to disk. This can be done in the `/tmp` directory with the command: `$ fs_mark -d /tmp -n 1000 -s 10240`
+    ```
 
+    #  ./fs_mark  -d  /tmp  -n  1000  -s  10240 
+    #	Version 3.3, 1 thread(s) starting at Sat May 25 14:23:16 2019
+    #	Sync method: INBAND FSYNC: fsync() per file in write loop.
+    #	Directories:  no subdirectories used
+    #	File names: 40 bytes long, (16 initial bytes of time stamp with 24 random bytes at end of name)
+    #	Files info: size 10240 bytes, written with an IO size of 16384 bytes per write
+    #	App overhead is time in microseconds spent in the test not doing file writing related system calls.
+
+    FSUse%        Count         Size    Files/sec     App Overhead
+        41         1000        10240       2205.3             9263
+
+    ```
+* While this is running, gather extended **iostat** statistics with: `$ iostat -x -d /dev/sda 2 20` in another terminal window.
+    ```
+    Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+    sda               0.00     0.00   16.50    0.00    68.00     0.00     8.24     0.00    0.06    0.06    0.00   0.06   0.10
+
+    Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+    sda               0.00  1131.00    0.00  541.50     0.00  8122.00    30.00     0.05    0.09    0.00    0.09   0.09   4.85
+
+    Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+    sda               0.00  1919.00    0.00  959.50     0.00 14082.00    29.35     0.08    0.08    0.00    0.08   0.08   7.65
+
+    Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+    sda               0.00     0.00   26.00    2.00   422.00    14.00    31.14     0.03    1.23    0.38   12.25   0.88   2.45
+
+    ```
+* The numbers you should surely note are the number of files per second reported by **fs_mark** and the percentage of CPU time
+utilized reported by **iostat**. If this is approaching 100 percent, you are I/O-bound.
+* Depending on what kind of filesystem you are using you may be able to get improved results by changing the **mount** options. For example, for **ext3** or **ext4** you can try:
+    * `$ mount -o remount,barrier=1 /tmp` or for **ext4** you can try:
+    * `$ mount -o remount,journal_async_commit /tmp`
+  
 ### Paths and Commands
 ----
 
@@ -125,3 +208,12 @@ monitoring, i/o | `$ sudo iotop -o` | use -o (or --only) option to show only pro
 monitoring, i/o | `$ ionice [-c class] [-n priority] [-p pid] [COMMAND [ARGS] ]` | usage syntax | LFS201 14.9
 monitoring, i/o | `$ sudo ionice -c 2 -n 3 -p 30078` | change best effort to priority 3 for process 30078 | LFS201 14.9
 monitoring, i/o | `$ sudo ionice -c 2 -n 6 -p 47` | change the priority of process 47 from be/7 to be/6 | LFS201 14.9
+monitoring, performance, i/o, testing | `$ bonnie++ ...` | benchmarking application | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ time sudo bonnie++ -n 0 -u 0 -r 100 -f -b -d /mnt` | run a system test using **bonnie++** | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ bon_csv2html < bonnie++.out > bonnie++.html` | convert **bonnie++.out** to HTML | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ bon_csv2txt < bonnie++.out > bonnie++.txt` | convert **bonnie++.out** to plain text | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ fs_mark -d /tmp -n 1000 -s 10240` | test filesystem by creating 1000 files, each 10 KB in size, and then performing an **fsync** to flush out to disk | LFS201 Lab 14.2
+monitoring, performance, i/o, testing | `$ iostat -x -d /dev/sda 2 20` | gather i/o statistics while running **fs_mark** test | LFS201 Lab 14.2
+monitoring, performance, i/o, testing | `$ mount -o remount,barrier=1 /tmp` | change **mount** options for **ext3** or **ext4** to improve performance | LFS201 Lab 14.2
+monitoring, performance, i/o, testing | `$ mount -o remount,journal_async_commit /tmp` | change **mount** options for **ext4** to improve performance | LFS201 Lab 14.2
+  

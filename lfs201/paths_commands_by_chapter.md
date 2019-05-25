@@ -126,11 +126,15 @@ monitoring, system | `/proc/sys/vm/overcommit_ratio` | change percentage of RAM 
 monitoring, system | `/proc/<pid>/oom_score` | contains **badness* value | LFS201 13.9
 monitoring, system | `/proc/<pid>/oom_adj` | shows number of bits to adjust badness score if two entries are in same directory; deprecated | LFS201 13.9
 monitoring, system | `/proc/<pid>/oom_score_adj` | used to directly adjust the badness point value | LFS201 13.9
+monitoring, system | `/proc/swaps` | shows swap partitions and files on the system | LFS201 Lab 13.1
+monitoring, system | `/var/log/messages` | contains system messages | LFS201 Lab 13.1
+monitoring, system | `/var/log/syslog` | contains system messages | LFS201 Lab 13.1
 i/o | `/sys/block/sda/queue/scheduler` | I/O scheduling information | LFS201 15.5
 i/o | `/sys/block/sda/queue/scheduler` | I/O scheduling information | LFS201 15.6
 i/o | `/sys/block/<device>/queue/iosched` | contains tunables | LFS201 15.7
 filesystem | `/proc/filesystems` | currently registered filesystems | LFS201 16.10
 filesystem | `/dev/zero` | special file in Unix-like operating systems that provides null characters | LFS201 16.10
+
 
 ### Commands  
 ----
@@ -299,6 +303,10 @@ monitoring, memory | `$ vmstat -S m -a 2 4` | show report at a 2 s interval 4 ti
 monitoring, memory | `$ vmstat -s -S m` | use -s option to see a table of memory statistics and certain event counters | LFS201 13.7
 monitoring, memory | `$ vmstat -d` | use -d option to see a table of disk statistics | LFS201 13.7 
 monitoring, memory | `$ vmstat -p /dev/sdb1 2 4` | use -p option to get quick stats on one partition (sda1 or sda2 in my case) | LFS201 13.7
+monitoring, system | `$ sudo /sbin/swapoff -a` | turn off all swap | LFS201 Lab 13.1
+monitoring, system | `$ sudo /sbin/swapon -a` | turn on all swap | LFS201 Lab 13.1
+monitoring, system | `$ stress -m 8 -t 10s` | keep 2 GB memory busy for 10 seconds | LFS201 Lab 13.1
+monitoring, system | `$ dmesg` | print or control the kernel ring buffer (view messages) | LFS201 Lab 13.1
 monitoring, i/o | `$ iostat` | shows a default I/O report | LFS201 14.5
 monitoring, i/o | `$ iostat -k` | use -k option to show results in KB instead of blocks | LFS201 14.6
 monitoring, i/o | `$ iostat -m` | use -m option to get results in MB | LFS201 14.6
@@ -309,12 +317,23 @@ monitoring, i/o | `$ sudo iotop -o` | use -o (or --only) option to show only pro
 monitoring, i/o | `$ ionice [-c class] [-n priority] [-p pid] [COMMAND [ARGS] ]` | usage syntax | LFS201 14.9
 monitoring, i/o | `$ sudo ionice -c 2 -n 3 -p 30078` | change best effort to priority 3 for process 30078 | LFS201 14.9
 monitoring, i/o | `$ sudo ionice -c 2 -n 6 -p 47` | change the priority of process 47 from be/7 to be/6 | LFS201 14.9
+monitoring, performance, i/o, testing | `$ bonnie++ ...` | benchmarking application | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ time sudo bonnie++ -n 0 -u 0 -r 100 -f -b -d /mnt` | run a system test using **bonnie++** | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ bon_csv2html < bonnie++.out > bonnie++.html` | convert **bonnie++.out** to HTML | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ bon_csv2txt < bonnie++.out > bonnie++.txt` | convert **bonnie++.out** to plain text | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ fs_mark -d /tmp -n 1000 -s 10240` | test filesystem by creating 1000 files, each 10 KB in size, and then performing an **fsync** to flush out to disk | LFS201 Lab 14.2
+monitoring, performance, i/o, testing | `$ iostat -x -d /dev/sda 2 20` | gather i/o statistics while running **fs_mark** test | LFS201 Lab 14.2
+monitoring, performance, i/o, testing | `$ mount -o remount,barrier=1 /tmp` | change **mount** options for **ext3** or **ext4** to improve performance | LFS201 Lab 14.2
+monitoring, performance, i/o, testing | `$ mount -o remount,journal_async_commit /tmp` | change **mount** options for **ext4** to improve performance | LFS201 Lab 14.2
 i/o | `$ cat /sys/block/sda/queue/scheduler` | shows which I/O schedulers are available on `/dev/sda` | LFS201 15.5
 i/o | `$ cat /sys/block/<device>/queue/rotational` | check whether a device is an SSD | LFS201 15.6
 i/o | `$ echo noop > /sys/block/sda/queue/scheduler` | change I/O scheduler to noop | LFS201 15.7
+i/o | `$ echo 3 > /proc/sys/vm/drop_caches` | flush cached pages of memory | LFS201 Lab 15.1
 filesystem | `$ cat /proc/filesystems` | shows currently registered filessytem types | LFS201 16.10
 filesystem | `$ dd if=/dev/zero of=junk bs=1M count=512` | create 512MB file of zeros | LFS201 16.10
 filesystem | `$ sudo /sbin/mkfs.xfs junk` | create xfs filesystem | LFS201 16.10
 filesystem | `$ sudo mount junk /mnt` | mount filesystem | LFS201 16.10
 filesystem | `$ lsmod | less` | shows mounted filesystems | LFS201 16.10
 filesystem | `$ df -h` | display filesystem disk space usage in human-readable form | LFS201 16.10
+
+

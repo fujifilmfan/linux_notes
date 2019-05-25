@@ -225,8 +225,72 @@ Hugepagesize    | Size of a huge page
 
 ### Lab 13.1: Invoking the OOM Killer
 ----
-
- 
+My solutions:  
+* Examine what swap partitions and files are present on your system by examining `/proc/swaps`.
+    > Filename				Type		Size	Used	Priority  
+    > /dev/sda2                               partition	975868	275968	-2  
+* Turn off all swap with the command `$ sudo /sbin/swapoff -a`
+    * that took at least 10 seconds
+* Make sure you turn it back on later, when we are done, with `$ sudo /sbin/swapon -a`
+* Now we are going to put the system under increasing memory pressure. One way to do this is to exploit the stress program we installed earlier, running it with arguments such as: `$ stress -m 8 -t 10s` which would keep 2 GB busy for 10 seconds.
+* You should see the OOM (Out of Memory) killer swoop in and try to kill processes in a struggle to stay alive. You can see what is going on by running dmesg or monitoring `/var/log/messages` or `/var/log/syslog`, or through graphical interfaces that expose the system logs.  Who gets clobbered first?  
+        ```
+        stress: info: [49348] dispatching hogs: 0 cpu, 0 io, 8 vm, 0 hdd
+        stress: FAIL: [49348] (415) <-- worker 49355 got signal 9
+        stress: WARN: [49348] (417) now reaping child worker processes
+        stress: FAIL: [49348] (451) failed run completed in 5s
+        ```
+    * also, VS Studio Code crashed :)
+    * `$ dmesg`
+        ```
+        [56395.333419] [49251]  1000 49251   167127     8767     235        0             0 code
+        [56395.333421] [49345]     0 49345    26988       19      11        0             0 sleep
+        [56395.333423] [49348]  1000 49348     1827       26       8        0             0 stress
+        [56395.333425] [49349]  1000 49349    67364    39885      87        0             0 stress
+        [56395.333426] [49350]  1000 49350    67364    32645      73        0             0 stress
+        [56395.333428] [49351]  1000 49351    67364    30695      69        0             0 stress
+        [56395.333430] [49352]  1000 49352    67364    34984      78        0             0 stress
+        [56395.333432] [49353]  1000 49353    67364    41125      90        0             0 stress
+        [56395.333434] [49354]  1000 49354    67364    41998      91        0             0 stress
+        [56395.333435] [49355]  1000 49355    67364    49621     106        0             0 stress
+        [56395.333437] [49356]  1000 49356    67364    34589      77        0             0 stress
+        [56395.333438] Out of memory: Kill process 19384 (firefox) score 71 or sacrifice child
+        [56395.333444] Killed process 33731 (Web Content) total-vm:1990252kB, anon-rss:106448kB, file-rss:0kB, shmem-rss:54348kB
+        [56395.334581] Out of memory: Kill process 19384 (firefox) score 71 or sacrifice child
+        [56395.334586] Killed process 20646 (Web Content) total-vm:2099496kB, anon-rss:103156kB, file-rss:0kB, shmem-rss:16kB
+        [56395.336087] Out of memory: Kill process 19384 (firefox) score 71 or sacrifice child
+        [56395.336092] Killed process 20660 (JS Watchdog) total-vm:2099496kB, anon-rss:104448kB, file-rss:0kB, shmem-rss:16kB
+        [56395.336471] Out of memory: Kill process 19384 (firefox) score 71 or sacrifice child
+        [56395.336475] Killed process 19384 (firefox) total-vm:3014684kB, anon-rss:200460kB, file-rss:0kB, shmem-rss:75096kB
+        [56396.798493] Out of memory: Kill process 49355 (stress) score 67 or sacrifice child
+        [56396.798497] Killed process 49355 (stress) total-vm:269456kB, anon-rss:258384kB, file-rss:4kB, shmem-rss:0kB
+        ```
+    * `$ sudo tail -n /var/log/messages`
+        ```
+        25 13:25:03 centos kernel: [49348]  1000 49348     1827       26       8        0             0 stress
+        May 25 13:25:03 centos kernel: [49349]  1000 49349    67364    39885      87        0             0 stress
+        May 25 13:25:03 centos kernel: [49350]  1000 49350    67364    32645      73        0             0 stress
+        May 25 13:25:03 centos kernel: [49351]  1000 49351    67364    30695      69        0             0 stress
+        May 25 13:25:03 centos kernel: [49352]  1000 49352    67364    34984      78        0             0 stress
+        May 25 13:25:03 centos kernel: [49353]  1000 49353    67364    41125      90        0             0 stress
+        May 25 13:25:03 centos kernel: [49354]  1000 49354    67364    41998      91        0             0 stress
+        May 25 13:25:03 centos kernel: [49355]  1000 49355    67364    49621     106        0             0 stress
+        May 25 13:25:03 centos kernel: [49356]  1000 49356    67364    34589      77        0             0 stress
+        May 25 13:25:03 centos kernel: Out of memory: Kill process 19384 (firefox) score 71 or sacrifice child
+        May 25 13:25:03 centos kernel: Killed process 33731 (Web Content) total-vm:1990252kB, anon-rss:106448kB, file-rss:0kB, shmem-rss:54348kB
+        May 25 13:25:03 centos kernel: Out of memory: Kill process 19384 (firefox) score 71 or sacrifice child
+        May 25 13:25:03 centos kernel: Killed process 20646 (Web Content) total-vm:2099496kB, anon-rss:103156kB, file-rss:0kB, shmem-rss:16kB
+        May 25 13:25:03 centos kernel: Out of memory: Kill process 19384 (firefox) score 71 or sacrifice child
+        May 25 13:25:03 centos kernel: Killed process 20660 (JS Watchdog) total-vm:2099496kB, anon-rss:104448kB, file-rss:0kB, shmem-rss:16kB
+        May 25 13:25:03 centos kernel: Out of memory: Kill process 19384 (firefox) score 71 or sacrifice child
+        May 25 13:25:03 centos kernel: Killed process 19384 (firefox) total-vm:3014684kB, anon-rss:200460kB, file-rss:0kB, shmem-rss:75096kB
+        May 25 13:25:03 centos code.desktop: #033[91m[main 2019-05-25T20:25:03.706Z]#033[0m [VS Code]: render process crashed!
+        May 25 13:25:04 centos kernel: Out of memory: Kill process 49355 (stress) score 67 or sacrifice child
+        May 25 13:25:04 centos kernel: Killed process 49355 (stress) total-vm:269456kB, anon-rss:258384kB, file-rss:4kB, shmem-rss:0kB
+        May 25 13:25:04 centos journal: GtkDialog mapped without a transient parent. This is discouraged.
+        ```
+    * Firefox and VS Studio Code crashed
+    * I don't have `/var/log/syslog`
 
 ### Paths and Commands
 ----
@@ -244,7 +308,9 @@ monitoring, system | `/proc/sys/vm/overcommit_ratio` | change percentage of RAM 
 monitoring, system | `/proc/<pid>/oom_score` | contains **badness* value | LFS201 13.9
 monitoring, system | `/proc/<pid>/oom_adj` | shows number of bits to adjust badness score if two entries are in same directory; deprecated | LFS201 13.9
 monitoring, system | `/proc/<pid>/oom_score_adj` | used to directly adjust the badness point value | LFS201 13.9
-
+monitoring, system | `/proc/swaps` | shows swap partitions and files on the system | LFS201 Lab 13.1
+monitoring, system | `/var/log/messages` | contains system messages | LFS201 Lab 13.1
+monitoring, system | `/var/log/syslog` | contains system messages | LFS201 Lab 13.1
 
 #### Commands  
 
@@ -256,3 +322,7 @@ monitoring, memory | `$ vmstat -S m -a 2 4` | show report at a 2 s interval 4 ti
 monitoring, memory | `$ vmstat -s -S m` | use -s option to see a table of memory statistics and certain event counters | LFS201 13.7
 monitoring, memory | `$ vmstat -d` | use -d option to see a table of disk statistics | LFS201 13.7 
 monitoring, memory | `$ vmstat -p /dev/sdb1 2 4` | use -p option to get quick stats on one partition (sda1 or sda2 in my case) | LFS201 13.7
+monitoring, system | `$ sudo /sbin/swapoff -a` | turn off all swap | LFS201 Lab 13.1
+monitoring, system | `$ sudo /sbin/swapon -a` | turn on all swap | LFS201 Lab 13.1
+monitoring, system | `$ stress -m 8 -t 10s` | keep 2 GB memory busy for 10 seconds | LFS201 Lab 13.1
+monitoring, system | `$ dmesg` | print or control the kernel ring buffer (view messages) | LFS201 Lab 13.1

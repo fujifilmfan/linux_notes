@@ -124,7 +124,9 @@ boot, filesystem | `initrd` | (**initial RAM disk**) instead of `initramfs` on s
 monitoring, memory | `Documentation/sysctl/vm.txt` | documentation in the kernel source for `/proc/sys/vm` | LFS201 13.6
 
 
-
+monitoring, system | `/proc/swaps` | shows swap partitions and files on the system | LFS201 Lab 13.1
+monitoring, system | `/var/log/messages` | contains system messages | LFS201 Lab 13.1
+monitoring, system | `/var/log/syslog` | contains system messages | LFS201 Lab 13.1
 
 
 
@@ -134,6 +136,10 @@ monitoring, memory | `Documentation/sysctl/vm.txt` | documentation in the kernel
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 monitoring, system | `$ sudo bash -c 'echo 100000 > /proc/sys/kernel/threads-max'` | change maximum number of threads | LFS201 11.10
+monitoring, performance, i/o, testing | `$ bon_csv2html < bonnie++.out > bonnie++.html` | convert **bonnie++.out** to HTML | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ bon_csv2txt < bonnie++.out > bonnie++.txt` | convert **bonnie++.out** to plain text | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ bonnie++ ...` | benchmarking application | LFS201 Lab 14.1
+monitoring, performance, i/o, testing | `$ time sudo bonnie++ -n 0 -u 0 -r 100 -f -b -d /mnt` | run a system test using **bonnie++** | LFS201 Lab 14.1
 filesystem | `$ cat /proc/filesystems` | shows currently registered filessytem types | LFS201 16.10
 monitoring, system | `$ cat /proc/sys/kernel/threads-max` | view maximum number of threads allowed on the system | LFS201 11.10
 i/o | `$ cat /sys/block/<device>/queue/rotational` | check whether a device is an SSD | LFS201 15.6
@@ -143,14 +149,17 @@ packages | `$ sudo cp -a rpm rpm_BACKUP` | make a backup copy of the RPM databas
 monitoring, processes | `$ dd if=/dev/urandom of=/dev/null &` | start a background process which reads from /dev/urandom and writes to /dev/null | LFS201 Lab 12.2
 filesystem | `$ dd if=/dev/zero of=junk bs=1M count=512` | create 512MB file of zeros | LFS201 16.10
 filesystem | `$ df -h` | display filesystem disk space usage in human-readable form | LFS201 16.10
+monitoring, system | `$ dmesg` | print or control the kernel ring buffer (view messages) | LFS201 Lab 13.1
 monitoring, system | `$ dmesg -w`  (or `$ sudo telinit 5`) | view new messages continually | LFS201 11.5
 packages | `$ dnf ...` | next generation replacement for **yum** | LFS201 8.12
 filesystem | `$ sudo du -cshx --exclude=/proc *` | calculate overall size of directories | LFS201 Lab 2.1
 filesystem | `$ sudo du --max-depth=1 -hx /` | calculate overall size of directories | LFS201 Lab 2.1
 i/o | `$ echo noop > /sys/block/sda/queue/scheduler` | change I/O scheduler to noop | LFS201 15.7
+i/o | `$ echo 3 > /proc/sys/vm/drop_caches` | flush cached pages of memory | LFS201 Lab 15.1
 packages | `$ find / -name "bzip2*" -type d 2>&1 | grep -v 'Permission denied'` | find **bzip2** packages | LFS201 6.13
 packages | `$ sudo find /etc -name "*.rpm*"` | search for old configuration files | LFS201 8.10
 monitoring, memory | `$ free -m` | shows summary of memory usage | LFS201 13.5
+monitoring, performance, i/o, testing | `$ fs_mark -d /tmp -n 1000 -s 10240` | test filesystem by creating 1000 files, each 10 KB in size, and then performing an **fsync** to flush out to disk | LFS201 Lab 14.2
 packages | `$ gcc -o signals signals.c` | compiles the signals.c source code | LFS201 Lab 4.1
 apps, packages | `$ gnome-software` | opens Application Installer, a sort Linux app store | LFS201 5.15  
 processes | `$ gnome-system-monitor` | opens gui system monitor | LFS201 3.20
@@ -163,6 +172,7 @@ monitoring, i/o | `$ iostat -k` | use -k option to show results in KB instead of
 monitoring, i/o | `$ iostat -m` | use -m option to get results in MB | LFS201 14.6
 monitoring, i/o | `$ iostat -N` | use -N option to show by device name (or -d for a somewhat different format) | LFS201 14.6
 monitoring, i/o | `$ iostat -xk` | use -x option to see a more detailed report | LFS201 14.7
+monitoring, performance, i/o, testing | `$ iostat -x -d /dev/sda 2 20` | gather i/o statistics while running **fs_mark** test | LFS201 Lab 14.2
 monitoring, i/o | `$ sudo iotop` | shows table of I/O usage | LFS201 14.8
 monitoring, i/o | `$ sudo iotop -o` | use -o (or --only) option to show only processes or threads actually doing I/O | LFS201 14.8
 processes | `$ ipcs` |  | LFS201 Lab 3.2
@@ -180,6 +190,8 @@ processes | `$ ldd /usr/bin/vi` | shows shared libraries that executable require
 monitoring, processes | `$ ls -l /proc/10530/task` | see child processes of 10530 | LFS201 12.10
 filesystem | `$ lsmod | less` | shows mounted filesystems | LFS201 16.10
 filesystem | `$ sudo mount junk /mnt` | mount filesystem | LFS201 16.10
+monitoring, performance, i/o, testing | `$ mount -o remount,barrier=1 /tmp` | change **mount** options for **ext3** or **ext4** to improve performance | LFS201 Lab 14.2
+monitoring, performance, i/o, testing | `$ mount -o remount,journal_async_commit /tmp` | change **mount** options for **ext4** to improve performance | LFS201 Lab 14.2
 processes | `$ nice -n 5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
 processes | `$ nice -5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
 monitoring, processes | `$ nice -n 10 bash` | start bash session using the nice command | LFS201 Lab 12.1
@@ -245,11 +257,15 @@ monitoring, system | `$ sar <options> <interval> <count>` | generic sar (Systems
 monitoring, system | `$ sar -B 3 3 ` | using sar to get paging statistics | LFS201 11.13
 monitoring, system | `$ sar -b 3 3` | using sar to get I/O and transfer rate statistics | LFS201 11.13
 monitoring, system | `$ stress -c 8 -i 4 -m 6 -t 20s` | stress test the system | LFS201 Lab 11.1
+monitoring, system | `$ stress -m 8 -t 10s` | keep 2 GB memory busy for 10 seconds | LFS201 Lab 13.1
 monitoring, system | `$ sudo sysctl kernel.threads-max=100000` | change maximum number of threads using **sysctl** | LFS201 11.10
+monitoring, system | `$ sudo /sbin/swapoff -a` | turn off all swap | LFS201 Lab 13.1
+monitoring, system | `$ sudo /sbin/swapon -a` | turn on all swap | LFS201 Lab 13.1
 filesystem | `$ sudo systemctl mask tmp.mount` | prevent using `/tmp` as a mount point for a **ram disk** using the **tmpfs** filesystem | LFS201 2.24
 monitoring, system | `$ sudo tail -f /var/log/messages` | view new messages continually | LFS201 11.5
 monitoring, system | `$ sudo tail -f /var/log/syslog`  (or `$ sudo telinit 3`) | view new messages continually | LFS201 11.5
 packages | `$ tar -xzvf centos.rpmdatabase.tar.gz -C ~/rpm` | unpack files into the `~/rpm` directory (**-C** for 'change') | LFS201 Lab 6.2
+monitoring, performance, i/o, testing | `$ time sudo bonnie++ -n 0 -u 0 -r 100 -f -b -d /mnt` | run a system test using **bonnie++** | LFS201 Lab 14.1
 processes | `$ ulimit [options] [limit]` | generic syntax | LFS201 3.8
 processes | `$ ulimit -a` | displays or resets resource limits associated with processes running under a shell | LFS201 3.8
 processes | `$ ulimit -n 1600` | changes maximum number of file descriptors | LFS201 3.8
@@ -309,10 +325,6 @@ packages | `$ sudo yum history` | view the history of **yum** commands and even 
 packages | `$ yumex` | launches graphical **yum** interface | LFS201 8.13
 processes | `&` | at end of command for background processing: LFS201 3.14
 filesystem | `$ sudo /sbin/mkfs.xfs junk` | create xfs filesystem | LFS201 16.10
-
-
-
-
 
 
 
