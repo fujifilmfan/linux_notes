@@ -224,21 +224,7 @@ Lab solutions (where different than mine):
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-monitoring, system | `/var/log` | log files | LFS201 11.5
-monitoring, system | `/etc/logrotate.conf` | controls **logrotate** | LFS201 11.6
-monitoring, system | `/proc/sys` | shows tunable system parameters | LFS201 11.10
-monitoring, system | `/proc/sys/abi/` | Contains files with application binary information | LFS201 11.10
-monitoring, system | `/proc/sys/debug/` | Debugging parameters; for now, just some control of exception reporting | LFS201 11.10
-monitoring, system | `/proc/sys/dev/` | Device parameters, including subdirectories for cdrom, scsi, raid, and parport | LFS201 11.10
-monitoring, system | `/proc/sys/fs/` | Filesystem parameters, including quota, file handles used, and maximums, inode and directory information, etc. | LFS201 11.10
-monitoring, system | `/proc/sys/kernel/` | Kernel parameters | LFS201 11.10
-monitoring, system | `/proc/sys/net/` | Network parameters; there are subdirectories for ipv4, netfilter, etc. | LFS201 11.10
-monitoring, system | `/proc/sys/vm` | Virtual memory parameters | LFS201 11.10
-monitoring, system | `/sys/class/net` | contains network device information | LFS201 11.12
-monitoring, system | `/var/log/sa` | contains data stored by system activity data collector | LFS201 11.13
-monitoring, system | `/etc/cron.d/sysstat` | cron job for periodic data collection for sadc | LFS201 11.13
-monitoring, system | `/proc/<PID>/cmdline` | command line used to start the process | LFS201 11.15
-  
+    
 #### Commands  
 
 Topics | Command | Notes | Reference

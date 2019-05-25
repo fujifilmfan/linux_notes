@@ -251,8 +251,8 @@ monitoring, system | `/proc/<pid>/oom_score_adj` | used to directly adjust the b
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 monitoring, memory | `$ free -m` | shows summary of memory usage | LFS201 13.5
-`$ vmstat <options> <delay> <count>` | show detailed information about memory, I/O, and other activities | LFS201 13.7
-`$ vmstat -S m -a 2 4` | show report at a 2 s interval 4 times | LFS201 13.7
-`$ vmstat -s -S m` | use -s option to see a table of memory statistics and certain event counters | LFS201 13.7
-`$ vmstat -d` | use -d option to see a table of disk statistics | LFS201 13.7 
-`$ vmstat -p /dev/sdb1 2 4` | use -p option to get quick stats on one partition (sda1 or sda2 in my case) | LFS201 13.7
+monitoring, memory | `$ vmstat <options> <delay> <count>` | show detailed information about memory, I/O, and other activities | LFS201 13.7
+monitoring, memory | `$ vmstat -S m -a 2 4` | show report at a 2 s interval 4 times | LFS201 13.7
+monitoring, memory | `$ vmstat -s -S m` | use -s option to see a table of memory statistics and certain event counters | LFS201 13.7
+monitoring, memory | `$ vmstat -d` | use -d option to see a table of disk statistics | LFS201 13.7 
+monitoring, memory | `$ vmstat -p /dev/sdb1 2 4` | use -p option to get quick stats on one partition (sda1 or sda2 in my case) | LFS201 13.7

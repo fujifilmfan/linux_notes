@@ -140,6 +140,7 @@ Git arose from the Linux kernel development community
 ### 5.15: Package Management Systems Demo
 ----
 * `$ gnome-software` opens Application Installer, a sort of Linux app store
+  
 ### Lab 5.1: Version Control with git
 ----
 Basic git stuff; nothing to note  
