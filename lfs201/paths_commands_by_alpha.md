@@ -105,7 +105,7 @@ filesystem | `/tftpboot` | some distros | LFS201 2.7
 filesystem | `/usr` | multi-user applications, utilities and data; theoretically read-only | LFS201 2.7
 apps, filesystem | `/usr/bin` | programs required only by non-root users (as opposed to those in `/bin`) | LFS201 2.9
 packages | `/usr/bin/yum*` | contains plugins and companion programs | LFS201 8.5
-packages | `$ ls /usr/lib/rpm | wc -l` | shows programs and scripts used by RPM | LFS201 6.8
+packages | `$ ls /usr/lib/rpm \| wc -l` | shows programs and scripts used by RPM | LFS201 6.8
 packages | `/usr/lib/rpm` | holds programs and scripts used by RPM | LFS201 6.8
 packages | 1 `/usr/lib/rpm/rpmrc` | first place RPM looks for settings; each is read | LFS201 6.8
 filesystem | `/usr/local` | contains local binaries | LFS201 2.25
