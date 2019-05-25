@@ -16,10 +16,8 @@ filesystem | `/bin` | executables needed in **single user mode** | LFS201 2.7
 filesystem | `/boot` | files needed for boot, like kernel, **initrd** or **initramfs**, bootloaders | LFS201 2.7
 filesystem | `/boot/config` | config file under `/boot`; used when compiling kernel; used for bookkeeping and reference when debugging | LFS201 2.11
 filesystem | `/boot/System.map` | under `/boot`; kernel **symbol table**, useful for debugging; gives hex addresses of all kernel symbols | LFS201 2.11
-
 filesystem | `/dev` | **device nodes**; pseudo-filesystem | LFS201 2.7
 filesystem | `/dev/zero` | special file in Unix-like operating systems that provides null characters | LFS201 16.10
-
 filesystem | `/etc` | system-wide config files | LFS201 2.7
 monitoring, system | `/etc/cron.d/sysstat` | cron job for periodic data collection for sadc | LFS201 11.13
 filesystem | `/etc/init.d` | which contains start up and shut down scripts when using System V initialization | LFS201 2.13
@@ -36,19 +34,15 @@ processes | `/etc/shadow` | changed by running `passwd` but not directly editabl
 filesystem | `/etc/skel` | used to populate new home dirs | LFS201 2.13
 monitoring, system | `/etc/sysctl.conf` | configuration for values set at boot time | LFS201 13.6
 packages | `/etc/yum.repos.d/` | contains repository configuration files; they have a **.repo** extension | LFS201 8.6
-
 filesystem | `/home` | user **home directories** | LFS201 2.7
 packages | 3 `~/.rpmrc` | third place RPM looks for settings; each is read | LFS201 6.8
-
 filesystem | `/lib` | libraries required by binaries in `/bin` and `/sbin`; Linux kernel modules | LFS201 2.7
 filesystem | `/lib/modules/<kernel-version-number>` | contains kernel modules that are loadable extensions of the kernel | LFS201 2.15
 filesystem | `/lib/security` | contains Pluggable Authentication Modules | LFS201 2.15
 filesystem | `/lib64` | 64-bit libraries required by binaries in `/bin`, `/sbin` | LFS201 2.7
-
 filesystem | `/media` | mount points for removable media | LFS201 2.7
 filesystem | `/misc` | some distros | LFS201 2.7
 filesystem | `/mnt` | temporarily mounted filesystems | LFS201 2.7
-
 filesystem | `/opt` | optional application software packages | LFS201 2.7
 filesystem | `/opt/application` | example | LFS201 2.18
 filesystem | `/opt/application/bin` | example | LFS201 2.18
@@ -64,7 +58,6 @@ filesystem | `opt/info` | reserved for local system administrator use | LFS201 2
 filesystem | `/opt/lib` | reserved for local system administrator use | LFS201 2.18
 filesystem | `opt/man` | reserved for local system administrator use | LFS201 2.18
 filesystem | `/opt/skype` | example | LFS201 2.18
-
 filesystem | `/proc` | virtual pseudo-filesystem w/ info about system and processes | LFS201 2.7
 monitoring, system | `/proc/<PID>/cmdline` | command line used to start the process | LFS201 11.15
 monitoring, system | `/proc/<pid>/oom_adj` | shows number of bits to adjust badness score if two entries are in same directory; deprecated | LFS201 13.9
@@ -78,7 +71,6 @@ filesystem | `/proc/interrupts` | provides an up-to-the-moment glimpse of the sy
 filesystem | `/proc/meminfo` | total, free, available, active, inactive, etc. memory | LFS201 Lab 2.2
 filesystem | `/proc/meminfo` | provides an up-to-the-moment glimpse of the system's hardware | LFS201 2.19
 monitoring, system | `/proc/meminfo` | contains a summary of memory statistics | LFS201 13.8
-
 filesystem | `/proc/mounts` | I don't know what I'm looking at here | LFS201 Lab 2.2
 filesystem | `/proc/mounts` | provides an up-to-the-moment glimpse of the system's hardware | LFS201 2.19
 filesystem | `/proc/partitions` | lists partitions (sda, sda1, sda2, sr0) | LFS201 Lab 2.2
@@ -99,22 +91,17 @@ monitoring, system | `/proc/sys/vm` | Virtual memory parameters | LFS201 11.10
 monitoring, memory | `/proc/sys/vm` | contains tunable knobs to control the **Virtual Memory** system | LFS201 13.6
 monitoring, system | `/proc/sys/vm/overcommit_memory` | overcommit memory settings | LFS201 13.9
 monitoring, system | `/proc/sys/vm/overcommit_ratio` | change percentage of RAM available before memory requests fail | LFS201 13.9
-
-
 filesystem | `/root` | home directory for **root** user | LFS201 2.7
 filesystem | `/run` | some distros; pseudo-filesystem | LFS201 2.7
 filesystem | `/run/media/[username]/....` | contains removable media | LFS201 2.16
-
 filesystem | `/sbin` | essential system binaries | LFS201 2.7
 filesystem | `/srv` | site-specific data; seldom used | LFS201 2.7
 filesystem | `/sys` | virtual pseudo-filesystem w/ info about system and processes; similar to a **device tree**, part of **Unified Device Model** | LFS201 2.7
 i/o | `/sys/block/sda/queue/scheduler` | I/O scheduling information | LFS201 15.6
 i/o | `/sys/block/<device>/queue/iosched` | contains tunables | LFS201 15.7
 monitoring, system | `/sys/class/net` | contains network device information | LFS201 11.12
-
 filesystem | `/tmp` | temporary files; lost on reboot in many distributions | LFS201 2.7
 filesystem | `/tftpboot` | some distros | LFS201 2.7
-
 filesystem | `/usr` | multi-user applications, utilities and data; theoretically read-only | LFS201 2.7
 apps, filesystem | `/usr/bin` | programs required only by non-root users (as opposed to those in `/bin`) | LFS201 2.9
 packages | `/usr/bin/yum*` | contains plugins and companion programs | LFS201 8.5
@@ -124,7 +111,6 @@ packages | 1 `/usr/lib/rpm/rpmrc` | first place RPM looks for settings; each is 
 filesystem | `/usr/local` | contains local binaries | LFS201 2.25
 packages | `/usr/sbin/yum*` | contains plugins and companion programs | LFS201 8.5
 filesystem | `/usr/share/man` | contains **man** pages | LFS201 2.25
-
 filesystem | `/var` | variable data that changes during system operation | LFS201 2.7
 packages | `/var/cache/yum` | location of downloaded package by default | LFS201 8.11
 packages | `/var/lib/rpm` | default system directory which holds RPM database files in the form of **Berkeley DB** hash files | LFS201 6.7
@@ -132,7 +118,6 @@ filesystem | `/var/log` | contains most log files | LFS201 2.26
 monitoring, system | `/var/log` | log files | LFS201 11.5
 monitoring, system | `/var/log/sa` | contains data stored by system activity data collector | LFS201 11.13
 filesystem | `/var/spool` | contains local files for processes such as mail, printing, and cron jobs while awaiting action | LFS201 2.26
-
 boot, filesystem | `vmlinuz` | file for booting (compressed Linus kernel) | LFS201 2.10
 boot, filesystem | `initramfs` | (**initial RAM Filesystem**, mounted before real root filesystem becomes available) | LFS201 2.10
 boot, filesystem | `initrd` | (**initial RAM disk**) instead of `initramfs` on some distros | LFS201 2.10
@@ -149,14 +134,12 @@ monitoring, memory | `Documentation/sysctl/vm.txt` | documentation in the kernel
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 monitoring, system | `$ sudo bash -c 'echo 100000 > /proc/sys/kernel/threads-max'` | change maximum number of threads | LFS201 11.10
-
 filesystem | `$ cat /proc/filesystems` | shows currently registered filessytem types | LFS201 16.10
 monitoring, system | `$ cat /proc/sys/kernel/threads-max` | view maximum number of threads allowed on the system | LFS201 11.10
 i/o | `$ cat /sys/block/<device>/queue/rotational` | check whether a device is an SSD | LFS201 15.6
 i/o | `$ cat /sys/block/sda/queue/scheduler` | shows which I/O schedulers are available on `/dev/sda` | LFS201 15.5
 packages | `$ cat CentOS-Base.repo` | example of a respository file | LFS201 8.7
 packages | `$ sudo cp -a rpm rpm_BACKUP` | make a backup copy of the RPM database | LFS201 Lab 6.2
-
 monitoring, processes | `$ dd if=/dev/urandom of=/dev/null &` | start a background process which reads from /dev/urandom and writes to /dev/null | LFS201 Lab 12.2
 filesystem | `$ dd if=/dev/zero of=junk bs=1M count=512` | create 512MB file of zeros | LFS201 16.10
 filesystem | `$ df -h` | display filesystem disk space usage in human-readable form | LFS201 16.10
@@ -164,7 +147,6 @@ monitoring, system | `$ dmesg -w`  (or `$ sudo telinit 5`) | view new messages c
 packages | `$ dnf ...` | next generation replacement for **yum** | LFS201 8.12
 filesystem | `$ sudo du -cshx --exclude=/proc *` | calculate overall size of directories | LFS201 Lab 2.1
 filesystem | `$ sudo du --max-depth=1 -hx /` | calculate overall size of directories | LFS201 Lab 2.1
-
 i/o | `$ echo noop > /sys/block/sda/queue/scheduler` | change I/O scheduler to noop | LFS201 15.7
 packages | `$ find / -name "bzip2*" -type d 2>&1 | grep -v 'Permission denied'` | find **bzip2** packages | LFS201 6.13
 packages | `$ sudo find /etc -name "*.rpm*"` | search for old configuration files | LFS201 8.10
@@ -173,7 +155,6 @@ packages | `$ gcc -o signals signals.c` | compiles the signals.c source code | L
 apps, packages | `$ gnome-software` | opens Application Installer, a sort Linux app store | LFS201 5.15  
 processes | `$ gnome-system-monitor` | opens gui system monitor | LFS201 3.20
 monitoring, system | `$ gnome-system-monitor` | launch graphical monitor | LFS201 Lab 11.1
-
 monitoring, i/o | `$ ionice [-c class] [-n priority] [-p pid] [COMMAND [ARGS] ]` | usage syntax | LFS201 14.9
 monitoring, i/o | `$ sudo ionice -c 2 -n 3 -p 30078` | change best effort to priority 3 for process 30078 | LFS201 14.9
 monitoring, i/o | `$ sudo ionice -c 2 -n 6 -p 47` | change the priority of process 47 from be/7 to be/6 | LFS201 14.9
@@ -184,10 +165,8 @@ monitoring, i/o | `$ iostat -N` | use -N option to show by device name (or -d fo
 monitoring, i/o | `$ iostat -xk` | use -x option to see a more detailed report | LFS201 14.7
 monitoring, i/o | `$ sudo iotop` | shows table of I/O usage | LFS201 14.8
 monitoring, i/o | `$ sudo iotop -o` | use -o (or --only) option to show only processes or threads actually doing I/O | LFS201 14.8
-
 processes | `$ ipcs` |  | LFS201 Lab 3.2
 processes | `$ ipcs -p` |  | LFS201 Lab 3.2
-
 signals | `$ kill -l` | shows a list of signals with their numbers | LFS201 4.5
 documentation, signals | `$ man 7 signal` | documentation for signals | LFS201 4.5
 signals | `$ kill 1991` | sends a **SIGTERM (15)** to PID 1991, which can be handled | LFS201 4.6 
@@ -197,22 +176,17 @@ signals | `$ kill ...` | used to send any all signals, even benign informative o
 signals | `$ killall bash` | kills all processes with the name **bash** using command name instead of PID | LFS201 4.7
 signals | `$ killall -9 bash` | kills all processes with the name **bash** | LFS201 4.7
 signals | `$ killall -SIGKILL bash` | kills all processes with the name **bash** | LFS201 4.7
-
 processes | `$ ldd /usr/bin/vi` | shows shared libraries that executable requires | LFS201 3.23
 monitoring, processes | `$ ls -l /proc/10530/task` | see child processes of 10530 | LFS201 12.10
 filesystem | `$ lsmod | less` | shows mounted filesystems | LFS201 16.10
-
 filesystem | `$ sudo mount junk /mnt` | mount filesystem | LFS201 16.10
-
 processes | `$ nice -n 5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
 processes | `$ nice -5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
 monitoring, processes | `$ nice -n 10 bash` | start bash session using the nice command | LFS201 Lab 12.1
-
 processes | `$ passwd ...` | **setuid** program; changes password | LFS201 3.9
 signals | `$ pkill [-signal] [options] [pattern]` | generic syntax; sends a signal to a process using selection criteria | LFS201 4.7
 signals | `$ pkill -u libby foobar`| kill all of **libby**'s processes with a name of **foobar** | LFS201 4.7
 signals | `$ pkill -HUP rsyslogd`| makes **rsyslog** re-read its config file  | LFS201 4.7
-
 processes | `$ ps aux | grep -e 11737 -e 11044` | `-e` option is to match a pattern; also `--regexp` | LFS201 Lab 3.2
 processes | `$ ps -elf` | show kernel-created processes; list all processes on the system while showing the parent process IDs | LFS201 3.16
 processes | `$ ps lf` | shows processes and priorities | LFS201 3.20
@@ -226,13 +200,10 @@ monitoring, processes | `$ ps axo "%p %n %c"` | AIX format; show only the proces
 monitoring, processes | `$ ps axo pid,pri,ni,cmd` | standard format; show only the process ID, priority, nice value, and the process command line | LFS201 Lab 12.1
 monitoring, processes | `$ ps -o pid,pri,ni,cmd` | show only the process ID, priority, nice value, and the process command line | LFS201 Lab 12.1
 monitoring, processes | `$ ps -C dd -o pid,cmd,stat` | check process state of **dd**; **-C bash** for command list (instead of using **grep**) | LFS201 Lab 12.2
-
 monitoring, processes | `$ pstree` | show processes in tree form | LFS201 12.10
 monitoring, processes | `$ pstree -aAp 2408` | shows the process tree for PID 2408 | LFS201 12.10
-
 processes | `$ renice +3 13848` | increase niceness by 3 of the process with pid = 13848, where 13848 is the pid of the process; 3 would be the new niceness, not the change | LFS201 3.19
 monitoring, processes | `$ renice 15 -p 22171` | renice process 22171 to 15 | LFS201 Lab 12.1
-
 packages | `$ rpm -q ...` | make an RPM inquiry | LFS201 6.9
 packages | `$ rpm -q bash` | shows which version of a package is installed | LFS201 6.9
 packages | `$ rpm -qf /bin/bash` | shows which package a file came from; **-f** for file | LFS201 6.9
@@ -270,18 +241,15 @@ packages | `$ rpmbuild --rebuild` | rebuild a binary package | LFS201 5.6
 packages | `$ sudo rpm --rebuilddb` | rebuild the RPM database | LFS201 Lab 6.2
 packages | `$ rpm -i package-file` | installs from a local RPM but will not attempt to resolve dependencies by accessing remote repos | LFS201 8.10
 packages | `$ rpm -qa | tee /tmp/rpm-qa.output` | get a listing of all RPMs on the system | LFS201 Lab 6.2
-
 monitoring, system | `$ sar <options> <interval> <count>` | generic sar (Systems Activity Reporter) usage | LFS201 11.13
 monitoring, system | `$ sar -B 3 3 ` | using sar to get paging statistics | LFS201 11.13
 monitoring, system | `$ sar -b 3 3` | using sar to get I/O and transfer rate statistics | LFS201 11.13
 monitoring, system | `$ stress -c 8 -i 4 -m 6 -t 20s` | stress test the system | LFS201 Lab 11.1
 monitoring, system | `$ sudo sysctl kernel.threads-max=100000` | change maximum number of threads using **sysctl** | LFS201 11.10
 filesystem | `$ sudo systemctl mask tmp.mount` | prevent using `/tmp` as a mount point for a **ram disk** using the **tmpfs** filesystem | LFS201 2.24
-
 monitoring, system | `$ sudo tail -f /var/log/messages` | view new messages continually | LFS201 11.5
 monitoring, system | `$ sudo tail -f /var/log/syslog`  (or `$ sudo telinit 3`) | view new messages continually | LFS201 11.5
 packages | `$ tar -xzvf centos.rpmdatabase.tar.gz -C ~/rpm` | unpack files into the `~/rpm` directory (**-C** for 'change') | LFS201 Lab 6.2
-
 processes | `$ ulimit [options] [limit]` | generic syntax | LFS201 3.8
 processes | `$ ulimit -a` | displays or resets resource limits associated with processes running under a shell | LFS201 3.8
 processes | `$ ulimit -n 1600` | changes maximum number of file descriptors | LFS201 3.8
@@ -289,13 +257,11 @@ processes | `$ ulimit -H -n` | view hard limit | LFS201 Lab 3.1
 processes | `$ ulimit -S -n` | view soft limt | LFS201 Lab 3.1
 processes | `$ ulimit -n 4096` | set soft limit to hard limit value(??) | LFS201 Lab 3.1
 processes | `$ ulimit -H -n 2048` | set hard limit to 2048(??) | LFS201 Lab 3.1
-
 monitoring, memory | `$ vmstat <options> <delay> <count>` | show detailed information about memory, I/O, and other activities | LFS201 13.7
 monitoring, memory | `$ vmstat -S m -a 2 4` | show report at a 2 s interval 4 times | LFS201 13.7
 monitoring, memory | `$ vmstat -s -S m` | use -s option to see a table of memory statistics and certain event counters | LFS201 13.7
 monitoring, memory | `$ vmstat -d` | use -d option to see a table of disk statistics | LFS201 13.7 
 monitoring, memory | `$ vmstat -p /dev/sdb1 2 4` | use -p option to get quick stats on one partition (sda1 or sda2 in my case) | LFS201 13.7
-
 packages | `$ sudo yum list updates` | checks to see if there are any available updates for your system | LFS201 Lab 8.1
 packages | `$ sudo yum check-update` | checks to see if there are any available updates for your system | LFS201 Lab 8.1
 packages | `$ sudo yum update docker.x86_64` | updates a particular package | LFS201 Lab 8.1
@@ -340,9 +306,7 @@ packages | `$ sudo yum repolist` | shows a list of all enabled repositories | LF
 packages | `$ sudo yum shell [text-file]` | initiates an interactive shell in which to run multiple **yum** commands | LFS201 8.11
 packages | `$ sudo yum install --downloadonly package` | download package but do not install it | LFS201 8.11
 packages | `$ sudo yum history` | view the history of **yum** commands and even undo or redo previous commands | LFS201 8.11
-
 packages | `$ yumex` | launches graphical **yum** interface | LFS201 8.13
-
 processes | `&` | at end of command for background processing: LFS201 3.14
 filesystem | `$ sudo /sbin/mkfs.xfs junk` | create xfs filesystem | LFS201 16.10
 
