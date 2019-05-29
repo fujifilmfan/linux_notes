@@ -134,6 +134,17 @@ i/o | `/sys/block/sda/queue/scheduler` | I/O scheduling information | LFS201 15.
 i/o | `/sys/block/<device>/queue/iosched` | contains tunables | LFS201 15.7
 filesystem | `/proc/filesystems` | currently registered filesystems | LFS201 16.10
 filesystem | `/dev/zero` | special file in Unix-like operating systems that provides null characters | LFS201 16.10
+filesystem | `/dev/shm` | most modern Linux distributions mount an instance of **tmpfs** here | LFS201 Lab 16.1
+filesystem | `$ sudo mkdir /mnt/tmpfs` | create a **tmpfs** filesystem | LFS201 Lab 16.1
+filesystem | `$ sudo mount -t tmpfs none /mnt/tmpfs` | mount a new **tmpfs** filesystem | LFS201 Lab 16.1
+filesystem | `$ df -h /mnt/tmpfs` | see how much space the filesystem has been given and how much it is using
+filesystem | `$ sudo mount -t tmpfs -o size=1G none /mnt/tmpfs` | change the allotted size of **tmpfs** as a mount option | LFS201 Lab 16.1
+filesystem | `$ sudo umount /mnt/tmpfs` | unmount the **tmpfs** filesystem | LFS201 Lab 16.1
+filesystem | `$ df -h /dev/shm` | see how much space the filesystem has been given and how much it is using | LFS201 Lab 16.1
+filesystem | `$ df -h | grep tmpfs` | many distributions mount multiple instances of **tmpfs** | LFS201 Lab 16.1
+
+
+filesystem, partitions | `/etc/fstab` | configuration file containing the necessary information to automate the process of mounting partitions | LFS201 17.19
 
 
 ### Commands  
@@ -336,4 +347,47 @@ filesystem | `$ sudo mount junk /mnt` | mount filesystem | LFS201 16.10
 filesystem | `$ lsmod | less` | shows mounted filesystems | LFS201 16.10
 filesystem | `$ df -h` | display filesystem disk space usage in human-readable form | LFS201 16.10
 
+
+
+
+
+partitions | `$ sudo fdisk -l /dev/sda` | list partition table | LFS201 17.5
+partitions | `$ ls -l /dev` | show current available disk device nodes | LFS201 17.10
+partitions | `$ sudo blkid /dev/sda*` | report on block devices matching the pattern| LFS201 17.12
+partitions | `$ sudo blkid` | ?? | LFS201 17.12
+partitions | `$ sudo blkid -L root` | convert LABEL to 'root'(?)| LFS201 17.12
+partitions | `$ lsblk` | presents block device information in a tree format | LFS201 17.13
+partitions | `$ sudo dd if=/dev/sda of=mbrbackup bs=512 count=1` | backup **MBR** on the first disk | LFS201 17.15
+partitions | `$ sudo dd if=mbrbackup of=/dev/sda bs=512 count=1` | restore the **MBR** | LFS201 17.15
+partitions | `x7:/tmp>sudo sgdisk --backup=/tmp/sda_backup /dev/sda` | backup GPT partition | LFS201 17.16
+files, partitions | `x7:/tmp>sudo file sda_backup` or `$ file myfile.txt` | determines file type | LFS201 17.16
+partitions| `$ sudo fdisk /dev/sdb` | start **fdisk** on `/dev/sdb` | LFS201 17.17
+partitions | `$ sudo partprobe -s` | try and read in the revised partition table | LFS201 17.17
+partitions | `$ cat /proc/partitions` | examine partitions the OS is aware of | LFS201 17.17
+apps, files | `$ dd if=/dev/zero of=imagefile bs=1M count=1024` | create a file full of zeros 1 GB in length | LFS201 Lab 17.1
+partitions | `$ mkfs.ext4 imagefile` | put a filesystem on 'imagefile' | LFS201 Lab 17.1
+partitions | `$ mkdir mntpoint` | create directory for mounting a filesystem | LFS201 Lab 17.1
+partitions | `$ sudo mount -o loop imagefile mntpoint` | mount filesystem 'imagefile' on `mntpoint` | LFS201 Lab 17.1
+partitions | `$ sudo umount mntpoint` | unmount the filesystem | LFS201 Lab 17.1
+partitions | `$ sudo fdisk -C 130 imagefile` | format and partition 'imagefile' w/ a phony number of cylinders | LFS201 Lab 17.2
+partitions | `$ losetup -a` | see already in-use loop devices | LFS201 Lab 17.3
+partitions | `$ sudo losetup -f` | finds the first free loop device | LFS201 Lab 17.3
+partitions | `$ sudo losetup /dev/loop1 imagefile` | associate 'imagefile' with the loop device | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 mklabel msdos` | create a disk partition label on the loop device | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 0 256` | create a primary partition from 0-256 MB | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 256 512` | create a primary partition from 256-512 MB | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 512 1024` | create a primary partition from 512-1024 MB | LFS201 Lab 17.3
+partitions | `$ sudo fdisk -l /dev/loop1` | check the partition table | LFS201 Lab 17.3
+partitions | `$ ls -l /dev/loop1*` | see device nodes on the loop device | LFS201 Lab 17.3
+partitions | `$ sudo mkfs.ext3 /dev/loop1p1` | put ext3 filesystem on partition | LFS201 Lab 17.3
+partitions | `$ sudo mkfs.ext4 /dev/loop1p2` | put ext4 filesystem on partition | LFS201 Lab 17.3
+partitions | `$ sudo mkfs.vfat /dev/loop1p3` | put vfat filesystem on partition | LFS201 Lab 17.3
+directories, partitions | `$ mkdir mnt1 mnt2 mnt3` | create three directories for three partitions | LFS201 Lab 17.3
+partitions | `$ sudo mount /dev/loop1p1 mnt1` | mount first loop device to `mnt1` | LFS201 Lab 17.3
+partitions | `$ sudo mount /dev/loop1p2 mnt2` | mount second loop device to `mnt2` | LFS201 Lab 17.3
+partitions | `$ sudo mount /dev/loop1p3 mnt3` | mount third loop device to `mnt3` | LFS201 Lab 17.3
+filesystem, partitions | `$ df -Th` | show availability of newly mounted filesystems (in this lab) | LFS201 Lab 17.3
+partitions | `$ sudo umount mnt1 mnt2 mnt3` | unmount the three filesystems | LFS201 Lab 17.3
+directories, partitions | `$ rmdir mnt1 mnt2 mnt3` | delete the mount points | LFS201 Lab 17.3
+partitions | `$ sudo losetup -d /dev/loop1` | kill the loop device | LFS201 Lab 17.3
 

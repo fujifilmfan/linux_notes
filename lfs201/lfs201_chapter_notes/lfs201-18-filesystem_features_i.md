@@ -267,9 +267,144 @@ binfmt_misc on /proc/sys/fs/binfmt_misc type binfmt_misc (rw,relatime)
   
 ### Lab 18.1: Working with File Attributes
 ----
+My solutions:  
+1. With your normal user account use touch to create an empty file named `/tmp/appendit`.
+    * `$ cd /tmp && touch appendit`
+2. Use cat to append the contents of `/etc/hosts` to `/tmp/appendit`.
+    * `$ cat /etc/hosts > /tmp/appendit`
+3. Compare the contents of `/tmp/appendit` with `/etc/hosts`; there should not be any differences.
+    * `$ diff /etc/hosts /tmp/appendit`
+4. Try to add the append-only attribute to `/tmp/appendit` by using **chattr**. You should see an error here. Why?
+    * `$ chattr -V -v 1 +a /tmp/appendit`
+    ```
+    chattr 1.42.9 (28-Dec-2013)
+    Flags of /tmp/appendit set as -----a-------e--
+    chattr: Operation not permitted while setting flags on /tmp/appendit
+
+    ```
+    * must be superuser
+5. As root, retry adding the append-only attribute; this time it should work. Look at the file’s extended attributes by using **lsattr**.
+    * `$ sudo chatter -V -v 2 +a /tmp/appendit`
+    ```
+    chattr 1.42.9 (28-Dec-2013)
+    Flags of appendit set as -----a-------e--
+    Version of appendit set as 2
+    ```
+    * `$ lsattr appendit`
+        > -----a-------e-- appendit  
+6. As a normal user, try and use cat to copy over the contents of `/etc/passwd` to `/tmp/appendit`. You should get an
+error. Why?
+    * `$ cat >> /etc/passwd /tmp/appendit`
+    * "Permission denied"
+7. Try the same thing again as root. You should also get an error. Why?
+    * perhaps the file isn't actually "open in append mode for writing"
+8. As the normal user, again use the append redirection operator ( >> ) and try appending the `/etc/passwd` file to `/tmp/appendit`. This should work. Examine the resulting file to confirm.
+    * no, it doesn't work; WHOOPS redirect arrows (>>) in wrong position
+9. As root, set the immutable attribute on `/tmp/appendit`, and look at the extended attributes again.
+    * `$ sudo chattr -V -v 3 +i appendit`
+    * `$ lsattr appendit`
+        > ----ia-------e-- appendit  
+    * "The 'e' attribute indicates that the file is using extents for mapping the blocks on disk.  It may  not  be  removed  using chattr(1)."
+10. Try appending output to `/tmp/appendit`, try renaming the file, creating a hard link to the file, and deleting the file as both the normal user and as root.
+    * "Operation not permitted"
+11. We can remove this file by removing the extended attributes. Do so.
+    * `$ sudo chattr -V -v 4 -aei appendit`
+    ```
+    chattr 1.42.9 (28-Dec-2013)
+    Flags of appendit set as ----------------
+    Version of appendit set as 4
+    ```
+  
+Lab solutions (where different than mine):  
+* 7 
+    * `$ sudo su` then `$ cat /etc/passwd > appendit`
+        > bash: appendit: Operation not permitted  
+    * `$ exit`
+* 10 
+    * `$ echo hello >> appendit`
+        > -bash: appendit: Permission denied
+    * `$ mv appendit appendit.rename`
+        > mv: cannot move `appendit' to `appendit.rename': Operation not permitted
+    * `$ ln appendit appendit.hardlink`
+        > ln: creating hard link `appendit.hardlink' => `appendit': Operation not permitted
+    * `$ rm -f appendit`
+        > rm: cannot remove `appendit': Operation not permitted
+    * `$ sudo su`
+    * `$ echo hello >> appendit`
+        > -bash: appendit: Permission denied
+    * `$ mv appendit appendit.rename`
+        > mv: cannot move `appendit' to `appendit.rename': Operation not permitted
+    * `$ ln appendit appendit.hardlink`
+        > ln: creating hard link `appendit.hardlink' => `appendit': Operation not permitted
+    * `$ rm -f appendit`
+        > rm: cannot remove `appendit': Operation not permitted
+    * `$ exit`
+* 11
+    * `$ sudo su`
+    * `$ lsattr appendit`
+        > ----ia-------e- appendit
+    * `$ chattr -ia appendit`
+    * `$ rm appendit`
+        > rm: remove regular file `appendit'? y
+    * `$ ls appendit`
+        > ls: cannot access appendit: No such file or directory8
+  
 ### Lab 18.2: Mounting Options
 ----
+1. Use **fdisk** to create a new 250 MB partition on your system, probably on `/dev/sda`. Or create a file full of zeros to use as a loopback file to simulate a new partition.
+    * `$ sudo fdisk /dev/sda` didn't work:
+    ```
+    WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+    The kernel still uses the old table. The new table will be used at
+    the next reboot or after you run partprobe(8) or kpartx(8)
+    Syncing disks.
+    ```
+    * `$ partprobe -s` did it do anything?
+    * the solution suggests rebooting
+2. Use **mkfs** to format a new filesystem on the partition or loopback file just created. Do this three times, changing the block
+size each time. Note the locations of the superblocks, the number of block groups and any other pertinent information, for each case.
+3. Create a new subdirectory (say `/mnt/tempdir`) and mount the new filesystem at this location. Verify it has been mounted.
+4. Unmount the new filesystem, and then remount it as read-only.
+5. Try to create a file in the mounted directory. You should get an error here, why?
+6. Unmount the filesystem again.
+7. Add a line to your `/etc/fstab` file so that the filesystem will be mounted at boot time.
+8. Mount the filesystem.
+9. Modify the configuration for the new filesystem so that binary files may not be executed from the filesystem (change defaults to noexec in the `/mnt/tempdir` entry). Then remount the filesystem and copy an executable file (such as `/bin/ls`) to `/mnt/tempdir` and try to run it. You should get an error: why?
+When you are done you will probably want to clean up by removing the entry from /etc/fstab .
   
+
+apps, files | `$ dd if=/dev/zero of=imagefile bs=1M count=1024` | create a file full of zeros 1 GB in length | LFS201 Lab 17.1
+partitions | `$ mkfs.ext4 imagefile` | put a filesystem on 'imagefile' | LFS201 Lab 17.1
+partitions | `$ mkdir mntpoint` | create directory for mounting a filesystem | LFS201 Lab 17.1
+partitions | `$ sudo mount -o loop imagefile mntpoint` | mount filesystem 'imagefile' on `mntpoint` | LFS201 Lab 17.1
+partitions | `$ sudo umount mntpoint` | unmount the filesystem | LFS201 Lab 17.1
+partitions | `$ sudo fdisk -C 130 imagefile` | format and partition 'imagefile' w/ a phony number of cylinders | LFS201 Lab 17.2
+partitions | `$ losetup -a` | see already in-use loop devices | LFS201 Lab 17.3
+partitions | `$ sudo losetup -f` | finds the first free loop device | LFS201 Lab 17.3
+partitions | `$ sudo losetup /dev/loop1 imagefile` | associate 'imagefile' with the loop device | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 mklabel msdos` | create a disk partition label on the loop device | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 0 256` | create a primary partition from 0-256 MB | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 256 512` | create a primary partition from 256-512 MB | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 512 1024` | create a primary partition from 512-1024 MB | LFS201 Lab 17.3
+partitions | `$ sudo fdisk -l /dev/loop1` | check the partition table | LFS201 Lab 17.3
+partitions | `$ ls -l /dev/loop1*` | see device nodes on the loop device | LFS201 Lab 17.3
+partitions | `$ sudo mkfs.ext3 /dev/loop1p1` | put ext3 filesystem on partition | LFS201 Lab 17.3
+partitions | `$ sudo mkfs.ext4 /dev/loop1p2` | put ext4 filesystem on partition | LFS201 Lab 17.3
+partitions | `$ sudo mkfs.vfat /dev/loop1p3` | put vfat filesystem on partition | LFS201 Lab 17.3
+directories, partitions | `$ mkdir mnt1 mnt2 mnt3` | create three directories for three partitions | LFS201 Lab 17.3
+partitions | `$ sudo mount /dev/loop1p1 mnt1` | mount first loop device to `mnt1` | LFS201 Lab 17.3
+partitions | `$ sudo mount /dev/loop1p2 mnt2` | mount second loop device to `mnt2` | LFS201 Lab 17.3
+partitions | `$ sudo mount /dev/loop1p3 mnt3` | mount third loop device to `mnt3` | LFS201 Lab 17.3
+filesystem, partitions | `$ df -Th` | show availability of newly mounted filesystems (in this lab) | LFS201 Lab 17.3
+partitions | `$ sudo umount mnt1 mnt2 mnt3` | unmount the three filesystems | LFS201 Lab 17.3
+directories, partitions | `$ rmdir mnt1 mnt2 mnt3` | delete the mount points | LFS201 Lab 17.3
+partitions | `$ sudo losetup -d /dev/loop1` | kill the loop device | LFS201 Lab 17.3
+
+
+
+
+
+
 ### Paths and Commands
 ----
   

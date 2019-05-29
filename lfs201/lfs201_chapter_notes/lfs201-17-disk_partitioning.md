@@ -303,16 +303,170 @@ I got it right. :)
   
 ### Lab 17.1: Using a File as a Disk Partition Image
 ----
+* In this first exercise, we are going to create a file that will be used as a container for a full hard disk partition image, and for all intents and purposes can be used like a real hard partition. In the following exercise, we will show how to put more than one partition on it and have it behave as an entire disk.
+1. Create a file full of zeros 1 GB in length: `$ dd if=/dev/zero of=imagefile bs=1M count=1024` (I did this in `~/`)
+    ```
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB) copied, 4.45291 s, 241 MB/s
+    ```
+2. Put a filesystem on it: `$ mkfs.ext4 imagefile`
+    ```
+    mke2fs 1.42.9 (28-Dec-2013)
+    imagefile is not a block special device.
+    Proceed anyway? (y,n) y
+    Discarding device blocks: done                            
+    Filesystem label=
+    OS type: Linux
+    Block size=4096 (log=2)
+    Fragment size=4096 (log=2)
+    Stride=0 blocks, Stripe width=0 blocks
+    65536 inodes, 262144 blocks
+    13107 blocks (5.00%) reserved for the super user
+    First data block=0
+    Maximum filesystem blocks=268435456
+    8 block groups
+    32768 blocks per group, 32768 fragments per group
+    8192 inodes per group
+    Superblock backups stored on blocks: 
+        32768, 98304, 163840, 229376
 
+    Allocating group tables: done                            
+    Writing inode tables: done                            
+    Creating journal (8192 blocks): done
+    Writing superblocks and filesystem accounting information: done
+    ```
+3. Mount it somewhere:
+    * `$ mkdir mntpoint`
+    * `$ sudo mount -o loop imagefile mntpoint`
+4. When you are done unmount it with: `$ sudo umount mntpoint`
+* An alternative method to using the loop option to mount would be:
+    * `$ sudo losetup /dev/loop2 imagefile`
+    * `$ mount /dev/loop2 mntpoint`
+    * `$ umount mntpoint`
+    * `$ losetup -d /dev/loop2`
+* We will discuss **losetup** in a subsequent exercise, and you can use `/dev/loop[0-7]` but you have to be careful they are not already in use.
+* You should note that using a loop device file instead of a real partition can be useful, but it is pretty worthless for doing any kind of measurements or benchmarking. This is because you are placing one filesystem layer on top of another, which can only have a negative effect on performance, and mostly you just use the behavior of the underlying filesystem the image file is created on.
+  
 ### Lab 17.2: Partitioning a Disk Image File
 ----
+* The next level of complication is to divide the container file into multiple partitions, each of which can be used to hold a filesystem, or a swap area.
+* You can reuse the image file created in the previous exercise or create a new one.
+1. Run **fdisk** on your imagefile: `$ sudo fdisk -C 130 imagefile`
+    ```
+    Welcome to fdisk (util-linux 2.23.2).
 
+    Changes will remain in memory only, until you decide to write them.
+    Be careful before using the write command.
+
+    Device does not contain a recognized partition table
+    Building a new DOS disklabel with disk identifier 0x638cc1bf.
+
+    Command (m for help): m
+    ```
+    * The `-C 130` sets the number of phony cylinders in the drive, and is only necessary in old versions of **fdisk**, which unfortunately you will find on **RHEL 6**. However, it will do no harm on other distributions.
+2. Type `m` to get a list of commands:
+3. Create a new primary partition and make it 256 MB (or whatever size you would like:
+    ```
+    Command (m for help): n
+    Partition type:
+        p   primary (0 primary, 0 extended, 4 free)
+        e   extended
+    Select (default p): p
+    Partition number (1-4, default 1): 1
+    First sector (2048-2097151, default 2048): 
+    Using default value 2048
+    Last sector, +sectors or +size{K,M,G} (2048-2097151, default 2097151): 
+    Using default value 2097151
+    Partition 1 of type Linux and of size 1023 MiB is set
+    ```
+    * oops, too big
+4. Add a second primary partition also of 256 MB in size
+    Enter "+256M" for "Last sector, +sectors or +size{K,M,G} ..."
+5. Write the partition table to disk and exit:
+    ```
+    Command (m for help): w
+    The partition table has been altered!
+
+    Syncing disks.
+    ```
+  
 ### Lab 17.3: Using losetup and parted
 ----
+1. Associate the image file with a loop device:
+    * `$ losetup -a` see already in-use loop devices
+    * `$ sudo losetup -f` finds the first free loop device
+    * `$ sudo losetup /dev/loop1 imagefile` associate 'imagefile' with the loop device
+2. Create a disk partition label on the loop device (image file):
+    * `$ sudo parted -s /dev/loop1 mklabel msdos` create a disk partition label on the loop device
+3. Create three primary partitions on the loop device:
+    * `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 0 256` create a primary partition from 0-256 MB
+    * `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 256 512` create a primary partition from 256-512 MB
+    * `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 512 1024` create a primary partition from 512-1024 MB
+4. Check the partition table:
+    * `$ sudo fdisk -l /dev/loop1`
+    ```
+    Disk /dev/loop0: 1073 MB, 1073741824 bytes, 2097152 sectors
+    Units = sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O size (minimum/optimal): 512 bytes / 512 bytes
+    Disk label type: dos
+    Disk identifier: 0x000f0a24
 
+        Device Boot      Start         End      Blocks   Id  System
+    /dev/loop0p1               1      500000      250000   83  Linux
+    /dev/loop0p2          500001     1000000      250000   83  Linux
+    /dev/loop0p3         1000001     2000000      500000   83  Linux
+    ```
+5. What happens next depends on what distribution you are on. For example, on RHEL 7 and Ubuntu 16.04 you will find
+new device nodes have been created:
+    * `$ ls -l /dev/loop1*` see device nodes on the loop device
+    ```
+    brw-rw---- 1 root disk   7, 0 May 28 20:21 /dev/loop0
+    brw-rw---- 1 root disk 259, 0 May 28 20:21 /dev/loop0p1
+    brw-rw---- 1 root disk 259, 1 May 28 20:21 /dev/loop0p2
+    brw-rw---- 1 root disk 259, 2 May 28 20:21 /dev/loop0p3
+    ```
+    * the device nodes are blinking
+6. Put filesystems on the partitions:
+    * `$ sudo mkfs.ext3 /dev/loop1p1` put ext3 filesystem on partition
+    * `$ sudo mkfs.ext4 /dev/loop1p2` put ext4 filesystem on partition
+    * `$ sudo mkfs.vfat /dev/loop1p3` put vfat filesystem on partition; interesting message:
+    ```
+    kfs.fat 3.0.20 (12 Jun 2013)
+    unable to get drive geometry, using default 255/63
+    ```
+7. Mount all three filesystems and show they are available:
+    * `$ mkdir mnt1 mnt2 mnt3` create three directories for three partitions
+    * `$ sudo mount /dev/loop1p1 mnt1` mount first loop device to `mnt1`
+    * `$ sudo mount /dev/loop1p2 mnt2` mount second loop device to `mnt2`
+    * `$ sudo mount /dev/loop1p3 mnt3` mount third loop device to `mnt3`
+    * `$ df -Th` show availability of newly mounted filesystems (in this lab)
+    ```
+    Filesystem     Type      Size  Used Avail Use% Mounted on
+    /dev/sda1      ext4       27G   12G   14G  46% /
+    devtmpfs       devtmpfs  1.9G     0  1.9G   0% /dev
+    tmpfs          tmpfs     1.9G   74M  1.8G   4% /dev/shm
+    tmpfs          tmpfs     1.9G  154M  1.7G   9% /run
+    tmpfs          tmpfs     1.9G     0  1.9G   0% /sys/fs/cgroup
+    .host:/        vmhgfs    2.9T  2.0T  925G  69% /mnt/hgfs
+    tmpfs          tmpfs     378M  4.0K  378M   1% /run/user/42
+    tmpfs          tmpfs     378M   56K  378M   1% /run/user/1000
+    none           tmpfs     1.9G     0  1.9G   0% /mnt/tmpfs
+    tmpfs          tmpfs     378M     0  378M   0% /run/user/0
+    /dev/loop0p1   ext3      233M  2.1M  219M   1% /home/student/mnt1
+    /dev/loop0p2   ext4      233M  2.1M  215M   1% /home/student/mnt2
+    /dev/loop0p3   vfat      489M     0  489M   0% /home/student/mnt3
+    ```
+8. After using the filesystems to your heart’s content you can unwind it all:
+    * `$ sudo umount mnt1 mnt2 mnt3` unmount the three filesystems
+    * `$ rmdir mnt1 mnt2 mnt3` delete the mount points
+    * `$ sudo losetup -d /dev/loop1` kill the loop device
+  
 ### Lab 17.4: Partitioning a Real Hard Disk
 ----
-
+If you have real hard disk un-partitioned space available, experiment with **fdisk** to create new partitions, either primary or logical within an extended partition. Write the new partition table to disk and then format and mount the new partitions.
+  
 ### Paths and Commands
 ----
 
@@ -336,6 +490,32 @@ partitions | `$ sudo dd if=/dev/sda of=mbrbackup bs=512 count=1` | backup **MBR*
 partitions | `$ sudo dd if=mbrbackup of=/dev/sda bs=512 count=1` | restore the **MBR** | LFS201 17.15
 partitions | `x7:/tmp>sudo sgdisk --backup=/tmp/sda_backup /dev/sda` | backup GPT partition | LFS201 17.16
 files, partitions | `x7:/tmp>sudo file sda_backup` or `$ file myfile.txt` | determines file type | LFS201 17.16
- partitions| `$ sudo fdisk /dev/sdb` | start **fdisk** on `/dev/sdb` | LFS201 17.17
+partitions| `$ sudo fdisk /dev/sdb` | start **fdisk** on `/dev/sdb` | LFS201 17.17
 partitions | `$ sudo partprobe -s` | try and read in the revised partition table | LFS201 17.17
 partitions | `$ cat /proc/partitions` | examine partitions the OS is aware of | LFS201 17.17
+apps, files | `$ dd if=/dev/zero of=imagefile bs=1M count=1024` | create a file full of zeros 1 GB in length | LFS201 Lab 17.1
+partitions | `$ mkfs.ext4 imagefile` | put a filesystem on 'imagefile' | LFS201 Lab 17.1
+partitions | `$ mkdir mntpoint` | create directory for mounting a filesystem | LFS201 Lab 17.1
+partitions | `$ sudo mount -o loop imagefile mntpoint` | mount filesystem 'imagefile' on `mntpoint` | LFS201 Lab 17.1
+partitions | `$ sudo umount mntpoint` | unmount the filesystem | LFS201 Lab 17.1
+partitions | `$ sudo fdisk -C 130 imagefile` | format and partition 'imagefile' w/ a phony number of cylinders | LFS201 Lab 17.2
+partitions | `$ losetup -a` | see already in-use loop devices | LFS201 Lab 17.3
+partitions | `$ sudo losetup -f` | finds the first free loop device | LFS201 Lab 17.3
+partitions | `$ sudo losetup /dev/loop1 imagefile` | associate 'imagefile' with the loop device | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 mklabel msdos` | create a disk partition label on the loop device | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 0 256` | create a primary partition from 0-256 MB | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 256 512` | create a primary partition from 256-512 MB | LFS201 Lab 17.3
+partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 512 1024` | create a primary partition from 512-1024 MB | LFS201 Lab 17.3
+partitions | `$ sudo fdisk -l /dev/loop1` | check the partition table | LFS201 Lab 17.3
+partitions | `$ ls -l /dev/loop1*` | see device nodes on the loop device | LFS201 Lab 17.3
+partitions | `$ sudo mkfs.ext3 /dev/loop1p1` | put ext3 filesystem on partition | LFS201 Lab 17.3
+partitions | `$ sudo mkfs.ext4 /dev/loop1p2` | put ext4 filesystem on partition | LFS201 Lab 17.3
+partitions | `$ sudo mkfs.vfat /dev/loop1p3` | put vfat filesystem on partition | LFS201 Lab 17.3
+directories, partitions | `$ mkdir mnt1 mnt2 mnt3` | create three directories for three partitions | LFS201 Lab 17.3
+partitions | `$ sudo mount /dev/loop1p1 mnt1` | mount first loop device to `mnt1` | LFS201 Lab 17.3
+partitions | `$ sudo mount /dev/loop1p2 mnt2` | mount second loop device to `mnt2` | LFS201 Lab 17.3
+partitions | `$ sudo mount /dev/loop1p3 mnt3` | mount third loop device to `mnt3` | LFS201 Lab 17.3
+filesystem, partitions | `$ df -Th` | show availability of newly mounted filesystems (in this lab) | LFS201 Lab 17.3
+partitions | `$ sudo umount mnt1 mnt2 mnt3` | unmount the three filesystems | LFS201 Lab 17.3
+directories, partitions | `$ rmdir mnt1 mnt2 mnt3` | delete the mount points | LFS201 Lab 17.3
+partitions | `$ sudo losetup -d /dev/loop1` | kill the loop device | LFS201 Lab 17.3

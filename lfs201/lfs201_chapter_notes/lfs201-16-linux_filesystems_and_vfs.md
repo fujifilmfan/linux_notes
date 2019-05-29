@@ -126,7 +126,40 @@ debugfs     | /sys/kernel/debug (or elsewhere) | Used for simple debugging file 
   
 ### Lab 16.1: The tmpfs Special Filesystem
 ----
-
+* **tmpfs** is one of many special filesystems used under Linux. Some of these are not really used as filesystems, but just take advantage of the filesystem abstraction. However, **tmpfs** is a real filesystem that applications can do I/O on.
+* Essentially, **tmpfs** functions as a **ramdisk**; it resides purely in memory. But it has some nice properties that old-fashioned conventional ramdisk implementations did not have:
+1. The filesystem adjusts its size (and thus the memory that is used) dynamically; it starts at zero and expands as necessary up to the maximum size it was mounted with.
+2. If your RAM gets exhausted, **tmpfs** can utilize swap space. (You still can’t try to put more in the filesystem than its maximum capacity allows, however.)
+3. **tmpfs** does not require having a normal filesystem placed in it, such as **ext3** or **vfat**; it has its own methods for dealing with files and I/O that are aware that it is really just space in memory (it is not actually a block device), and as such are optimized for speed.
+* Thus there is no need to pre-format the filesystem with a **mkfs** command; you merely just have to mount it and use it.
+* Mount a new instance of **tmpfs** anywhere on your directory structure with a command like:
+    * `$ sudo mkdir /mnt/tmpfs`
+    * `$ sudo mount -t tmpfs none /mnt/tmpfs` **-t** for the filesystem type
+* See how much space the filesystem has been given and how much it is using `$ df -h /mnt/tmpfs`
+    > Filesystem      Size  Used Avail Use% Mounted on  
+    > none            1.9G     0  1.9G   0% /mnt/tmpfs  
+* You should see it has been allotted a default value of half of your RAM; however, the usage is zero, and will only start to grow as you place files on `/mnt/tmpfs`.
+* You could change the allotted size as a mount option as in: `$ sudo mount -t tmpfs -o size=1G none /mnt/tmpfs`
+    > Filesystem      Size  Used Avail Use% Mounted on  
+    > none            1.0G     0  1.0G   0% /mnt/tmpfs  
+* You might try filling it up until you reach full capacity and see what happens. Do not forget to unmount when you are done with `$ sudo umount /mnt/tmpfs`
+* Virtually all modern Linux distributions mount an instance of **tmpfs** at `/dev/shm`: `$ df -h /dev/shm`
+    > Filesystem      Size  Used Avail Use% Mounted on  
+    > tmpfs           1.9G   70M  1.8G   4% /dev/shm  
+    * Many applications use this such as when they are using POSIX shared memory as an inter-process communication mechanism. Any user can create, read and write files in `/dev/shm`, so it is a good place to create temporary files in memory.
+    * Create some files in `/dev/shm` and note how the filesystem is filling up with **df**.
+* In addition, many distributions mount multiple instances of **tmpfs**; for example, on a RHEL 7 system: `$ df -h | grep tmpfs`
+    ```
+    devtmpfs        1.9G     0  1.9G   0% /dev
+    tmpfs           1.9G   70M  1.8G   4% /dev/shm
+    tmpfs           1.9G  131M  1.8G   7% /run
+    tmpfs           1.9G     0  1.9G   0% /sys/fs/cgroup
+    tmpfs           378M  4.0K  378M   1% /run/user/42
+    tmpfs           378M   52K  378M   1% /run/user/1000
+    none            1.9G     0  1.9G   0% /mnt/tmpfs
+    ```
+    * "Notice this was run on a system with 8 GB of ram, so clearly you can’t have all these tmpfs filesystems actually using the 4 GB they have each been allotted!"
+  
 ### Paths and Commands
 ----
 
@@ -136,6 +169,7 @@ Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 filesystem | `/proc/filesystems` | currently registered filesystems | LFS201 16.10
 filesystem | `/dev/zero` | special file in Unix-like operating systems that provides null characters | LFS201 16.10
+filesystem | `/dev/shm` | most modern Linux distributions mount an instance of **tmpfs** here | LFS201 Lab 16.1
   
 #### Commands  
 
@@ -147,3 +181,10 @@ filesystem | `$ sudo /sbin/mkfs.xfs junk` | create xfs filesystem | LFS201 16.10
 filesystem | `$ sudo mount junk /mnt` | mount filesystem | LFS201 16.10
 filesystem | `$ lsmod | less` | shows mounted filesystems | LFS201 16.10
 filesystem | `$ df -h` | display filesystem disk space usage in human-readable form | LFS201 16.10
+filesystem | `$ sudo mkdir /mnt/tmpfs` | create a **tmpfs** filesystem | LFS201 Lab 16.1
+filesystem | `$ sudo mount -t tmpfs none /mnt/tmpfs` | mount a new **tmpfs** filesystem | LFS201 Lab 16.1
+filesystem | `$ df -h /mnt/tmpfs` | see how much space the filesystem has been given and how much it is using
+filesystem | `$ sudo mount -t tmpfs -o size=1G none /mnt/tmpfs` | change the allotted size of **tmpfs** as a mount option | LFS201 Lab 16.1
+filesystem | `$ sudo umount /mnt/tmpfs` | unmount the **tmpfs** filesystem | LFS201 Lab 16.1
+filesystem | `$ df -h /dev/shm` | see how much space the filesystem has been given and how much it is using | LFS201 Lab 16.1
+filesystem | `$ df -h | grep tmpfs` | many distributions mount multiple instances of **tmpfs** | LFS201 Lab 16.1
