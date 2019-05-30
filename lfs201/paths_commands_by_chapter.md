@@ -142,9 +142,12 @@ filesystem | `$ sudo mount -t tmpfs -o size=1G none /mnt/tmpfs` | change the all
 filesystem | `$ sudo umount /mnt/tmpfs` | unmount the **tmpfs** filesystem | LFS201 Lab 16.1
 filesystem | `$ df -h /dev/shm` | see how much space the filesystem has been given and how much it is using | LFS201 Lab 16.1
 filesystem | `$ df -h | grep tmpfs` | many distributions mount multiple instances of **tmpfs** | LFS201 Lab 16.1
-
-
 filesystem, partitions | `/etc/fstab` | configuration file containing the necessary information to automate the process of mounting partitions | LFS201 17.19
+partitions | `/dev/disk` | contains informaiton about system partitions | LFS201 18.11
+filesystem, partitions | `/etc/fstab` | configuration file containing the necessary information to automate the process of mounting partitions | LFS201 18.11
+filesystem, partitions | `/proc/partitions` | stores information about partitions on the system | LFS201 Lab 18.2
+filesystem, memory | `/proc/swaps` | stores information about swap areas | LFS201 19.4
+filesystem | `aquoata.user` and `aquota.group` | quota database files | LFS201 19.5
 
 
 ### Commands  
@@ -346,11 +349,6 @@ filesystem | `$ sudo /sbin/mkfs.xfs junk` | create xfs filesystem | LFS201 16.10
 filesystem | `$ sudo mount junk /mnt` | mount filesystem | LFS201 16.10
 filesystem | `$ lsmod | less` | shows mounted filesystems | LFS201 16.10
 filesystem | `$ df -h` | display filesystem disk space usage in human-readable form | LFS201 16.10
-
-
-
-
-
 partitions | `$ sudo fdisk -l /dev/sda` | list partition table | LFS201 17.5
 partitions | `$ ls -l /dev` | show current available disk device nodes | LFS201 17.10
 partitions | `$ sudo blkid /dev/sda*` | report on block devices matching the pattern| LFS201 17.12
@@ -390,4 +388,104 @@ filesystem, partitions | `$ df -Th` | show availability of newly mounted filesys
 partitions | `$ sudo umount mnt1 mnt2 mnt3` | unmount the three filesystems | LFS201 Lab 17.3
 directories, partitions | `$ rmdir mnt1 mnt2 mnt3` | delete the mount points | LFS201 Lab 17.3
 partitions | `$ sudo losetup -d /dev/loop1` | kill the loop device | LFS201 Lab 17.3
-
+files | `$ chattr [+|-|=mode] filename` | change attributes for a file | LFS201 18.4
+files | `$ lsattr <filename>` | display attributes for a file | LFS201 18.4
+filesystem | `$ mkfs [-t fstype] [options] [device-file]` | generic **mkfs** syntax | LFS201 18.5
+filesystem | `$ sudo mkfs -t ext4 /dev/sda10` | make an ext4 fs on `/dev/sda10` | LFS201 18.5
+filesystem | `$ sudo mkfs.ext4 /dev/sda10` | make an ext4 fs on `/dev/sda10` | LFS201 18.5
+filesystem | `$ fsck [-t fstype] [options] [device-file]` | generic **fsck** syntax | LFS201 18.6
+filesystem | `$ sudo fsck -t ext4 /dev/sda10` | check ext4 filesystem on `/dev/sda10` | LFS201 18.6
+filesystem | `$ sudo fsck.ext4 /dev/sda10` | check ext4 filesystem on `/dev/sda10` | LFS201 18.6
+filesystem | `$ sudo fsck /dev/sda10`  | check filesystem on `/dev/sda10` | LFS201 18.6
+filesystem | `$ sudo touch /forcefsck` then `$ sudo reboot` | force a check of mounted filesystems at boot, which allows **fsck** to check the root FS | LFS201 18.6
+filesystem | `$ sudo mount -t ext /dev/sdb4 /home` | mount an ext4 filesystem on the `/dev/sdb4` partition at the position `/home` | LFS201 18.7
+filesystem | `$ mount [options] <source> <directory>` | generic **mount** syntax | LFS201 18.10
+filesystem | `$ sudo mount /dev/sda2 /home` | mount a partition at `/home` | LFS201 18.10
+filesystem | `$ sudo mount LABEL=home /home` | mount a partition at `/home` | LFS201 18.10
+filesystem | `$ sudo mount -L home /home` | mount a partition at `/home` | LFS201 18.10
+filesystem | `$ sudo mount UUID=26d58ee2-9d20-4dc7-b6ab-aa87c3cfb69a /home` | mount a partition at `/home` | LFS201 18.10
+filesystem | `$ sudo mount -U 26d58ee2-9d20-4dc7-b6ab-aa87c3cfb69a /home` | mount a partition at `/home` | LFS201 18.10
+filesystem | `$ sudo mount -o remount,ro /myfs` | remounts a FS with a read-only attribute | LFS201 18.11
+filesystem | `$ mount -a` | mount all partitions in `/etc/fstab` | LFS201 18.11
+filesystem | `$ umount [device-file | mount-point]` | generic umount syntax | LFS201 18.12
+filesystem | `$ sudo umount /home` | unmount the `/home` filesystem | LFS201 18.12
+filesystem | `$ sudo umount /dev/sda3` | unmount the `/dev/sda3` device | LFS201 18.12
+filesystem | `$ fuser [options]` | show which users are using the FS | LFS201 18.12
+filesystem | `$ lsof` | list open files, shows which files are being used | LFS201 18.12
+filesystem | `$ sudo mount -t nfs myserver.com:/shdir /mnt/shdir` | mount **NFS** so system won't hang when unavailable(?) | LFS201 18.13
+filesystem | `$ autofs` | service countrol for the **automount** daemon | LFS201 18.13
+filesystem | `$ automount` | manages **autofs** mount points | LFS201 18.13
+filesystem | `$ sudo mount /usr/src` | ?? | LFS201 18.14
+filesystem | `$ sudo mount LABEL=src /usr/src` | ?? | LFS201 18.14
+filesystem | `$ sudo systemctl daemon-reload` and `$ sudo systemctl restart local-fs.target` | restart after editing `/etc/fstab` | LFS201 18.15
+filesystem | `$ mount` | show currently mounted filesystems | LFS201 18.17
+filesystem | `$ dumpe2fs <source>` | show detailed information about filesystem | LFS201 18.18
+files | `$ cat /etc/hosts > /tmp/appendit` | append contents of `/etc/hosts` to `/tmp/appendit` | LFS201 Lab 18.1
+files | `$ diff /etc/hosts /tmp/appendit` | compare contents of the two files | LFS201 Lab 18.1
+files | `$ sudo chattr -V -v 1 +a /tmp/appendit` | add append-only attribute to `/tmp/appendit` (verbose with version) | LFS201 Lab 18.1
+files | `$ lsattr appendit` | show file's extended attributes | LFS201 Lab 18.1
+files | `$ sudo chattr -V -v 3 +i appendit` | set the immutable attribute on `/tmp/appendit` | LFS201 Lab 18.1
+files | `$ sudo chattr -V -v 4 -ai appendit` | remove extended attributes from `/tmp/appendit` | LFS201 Lab 18.1
+filesystem, partitions | `$ sudo fdisk /dev/sda` | create a new partition on the system | LFS201 Lab 18.2
+filesystem, partitions | `$ sudo partprobe -s` | inform operating system about partition table changes | LFS201 Lab 18.2
+filesystem, partitions | `$ cat /proc/partitions` | shows partitions on the system | LFS201 Lab 18.2
+filesystem | `$ sudo mkfs -t ext4 -v /dev/sda3` | create filesystem with block size of 1024 | LFS201 Lab 18.2
+filesystem | `$ sudo mkfs -t ext4 -b 2048 -v /dev/sda3` | create filesytem with block size of 2048 | LFS201 Lab 18.2
+filesystem | `$ sudo mkfs -t ext4 -b 4096 -v /dev/sda3` | create filesystem with block size of 4096 | LFS201 Lab 18.2
+filesystem | `$ sudo mount /dev/sda3 /mnt/tempdir` | mount the partition | LFS201 Lab 18.2
+filesystem | `$ df -Th` | view disk information **-T** for filesytem type, **-h** for human-readable | LFS201 Lab 18.2
+filesystem | `$ mount | grep tempdir` | view mounted filesystems | LFS201 Lab 18.2
+filesystem | `$ sudo umount /mnt/tempdir` | unmount the filesystem | LFS201 Lab 18.2
+filesystem | `$ sudo mount -r /dev/sda3 /mnt/tmpdir` | mount the filesystem as read-only | LFS201 Lab 18.2
+filesystem | `$ sudo mount -o ro /dev/sda3 /mnt/tempdir` | mount the filesystem as read-only | LFS201 Lab 18.2
+filesystem, memory | `$ cat /proc/swaps` | check on swap areas | LFS201 19.4
+filesystem, memory | `$ free -m` | get basic memory statistics | LFS201 19.4
+filesystem | `$ mkswap ...` | format a swap partition or file | LFS201 19.4
+filesystem | `$ swapon ...` | activate a swap partition or file | LFS201 19.4
+filesystem | `$ swapoff ...` | deactivate a swap partition or file | LFS201 19.4
+filesystem | `$ quotacheck` | generates and updates quota accounting files | LFS201 19.5
+filesystem | `$ quotaon` | enables quota accounting | LFS201 19.5
+filesystem | `$ quotaoff` | disables quota accounting | LFS201 19.5
+filesystem | `$ edquota` | used for editing user or group quotas | LFS201 19.5
+filesystem | `$ quota` | reports on usage and limits | LFS201 19.5
+filesystem | `$ xfs_quota` | ?? | LFS201 19.5
+filesystem | `$ sudo mount -o remount /home` | step 1 in testing `/etc/fstab` entry | LFS201 19.6
+filesystem | `$ sudo quotacheck -vu /home` | step 2 in testing `/etc/fstab` entry | LFS201 19.6
+filesystem | `$ sudo quotaon -vu /home` | step 3 in testing `/etc/fstab` entry | LFS201 19.6
+filesystem | `$ sudo edquota someusername` | step 4 in testing `/etc/fstab` entry | LFS201 19.6
+filesystem | `$ sudo quotacheck -ua` | update user files for all filesystems in `/etc/fstab` with user quota options | LFS201 19.7
+filesystem | `$ sudo quotacheck -ga` | update group files for all filesystems in `/etc/fstab` with group quota options | LFS201 19.7
+filesystem | `$ sudo quotacheck -u [somefilesystem]` | update the user file for a particular filesystem | LFS201 19.7
+filesystem | `$ sudo quotacheck -g [somefilesystem]` | update the group file for a particular filesystem | LFS201 19.7
+filesystem | `$ sudo quotaon [flags] [filesystem]` | generic **quotaon** syntax | LFS201 19.7
+filesystem | `$ sudo quotaoff [flags] [filesystem]` | generic **quotaoff** syntax | LFS201 19.8
+filesystem | `$ sudo quotaon -av` | turn on all verbose | LFS201 19.8
+filesystem | `$ sudo quotaoff -av` | turn off all verbose | LFS201 19.8
+filesystem | `$ sudo quotaon -avu` | turn on for all users verbose | LFS201 19.8
+filesystem | `$ sudo quotaoff -avu` | turn off for all users verbose | LFS201 19.8
+filesystem | `$ sudo quotaon -avg` | turn on for all groups verbose | LFS201 19.8
+filesystem | `$ sudo quotaoff -avg` | turn off for all groups verbose | LFS201 19.8
+filesystem | `$ quota` or filesystem `$ quota -u` | show your current user quota | LFS201 19.9
+filesystem | `$ quota -g` | shows your current group quota | LFS201 19.9
+filesystem | `$ sudo quota <username>` | see quota for any particular user or group | LFS201 19.9
+filesystem | `$ edquota -u [username]` | edit limits for username | LFS201 19.10
+filesystem | `$ edquota -g [groupname]` | edit limits for groupname | LFS201 19.10
+filesystem | `$ edquota -u -p [userproto] [username]` | copy userproto's user quota values to username | LFS201 19.10
+filesystem | `$ edquota -g -p [groupproto] [groupname]` | copy groupproto's group quota values to groupname | LFS201 19.10
+filesystem | `$ edquota -t` | set grace periods | LFS201 19.10
+filesystem | `$ df -h` | view filesystem usage in human-readable format | LFS201 19.11
+filesystem | `$ df -hT` | add filesystem type to output | LFS201 19.11
+filesystem | `$ df -hi` | add inode to output; no "Size" | LFS201 19.11
+filesystem | `$ df -hiT` | add type and indoe; no "Size" | LFS201 19.11
+filesystem | `$ du` | display disk usage for current directory | LFS201 19.12
+filesystem | `$ du -a` | list all files, not just directories | LFS201 19.12
+filesystem | `$ du -h somedir` | display disk usage for a specific directory | LFS201 19.12
+filesystem | `$ cat /proc/swaps` | show information about current swap space | LFS201 Lab 19.1
+filesystem | `$ dd if=/dev/zero of=swpfile bs=1M count=1024` | create file of 1GB file to use as a swap space | LFS201 Lab 19.1
+filesystem | `$ mkswap swpfile` | use the swpfile for swap space | LFS201 Lab 19.1
+filesystem | `$ sudo swapon swpfile` | activate the swap space | LFS201 Lab 19.1
+filesystem | `$ sudo swapoff swpfile` | deactivate the swap space | LFS201 Lab 19.1
+filesystem | `$ sudo rm swpfile` | remove the swap file used for swap space | LFS201 Lab 19.1
+filesystem | `$ sudo quotacheck -u /mnt/tempdir` | initialize quotas on the /mnt/tempdir filesystem | LFS201 Lab 19.2
+filesystem | `$ sudo quotaon -u /mnt/tempdir` | turn quota checking on | LFS201 Lab 19.2
+filesystem | `$ sudo edquota -u student` | opens up the quota settings for this user; soft and hard quotas can be set by block or inode | LFS201 Lab 19.2

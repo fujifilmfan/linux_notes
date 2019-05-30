@@ -361,50 +361,46 @@ Lab solutions (where different than mine):
     ```
     * `$ partprobe -s` did it do anything?
     * the solution suggests rebooting
-2. Use **mkfs** to format a new filesystem on the partition or loopback file just created. Do this three times, changing the block
-size each time. Note the locations of the superblocks, the number of block groups and any other pertinent information, for each case.
+    * okay, now `$ cat /proc/partitions shows my partition (sda3):
+    ```
+    major minor  #blocks  name
+
+    8        0   41943040 sda
+    8        1   28319744 sda1
+    8        2     975872 sda2
+    8        3     256000 sda3
+    11        0    1048575 sr0
+    ```
+2. Use **mkfs** to format a new filesystem on the partition or loopback file just created. Do this three times, changing the block size each time. Note the locations of the superblocks, the number of block groups and any other pertinent information, for each case.  Using solution:
+    * `$ sudo mkfs -t ext4 -v /dev/sda3`
+    * `$ sudo mkfs -t ext4 -b 2048 -v /dev/sda3`
+    * `$ sudo mkfs -t ext4 -b 4096 -v /dev/sda3`
 3. Create a new subdirectory (say `/mnt/tempdir`) and mount the new filesystem at this location. Verify it has been mounted.
+    * `$ sudo mkdir /mnt/tempdir`
+    * `$ sudo mount /dev/sda3 /mnt/tempdir`
+    * `$ df -Th` **-T** for filesytem type, **-h** for human-readable (or `$ mount | grep tempdir`)
 4. Unmount the new filesystem, and then remount it as read-only.
+    * `$ sudo umount /mnt/tempdir`
+    * `$ sudo mount -r /dev/sda3 /mnt/tmpdir` (or `$ sudo mount -o ro /dev/sda3 /mnt/tempdir`)
+    * `$ touch some_file.txt`
+        > touch: cannot touch ‘some_file.txt’: Read-only file system  
 5. Try to create a file in the mounted directory. You should get an error here, why?
+    * it's read-only!
 6. Unmount the filesystem again.
+    * `$ sudo umount /mnt/tempdir`
 7. Add a line to your `/etc/fstab` file so that the filesystem will be mounted at boot time.
+    * add `/dev/sda3 /mnt/tempdir ext4 defaults 1 2` (from solution)
 8. Mount the filesystem.
 9. Modify the configuration for the new filesystem so that binary files may not be executed from the filesystem (change defaults to noexec in the `/mnt/tempdir` entry). Then remount the filesystem and copy an executable file (such as `/bin/ls`) to `/mnt/tempdir` and try to run it. You should get an error: why?
-When you are done you will probably want to clean up by removing the entry from /etc/fstab .
+    * change `/etc/fstab` line to `/dev/sda3 /mnt/tempdir ext4 noexec 1 2`
+    * `$ sudo mount -o remount /mnt/tempdir`
+    * `$ sudo cp /bin/ls /mnt/tempdir`
+    * `$ /mnt/tempdir/ls`
+        > "Permission denied"  
+        * executables can't be run here
+10. I used `$ sudo fdisk /dev/sda` to delete the `/dev/sda3` partition - I think a reboot is needed (it doesn't seem that `$ partprobe -s` did anything; oh, `$ sudo partprobe -s` seemed to work:
+    > /dev/sda: msdos partitions 1 2
   
-
-apps, files | `$ dd if=/dev/zero of=imagefile bs=1M count=1024` | create a file full of zeros 1 GB in length | LFS201 Lab 17.1
-partitions | `$ mkfs.ext4 imagefile` | put a filesystem on 'imagefile' | LFS201 Lab 17.1
-partitions | `$ mkdir mntpoint` | create directory for mounting a filesystem | LFS201 Lab 17.1
-partitions | `$ sudo mount -o loop imagefile mntpoint` | mount filesystem 'imagefile' on `mntpoint` | LFS201 Lab 17.1
-partitions | `$ sudo umount mntpoint` | unmount the filesystem | LFS201 Lab 17.1
-partitions | `$ sudo fdisk -C 130 imagefile` | format and partition 'imagefile' w/ a phony number of cylinders | LFS201 Lab 17.2
-partitions | `$ losetup -a` | see already in-use loop devices | LFS201 Lab 17.3
-partitions | `$ sudo losetup -f` | finds the first free loop device | LFS201 Lab 17.3
-partitions | `$ sudo losetup /dev/loop1 imagefile` | associate 'imagefile' with the loop device | LFS201 Lab 17.3
-partitions | `$ sudo parted -s /dev/loop1 mklabel msdos` | create a disk partition label on the loop device | LFS201 Lab 17.3
-partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 0 256` | create a primary partition from 0-256 MB | LFS201 Lab 17.3
-partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 256 512` | create a primary partition from 256-512 MB | LFS201 Lab 17.3
-partitions | `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 512 1024` | create a primary partition from 512-1024 MB | LFS201 Lab 17.3
-partitions | `$ sudo fdisk -l /dev/loop1` | check the partition table | LFS201 Lab 17.3
-partitions | `$ ls -l /dev/loop1*` | see device nodes on the loop device | LFS201 Lab 17.3
-partitions | `$ sudo mkfs.ext3 /dev/loop1p1` | put ext3 filesystem on partition | LFS201 Lab 17.3
-partitions | `$ sudo mkfs.ext4 /dev/loop1p2` | put ext4 filesystem on partition | LFS201 Lab 17.3
-partitions | `$ sudo mkfs.vfat /dev/loop1p3` | put vfat filesystem on partition | LFS201 Lab 17.3
-directories, partitions | `$ mkdir mnt1 mnt2 mnt3` | create three directories for three partitions | LFS201 Lab 17.3
-partitions | `$ sudo mount /dev/loop1p1 mnt1` | mount first loop device to `mnt1` | LFS201 Lab 17.3
-partitions | `$ sudo mount /dev/loop1p2 mnt2` | mount second loop device to `mnt2` | LFS201 Lab 17.3
-partitions | `$ sudo mount /dev/loop1p3 mnt3` | mount third loop device to `mnt3` | LFS201 Lab 17.3
-filesystem, partitions | `$ df -Th` | show availability of newly mounted filesystems (in this lab) | LFS201 Lab 17.3
-partitions | `$ sudo umount mnt1 mnt2 mnt3` | unmount the three filesystems | LFS201 Lab 17.3
-directories, partitions | `$ rmdir mnt1 mnt2 mnt3` | delete the mount points | LFS201 Lab 17.3
-partitions | `$ sudo losetup -d /dev/loop1` | kill the loop device | LFS201 Lab 17.3
-
-
-
-
-
-
 ### Paths and Commands
 ----
   
@@ -414,6 +410,7 @@ Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 partitions | `/dev/disk` | contains informaiton about system partitions | LFS201 18.11
 filesystem, partitions | `/etc/fstab` | configuration file containing the necessary information to automate the process of mounting partitions | LFS201 18.11
+filesystem, partitions | `/proc/partitions` | stores information about partitions on the system | LFS201 Lab 18.2
   
 #### Commands  
 
@@ -451,3 +448,21 @@ filesystem | `$ sudo mount LABEL=src /usr/src` | ?? | LFS201 18.14
 filesystem | `$ sudo systemctl daemon-reload` and `$ sudo systemctl restart local-fs.target` | restart after editing `/etc/fstab` | LFS201 18.15
 filesystem | `$ mount` | show currently mounted filesystems | LFS201 18.17
 filesystem | `$ dumpe2fs <source>` | show detailed information about filesystem | LFS201 18.18
+files | `$ cat /etc/hosts > /tmp/appendit` | append contents of `/etc/hosts` to `/tmp/appendit` | LFS201 Lab 18.1
+files | `$ diff /etc/hosts /tmp/appendit` | compare contents of the two files | LFS201 Lab 18.1
+files | `$ sudo chattr -V -v 1 +a /tmp/appendit` | add append-only attribute to `/tmp/appendit` (verbose with version) | LFS201 Lab 18.1
+files | `$ lsattr appendit` | show file's extended attributes | LFS201 Lab 18.1
+files | `$ sudo chattr -V -v 3 +i appendit` | set the immutable attribute on `/tmp/appendit` | LFS201 Lab 18.1
+files | `$ sudo chattr -V -v 4 -ai appendit` | remove extended attributes from `/tmp/appendit` | LFS201 Lab 18.1
+filesystem, partitions | `$ sudo fdisk /dev/sda` | create a new partition on the system | LFS201 Lab 18.2
+filesystem, partitions | `$ sudo partprobe -s` | inform operating system about partition table changes | LFS201 Lab 18.2
+filesystem, partitions | `$ cat /proc/partitions` | shows partitions on the system | LFS201 Lab 18.2
+filesystem | `$ sudo mkfs -t ext4 -v /dev/sda3` | create filesystem with block size of 1024 | LFS201 Lab 18.2
+filesystem | `$ sudo mkfs -t ext4 -b 2048 -v /dev/sda3` | create filesytem with block size of 2048 | LFS201 Lab 18.2
+filesystem | `$ sudo mkfs -t ext4 -b 4096 -v /dev/sda3` | create filesystem with block size of 4096 | LFS201 Lab 18.2
+filesystem | `$ sudo mount /dev/sda3 /mnt/tempdir` | mount the partition | LFS201 Lab 18.2
+filesystem | `$ df -Th` | view disk information **-T** for filesytem type, **-h** for human-readable | LFS201 Lab 18.2
+filesystem | `$ mount | grep tempdir` | view mounted filesystems | LFS201 Lab 18.2
+filesystem | `$ sudo umount /mnt/tempdir` | unmount the filesystem | LFS201 Lab 18.2
+filesystem | `$ sudo mount -r /dev/sda3 /mnt/tmpdir` | mount the filesystem as read-only | LFS201 Lab 18.2
+filesystem | `$ sudo mount -o ro /dev/sda3 /mnt/tempdir` | mount the filesystem as read-only | LFS201 Lab 18.2

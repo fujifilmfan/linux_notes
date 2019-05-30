@@ -99,7 +99,7 @@ By the end of this chapter, you should be able to:
 
 Flag | Function
 ---- | -------
--a, --all               | turn quotas off for all filesystems
+-a, --all               | turn quotas off (on and off??) for all filesystems
 -f, --off               | turn quotas off
 -u, --user              | operate on user quotas
 -g, --group             | operate on group quotas
@@ -179,10 +179,102 @@ Organize the steps below in the best logical order to enable quota on an existin
   
 ### Lab 19.1: Managing Swap Space
 ----
+* Examine your current swap space by doing: `$ cat /proc/swaps`
+    ```
+    Filename				Type		Size	Used	Priority
+    /dev/sda2                               partition	975868	0	-2
+    ```
+* We will now add more swap space by adding either a new partition or a file. To use a file we can do:
+    * `$ dd if=/dev/zero of=swpfile bs=1M count=1024`
+    * `$ mkswap swpfile`
+        ```
+        Setting up swapspace version 1, size = 1048572 KiB
+        no label, UUID=ab39b35f-09ee-4e1a-882c-565dc75c2c66
+        ```
+    * (For a real partition just feed mkswap the partition name, but be aware all data on it will be erased!)
+* Activate the new swap space:
+    * `$ sudo swapon swpfile`
+        ```
+        swapon: /home/student/swpfile: insecure permissions 0664, 0600 suggested.
+        swapon: /home/student/swpfile: insecure file owner 1000, 0 (root) suggested.
+        ```
+* Fix security issue:
+    * `$ sudo chown root:root swpfile`
+    * `$ sudo chmod 600 swpfile`
+* Ensure it's being used:
+    * `$ cat /proc/swaps`
+        ```
+        Filename				Type		Size	Used	Priority
+        /dev/sda2                               partition	975868	520	-2
+        /home/student/swpfile                   file		1048572	0	-3
+        ```
+    * priority indicates that swpfile will not be used until `/dev/sda2` is filled
+* Remove the swap file from use and delete it to save space:
+    * `$ sudo swapoff swpfile`
+    * `$ sudo rm swpfile`
   
 ### Lab 19.2: Filesystem Quotas
 ----
-  
+(I used the solutions when I got stuck on step 2.)  
+1. Change the entry in `/etc/fstab` for your new filesystem to use user quotas (change noexec to usrquota in the entry for `/mnt/tempdir`). Then remount the filesystem.
+    * get filesytem up first: **mkdir**, **fdisk**, **partprobe**, **mount**, **vim `/etc/fstab`** **mount -o remount**
+2. Initialize quotas on the new filesystem, and then turn the quota checking system on.
+    * `$ sudo quotacheck -u /mnt/tempdir`
+    * `$ sudo quotaon -u /mnt/tempdir`
+    * `$ sudo chown student.student /mnt/tempdir`
+3. Now set some quota limits for the normal user account: a soft limit of 500 blocks and a hard limit of 1000 blocks.
+    * `$ sudo edquota -u student` | opens up the quota settings for this user; quotas can be set by block or inode
+4. As the normal user, attempt to use **dd** to create some files to exceed the quota limits. Create `bigfile1` (200 blocks) and `bigfile2` (400 blocks). You should get a warning. Why?
+    * `$ cd /mnt/tempdir`
+    * `$ dd if=/dev/zero of=bigfile1 bs=1024 count=200`
+        ```
+        200+0 records in
+        200+0 records out
+        204800 bytes (205 kB) copied, 0.000793517 s, 258 MB/s
+        ```
+    * `$ dd if=/dev/zero of=bigfile2 bs=1024 count=400`
+        ```
+        sda3: warning, user block quota exceeded.
+        400+0 records in
+        400+0 records out
+        409600 bytes (410 kB) copied, 0.00180072 s, 227 MB/s
+        ```
+    * `$ quota`
+        ```
+        Disk quotas for user student (uid 1000): 
+        Filesystem  blocks   quota   limit   grace   files   quota   limit   grace
+        /dev/sda3     604*    500    1000   7days       3       0       0
+        ```
+5. Create `bigfile3` (600 blocks). You should get an error message. Why? Look closely at the file sizes.
+    * `$ dd if=/dev/zero of=bigfile3 bs=1024 count=600`
+        ```
+        sda3: write failed, user block limit reached.
+        dd: error writing ‘bigfile3’: Disk quota exceeded
+        397+0 records in
+        396+0 records out
+        405504 bytes (406 kB) copied, 0.00165359 s, 245 MB/s
+        ```
+    * `$ quota`
+        ```
+        Disk quotas for user student (uid 1000): 
+        Filesystem  blocks   quota   limit   grace   files   quota   limit   grace
+        /dev/sda3    1000*    500    1000   7days       4       0       0 
+        ```
+    * `$ ls -al`
+        ```
+        total 1144
+        drwxr-xr-x  3 student student   4096 May 29 21:19 .
+        drwxr-xr-x. 5 root    root      4096 May 29 20:57 ..
+        -rw-------  1 root    root      7168 May 29 21:16 aquota.user
+        -rw-rw-r--  1 student student 204800 May 29 21:17 bigfile1
+        -rw-rw-r--  1 student student 409600 May 29 21:19 bigfile2
+        -rw-rw-r--  1 student student 405504 May 29 21:19 bigfile3
+        drwx------  2 root    root     16384 May 29 00:11 lost+found
+        -rwxr-xr-x  1 root    root    117680 May 29 19:47 ls
+        ```
+        * note that `bigfile3` is not as big as requested
+6. Eliminate the persistent mount line you inserted in `/etc/fstab`.
+
 ### Paths and Commands
 ----
   
@@ -190,7 +282,7 @@ Organize the steps below in the best logical order to enable quota on an existin
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-filesystem, memory | `/proc/swaps` | swap areas | LFS201 19.4
+filesystem, memory | `/proc/swaps` | stores information about swap areas | LFS201 19.4
 filesystem | `aquoata.user` and `aquota.group` | quota database files | LFS201 19.5
 
 #### Commands  
@@ -239,3 +331,12 @@ filesystem | `$ df -hiT` | add type and indoe; no "Size" | LFS201 19.11
 filesystem | `$ du` | display disk usage for current directory | LFS201 19.12
 filesystem | `$ du -a` | list all files, not just directories | LFS201 19.12
 filesystem | `$ du -h somedir` | display disk usage for a specific directory | LFS201 19.12
+filesystem | `$ cat /proc/swaps` | show information about current swap space | LFS201 Lab 19.1
+filesystem | `$ dd if=/dev/zero of=swpfile bs=1M count=1024` | create file of 1GB file to use as a swap space | LFS201 Lab 19.1
+filesystem | `$ mkswap swpfile` | use the swpfile for swap space | LFS201 Lab 19.1
+filesystem | `$ sudo swapon swpfile` | activate the swap space | LFS201 Lab 19.1
+filesystem | `$ sudo swapoff swpfile` | deactivate the swap space | LFS201 Lab 19.1
+filesystem | `$ sudo rm swpfile` | remove the swap file used for swap space | LFS201 Lab 19.1
+filesystem | `$ sudo quotacheck -u /mnt/tempdir` | initialize quotas on the /mnt/tempdir filesystem | LFS201 Lab 19.2
+filesystem | `$ sudo quotaon -u /mnt/tempdir` | turn quota checking on | LFS201 Lab 19.2
+filesystem | `$ sudo edquota -u student` | opens up the quota settings for this user; soft and hard quotas can be set by block or inode | LFS201 Lab 19.2
