@@ -50,10 +50,15 @@ By the end of this chapter, you should be able to:
 
 ### Lab 21.1: Finding out More about XFS
 ----
-
+* `$ man -k xfs` shows **xfs**-related utilities
+* that's it
+  
 ### Lab 21.2: Finding out More about btrfs
 ----
-
+* `$ btrfs`
+* `$ btrfs --help`
+* `$ man -k btrfs`
+  
 ### Paths and Commands
 ----
   

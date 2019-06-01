@@ -152,7 +152,53 @@ What is the best logical order of actions needed to make a new disk available us
 
 ### Lab 23.1: Logical Volumes
 ----
-
+* You need real partitionable disk space available.
+1. Create two 250 MB partitions of type logical volume (`8e`).
+    * **fdisk**
+2. Convert the partitions to physical volumes.
+    * `$ sudo pvcreate /dev/sda3`
+        ```
+        WARNING: ext4 signature detected on /dev/sda3 at offset 1080. Wipe it? [y/n]: y
+        Wiping ext4 signature on /dev/sda3.
+        Physical volume "/dev/sda3" successfully created.
+        ```
+    * `$ sudo pvcreate /dev/sda4`
+        ```
+        WARNING: crypto_LUKS signature detected on /dev/sda4 at offset 0. Wipe it? [y/n]: y
+        Wiping crypto_LUKS signature on /dev/sda4.
+        Physical volume "/dev/sda4" successfully created.
+        ```
+3. Create a volume group named myvg and add the two physical volumes to it. Use the default extent size.
+    * `$ sudo vgcreate myvg /dev/sda3 /dev/sda4`
+4. Allocate a 300 MB logical volume named mylvm from volume group `myvg`.
+    * `$ sudo lvcreate -L 300M -n mylvm myvg`
+5. Format and mount the logical volume mylvm at `/mylvm`
+    * `$ sudo mkfs.ext4 /dev/myvg/mylvm`
+    * `$ sudo mkdir /mylvm`
+    * `$ sudo mount /dev/myvg/mylvm /mylvm`
+6. Use **lvdisplay** to view information about the logical volume.
+    ```
+      --- Logical volume ---
+      LV Path                /dev/myvg/mylvm
+      LV Name                mylvm
+      VG Name                myvg
+      LV UUID                Lfltqj-Us1l-L7tk-wOrO-nCVq-HYYh-l0oGpU
+      LV Write Access        read/write
+      LV Creation host, time centos, 2019-05-31 21:41:40 -0700
+      LV Status              available
+      # open                 1
+      LV Size                300.00 MiB
+      Current LE             75
+      Segments               2
+      Allocation             inherit
+      Read ahead sectors     auto
+      - currently set to     8192
+      Block device           253:0
+    ```
+7. Grow the logical volume and corresponding filesystem to 350 MB.
+    * `$ sudo lvresize -r -L 350M /dev/myvg/mylvm` or
+    * `$ sudo lvresize -r -L +50M /dev/myvg/mylvm`
+  
 ### Paths and Commands
 ----
   

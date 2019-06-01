@@ -75,7 +75,7 @@ The **superblock** (redundantly stored in several block groups) contains global 
   
 ### 20.9: Block Groups
 ----
-* after the boot block, there is a serious of **block groups**, each of which is the same size (see "20.9 - ext2 filesystem.png")
+* after the boot block, there is a series of **block groups**, each of which is the same size (see "20.9 - ext2 filesystem.png")
 * order:
    1. superblock
    1. group descriptors
@@ -121,7 +121,7 @@ dumpe2fs 1.42.9 (28-Dec-2013)
 
 ### 20.11: dumpe2fs
 ----
-* **dump32fs** is used to scan filesystem information
+* **dumpe2fs** is used to scan filesystem information
 
 ### 20.12: tune2fs
 ----
@@ -132,10 +132,71 @@ dumpe2fs 1.42.9 (28-Dec-2013)
 
 ### Lab 20.1: Defragmentation
 ----
+* defragmentation is largely unnecessary on modern hardware in general and with Linux in particular
+* `$ sudo e4defrag`
+* `$ sudo e4defrag -c /var/log` analyze and report on fragmentation of `/var/log`
+* example on `.` when at `/`:
+    ```
+    <Fragmented files>                             now/best       size/ext
+    1. /var/log/wtmp                                30/1              4 KB
+    2. /var/log/vmware-vgauthsvc.log.0              13/1              4 KB
+    3. /var/log/tuned/tuned.log                     13/1              4 KB
+    4. /var/log/cron-20190526                        9/1              4 KB
+    5. /home/student/.config/Code/logs/20190522T214849/renderer1.log
+                                                    9/1              4 KB
 
+    Total/best extents				307499/306011
+    Average size per extent			47 KB
+    Fragmentation score				0
+    [0-30 no problem: 31-55 a little bit fragmented: 56- needs defrag]
+    This directory (.) does not need defragmentation.
+    Done.
+    ```
+* `$ sudo e4defrag /` whoops, that took a while
+    ```
+    	Success:			[ 305878/383105 ]
+	    Failure:			[ 77227/383105 ]
+    ```
 ### Lab 20.2: Modifying Filesystem Parameters with tune2fs
 ----
-  
+* setup:
+    * `$ dd if=/dev/zero of=imagefile bs=1M count=1024`
+    * `$ mkfs.ext4 imagefile`
+1. Using **dumpe2fs**, obtain information about the filesystem whose properties you want to adjust. Display:
+    * maximum mount count setting (after which a filesystem check will be forced): `$ dumpe2fs imagefile | grep Max`
+        ```
+        dumpe2fs 1.42.9 (28-Dec-2013)
+        Maximum mount count:      -1
+        ```
+    * Check interval (the amount of time after which a filesystem check is forced): `$ dumpe2fs imagefile | grep 'Check interval'`
+        ```
+        dumpe2fs 1.42.9 (28-Dec-2013)
+        Check interval:           0 (<none>)
+        ```
+    * number of blocks reserved, and the total number of blocks: `$ dumpe2fs imagefile | grep -i block`; partial output only:
+        ```
+        Block count:              262144
+        Reserved block count:     13107
+        ```
+2. Change:
+    * maximum mount count to 30: `$ tune2fs -C 30 imagefile`
+        ```
+        tune2fs 1.42.9 (28-Dec-2013)
+        Setting current mount count to 30
+        ```
+    * Check interval to three weeks: `$ tune2fs -i 3w imagefile`
+        ```
+        tune2fs 1.42.9 (28-Dec-2013)
+        Setting interval between checks to 1814400 seconds
+        ```
+    * percentage of blocks reserved to 10 percent: `$ tune2fs -m 10 imagefile`
+        ```
+        tune2fs 1.42.9 (28-Dec-2013)
+        Setting reserved blocks percentage to 10% (26214 blocks)
+        ```
+3. Using **dumpe2fs**, once again obtain information about the filesystem and compare with the original output.
+    * done
+
 ### Paths and Commands
 ----
   
@@ -149,8 +210,13 @@ Topics | Path | Notes | Reference
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 filesystem | `$ sudo dumpe2fs /dev/sda1 | grep superblock` | shows superblock locations | LFS201 20.9
-filesystem | `$ dump32fs ...` | scan filesystem information | LFS201 20.11
+filesystem | `$ dumpe2fs ...` | scan filesystem information | LFS201 20.11
 filesystem | `$ tune2fs ...` | change filesystem parameters | LFS201 20.12
 filesystem | `$ sudo tune2fs -c 25 /dev/sda1` | change the maximum number of mounts between filesystem checks (max-mount-count) | LFS201 20.12
 filesystem | `$ sudo tune2fs -i 10 /dev/sda1` | change the time interval between checks (interval-between-checks) to 10 days | LFS201 20.12
 filesystem | `$ sudo tune2fs -l /dev/sda1` | list the contents of the superblock, including the current values of parameters which can be changed | LFS201 20.12
+filesystem | `$ sudo e4defrag TARGET` | generic syntax | LFS201 Lab 20.1
+filesystem | `$ sudo e4defrag -c /var/log` | analyze and report on fragmentation of `/var/log` | LFS201 Lab 20.1
+filesystem | `$ tune2fs -C 30 imagefile` | change `maximum mount count` to 30 | LFS201 Lab 20.2
+filesystem | `$ tune2fs -i 3w imagefile` | change `Check interval` to three weeks | LFS201 Lab 20.2
+filesystem | `$ tune2fs -m 10 imagefile` | change percentage of blocks reserved to 10% | LFS201 Lab 20.2

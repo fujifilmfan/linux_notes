@@ -148,6 +148,14 @@ filesystem, partitions | `/etc/fstab` | configuration file containing the necess
 filesystem, partitions | `/proc/partitions` | stores information about partitions on the system | LFS201 Lab 18.2
 filesystem, memory | `/proc/swaps` | stores information about swap areas | LFS201 19.4
 filesystem | `aquoata.user` and `aquota.group` | quota database files | LFS201 19.5
+encryption | `/proc/crypto` | shows the methods the system supports | LFS201 22.7
+encryption | `/etc/crypttab` | configuration file for encrypted block devices | LFS201 22.8
+partitions | `/dev/mapper` | LVM logical volumes (as opposed to LVM *physical* volumes) | LFS201 22.9
+lvm | `/sbin/lv*` | logical volume utilties | LFS201 23.7
+raid | `/dev/mdX` | RAID device | LFS201 24.4
+raid | `/proc/mdstat` | RAID status | LFS201 24.6
+
+
 
 
 ### Commands  
@@ -489,3 +497,96 @@ filesystem | `$ sudo rm swpfile` | remove the swap file used for swap space | LF
 filesystem | `$ sudo quotacheck -u /mnt/tempdir` | initialize quotas on the /mnt/tempdir filesystem | LFS201 Lab 19.2
 filesystem | `$ sudo quotaon -u /mnt/tempdir` | turn quota checking on | LFS201 Lab 19.2
 filesystem | `$ sudo edquota -u student` | opens up the quota settings for this user; soft and hard quotas can be set by block or inode | LFS201 Lab 19.2
+filesystem | `$ sudo dumpe2fs /dev/sda1 | grep superblock` | shows superblock locations | LFS201 20.9
+filesystem | `$ dumpe2fs ...` | scan filesystem information | LFS201 20.11
+filesystem | `$ tune2fs ...` | change filesystem parameters | LFS201 20.12
+filesystem | `$ sudo tune2fs -c 25 /dev/sda1` | change the maximum number of mounts between filesystem checks (max-mount-count) | LFS201 20.12
+filesystem | `$ sudo tune2fs -i 10 /dev/sda1` | change the time interval between checks (interval-between-checks) to 10 days | LFS201 20.12
+filesystem | `$ sudo tune2fs -l /dev/sda1` | list the contents of the superblock, including the current values of parameters which can be changed | LFS201 20.12
+filesystem | `$ sudo e4defrag TARGET` | generic syntax | LFS201 Lab 20.1
+filesystem | `$ sudo e4defrag -c /var/log` | analyze and report on fragmentation of `/var/log` | LFS201 Lab 20.1
+filesystem | `$ tune2fs -C 30 imagefile` | change `maximum mount count` to 30 | LFS201 Lab 20.2
+filesystem | `$ tune2fs -i 3w imagefile` | change `Check interval` to three weeks | LFS201 Lab 20.2
+filesystem | `$ tune2fs -m 10 imagefile` | change percentage of blocks reserved to 10% | LFS201 Lab 20.2
+filesystem | `$ xfsdump ...` | backup **XFS** system | LFS201 21.5
+filesystem | `$ xfsrestore ...` | restore **XFS** system | LFS201 21.5
+filesystem | `$ xfs_quota` | can be used to set per-directory quotas | LFS201 21.5
+filesystem | `$ xfs_freeze` | can be used to quiesce the filesystem to allow for a snapshot tool | LFS201 21.5
+encryption | `$ cryptsetup [OPTION...] <action> <action-specific>` | generic syntax for cryptsetup | LFS201 22.6
+encryption | `$ sudo cryptsetup luksFormat /dev/sdc12` | gives the `/dev/sdc12` partition to LUKS | LFS201 22.7
+encryption | `$ sudo cryptsetup luksFormat --cipher aes /dev/sdc12` | supplies a cryptographic method | LFS201 22.7
+encryption | `$ sudo cryptsetup --verbose luksOpen /dev/sdc12 SECRET` | makes the volume available any time | LFS201 22.7
+encryption | `$ sudo mkfs.ext4 /dev/mapper/SECRET` | formats the partition | LFS201 22.7
+encryption | `$ sudo mount /dev/mapper/SECRET /mnt` | mounts the partition | LFS201 22.7
+encryption | `$ sudo umount /mnt` | unmounts the partition | LFS201 22.7
+encryption | `$ sudo cryptsetup --verbose luksClose SECRET` | removes the association | LFS201 22.7
+files | `$ dd if=/dev/zero of=loop-partition bs=1M count=1024` | creates a 1GB file full of zeros | LFS201 22.9
+unknown | `$ losetup -f` | shows first available loopback device (losetup sets up and controls loop devices) | LFS201 22.9
+unknown | `$ sudo losetup /dev/loop2 loop-partition` | sets `/dev/loop2` as an available loopback device | LFS201 22.9
+encryption | `$ sudo crytpsetup luksFormat /dev/loop2` | makes the file available for encryption | LFS201 22.9
+encryption | `$ sudo cryptsetup luksOpen /dev/loop2 crypt-partition` | makes the device available for formatting, where "crypt-partition" is the name it will be known by | LFS201 22.9
+apps | `$ ls -l /dev/mapper` | shows logical volumes | LFS201 22.9
+filesystem, partitions | `$ sudo mkfs.ext4 /dev/mapper/crypt-partition` | puts a filesystem on the volume | LFS201 22.9
+partitions | `$ sudo mount /dev/mapper/crypt-partition /mnt` | mounts the device | LFS201 22.9
+partitions | `$ df -h` | shows the mounted partition | LFS201 22.9
+partitions | `$ sudo umount /mnt` | unmounts the partition | LFS201 22.9
+encryption | `$ sudo cryptsetup luksClose /dev/mapper/crypt-partition` | removes the association(?) | LFS201 22.9
+unknown | `$ sudo losetup -d /dev/loop2` | terminates the loopback device | LFS201 22.9
+unknown | `$ losetup -f` | only shows original loopback device | LFS201 22.9
+files | `$ rm loop-partition` | removes file | LFS201 22.9
+filesystem, partitions | `$ sudo mkswap /dev/sda2` | use `/dev/sda2` as a swap partition | LFS201 Lab 22.2
+filesystem, partitions | `$ sudo swapon -a` | activate all swap partitions | LFS201 Lab 22.2
+lvm | `$ vgcreate ...` | creates volume groups | LFS201 23.6
+lvm | `$ vgextend ...` | adds to volume groups | LFS201 23.6
+lvm | `$ vgreduce ...` | shrinks volume groups | LFS201 23.6
+lvm | `$ pvcreate ...` | converts a partition to a physical volume | LFS201 23.6
+lvm | `$ pvdisplay ...` | shows the physical volumes being used | LFS201 23.6
+lvm | `$ pvmove ...` | moves the data from one physical volume within the volume group to others | LFS201 23.6
+lvm | `$ pvremove ...` | remove a partition from a physical volume | LFS201 23.6
+documentation, lvm | `$ man lvm` | show a full list of LVM utilities | LFS201 23.6
+lvm | `$ ls -lF /sbin/lv*` | show logical volume utilities | LFS201 23.7
+lvm | `$ lvcreate ...` | creates logical volumes from within volume groups | LFS201 23.8
+lvm | `$ lvdisplay ...` | reports on available logical volumes | LFS201 23.8
+lvm | `$ sudo pvcreate /dev/sdb1` | initializes a PV so that it is recognized as belonging to LVM | LFS201 23.8
+lvm | `$ sudo pvcreate /dev/sdc1` | initializes a PV so that it is recognized as belonging to LVM | LFS201 23.8
+lvm | `$ sudo vgcreate -s 16M vg /dev/sdb1` | creates a new VG on block devices | LFS201 23.8
+lvm | `$ sudo vgextend vg /dev/sdc1` | adds one or more PVs to a VG | LFS201 23.8
+lvm | `$ sudo lvcreate -L 50G -n mylvm vg` | creates a logical volume | LFS201 23.8
+lvm | `$ pvdisplay /dev/sda5` | shows physical volumes; leave off physical volume name to list all | LFS201 23.9
+lvm | `*$ vgdisplay /dev/vg0` | shows volume groups; leave off volume group name to list all | LFS201 23.9
+lvm | `*$ lvdisplay /dev/vg0/lvm1` | shows logical volumes; leave off logical volume name to list all | LFS201 23.9
+lvm | `$ sudo lvresive -r -L 20 GB /dev/VG/mylvm` | resizes the volume, where **-r** also resizes the filesystem | LFS201 23.10
+lvm | 1 `$ sudo lvextend -L +500M /dev/vg/mylvm` | grow a logical volume with ext4 filesytem | LFS201 23.11
+lvm | 2 `$ sudo resize2fs /dev/vg/mylvm` | grow a logical volume with ext4 filesytem | LFS201 23.11
+lvm | 1 `$ sudo umount /mylvm` | shrink the filesystem | LFS201 23.11
+lvm | 2 `$ sudo fsck -f /dev/vg/mylvm` | shrink the filesystem | LFS201 23.11
+lvm | 3 `$ sudo resize2fs /dev/vg/mylvm 200M` | shrink the filesystem | LFS201 23.11
+lvm | 4 `$ sudo lvreduce -L 200M /dev/vg/mylvm` | shrink the filesystem | LFS201 23.11
+lvm | 5 `$ sudo mount /dev/vg/mylvm` | shrink the filesystem | LFS201 23.11
+lvm | `$ sudo lvextend -r -L +100M /dev/vg/mylvm` | expand in one step (without **resize2fs** directly) | LFS201 23.11
+lvm | `$ sudo lvreduce -r -L -100M /dev/vg/mylvm` | shrink in one step (without **resize2fs** directly) | LFS201 23.11
+lvm | 1 `$ sudo pvmove /dev/sdc1` | reduce a volume group | LFS201 23.11
+lvm | 2 `$ sudo vgreduce vg /dev/sdc1` | reduce a volume group | LFS201 23.11
+lvm | 1 `$ sudo lvcreate -l 128 -s -n mysnap /dev/vg/mylvm` | create a snapshot of an existing logical volume | LFS201 23.12
+lvm | 2 `$ mkdir /mysnap` | make a mount point | LFS201 23.12
+lvm | 3 `$ mount -o ro /dev/vg/mysnap /mysnap` | mount the snapshot | LFS201 23.12
+lvm | 4 `$ sudo umount /mysnap` | unmount the snapshot | LFS201 23.12
+lvm | 5 `$ sudo lvremove /dev/vg/mysnap` | remove the snapshot | LFS201 23.12
+raid | `$ sudo mdadm -S` | stop RAID | LFS201 24.6
+raid | 1 `$ sudo fdisk /dev/sdb; sudo fdisk /dev/sdc` | create partitions | LFS201 24.6
+raid | 2 `$ sudo mdadm --create /dev/md0 --level=1 --raid-disks=2 /dev/sdbX /dev/sdcX` or `$ mdadm --create /dev/md0 ... /dev/sdb1 /dev/sdc1` | set up array | LFS201 24.6
+raid | 3 `$ sudo mkfs.ext4 /dev/md0` | format array | LFS201 24.6
+raid | 4 `$ sudo bash -c "mdadm --detail --scan >> /etc/mdadm.conf"` | add array to configuration | LFS201 24.6
+raid | 5 `$ sudo mkdir /myraid` | create RAID directory | LFS201 24.6
+raid | 6 `$ sudo mount /dev/md0 /myraid` | mount RAID directory | LFS201 24.6
+raid | 7 `$ sudo vim /etc/fstab` | add a line (`/dev/md0 /myraid ext4 defaults 0 2`) for the mount point | LFS201 24.6
+raid | `$ cat /proc/mdstat` | check RAID status | LFS201 24.6
+raid | `$ sudo mdadm -S /dev/md0` | stop RAID device | LFS201 24.6
+raid | `$ sudo mdadm --detail /dev/md0` | monitor RAID device | LFS201 24.7
+raid | `$ cat /pro/mdstat` | monitor RAID device | LFS201 24.7
+raid | `$ sudo systemctl start mdmonitor` | start monitoring RAID device with **mdmonitor** | LFS201 24.7
+raid | `$ sudo systemctl enable mdmonitor` | ensure **mdmonitor** starts at boot | LFS201 24.7
+raid | `$ sudo mdadm --create /dev/md0 -l 5 -n3 -x 1 /dev/sda8 /dev/sda9 /dev/sda10 /dev/sda11` | create a hot spare when creating the RAID array (** -x 1** switch) | LFS201 24.8
+raid | `$ sudo mdadm --fail /dev/md0 /dev/sdb2` | test redundancy and hot spare of the array | LFS201 24.8
+raid | `$ sudo mdadm --remove /dev/md0 /dev/sdb2` | remove faulty drive in test or failure situation | LFS201 24.8
+raid | `$ sudo mdadm --add /dev/md0 /dev/sde2` | add new drive in test or failure situation | LFS201 24.8

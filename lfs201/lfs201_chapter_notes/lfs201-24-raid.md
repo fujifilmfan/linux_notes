@@ -99,7 +99,35 @@ You added two new disks to a server. In which order would you use the following 
 
 ### Lab 24.1: Creating a RAID Device
 ----
-
+1. Create two 200 MB partitions of type raid (`fd`) either on your hard disk using **fdisk**, or using **LVM**.
+    * done (well, they're 250 MB out of habit)
+2. Create a **RAID 1** device named `/dev/md0` using the two partitions.
+    * `$ sudo mdadm --create /dev/md0 --level=1 --raid-disks=2 /dev/sda3 /dev/sda4`
+        ```
+        mdadm: Note: this array has metadata at the start and
+            may not be suitable as a boot device.  If you plan to
+            store '/boot' on this device please ensure that
+            your boot-loader understands md/v1.x metadata, or use
+            --metadata=0.90
+        Continue creating array? y
+        mdadm: Defaulting to version 1.2 metadata
+        mdadm: array /dev/md0 started.
+        ```
+3. Format the **RAID** device as an **ext4** filesystem. Then mount it at `/myraid` and make the mount persistent.
+    * `$ sudo mkfs.ext4 /dev/md0`
+    * solution: I neglected to create a mount point and mount the filesystem
+4. Place the information about `/dev/md0` in `/etc/mdadm.conf` file using **mdadm**. (Depending on your distribution, this file may not previously exist.)
+    * `$ sudo bash -c "mdadm --detail --scan >> /etc/mdadm.conf"`
+5. Examine `/proc/mdstat` to see the status of your **RAID** device.
+    * `$ cat /proc/mdstat`
+        ```
+        Personalities : [raid1] 
+        md0 : active raid1 sda4[1] sda3[0]
+            254976 blocks super 1.2 [2/2] [UU]
+            
+        unused devices: <none>
+        ```
+  
 ### Paths and Commands
 ----
   
