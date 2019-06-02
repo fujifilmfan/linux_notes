@@ -129,7 +129,20 @@ From [Device file](https://en.wikipedia.org/wiki/Device_file):
 
 ### Lab 27.1: udev
 ----
+1. Create and implement a rule on your system that will create a symlink called `myusb` when a **USB** device is plugged in.
 
+2. Plug in a **USB** device to your system. It can be a pen drive, mouse, webcam, etc.
+Note: If you are running a virtual machine under a hypervisor, you will have to make sure the **USB** device is seen by the
+guest, which usually is just a mouse click which also disconnects it from the host.
+3. Get a listing of the `/dev` directory and see if your symlink was created.
+    * yes: `myusb -> bus/usb/001/004`
+    * `$ lsusb`
+        > Bus 001 Device 004: ID 05ac:12a8 Apple, Inc. iPhone5/5C/5S/6  
+4. Remove the **USB** device. (If it is a drive you should always **umount** it first for safety.)
+    * I couldn't find it on the system to **umount** it, so the phone restarted when I unplugged it.
+5. See if your symbolic link still exists in `/dev`.
+    * it's gone
+  
 ### Paths and Commands
 ----
   
@@ -141,7 +154,7 @@ devices | `/dev` | holds device nodes | LFS201 27.4
 devices | `/sys` | contains **sysfs** pseudo-filesystem, which has device node information | LFS201 27.8
 devices | `/etc/udev/udev.conf` | main configuration file with info on where to place nodes, default permissions, etc. | LFS201 27.8
 devices | `/etc/udev/rules.d` and `/usr/lib/udev/rules.d` | hold rules for naming device nodes | LFS201 27.8
-
+  
 #### Commands  
 
 Topics | Command | Notes | Reference
@@ -151,3 +164,4 @@ devices | `$ sudo mknod -m 666 /dev/mycdrv c 254 1` | creating a device node exa
 devices | `$ ls -l /dev/sda*` | view major and minor numbers for sda* devices | LFS201 27.5
 devices | `$ stat /dev/sda1` | returns device information for `/dev/sda1` | LFS201 27.5
 devices | `$ cat /usr/lib/udev/rules.d/99-fitbit.rules` | read rules for a Fitbit device, for example | LFS201 27.12
+  

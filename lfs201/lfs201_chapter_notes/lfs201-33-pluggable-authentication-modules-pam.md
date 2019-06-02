@@ -105,7 +105,26 @@ Steps involved in authentication:
   
 ### Lab 33.1: PAM Configuration
 ----
-
+1. Edit `/etc/pam.d/sshd` and configure it to deny login after three failed attempts. Hint: add the following two lines to `/etc/pam.d/sshd`:
+    * `auth required pam_tally2.so deny=3 onerr=fail`
+    * `account required pam_tally2.so`
+    * done
+2. Try to login three times as a particular user (who has an account) while mistyping the password.
+    * done
+3. Try to login as the same user with the correct password.
+    * still "Permission denied" as expected
+4. Check to see how many failed logins there are for the user.
+    * `$ sudo pam_tally2 -u rocky`
+5. Reset the failed login counter.
+    * `$ sudo pam_tally2 -u rocky -r`
+6. Check again to see how many failed logins there are.
+    ```
+    Login           Failures Latest failure     From
+    rocky               0 
+    ```
+7. Try to login again with the correct password.
+    * works fine
+  
 ### Paths and Commands
 ----
   
@@ -133,4 +152,6 @@ accounts, auth | **authconfig-tui** | utility involved in PAM and/or LDAP | LFS2
 accounts, auth | **openldap-clients** | involved in configuring LDAP with PAM | LFS201 33.8
 accounts, auth | **pam ldap** | involved in configuring LDAP with PAM | LFS201 33.8
 accounts, auth | **nss-pam-ldapd** | involved in configuring LDAP with PAM | LFS201 33.8
+accounts, auth | `$ sudo pam_tally2 -u rocky` | see how many failed logins there are for user rocky | LFS201 Lab 33.1
+accounts, auth | `$ sudo pam_tally2 -u rocky -r` | reset the failed login counter for user rocky | LFS201 Lab 33.1
   

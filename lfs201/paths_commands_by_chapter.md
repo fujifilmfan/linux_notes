@@ -154,7 +154,62 @@ partitions | `/dev/mapper` | LVM logical volumes (as opposed to LVM *physical* v
 lvm | `/sbin/lv*` | logical volume utilties | LFS201 23.7
 raid | `/dev/mdX` | RAID device | LFS201 24.4
 raid | `/proc/mdstat` | RAID status | LFS201 24.6
-
+boot, kernel | `/boot/grub2/grub.cfg` | GRUB configuration file | LFS201 25.6
+boot, kernel | `/proc/cmdline` | Linux command line used at boot | LFS201 25.6
+boot, kernel | `Documentation/kernel-parameters.txt` | parameter documentation in kernel source | LFS201 25.7
+boot, kernel | `/proc/sys` | contains current kernel values | LFS201 25.8
+boot, kernel | `/etc/sysctl.conf` | config file allowing settings to be fixed at boot time | LFS201 25.8
+boot, kernel | `/usr/lib/sysctl.d/00-system.conf` | settings location on **systemd** distros | LFS201 25.8
+kernel, processes | `/proc/sys/kernel/pid_max` | stores setting for the highest PID before wrapping | LFS201 Lab 25.2
+kernel, modules | `/lib/modules/<kernel-version>` or `/lib/modules/$(uname -r)` | normal filesystem location for kernel modules | LFS201 26.6
+kernel, modules | `/lib/modules/$(uname -r)/modules.dep` | module dependency table | LFS201 26.7
+kernel, modules | `/sys/module/<my_module>` | also contains information about kernel modules | LFS201 26.9
+kernel, modules | `/sys/module/<my_module>/parameters` | contains module parameters | LFS201 26.9
+kernel, modules | `/etc/modprobe.d` | has files that control some parameters when loading with **modprobe** | LFS201 26.11
+devices | `/dev` | holds device nodes | LFS201 27.4
+devices | `/sys` | contains **sysfs** pseudo-filesystem, which has device node information | LFS201 27.8
+devices | `/etc/udev/udev.conf` | main configuration file with info on where to place nodes, default permissions, etc. | LFS201 27.8
+devices | `/etc/udev/rules.d` and `/usr/lib/udev/rules.d` | hold rules for naming device nodes | LFS201 27.8
+virtualization | `/proc/cpuinfo` | has CPU information, including virtualization abilities | LFS201 28.9
+accounts | `/etc/passwd` | file that describes basic account attributes | LFS201 30.5
+accounts | `/etc/shadow` | file that contains password hashes | LFS201 30.6
+accounts | `/etc/group` | file that contains group information | LFS201 30.7
+accounts | `/etc/login.defs` | contains account configurations, such as UID and GID information | LFS201 30.6
+accounts | `/etc/nologin.txt` | contains message for login error when user is locked | LFS201 30.8
+accounts | `/sbin/nologin` | prevents login by denying a shell?? | LFS201 30.8
+accounts, network | `/etc/ssh/sshd_config` | configures **ssh** | LFS201 30.16  
+accounts, network | `/etc/securetty` and **pam_securetty.so** | used with **PAM** | LFS201 30.16
+accounts, network | `~/.ssh` | SSH configuration directory | LFS201 30.18
+accounts, network | `~/.ssh/id_rsa` | user's private encryption key | LFS201 30.18
+accounts, network | `~/.ssh/id_rsa.pub` | user's public encryption key | LFS201 30.18
+accounts, network | `~/.ssh/authorized_keys` | list of public keys that are permitted to login | LFS201 30.18
+accounts, network | `~/.ssh/known_hosts` | list of hosts from which logins have been allowed in the past | LFS201 30.18
+accounts, network | `~/.ssh/config` | configuration file for specifying various options | LFS201 30.18
+accounts | `/etc/group` | holds group definitions | LFS201 31.4
+accounts | `/etc/gshadow` | holds group passwords | LFS201 31.4
+accounts, system | `/etc/profile` | contains system-wide environment and startup programs | LFS201 31.6
+accounts, system | `/etc/bashrc` | contains system-wide functions and aliases | LFS201 31.6
+accounts, auth | `/etc/pam.d` | directory containing files of authentication rules for each application or service using PAM | LFS201 33.5
+accounts, auth | `/lib*/security` | contains modules used by PAM for authentication | LFS201 33.7
+accounts, auth | `/etc/openldap/ldap.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
+accounts, auth | `/etc/pam_ldap.conf/` | file that needs editing when configuring a system for LDAP | LFS201 33.8
+accounts, auth | `/etc/nslcd.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
+accounts, auth | `/etc/sssd/sssd.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
+accounts, auth | `/etc/nsswitch.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
+networks, security | `/etc/firewalld` | configuration files for **firewalld**; override those in `/usr/lib/firewalld` | LFS201 36.9
+networks, security | `/usr/lib/firewalld` | configuration files for **firewalld** `/etc/firewalld` | LFS201 36.9
+networks, security | `/etc/firewalld/zones/internal.xml` | created when assigning an interface to a particular zone permanently | LFS201 36.12
+networks, system | `/etc/services` | stores information about services on the machine, including name, port number, protocol, and aliases; a mapping between human-friendly textual names for internet services, and their underlying assigned port numbers and protocol types; every networking program should look into this file to get the port number (and protocol) for its service | LFS201 36.15
+networks, security | `/etc/firewalld/services` | add new services by editing this | LFS201 36.14
+startup/shutdown | `/boot/grub/grub.cfg` | GRUB configuration file | LFS201 38.4
+startup/shutdown | `/boot/grub2/grub.cfg` | GRUB configuration file | LFS201 38.4
+startup/shutdown | `/etc/grub.d` | used by **update-grub** or **grub2-mkconfig** to modify `grub.cfg` | LFS201 38.4
+startup/shutdown | `/etc/default/grub` | used by **update-grub** or **grub2-mkconfig** to modify `grub.cfg` | LFS201 38.4
+startup/shutdown | `/boot/grub` or `/boot/grub2` | GRUB files needed at boot time | LFS201 38.6
+startup/shutdown | `vmlinuz-*` | file needed by the Linux kernel | LFS201 38.6
+startup/shutdown | `initramfs-*` | file needed by the Linux kernel | LFS201 38.6
+startup/shutdown | 1 `/etc/default/grub` | file used to update GRUB configuration file `grub.cfg` | LFS201 38.8
+startup/shutdown | 2 `/etc/grub.d` | directory used to update GRUB configuration file `grub.cfg` | LFS201 38.8
 
 
 
@@ -590,3 +645,149 @@ raid | `$ sudo mdadm --create /dev/md0 -l 5 -n3 -x 1 /dev/sda8 /dev/sda9 /dev/sd
 raid | `$ sudo mdadm --fail /dev/md0 /dev/sdb2` | test redundancy and hot spare of the array | LFS201 24.8
 raid | `$ sudo mdadm --remove /dev/md0 /dev/sdb2` | remove faulty drive in test or failure situation | LFS201 24.8
 raid | `$ sudo mdadm --add /dev/md0 /dev/sde2` | add new drive in test or failure situation | LFS201 24.8
+boot, kernel | `linux  /boot/vmlinuz-4.19.0 root=UUID=7ef4e747-afae-48e3-90b4-9be8be8d0258 ro quiet \ crashkernel=384M-:128M` | kernel command line | LFS201 25.6
+boot, kernel | `linux16 /boot/vmlinuz-4.19.4 root=LABEL=RHEL7 LANG=en_US.UTF-8 ro rhgb quiet` | kernel command line | LFS201 25.6
+boot, kernel | `$ cat /proc/cmdline` | see what command line a system was booted with | LFS201 25.6
+boot, kernel | `$ man bootparam` | kernel boot parameter documentation | LFS201 25.7
+boot, kernel | `$ sysctl -a` | shows current values | LFS201 25.8
+boot, kernel | `$ sudo sh -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'` | sets kernel runtime values | LFS201 25.8
+boot, kernel | `$ sudo sysctl net.ipv4.ip_forward=1` | sets kernel runtime values with the **sysctl** interface | LFS201 25.8
+boot, kernel | `$ man 8 sysctl` | get **sysctl** help | LFS201 25.8
+boot, kernel | `$ man 2 sysctl` | get information about using the `sysctl()` function from programs | LFS201 25.8
+boot, kernel | `$ man sysctl.conf` | for **sysctl.conf** help | LFS201 25.8
+boot, kernel | `$ sudo sysctl -p` | causes immediate digestion of the file, setting all parameters as found; this is also part of the boot process | LFS201 25.8
+apps, kernel | `$ sudo sysctl net.ipv4.icmp_echo_ignore_all=1` | cause system not to respond to pings | LFS201 Lab 25.1
+kernel, processes | `# echo 27275 > /proc/sys/kernel/pid_max` | chance max PID as root | LFS201 Lab 25.2
+kernel, modules | `$ lsmod` | list loaded modules | LFS201 26.6
+kernel, modules | `$ sudo /sbin/rmmod <module_name>` | remove a module | LFS201 26.6
+kernel, modules | `$ sudo /sbin/insmod <pathto>/<module_name.ko>` | load a module | LFS201 26.6
+kernel, modules | `$ sudo /sbin/modprobe -r <module_name>` | unload a module | LFS201 26.7
+system | `$ uname -r` | gives the current kernel version  | LFS201 26.7
+system | `$ uname ...` | prints system information | LFS201 26.7
+kernel, modules | `$ depmod ...` | generate or update the file `/lib/modules/$(uname -r)/modules.dep` | LFS201 26.7
+kernel, modules | `$ /sbin/modinfo <my_module>` | find out about kernel modules | LFS201 26.9
+kernel, modules | `$ /sbin/modinfo <pathto>/<my_module.ko>` | find out about kernel modules | LFS201 26.9
+kernel, modules | `$ sudo /sbin/insmod <pathto>/e1000e.ko debug=2 copybreak=256` | load module specifying parameter values | LFS201 26.10
+kernel, modules | `$ sudo /sbin/modprobe e1000e debug=2 copybreak=256` | load module specifying parameter values when the module is in the proper system location | LFS201 26.10
+devices | `$ sudo mknod [-m mode] /dev/name <type> <major> <minor>` | generic syntax to create a device node | LFS201 27.4
+devices | `$ sudo mknod -m 666 /dev/mycdrv c 254 1` | creating a device node example | LFS201 27.4
+devices | `$ ls -l /dev/sda*` | view major and minor numbers for sda* devices | LFS201 27.5
+devices | `$ stat /dev/sda1` | returns device information for `/dev/sda1` | LFS201 27.5
+devices | `$ cat /usr/lib/udev/rules.d/99-fitbit.rules` | read rules for a Fitbit device, for example | LFS201 27.12
+virtualization | `$ ls -lF /usr/bin/virt*` | see which utilities are using *libvirt* (?) | LFS201 28.14
+virtualization | `$ qemu-img --help | grep formats:` | get list of supported formats | LFS201 28.17
+virtualization | `$ qemu-img convert -O vmdk myvm.qcow2 myvm.vmdk` | translate between disk image file formats | LFS201 28.17
+virtualization | `$ sudo systemctl start libvirtd` | start **libvirtd** | LFS201 Lab 28.2
+virtualization | `$ sudo virt-manager` | start **virt-manager** GUI | LFS201 Lab 28.2
+containers, docker | `$ sudo systemctl start docker` |  start **docker** service | LFS201 Lab 29.1
+containers, docker | `$ systemctl status docker` | verify **docker** is running properly | LFS201 Lab 29.1
+containers, docker | `$ docker search apache` | search for the **httpd** container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker pull docker.io/httpd` | retrieve the container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker images` | list the installed containers | LFS201 Lab 29.1
+containers, docker | `$ sudo docker images --all` | list all components associate with **docker** images | LFS201 Lab 29.1
+containers, docker | `$ sudo docker run httpd` | start the **httpd docker** container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker ps` | list running **docker** containers | LFS201 Lab 29.1
+containers, docker | `$ sudo docker kill 27d8ec644776` | kill **docker** container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker stop b936b0afeb23` | stop **docker** container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker rmi -f docker.io/httpd` | remove **httpd** image | LFS201 Lab 29.1
+containers, docker | `$ sudo systemctl stop docker` | stop **docker** service | LFS201 Lab 29.1
+accounts | `$ sudo useradd dexter` | create an account for user **dexter** | LFS201 30.6
+accounts | `$ sudo useradd -s /bin/csh -m -k /etc/skel -c "Bullwinkle J Moose" bmoose` | create a user account and use options to overrule defaults | LFS201 30.6
+accounts | `$ sudo userdel morgan` | delete the user **morgan** | LFS201 30.7
+accounts | `$ sudo usermod -L dexter` | lock **dexter**'s account | LFS201 30.7
+accounts | `$ sudo chage -E 2014-09-11 morgan` | lock **morgan**'s account by changing the expiration date to a date in the past | LFS201 30.8
+accounts | `$ passwd ...` | used to change passwords | LFS201 30.8
+accounts | `$ vipw ...` | used to change account information | LFS201 30.8
+accounts | `$ sudo usermod -U dexter` | unlocks **dexter**'s account | LFS201 30.8
+accounts | `$ chage [-m mindays] [-M maxdays] [-d lastday] [-I inactive] [-E expiredate] [-W warndays] user` | generic syntax for chage | LFS201 30.13
+accounts | `$ sudo chage -l dexter` | list account aging information for dexter | LFS201 30.13
+accounts | `$ sudo chage -m 14 -M 30 kevlin` | set the mindays and maxdays, respectively, for kevlin | LFS201 30.13
+accounts | `$ sudo chage -E 2012-4-1 morgan` | set the password expiration for morgan to 2012-4-1 | LFS201 30.13
+accounts | `$ sudo chage -d 0 USERNAME` | force a user to change their password at next login | LFS201 30.13
+accounts | `$ chage -l MY_USERNAME` | list accoung aging information for myself | LFS201 30.13
+accounts | `$ bash -r` | invokes a **restricted shell** (some distros use **rbash**) | LFS201 30.14
+accounts | 1 `$ cd /bin ; sudo ln -s bash rbash` | set up restricted account; create symbolic link from bash to rbash | LFS201 30.15
+accounts | 2 `$ cd /bin ; sudo ln bash rbash` | set up restricted account; create a link from bash to rbash | LFS201 30.15
+accounts | 3 `$ cd /bin ; sudo cp bash rbash` | set up restricted account; copies bash to rbash?? | LFS201 30.15
+accounts, system | `$ auditd ...` | can be used to log all commands executed as root | LFS201 30.16  
+accounts, network | `$ ssh farflung.com` | login to site assuming an existing user account | LFS201 30.17
+accounts, network | `$ ssh root@farflung.com` | login to site as root | LFS201 30.17
+accounts, network | `$ ssh -l root farflung.com` | login to site as root | LFS201 30.17
+accounts, network | `$ scp file.txt farflung.com:/tmp` | copy file from current dir to remote one | LFS201 30.17
+accounts, network | `$ scp file.txt student@farflung.com/home/student` | copy file from current dir to remote home dir | LFS201 30.17
+accounts, network | `$ scp -r some_dir farflung.com:/tmp/some_dir` | copy local dir to remote dir | LFS201 30.17
+accounts, network | `$ for machines in node1 node2 node3 ; do (ssh $machines some_command &) ; done` | run a command on multiple machines simultaneously | LFS201 30.17
+accounts, network | `$ ssh-keygen` | create private and public encryption keys | LFS201 30.18
+accounts, apps | `$ sudo grep student /etc/passwd /etc/shadow` | grep two files for 'student' | LFS201 Lab 30.1
+network, system | `$ sudo service sshd restart` | start **sshd** service | LFS201 Lab 30.1
+network, system | `$ sudo systemctl restart sshd.service` | start **sshd** service | LFS201 Lab 30.1
+accounts | `$ sudo groupadd -r -g 215 staff` | creates a system group (**-r**) and assigns it the GID "215" and name "staff" (?) | LFS201 31.5
+accounts | `$ sudo groupmod -g 101  blah` | changes the group ID of "blah" (?) | LFS201 31.5
+accounts | `$ sudo groupdel newgroup` | deletes the group "newgroup" | LFS201 31.5
+accounts | `$ sudo usermod -G student,group1,group2 student` | assign "student" to the comma-separated list of groups | LFS201 31.5
+accounts | `$ vigr ...` | make changes to `/etc/group` | LFS201 31.5
+accounts | `$ useradd -G <group name>` | adds a user to an existing group when creating the user | LFS201 31.8
+accounts | `$ groups [USER1 USER2 ...]` | identify group membership for users | LFS201 31.7
+accounts | `$ id -Gn [USER1 USER2 ...]` | identify group membership for users | LFS201 31.7
+accounts | `$ groups` or `$ id -Gn` | shows current user group membership | LFS201 31.7
+accounts | `$ id` | shows current user UID, GID, and groups | LFS201 31.7
+accounts, files, permissions | `$ chmod ...` | changes file permissions | LFS201 32.7
+accounts, files, permissions | `$ chomod uo+x,g-w a_file` | adds execution access for user and other and removes write access for group; symbolic form | LFS201 32.7
+accounts, files, permissions | `$ chmod 755 a_file` | gives all access to the user and read/execute to groups and other; octal form | LFS201 32.8
+accounts, files, permissions | `$ chown ...` | changes file ownership; only the superuser can do this | LFS201 32.9
+accounts, files, permissions | `$ chown wally somefile` | makes wally the owner of the file | LFS201 32.9
+accounts, files, permissions | `$ chgrp ...` | changes group ownership; you can only change group ownership to groups you are a member of | LFS201 32.9
+accounts, files, permissions | `$ chgrp cleavers somefile` | makes cleavers the group owner of the file | LFS201 32.9
+accounts, files, permissions | `$ chown wally:cleavers somefile` | changes both owner and group at the same time | LFS201 32.9
+accounts, files, permissions | `$ chown -R wally:cleavers ./` | changes owner and group recursively | LFS201 32.9
+accounts, files, permissions | `$ chown -R wally:wally subdir` | changes owner and group recursively | LFS201 32.9
+accounts, files, permissions | `$ umask` | shows which permissions should be denied (0002 on my machine) | LFS201 32.10
+accounts, files, permissions | `$ umask 0022` | changes the umask value | LFS201 32.10
+accounts, files, permissions | `$ getfacl <file|directory>` | see ACLs | LFS201 32.13
+accounts, files, permissions | `$ getfacl test` | see ACLs for test file | LFS201 32.13
+accounts, files, permissions | `$ setfacl <options> <permissions> <file|directory>` | sets ACLs | LFS201 32.13
+accounts, files, permissions | `$ setfacl -m u:isabelle:rx /home/stephane/file1` | modifies ACL of a file or directory | LFS201 32.13
+accounts, files, permissions | `$ setfacl -x u:isabelle /home/stephane/file` | removes ACL entries | LFS201 32.13
+accounts, files, permissions | `$ setfacl -m d:u:isabelle:rx somedir` | sets default on a directory | LFS201 32.13
+accounts, auth | **libpam** | checks for files in `/etc/pam.d` after being called by an app using PAM | LFS201 33.5
+accounts, auth | **system-auth** | involved in authorization | LFS201 33.5
+accounts, auth | **LDAP** | enables distributed directory services | LFS201 33.8
+accounts, auth | **system-config-authentication** | utility involved in PAM and/or LDAP | LFS201 33.8
+accounts, auth | **authconfig-tui** | utility involved in PAM and/or LDAP | LFS201 33.8
+accounts, auth | **openldap-clients** | involved in configuring LDAP with PAM | LFS201 33.8
+accounts, auth | **pam ldap** | involved in configuring LDAP with PAM | LFS201 33.8
+accounts, auth | **nss-pam-ldapd** | involved in configuring LDAP with PAM | LFS201 33.8
+accounts, auth | `$ sudo pam_tally2 -u rocky` | see how many failed logins there are for user rocky | LFS201 Lab 33.1
+accounts, auth | `$ sudo pam_tally2 -u rocky -r` | reset the failed login counter for user rocky | LFS201 Lab 33.1
+networks, security | `$ firewall-cmd --help` | has lots of information | LFS201 36.9
+networks, security | `$ sudo systemctl [enable/disable] firewalld` | start **firewalld** | LFS201 36.10
+networks, security | `$ sudo systemctl [start/stop] firewalld` | stop **firewalld** | LFS201 36.10
+networks, security | `$ sudo systemctl status firewalld` | shows the current state of **firewalld** | LFS201 36.10
+networks, security | `$ sudo firewall-cmd --state` | shows the current state of **firewalld** | LFS201 36.10
+networks, security | `$ sudo sysctl net.ipv4.ip_forward=1` | turn on **ip forwarding** | LFS201 36.10
+networks, security | `$ echo 1 > /proc/sys/net/ipv4/ip_forward` | turn on **ip forwarding** | LFS201 36.10
+networks, security | 1 `/etc/sysctl.conf` | add **net.ipv4.ip_forward=1** to make **ip forwarding** persistent | LFS201 36.10
+networks, security | 2 `$ sudo sysctl -p` | to read in the new setting without rebooting (or just reboot) | LFS201 36.10
+networks, security | `$ sudo firewall-cmd --get-default-zone` | get the default zone | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --get-active-zones` | obtain a list of zones currently being used | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --get-zones` | list all available zones | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --set-default-zone=trusted` | change the default zone to **trusted** | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --set-default-zone=public` | change the default zone back to **public** | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --zone=internal --change-interface=eno1` | assign an interface temporarily to a particular zone | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --permanent --zone=internal --change-interface=eno1` | assign an interface to a particular zone permanently, which creates `/etc/firewalld/zones/internal.xml` | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --get-zone-of-interface=eno1` | ascertain the zone associated with a particular interface | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --zone=public --list-all` | get all details about a particular zone public (default, active) | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --add-source=192.168.1.0/24` | assign anyone with an IP address of 192.168.1.x to the **trusted** zone | LFS201 36.13
+networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --list-sources` | list the sources bound to a zone | LFS`201 36.13
+networks, security | `$ sudo firewall-cmd --get-services` | see all the services available | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --list-services --zone=public` | see services currently accessible in a particular zon`e | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --permanent --zone=home --add-service=dhcp` | add a service to a zone | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --reload` | reload firewall rules and keep state information. Current permanent con`figuration will become new runtime configuration | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --zone=home --add-port=21/tcp` | add TCP port to home zone services | LFS201 36.15
+networks, security | `$ sudo firewall-cmd --zone=home --list-ports` | check ports for home zone | LFS201 36.15
+networks, security | `$ grep " 21/tcp" /etc/services` | ascertain that port 21 corresponds to ftp | LFS201 36.15
+networks, security | `$ firewall-config` | start firewall GUI | LFS201 Lab 36.4
+startup/shutdown | `$ update-grub ...` or `$ grub2-mkconfig ...` | modify `grub.cfg` | LFS201 38.4
+startup/shutdown | `$ sudo grub2-install /dev/sda` | install GRUB for version 2 (read the **man** first!!) | LFS201 38.6
+startup/shutdown | `$ sudo systemctl start gdm` | start graphical user interface (GUI) from command line | LFS201 Lab 38.1
+

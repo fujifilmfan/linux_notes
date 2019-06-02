@@ -116,13 +116,67 @@ By the end of this chapter, you should be able to:
   
 ### Lab 32.1: Using chmod
 ----
-
+It is possible to either give permissions directly, or add or subtract permissions. The syntax is pretty obvious. Try the following examples:  
+* `$ chmod u=r,g=w,o=x afile`
+* `$ chmod u=+w,g=-w,o=+rw afile`
+* `$ chmod ug=rwx,o=-rw afile`
+After each step do:  
+* `$ ls -l afile`
+to see how the permissions took, and try some variations.  
+  
 ### Lab 32.2: umask
 ----
-
+Create an empty file with:  
+* `$ touch afile`
+* `$ ls -l afile`
+    > -rw-rw-r-- 1 coop coop 0 Jul 26 12:43 afile  
+which shows it is created by default with both read and write permissions for owner and group, but only read for world.
+In fact, at the operating system level the default permissions given when creating a file or directory are actually read/write for owner, group **and** world (0666); the default values have actually been modified by the current umask.
+If you just type **umask** you get the current value:
+* `$ umask`
+    > 0002  
+which is the most conventional value set by system administrators for users. This value is combined with the file creation permissions to get the actual result; i.e.,
+`0666 & ~002 = 0664; i.e., rw-rw-r--`
+Try modifying the umask and creating new files and see the resulting permissions, as in:
+* `$ umask 0022`
+* `$ touch afile2`
+* `$ umask 0666`
+* `$ touch afile3`
+* `$ ls -l afile*`
+  
 ### Lab 32.3: Using Access Control Lists
 ----
-
+1. Create a file using your usual user name and run **getfacl** on it to see its properties.
+    * ` $ getfacl somefile`
+        ```
+        # file: somefile
+        # owner: student
+        # group: student
+        user::rw-
+        group::rw-
+        other::r--
+        ```
+2. Create a new user account with default properties (or reuse one from previous exercises.
+    * I'll use rocky
+3. Login as that user and try to add a line to the file you created in the first step. This should fail.
+    * "Permission denied"
+4. Use **setfacl** to make the file writeable by the new user and try again.
+    * `$ setfacl -m u:rocky:rw /home/student/somefile`
+        ```
+        # file: somefile
+        # owner: student
+        # group: student
+        user::rw-
+        user:rocky:rw-
+        group::rw-
+        mask::rw-
+        other::r--
+        ```
+    * writing still "Permission denied" for rocky
+5. Use **setfacl** to make the file not readable by the new user and try again.
+6. Clean up as necessary
+    * `$ sudo userdel -r rocky` **-r** for home directory also
+  
 ### Paths and Commands
 ----
   

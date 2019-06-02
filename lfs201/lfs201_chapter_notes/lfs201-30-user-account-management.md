@@ -238,10 +238,68 @@ See video.
   
 ### Lab 30.1: Working with User Accounts
 ----
-
+1. Examine `/etc/passwd` and `/etc/shadow`, comparing the fields in each file, especially for the normal user account. What is the same and what is different?
+    * similar: they are both formatted similarly and have user accounts
+    * different: they store different kinds of information
+    * solution: `$ sudo grep student /etc/passwd /etc/shadow` grep two files for 'student'
+2. Create a `user1` account using **useradd**.
+    * `$ sudo useradd user1`
+3. Login as `user1` using **ssh** . You can just do this with: `$ ssh user1@localhost` It should fail because you need a password for `user1` ; it was never established.
+    * it does fail
+    * solution: you might need to start **sshd** service first, as in `$ sudo service sshd restart` or `$ sudo systemctl restart sshd.service`
+4. Set the password for `user1` to `user1`pw and then try to login again as `user1`.
+    * `$ sudo passwd user1`
+5. Look at the new records which were created in the `/etc/passwd`, `/etc/group`, and the `/etc/shadow` files.
+    * `user1:x:1001:1001::/home/user1:/bin/bash`
+    * `user1:x:1001:`
+    * `user1:$6$RwwPtAbU$UG3tSWMVG9MIEsiOPHbJM7783osdGoTJoFz/fjIIfZomB0Pee8w/TVzzHXIEy960tIIIJAGLlpIHtaI.K4vWy0:18048:0:99999:7:::`
+6. Look at the `/etc/default/useradd` file and see what the current defaults are set to. Also look at the `/etc/login.defs` file.  Here's the former:
+    ```
+    # useradd defaults file
+    GROUP=100
+    HOME=/home
+    INACTIVE=-1
+    EXPIRE=
+    SHELL=/bin/bash
+    SKEL=/etc/skel
+    CREATE_MAIL_SPOOL=yes
+    ```
+7. Create a user account for `user2` which will use the **Korn** shell (**ksh**) as its default shell. (if you do not have `/bin/ksh` install it or use the C shell at `/bin/csh`.) Set the password to `user2pw`.
+    * `$ sudo useradd -s /bin/ksh user2`
+    * `$ sudo passwd user2`
+8. Look at `/etc/shadow`. What is the current expiration date for the `user1` account?
+    * expiration is the penultimate field; there is no expiration set
+9. Use **chage** to set the account expiration date of `user1` to December 1, 2013. Look at `/etc/shadow` to see what the new expiration date is.
+    * `$ sudo chage -E 2013-12-01 user1`
+    * `...pIHtaI.K4vWy0:18048:0:99999:7::16040:` (16040)
+10. Use usermod to lock the `user1` account. Look at `/etc/shadow` and see what has changed about `user1`’s password. Reset the password to `userp1` on the account to complete this exercise.
+    * `$ sudo usermod -L user1`
+    * `user1:!$6$RwwPtAbU$UG3tSWM...`
+  
 ### Lab 30.2: Restricted Shells and Accounts
 ----
+1. Start a restricted still in your current window with: `$ bash -r` Try elementary options such as resetting the path or changing directories.
+    * `$ echo hello > hello.txt`
+        > bash: hello.txt: restricted: cannot redirect output  
+        > bash: /dev/null: restricted: cannot redirect output  
+    * `$ mkdir new_dir` (it did create the new directory, though)
+        > bash: /dev/null: restricted: cannot redirect output  
 
+2. Set up a restricted account and verify its restricted nature, then clean up.
+    * (I didn't to this)
+    * `# sudo ln /bin/bash /bin/rbash`
+    * `# sudo useradd -s /bin/rbash fool`
+    * `# sudo passwd fool`
+    * `# sudo su - fool`
+    * `[fool@c7 ~]$ cd /tmp`
+        > -rbash: cd: restricted  
+    * `[fool@c7 ~]$ PATH=$PATH:/tmp`
+        > -rbash: PATH: readonly variable  
+    * `[fool@c7 ~]$ exit`
+        > logout  
+    * `# sudo userdel -r fool`
+    * `# sudo rm /bin/rbash`
+  
 ### Paths and Commands
 ----
   
@@ -295,3 +353,6 @@ accounts, network | `$ scp file.txt student@farflung.com/home/student` | copy fi
 accounts, network | `$ scp -r some_dir farflung.com:/tmp/some_dir` | copy local dir to remote dir | LFS201 30.17
 accounts, network | `$ for machines in node1 node2 node3 ; do (ssh $machines some_command &) ; done` | run a command on multiple machines simultaneously | LFS201 30.17
 accounts, network | `$ ssh-keygen` | create private and public encryption keys | LFS201 30.18
+accounts, apps | `$ sudo grep student /etc/passwd /etc/shadow` | grep two files for 'student' | LFS201 Lab 30.1
+network, system | `$ sudo service sshd restart` | start **sshd** service | LFS201 Lab 30.1
+network, system | `$ sudo systemctl restart sshd.service` | start **sshd** service | LFS201 Lab 30.1

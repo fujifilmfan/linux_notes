@@ -185,16 +185,42 @@ public (default, active)
   
 ### Lab 36.1: Installing firewalld
 ----
-
+* `$ which firewalld firewall-cmd`
+    ```
+    /usr/sbin/firewalld
+    /usr/bin/firewall-cmd
+    ```
+* nothing more to do!
+  
 ### Lab 36.2: Examining firewall-cmd
 ----
-
+* `$ firewalld-cmd --help`
+* nothing more to do
+  
 ### Lab 36.3: Adding Services to a Zone
 ----
-
+Add the http and https services to the public zone and verify that they are currently listed.  
+Solution:  
+* `$ sudo firewall-cmd --zone=public --add-service=http`
+    > success  
+* `$ sudo firewall-cmd --zone=public --add-service=https`
+    > success  
+* `$ sudo firewall-cmd --list-services --zone=public`
+    > dhcpv6-client http https ssh  
+* Note if you had run
+    * `$ sudo firewall-cmd --reload`
+    * `$ sudo firewall-cmd --list-services --zone=public`
+        > dhcpv6-client ssh  
+    after adding the new services, they would disappear from the list! This curious behavior is because we did not include the **--permanent** flag when adding the services, and the **--reload** option reloads the known persistent services only.
+  
 ### Lab 36.4: Using the firewall GUI
 ----
-
+Once you launch the firewall configuration GUI, do the previous exercise of adding http and https to the public zone, and
+verify that it has taken effect.
+* `$ firewall-config` start GUI
+* I removed the **http** and **https** services
+* verify using `$ sudo firewall-cmd --list-services --zone=public`
+  
 ### Paths and Commands
 ----
   
@@ -205,6 +231,7 @@ Topics | Path | Notes | Reference
 networks, security | `/etc/firewalld` | configuration files for **firewalld**; override those in `/usr/lib/firewalld` | LFS201 36.9
 networks, security | `/usr/lib/firewalld` | configuration files for **firewalld** `/etc/firewalld` | LFS201 36.9
 networks, security | `/etc/firewalld/zones/internal.xml` | created when assigning an interface to a particular zone permanently | LFS201 36.12
+networks, system | `/etc/services` | stores information about services on the machine, including name, port number, protocol, and aliases; a mapping between human-friendly textual names for internet services, and their underlying assigned port numbers and protocol types; every networking program should look into this file to get the port number (and protocol) for its service | LFS201 36.15
 networks, security | `/etc/firewalld/services` | add new services by editing this | LFS201 36.14
   
 #### Commands  
@@ -228,15 +255,14 @@ networks, security | `$ sudo firewall-cmd --set-default-zone=public` | change th
 networks, security | `$ sudo firewall-cmd --zone=internal --change-interface=eno1` | assign an interface temporarily to a particular zone | LFS201 36.12
 networks, security | `$ sudo firewall-cmd --permanent --zone=internal --change-interface=eno1` | assign an interface to a particular zone permanently, which creates `/etc/firewalld/zones/internal.xml` | LFS201 36.12
 networks, security | `$ sudo firewall-cmd --get-zone-of-interface=eno1` | ascertain the zone associated with a particular interface | LFS201 36.12
-networks, security | `$ sudo firewall-cmd --zone=public --list-all` | get all details about a particular zone
-public (default, active) | LFS201 36.12
+networks, security | `$ sudo firewall-cmd --zone=public --list-all` | get all details about a particular zone public (default, active) | LFS201 36.12
 networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --add-source=192.168.1.0/24` | assign anyone with an IP address of 192.168.1.x to the **trusted** zone | LFS201 36.13
-networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --list-sources` | list the sources bound to a zone | LFS201 36.13
+networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --list-sources` | list the sources bound to a zone | LFS`201 36.13
 networks, security | `$ sudo firewall-cmd --get-services` | see all the services available | LFS201 36.14
-networks, security | `$ sudo firewall-cmd --list-services --zone=public` | see services currently accessible in a particular zone | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --list-services --zone=public` | see services currently accessible in a particular zon`e | LFS201 36.14
 networks, security | `$ sudo firewall-cmd --permanent --zone=home --add-service=dhcp` | add a service to a zone | LFS201 36.14
-networks, security | `$ sudo firewall-cmd --reload` | reload firewall rules and keep state information. Current permanent configuration will become new runtime configuration | LFS201 36.14
-networks, security | `$ sudo firewall-cmd --zone=home --add-port=21/tcp` | ?? | LFS201 36.15
-networks, security | `$ sudo firewall-cmd --zone=home --list-ports` | ?? | LFS201 36.15
-`/etc/services` | stores information about services on the machine, including name, port number, protocol, and aliases; a mapping between human-friendly textual names for internet services, and their underlying assigned port numbers and protocol types; every networking program should look into this file to get the port number (and protocol) for its service | LFS201 36.15
+networks, security | `$ sudo firewall-cmd --reload` | reload firewall rules and keep state information. Current permanent con`figuration will become new runtime configuration | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --zone=home --add-port=21/tcp` | add TCP port to home zone services | LFS201 36.15
+networks, security | `$ sudo firewall-cmd --zone=home --list-ports` | check ports for home zone | LFS201 36.15
 networks, security | `$ grep " 21/tcp" /etc/services` | ascertain that port 21 corresponds to ftp | LFS201 36.15
+networks, security | `$ firewall-config` | start firewall GUI | LFS201 Lab 36.4

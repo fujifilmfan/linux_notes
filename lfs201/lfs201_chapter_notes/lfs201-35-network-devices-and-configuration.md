@@ -333,10 +333,68 @@ Image
   
 ### Lab 35.1: Static Configuration of a Network Interface
 ----
-
+1. Show your current IP address, default route and **DNS** settings for eth0 . Keep a copy of them for resetting later.
+    * `$ ip addr show ens33`
+        ```
+        2: ens33: <BROADCAST,MULTICAST> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+        link/ether 00:0c:29:0b:9a:b4 brd ff:ff:ff:ff:ff:ff
+        ```
+    * `$ ip route`
+        ```
+        172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 
+        192.168.122.0/24 dev virbr0 proto kernel scope link src 192.168.122.1
+        ```
+    * `$ cp /etc/resolv.conf resolv.conf.keep` - the file has only one, commented line
+2. Bring down `ens33` and reconfigure to use a static address instead of **DCHP**, using the information you just recorded.
+    * `$ sudo ip link set ens33 down`
+    * might need to edit `/etc/sysconfig/network-scripts/ifcfg-eth0`:
+        ```
+        DEVICE=eth0
+        BOOTPROTO=static
+        ONBOOT=yes
+        IPADDR=noted from step 1
+        NETMASK=noted from step 1
+        GATEWAY=noted from step 1
+        ```
+3. Bring the interface back up, and configure the nameserver resolver with the information that you noted before. Verify your hostname and then **ping** it.
+    * `$ sudo ip link set ens33 up`
+    * `$ sudo cp resolv.conf.keep /etc/resolv.conf`
+    * `$ cat /etc/sysconfig/network` - the file has only one, commented line
+    * `$ cat /etc/hosts`
+    * `$ ping yourhostname`
+4. Make sure your configuration works after a reboot.
+    * why? this didn't seem to change anything
+    * `$ sudo reboot`
+    * `$ ping hostname`
+  
 ### Lab 35.2: Adding a Static Hostname
 ----
+1. Open `/etc/hosts` and add an entry for `mysystem.mydomain` that will point to the IP address associated with your network card.
+2. Add a second entry that will make all references to ad.doubleclick.net point to 127.0.0.1 .
+3. As an optional exercise, download the host file from: http://winhelp2002.mvps.org/hosts2.htm or more directly from http://winhelp2002.mvps.org/hosts.txt , and install it on your system. Do you notice any difference using your browser with and without the new host file in place?
 
+Solution:
+```
+1. $ sudo sh -c "echo 192.168.1.180
+mysystem.mydomain >> /etc/hosts"
+$ ping mysystem.mydomain
+2. $ sudo sh -c "echo 127.0.0.1
+ad.doubleclick.net >> /etc/hosts"
+$ ping ad.doubleclick.net
+3. $ wget http://winhelp2002.mvps.org/hosts.txt
+--2014-11-01 08:57:12-- http://winhelp2002.mvps.org/hosts.txt
+Resolving winhelp2002.mvps.org (winhelp2002.mvps.org)... 216.155.126.40
+Connecting to winhelp2002.mvps.org (winhelp2002.mvps.org)|216.155.126.40|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 514744 (503K) [text/plain]
+Saving to: hosts.txt
+100%[======================================>] 514,744
+977KB/s
+in 0.5s
+2014-11-01 08:57:13 (977 KB/s) - hosts.txt saved [514744/514744]
+$ sudo sh -c "cat hosts.txt >> /etc/hosts"
+```
+  
 ### Lab 35.3: Adding a Network Interface Alias/Address Using nmcli
 ----
 

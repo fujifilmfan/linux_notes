@@ -73,7 +73,49 @@ starting a Docker application:
   
 ### Lab 29.1: Installing and Testing Apache (httpd)
 ----
-
+1. Make sure Docker is installed.
+    * it is
+2. Start the **docker** service
+    * `$ sudo systemctl start docker` start **docker** service
+    * `$ systemctl status docker` verify **docker** is running properly
+        ```
+        ● docker.service - Docker Application Container Engine
+        Loaded: loaded (/usr/lib/systemd/system/docker.service; disabled; vendor preset: disabled)
+        Active: active (running) since Sat 2019-06-01 12:38:39 PDT; 53s ago
+            Docs: http://docs.docker.com
+        Main PID: 8948 (dockerd-current)
+            Tasks: 25
+        CGroup: /system.slice/docker.service
+                ├─8948 /usr/bin/dockerd-current --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current --def...
+                └─8956 /usr/bin/docker-containerd-current -l unix:///var/run/docker/libcontainerd/docker-containerd.soc...
+        ```
+3. Search for the **httpd** container, with `$ docker search apache`
+4. Retrieve the container
+    * `$ sudo docker pull docker.io/httpd`
+5. List the installed containers:
+    * `$ sudo docker images`
+        ```
+        REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+        docker.io/httpd     latest              b7cc370ac278        3 weeks ago         132 MB
+        ```
+6. List the components associated with the images.
+    * `$ sudo docker images --all`
+7. Start the **httpd docker** container. The terminal will appear to hang as it is now connected to the httpd daemon.
+    * `$ sudo docker run httpd`
+8. You can open a graphical web browser pointing to the IP address in the above output. Or use a CLI browser.
+    * `$ curl http://172.17.0.2`
+        > <html><body><h1>It works!</h1></body></html>  
+9. Stop the container and **docker** service and clean up.
+    * `$ sudo docker ps`
+        ```
+        CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS               NAMES
+        27d8ec644776        httpd               "httpd-foreground"   3 minutes ago       Up 3 minutes        80/tcp              quizzical_lichterman
+        ```
+    * `$ sudo docker kill 27d8ec644776`
+    * solution: `$ sudo docker stop b936b0afeb23`
+    * solution: `$ sudo docker rmi -f docker.io/httpd`
+    * `$ sudo systemctl stop docker`
+  
 ### Paths and Commands
 ----
   
@@ -87,3 +129,16 @@ Topics | Path | Notes | Reference
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
+containers, docker | `$ sudo systemctl start docker` |  start **docker** service | LFS201 Lab 29.1
+containers, docker | `$ systemctl status docker` | verify **docker** is running properly | LFS201 Lab 29.1
+containers, docker | `$ docker search apache` | search for the **httpd** container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker pull docker.io/httpd` | retrieve the container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker images` | list the installed containers | LFS201 Lab 29.1
+containers, docker | `$ sudo docker images --all` | list all components associate with **docker** images | LFS201 Lab 29.1
+containers, docker | `$ sudo docker run httpd` | start the **httpd docker** container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker ps` | list running **docker** containers | LFS201 Lab 29.1
+containers, docker | `$ sudo docker kill 27d8ec644776` | kill **docker** container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker stop b936b0afeb23` | stop **docker** container | LFS201 Lab 29.1
+containers, docker | `$ sudo docker rmi -f docker.io/httpd` | remove **httpd** image | LFS201 Lab 29.1
+containers, docker | `$ sudo systemctl stop docker` | stop **docker** service | LFS201 Lab 29.1
+  

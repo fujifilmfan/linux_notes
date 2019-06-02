@@ -111,6 +111,11 @@ Organize the basic steps of the boot sequence in the correct order.
   
 ### Lab 37.1: Shutdown vs. Halt Vs. Reboot
 ----
+1. Reboot the system using shutdown.
+    `$ sudo shutdown -r now`
+2. Power off the system using shutdown.
+    `$ sudo shutdown -h now`
+3. Power the system back up.
 
 ### Paths and Commands
 ----

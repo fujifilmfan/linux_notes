@@ -66,7 +66,16 @@ By the end of this chapter, you should be able to:
 
 ### Lab 38.1: Booting into Non-Graphical Mode Using GRUB 
 ----
-
+1. Reboot your machine and go into the **GRUB** interactive shell by hitting **e** (or whatever other key is required as listed on
+your screen.)
+    * hit **e**
+2. Make your system boot into non-graphical mode. How you do this depends on the system.  On traditional systems that respect runlevels (which we will talk about in the next section) you can append a 3 to the kernel command line in the specific entry you pick from the GRUB menu of choices. This will still work on more recent systemd machines that emulate SysVinit runlevels. On some other systems you may need to append text instead.
+    * add **3** to the end of the line beginning "linux16..." according to [Boot into non-graphical mode from Grub prompt RHEL/CentOS 7](https://unix.stackexchange.com/questions/303406/boot-into-non-graphical-mode-from-grub-prompt-rhel-centos-7)
+3. Hit the proper key to make system continue booting.
+    * hit CTRL-X or CTRL-C (I don't remember) to boot
+4. After the system is fully operational in non-graphical mode, bring it up to graphical mode. Depending on your system, one of the following commands should do it:
+    * `$ sudo systemctl start gdm`
+  
 ### Paths and Commands
 ----
   
@@ -90,4 +99,4 @@ Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 startup/shutdown | `$ update-grub ...` or `$ grub2-mkconfig ...` | modify `grub.cfg` | LFS201 38.4
 startup/shutdown | `$ sudo grub2-install /dev/sda` | install GRUB for version 2 (read the **man** first!!) | LFS201 38.6
-  
+startup/shutdown | `$ sudo systemctl start gdm` | start graphical user interface (GUI) from command line | LFS201 Lab 38.1

@@ -98,6 +98,29 @@ By the end of this chapter, you should be able to:
   
 ### 31.9: Lab 31.1: Working with Groups
 ----
+1. Create two new user accounts (`rocky` and `bullwinkle` in the below) and make sure they have home directories.
+    * `$ sudo useradd rocky`
+    * `$ sudo useradd bullwinkle`
+2. Create two new groups, `friends` and `bosses` (with a GID of 490). Look at the `/etc/group` file. See what GID was given to each new group.
+    * `$ sudo groupadd friends`
+    * `$ sudo groupadd -g 490 bosses`
+    * `$ cat /etc/group`
+        ```
+        friends:x:1003:
+        bosses:x:490:
+        ```
+3. Add `rocky` to both new groups. Add `bullwinkle` to group `friends`. Look in the `/etc/group` file to see how it changed.
+    * `$ sudo usermod -G friends,bosses rocky`
+    * `$ sudo usermod -G friends bullwinkle`
+4. Login as `rocky`. Create a directory called `somedir` and set the group ownership to `bosses`. (Using **chgrp** which will be discussed in the next session.) (You will probably need to add execute privileges for all on `rocky`’s home directory.)
+    * `$ sudo chmod +x rocky`
+    * `$ mkdir bosses`
+    * `$ chgrp bosses somedir`
+5. Login as `bullwinkle` and try to create a file in `/home/rocky/somedir` called `somefile` using the **touch** command. Can you do this? No, because of the group ownership and the `chmod a+x` on the directory.
+    * "Permission denied"
+6. Add `bullwinkle` to the `bosses` group and try again. Note you will have to log out and log back in again for the new group membership to be effective.
+    * `$ sudo usermod -G bosses bullwinkle` (this took bullwinkle out of 'friends' - remember to list all groups or use **-a** for append)
+    * it worked; the computer CPU was >400% usage with three VM users logged in, though, so the process was really slow; I should have done `$ ssh rocky@localhost`!
 
 ### Paths and Commands
 ----

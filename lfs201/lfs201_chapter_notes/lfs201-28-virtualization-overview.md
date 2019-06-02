@@ -162,13 +162,26 @@ No notes
   
 ### Lab 28.1: Ensuring KVM Is Properly Set Up
 ----
-
+• The following labs are best run on a physical machine running **Linux** natively.
+• It may be possible to run them within a Virtual Machine running under a hypervisor, such as **VMWare** or **Virtual Box**, or even **KVM**. However, this requires nested virtualization to be running properly.
+• Whether or not this works depends on the particular hypervisor used, the underlying host operating system (i.e.,**Windows**, **Mac OS** or **Linux**) as well as the particular variant, such as which **Linux** or **Windows** version as well as the particular kernel.
+• Furthermore it also depends on your particular hardware. For example, we have found nested virtualization working with **VMWare** on various **x86_64** machines but with Oracle Virtual Box only on some.
+• If this works, performance will be poor as compared to running on native hardware, but that is not important for the simple demonstrative exercises we will do.
+• Your mileage will vary! If it does not work we cannot be responsible for helping you trying to get it rolling.
+  
 ### Lab 28.2: Using virt-manager with KVM to Install a VM and Run It
 ----
-
+* `$ sudo systemctl start libvirtd`
+* `$ sudo virt-manager`
+* I can't find the TinyCore image on my machine as the lab claims; I'll save this as a project for another time
+* `$ sudo systemctl stop libvirtd`
+  
 ### Lab 28.3: Installing a VM from the Command Line
 ----
-
+* `$ sudo qemu-img create -f qcow2 /var/lib/libvirtd/myimg.qcow2 24M`
+* `$ sudo qemu-system-x86_64 -hda /var/lib/libvirtd/myimg.qcow2`
+* (I didn't run those)
+  
 ### Paths and Commands
 ----
   
@@ -176,8 +189,8 @@ No notes
 
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
-virtualization | `/proc/cpuinfo` has CPU information, including virtualization abilities | LFS201 28.9
-
+virtualization | `/proc/cpuinfo` | has CPU information, including virtualization abilities | LFS201 28.9
+  
 #### Commands  
 
 Topics | Command | Notes | Reference
@@ -185,3 +198,5 @@ Topics | Command | Notes | Reference
 virtualization | `$ ls -lF /usr/bin/virt*` | see which utilities are using *libvirt* (?) | LFS201 28.14
 virtualization | `$ qemu-img --help | grep formats:` | get list of supported formats | LFS201 28.17
 virtualization | `$ qemu-img convert -O vmdk myvm.qcow2 myvm.vmdk` | translate between disk image file formats | LFS201 28.17
+virtualization | `$ sudo systemctl start libvirtd` | start **libvirtd** | LFS201 Lab 28.2
+virtualization | `$ sudo virt-manager` | start **virt-manager** GUI | LFS201 Lab 28.2

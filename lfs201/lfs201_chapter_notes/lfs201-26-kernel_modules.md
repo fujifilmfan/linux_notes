@@ -97,7 +97,22 @@ Utility      | Function
 
 ### Lab 26.1: Kernel Modules
 ----
-
+1. List all currently loaded kernel modules on your system.
+    * `$ lsmod`
+2. Load a currently unloaded module on your system.
+If you are running a distribution kernel, this is easy to find; you can simply look in the `/lib/modules/<kernel-version>/kernel/drivers/net` directory and grab one. (Distribution kernels come with drivers for every device, filesystem, network protocol etc. that a system might need.) However, if you are running a custom kernel you may not have many unloaded modules compiled.
+    * What's my kernel version?
+    * looking in that dir, probably `3.10.0-957.12.1.el7.x86_64`
+    * there's a long list, but I don't know which are loadedls
+    * `$ sudo /sbin/insmod `pwd`/dummy.ko.xz`
+3. Re-list all loaded kernel modules and see if your module was indeed loaded.
+    * `$ lsmod | grep dummy`
+        > dummy                  12960  0  
+4. Remove the loaded module from your system.
+    * `$ sudo /sbin/rmmod dummy`
+5. Re-list again and see if your module was properly removed.
+    * it's gone
+  
 ### Paths and Commands
 ----
   
@@ -110,7 +125,7 @@ kernel, modules | `/lib/modules/$(uname -r)/modules.dep` | module dependency tab
 kernel, modules | `/sys/module/<my_module>` | also contains information about kernel modules | LFS201 26.9
 kernel, modules | `/sys/module/<my_module>/parameters` | contains module parameters | LFS201 26.9
 kernel, modules | `/etc/modprobe.d` | has files that control some parameters when loading with **modprobe** | LFS201 26.11
-
+  
 #### Commands  
 
 Topics | Command | Notes | Reference
@@ -126,3 +141,4 @@ kernel, modules | `$ /sbin/modinfo <my_module>` | find out about kernel modules 
 kernel, modules | `$ /sbin/modinfo <pathto>/<my_module.ko>` | find out about kernel modules | LFS201 26.9
 kernel, modules | `$ sudo /sbin/insmod <pathto>/e1000e.ko debug=2 copybreak=256` | load module specifying parameter values | LFS201 26.10
 kernel, modules | `$ sudo /sbin/modprobe e1000e debug=2 copybreak=256` | load module specifying parameter values when the module is in the proper system location | LFS201 26.10
+  
