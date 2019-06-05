@@ -219,9 +219,106 @@ S, s     | Same as 1
   
 ### Lab 39.1: Adding a New Startup Service with SysVinit
 ----
+In this and the following exercise, we will create a simple startup service. First we will do it for a **SysVinit** system. Note that
+if you are using a **systemd**-based system everything should still work because of the backwards compatibility layer that all distributions utilize. However, in the next exercise we will do natively for **systemd**.  
+* Move fake_service script to `/etc/init.d/fake_service` and make it executable: `$ sudo chmod 755 /etc/init.d/fake_service`
+* You’ll notice the script includes the file `/etc/sysconfig/fake service`. Give it the following contents:
+    ```
+    VAR1= "true"
+    VAR2= "true"
+    ```
+* Test to see if the script works properly by running the following commands (these commands do not actually cause the service to run, I think):
+    * `$ sudo service fake_service`
+        > Usage: fake_service {start | stop}
+    * `$ sudo service fake_service start`
+        > Running fake_service in start mode...
+    * `$ sudo service fake_service stop`
+        > Running fake_service in start mode...
+* Look at the file named `/var/log/fake_service.log`. What does it contain?
+    ```
+    /etc/init.d/fake_service start at Tue Jun  4 20:00:06 PDT 2019
+    /etc/init.d/fake_service stop at Tue Jun  4 20:00:19 PDT 2019
+    /etc/init.d/fake_service start at Tue Jun  4 20:02:36 PDT 2019
+    ```
+* Next we will want to have the ability to start fake service whenever the system starts, and stop it when it shuts down. If you do the following, you will get an error as it hasn’t been set up yet for this:
+    * `$ sudo chkconfig --list fake_service`
+        ```
+        ...
+        service fake_service supports chkconfig, but is not referenced in any runlevel (run 'chkconfig --add fake_service')
+        ```
+* You can easily do this with:
+    * `$ sudo chkconfig --add fake_service`
+* ...and you can turn it on or off at boot time with
+    * `$ sudo chkconfig fake_service on`
+    * `$ sudo chkconfig --list fake_service`
+        ```
+        fake_service   	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+        ```
+    * `$ sudo chkconfig fake_service off`
+* To test this completely you’ll have to reboot the system to see if it comes on automatically. You can also try varying the runlevels in which the service is running.
 
 ### Lab 39.2: Adding a New Startup Service with systemd
 ----
+As mentioned in the previous exercise, you can still use the **SysVinit** startup script procedure with **systemd** but this is
+deprecated.  
+* The analogous procedure is to create (as root) a file directly under `/etc/systemd/system` or somewhere else in that directory tree; distributions have some varying tastes on this. For example a very minimal file named `/etc/systemd/system/fake2.service` containing the following:
+    ```
+    [Unit]
+    Description=fake2
+    # service should start only after the network does
+    After=network.target
+
+    [Service]
+    ExecStart=/bin/sh -c '/bin/echo I am starting the fake2 service ; /bin/sleep 30'
+    ExecStop=/bin/echo I am stopping the fake2 service
+
+    [Install]
+    # service should start when we reach multiple-user mode, equivalent to runlevels 2 and 3 in SysVinit
+    # "graphical.target" would correlate with runlevel 5
+    WantedBy=multi-user.target
+    ```
+* Now all we have to do to start, stop, and check the service status are to issue the commands:
+    * `$ sudo systemctl start fake2.service`
+    * `$ sudo systemctl status fake2.service`
+        ```
+        ● fake2.service - fake2
+            Loaded: loaded (/etc/systemd/system/fake2.service; disabled; vendor preset: disabled)
+            Active: active (running) since Tue 2019-06-04 20:52:02 PDT; 9s ago
+          Main PID: 15636 (sh)
+             Tasks: 2
+            CGroup: /system.slice/fake2.service
+                    ├─15636 /bin/sh -c /bin/echo I am starting the fake2 service ; /bin/sleep 30
+                    └─15644 /bin/sleep 30
+
+        Jun 04 20:52:02 centos systemd[1]: Started fake2.
+        Jun 04 20:52:02 centos sh[15636]: I am starting the fake2 service
+        ```
+    * `$ sudo systemctl stop fake2.service`
+* If you are fiddling with the unit file while doing this you’ll need to reload things with:
+    * `$ sudo systemctl daemon-reload`
+* To keep an eye directly on the output you can do:
+    * `$ sudo tail -f /var/log/messages`
+        ```
+        Jun  4 20:54:31 centos systemd: Configuration file /etc/systemd/system/fake2.service is marked executable. Please remove executable permission bits. Proceeding anyway.
+        Jun  4 20:54:31 centos systemd: Started fake2.
+        Jun  4 20:54:31 centos sh: I am starting the fake2 service
+        Jun  4 20:54:43 centos systemd: Configuration file /etc/systemd/system/fake2.service is marked executable. Please remove executable permission bits. Proceeding anyway.
+        Jun  4 20:54:46 centos systemd: Stopping fake2...
+        Jun  4 20:54:46 centos echo: I am stopping the fake2 service
+        Jun  4 20:54:46 centos systemd: Stopped fake2.
+        Jun  4 20:54:46 centos systemd: Configuration file /etc/systemd/system/fake2.service is marked executable. Please remove executable permission bits. Proceeding anyway.
+        Jun  4 20:54:46 centos systemd: Configuration file /etc/systemd/system/fake2.service is marked executable. Please remove executable permission bits. Proceeding anyway.
+        ```
+* To set things up so the service turns on or off on system boot:
+    * `$ sudo systemctl enable fake2.service`
+        ```
+        Created symlink from /etc/systemd/system/multi-user.target.wants/fake2.service to /etc/systemd/system/fake2.service.
+        ```
+    * `$ sudo systemctl disable fake2.service`
+        ```
+        Removed symlink /etc/systemd/system/multi-user.target.wants/fake2.service.
+        ```
+* Once again, you really need to reboot to make sure it has taken effect.
 
 ### Paths and Commands
 ----
@@ -249,6 +346,7 @@ startup/shutdown | `/etc/inittab` | Upstart configuration source | LFS201 39.17
 startup/shutdown | `/etc/init/rc.conf` | Upstart configuration source | LFS201 39.17
 startup/shutdown | `/etc/rc[0-5].d` | Upstart configuration source | LFS201 39.17
 startup/shutdown | `/etc/init/start-ttys.conf` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/systemd/system` | location for **systemd** services | Lab 39.2
     
 #### Commands  
   
@@ -263,7 +361,7 @@ startup/shutdown | `$ sudo systemctl start foo` | start (activate) one or more u
 startup/shutdown | `$ sudo systemctl start foo.service` | start (activate) one or more units, where a unit can be a service or a socket | LFS201 39.8
 startup/shutdown | `$ sudo systemctl start /path/to/foo.service` | start (activate) one or more units, where a unit can be a service or a socket | LFS201 39.8
 startup/shutdown | `$ sudo systemctl stop foo.service` | stop (deactivate) a service | LFS201 39.8
-startup/shutdown | `$ sudo systemctl enable sshd.service` | enable a service (equivalent of **chkconfig on/off** and doesn't actually start the service) | LFS201 39.8
+startup/shutdown | `$ sudo systemctl enable sshd.service` | enable a service (equivalent of **chkconfig on/off** and doesn't actually start the service) to start at boot | LFS201 39.8
 startup/shutdown | `$ sudo systemctl disable sshd.service` | disable a service | LFS201 39.8
 startup/shutdown | `$ runlevel` | display current runlevel, where first character is the previous level (N means unknown) | LFS201 39.11
 startup/shutdown | `$ sudo /sbin/telinit 5` | change from runlevel 3 to runlevel 5 | LFS201 39.11
@@ -283,3 +381,8 @@ startup/shutdown | `$ sudo status cups` | check or change the cups situation; **
 startup/shutdown | `$ sudo update-rc.d cups [ defaults | purge ]` | equivalent of **chkconfig** | LFS201 39.16
 startup/shutdown | `$ sudo sysv-rc-conf cups [ on | off ]` | equivalent of **chkconfig** | LFS201 39.16
 startup/shutdown | `$ initctl options command` | general syntax; view, start, stop jobs (in Upstart) in much the same way that **service** does | LFS201 39.18
+startup/shutdown | `$ sudo chkconfig --list fake_service` | show the runlevels for fake_service | Lab 39.1
+startup/shutdown | `$ sudo chkconfig --add fake_service` | add fake_service for management | Lab 39.1
+startup/shutdown | `$ sudo systemctl status fake2.service` | show status of fake2.service | Lab 39.2
+startup/shutdown | `$ sudo systemctl daemon-reload` | reload 'things' after editing 'unit file' | Lab 39.2
+apps, monitoring, troubleshooting | `$ sudo tail -f /var/log/messages` | view log messages in real-time | Lab 39.2

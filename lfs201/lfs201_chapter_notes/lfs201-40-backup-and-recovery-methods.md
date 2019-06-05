@@ -272,13 +272,100 @@ Some well known backup programs:
 
 ### Lab 40.1: Using tar for Backup
 ----
-
+1. Create a directory called `backup` and in it place a compressed **tar** archive of all the files under `/usr/include`, with the highest level directory being `include`. You can use any compression method (**gzip**, **bzip2** or **xzip**).
+    * `$ tar jcvf /tmp/backup/backup.tar.bz2 /usr/include`
+    * solution: `$ cd /usr ; tar jcvf /tmp/backup/include.tar.bz2 include` or `$ tar -C /usr -jcf include.tar.bz2 include`
+2. List the files in the archive.
+    * `$ tar -tvf /tmp/backup/backup.tar.bz2`
+    * solution: `$ ls -lh include.tar.*` - that does not show all of the files in the archive!'
+    * solution: `$ tar tvf include.tar.xz`
+3. Create a directory called `restore` and unpack and decompress the archive.
+    * `$ tar xjvf /tmp/backup/backup.tar.bz2 /tmp/restore` - didn't work
+    * `$ tar xjvf /tmp/backup/backup.tar.bz2` - default is whatever directory I'm in, it seems
+4. Compare the contents with the original directory the archive was made from.
+    * `$ tar -dvf /tmp/backup/backup.tar.bz2`
+        ```
+        ...
+        usr/include/libio.h
+        usr/include/libio.h: Uid differs
+        usr/include/libio.h: Gid differs
+        ```
+    * solution: `$ cd .. ; mkdir restore ; cd restore`
+    * solution: `$ tar xvf ../backup/include.tar.bz2`
+    * solution: `student@centos: restore $ diff -qr usr/include /usr/include` - no difference
+  
 ### Lab 40.2: Using cpio for Backup
 ----
+1. Create a directory called `backup` and in it place a compressed **cpio** archive of all the files under `/usr/include`, with the highest level directory being `include`. You can use any compression method (gzip, bzip2 or xzip).
+    * solution: `$ find include | cpio -c -o | gzip -c > /tmp/backup/include.cpio.gz`
+        > 92536 blocks
+2. List the files in the archive.
+    * solution: `$ cpio -ivt < include.cpio` - "Permission denied"
+3. Create a directory called `restore` and unpack and decompress the archive.
+    * solution: `$ cd ../restore`
+    * solution: `$ cat ../backup/include.cpio | cpio -ivt` - ??
+    * solution: `$ gunzip -c include.cpio.gz | cpio -ivt` - ??
+4. Compare the contents with the original directory the archive was made from.
+    * solution:
+        * `$ rm -rf include` - 'include' doesn't exist
+        * `$ cpio -id < ../backup/include.cpio`
+        * `$ ls -lR include`
+    * or
+        * `$ cpio -idv < ../backup/include.cpio`
+        * `$ diff -qr include /usr/include`
 
 ### Lab 40.3: Using rsync for Backup
 ----
+1. Using **rsync**, we will again create a complete copy of `/usr/include` in your `backup` directory:
+    * `$ rm -rf include`
+    * `$ rsync -av /usr/include .`
+2. Let’s run the command a second time and see if it does anything:
+    * `$ rsync -av /usr/include .`
+        ```
+        sending incremental file list
 
+        sent 137,432 bytes  received 249 bytes  275,362.00 bytes/sec
+        total size is 46,407,916  speedup is 337.07
+        ```
+3. One confusing thing about **rsync** is you might have expected the right command to be:
+    * `$ rsync -av /usr/include include`
+    * However, if you do this, you’ll find it actually creates a new directory, `include/include`!
+4. To get rid of the extra files you can use the --delete option:
+    * `$ rsync -av --delete /usr/include .`
+5. For another simple exercise, remove a subdirectory tree in your backup copy and then run **rsync** again with and without the `--dry-run` option:
+    * `$ rm -rf include/xen`
+    * `$ rsync -av --delete --dry-run /usr/include .`
+        ```
+        sending incremental file list
+        include/
+        include/xen/
+        include/xen/evtchn.h
+        include/xen/privcmd.h
+
+        sent 137,446 bytes  received 263 bytes  275,418.00 bytes/sec
+        total size is 46,407,916  speedup is 337.00 (DRY RUN)
+        ```
+    * `$ rsync -av --delete /usr/include .` - directory is added back? but maybe not because of the `--delete` option - that just deletes files that have been removed from the source
+        ```
+        sending incremental file list
+        include/
+        include/xen/
+        include/xen/evtchn.h
+        include/xen/privcmd.h
+
+        sent 143,992 bytes  received 311 bytes  288,606.00 bytes/sec
+        total size is 46,407,916  speedup is 321.60
+        ```
+6. A simple script with a good set of options for using **rsync**:
+    ```
+    #!/bin/sh
+    set -x
+    rsync --progress -avrxH -e "ssh -c blowfish" --delete $*
+    ```
+    * ...which will work on a local machine as well as over the network. Note the important -x option which stops **rsync** from crossing filesystem boundaries.
+* Extra Credit: For more fun, if you have access to more than one computer, try doing these steps with source and destination on
+different machines.
+  
 ### Paths and Commands
 ----
   
@@ -308,10 +395,10 @@ backup | `$ tar zcvf source.tar.gz source` | produce a compressed archive with *
 backup | `$ tar jcvf source.tar.bz2 source` | produce a compressed archive with **bzip2** (**j** option) | LFS201 40.14
 backup | `$ tar Jcvf source.tar.xz source` | produce a compressed archive with **xz** (**J** option) | LFS201 40.14
 backup | `$ tar cvf source.tar source ; gzip -v source.tar` | same as `$ tar zcvf source.tar.gz source` but is more efficient | LFS201 40.14
-backup | `$ tar xzvf source.tar.gz` | decompress a **gzip** archive | LFS201 40.14
-backup | `$ tar xjvf source.tar.bz2` | decompress a **bzip2** archive | LFS201 40.14
-backup | `$ tar xJvf source.tar.xz` | decompress a **xz** archive | LFS201 40.14
-backup | `$ tar xvf source.tar.gz` | decompress a **gzip** archive without specifying the type of compressions | LFS201 40.14
+backup | `$ tar xzvf source.tar.gz` | decompress a **gzip** archive; do in destination directory | LFS201 40.14
+backup | `$ tar xjvf source.tar.bz2` | decompress a **bzip2** archive; do in destination directory | LFS201 40.14
+backup | `$ tar xJvf source.tar.xz` | decompress a **xz** archive; do in destination directory | LFS201 40.14
+backup | `$ tar xvf source.tar.gz` | decompress a **gzip** archive without specifying the type of compressions; do in destination directory | LFS201 40.14
 backup | `$ dd if=input-file of=output-file options` | general syntax; converts and copies files | LFS201 40.15
 backup | `$ dd if=/dev/zero of=outfile  bs=1M count=10` | create a 10 MB file filled with zeros | LFS201 40.16
 backup | `$ dd if=/dev/sda of=/dev/sdb` | backup an entire hard drive to another (raw copy) | LFS201 40.16
@@ -332,4 +419,11 @@ backup | `$ mt status` | how status information about the tape device | LFS201 4
 backup | `$ mt rewind` | rewind the tape | LFS201 40.22
 backup | `$ mt erase` | erase the tape | LFS201 40.22
 backup | `$ mt fsf` | move forward to the end of the current archive | LFS201 40.22
+backup | `$ tar tvf /tmp/backup/backup.tar.bz2` | list files in the archive | Lab 40.1
+backup | `$ diff -qr include /usr/include` | compare the contents with the original directory the archive was made from | Lab 40.1
+backup | `$ find include | cpio -c -o | gzip -c > /tmp/backup/include.cpio.gz` | place compressed **cpio** archive of all the files under `/usr/include` in `/tmp/backup` | Lab 40.2
+backup | `$ cpio -ivt < include.cpio` | list the files in the archive | Lab 40.2
+backup | `$ rsync -av /usr/include .` | create a complete copy of `/usr/include` in the current directory | Lab 40.3
+backup | `$ rsync -av --delete /usr/include .` | remove files that are no longer in source (?) | Lab 40.3
+backup | `$ rsync -av --delete --dry-run /usr/include .` | see which files will be removed or added if the command was run | Lab 40.3
   

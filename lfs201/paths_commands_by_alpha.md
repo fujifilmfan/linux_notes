@@ -197,7 +197,27 @@ startup/shutdown | `vmlinuz-*` | file needed by the Linux kernel | LFS201 38.6
 startup/shutdown | `initramfs-*` | file needed by the Linux kernel | LFS201 38.6
 startup/shutdown | 1 `/etc/default/grub` | file used to update GRUB configuration file `grub.cfg` | LFS201 38.8
 startup/shutdown | 2 `/etc/grub.d` | directory used to update GRUB configuration file `grub.cfg` | LFS201 38.8
-
+startup/shutdown | `/sbin/init` | coordinates later stages of the boot process, configures all aspects of the environment, and starts the processes needed for logging into the system | LFS201 39.4
+startup/shutdown | `/etc/sysconfig/network` | location for system hostname(?) in Red Hat | LFS201 39.7
+startup/shutdown | `/etc/HOSTNAME` | location for system hostname(?) in SUSE | LFS201 39.7
+startup/shutdown | `/etc/hostname` | systemd location for system hostname | LFS201 39.7
+startup/shutdown | `/etc/vconsole.conf` | systemd default keyboard mapping and console font | LFS201 39.7
+startup/shutdown | `/etc/sysctl.d/*.conf` | systemd drop-in directory for kernel sysctl parameters | LFS201 39.7
+startup/shutdown | `/etc/os-release` | systemd distribution ID file | LFS201 39.7
+startup/shutdown | `/etc/inittab` | read when the init process is started (SysVinit) | LFS201 39.12
+startup/shutdown | 1 `/etc/rc.d/rc.sysinit` | run first on SysVinit systems | LFS201 39.13
+startup/shutdown | 2 `/etc/rc.d/rc` | run second with the desired runlevel as an argument on SysVinit systems | LFS201 39.13
+startup/shutdown | 3 `rc.d/rc[0-6].d` | scripts here are run after `/etc/rc.d/rc` on SysVinit systems | LFS201 39.13
+startup/shutdown | `/etc/rc.d/rc.local` | script that may be used to start system-specific applications on SysVinit systems | LFS201 39.13
+startup/shutdown | `/etc/init.d` | hold all of the actual startup scripts on SysVinit systems | LFS201 39.13
+startup/shutdown | `/etc/init/rcS.conf` | Upstart configuration source; run when the kernel starts the init process | LFS201 39.17
+startup/shutdown | `/etc/rc.sysinit` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/inittab` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/init/rc.conf` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/rc[0-5].d` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/init/start-ttys.conf` | Upstart configuration source | LFS201 39.17
+startup/shutdown | `/etc/systemd/system` | location for **systemd** services | Lab 39.2
+  
 ### Commands  
 ----
   
@@ -783,5 +803,87 @@ networks, security | `$ firewall-config` | start firewall GUI | LFS201 Lab 36.4
 startup/shutdown | `$ update-grub ...` or `$ grub2-mkconfig ...` | modify `grub.cfg` | LFS201 38.4
 startup/shutdown | `$ sudo grub2-install /dev/sda` | install GRUB for version 2 (read the **man** first!!) | LFS201 38.6
 startup/shutdown | `$ sudo systemctl start gdm` | start graphical user interface (GUI) from command line | LFS201 Lab 38.1
-
+startup/shutdown | `$ telinit ...` | used to send control commands to the init daemon | LFS201 39.6
+startup/shutdown | `$ systemctl [options] command [name]` | general syntax; main utility for managing services | LFS201 39.8
+startup/shutdown | `$ systemctl` | show the status of everything that systemd controls | LFS201 39.8
+startup/shutdown | `$ systemctl list-units -t service --all` | show all available services | LFS201 39.8
+startup/shutdown | `$ systemctl list-units -t service` | show only active services | LFS201 39.8
+startup/shutdown | `$ sudo systemctl start foo` | start (activate) one or more units, where a unit can be a service or a socket | LFS201 39.8
+startup/shutdown | `$ sudo systemctl start foo.service` | start (activate) one or more units, where a unit can be a service or a socket | LFS201 39.8
+startup/shutdown | `$ sudo systemctl start /path/to/foo.service` | start (activate) one or more units, where a unit can be a service or a socket | LFS201 39.8
+startup/shutdown | `$ sudo systemctl stop foo.service` | stop (deactivate) a service | LFS201 39.8
+startup/shutdown | `$ sudo systemctl enable sshd.service` | enable a service (equivalent of **chkconfig on/off** and doesn't actually start the service) to start at boot | LFS201 39.8
+startup/shutdown | `$ sudo systemctl disable sshd.service` | disable a service | LFS201 39.8
+startup/shutdown | `$ runlevel` | display current runlevel, where first character is the previous level (N means unknown) | LFS201 39.11
+startup/shutdown | `$ sudo /sbin/telinit 5` | change from runlevel 3 to runlevel 5 | LFS201 39.11
+startup/shutdown | `$ chkconfig ...` | used to query and configure what runlevels the various system services are to run in; used to manage startup script symbolic links | LFS201 39.14
+startup/shutdown | `$ chkconfig some_service` | check a particular service to see if it is set up to run in the current runlevel; true if running, false otherwise | LFS201 39.14
+startup/shutdown | `$ chkconfig --list [service names]` | see what services are configured to run in each of the runlevels | LFS201 39.14
+startup/shutdown | `$ sudo chkconfig some_service on` | turn on a certain service next time the system boots (does not affect the current state) | LFS201 39.14
+startup/shutdown | `$ chkconfig some_service off` | do not turn a certain service on next time the system boots (does not affect the current state) | LFS201 39.14
+startup/shutdown | `$ sudo service some_service [stop | start]` | start or stop a service | LFS201 39.14
+startup/shutdown | `$ service ...` | used to run a System V init script (scripts stored in `/etc/init.d`) | LFS201 39.15
+startup/shutdown | `$ sudo service network status` | shows the current status of a particular service | LFS201 39.15
+startup/shutdown | `$ sudo service network` | shows available options for **service**, which vary by the particular service | LFS201 39.15
+startup/shutdown | `$ sudo service --status-all` | shows status of all services on the system | LFS201 39.15
+startup/shutdown | `$ sudo apt install sysvinit-utils chkconfig` | install sysvinit-utils and chkconfig on Debian-based system and older Ubuntu systems | LFS201 39.16
+startup/shutdown | `$ sudo invoke-rc.d cups [ status | start | stop ]` | equivalent of **service** on Ubuntu | LFS201 39.16
+startup/shutdown | `$ sudo status cups` | check or change the cups situation; **status** preferred over **invoke-rc.d** | LFS201 39.16
+startup/shutdown | `$ sudo update-rc.d cups [ defaults | purge ]` | equivalent of **chkconfig** | LFS201 39.16
+startup/shutdown | `$ sudo sysv-rc-conf cups [ on | off ]` | equivalent of **chkconfig** | LFS201 39.16
+startup/shutdown | `$ initctl options command` | general syntax; view, start, stop jobs (in Upstart) in much the same way that **service** does | LFS201 39.18
+startup/shutdown | `$ sudo chkconfig --list fake_service` | show the runlevels for fake_service | Lab 39.1
+startup/shutdown | `$ sudo chkconfig --add fake_service` | add fake_service for management | Lab 39.1
+startup/shutdown | `$ sudo systemctl status fake2.service` | show status of fake2.service | Lab 39.2
+startup/shutdown | `$ sudo systemctl daemon-reload` | reload 'things' after editing 'unit file' | Lab 39.2
+apps, monitoring, troubleshooting | `$ sudo tail -f /var/log/messages` | view log messages in real-time | Lab 39.2
+backup | `$ tar --create --file /dev/st0 /root` | create an archive using **--create**; **-f** or **--file** option is for specifying a device or file | LFS201 40.11
+backup | `$ tar -cvf /dev/st0 /root` | create an archive using **-c** | LFS201 40.11
+backup | `$ tar -cMf /dev/st0 /root` | create archive with multi-volume option, using **-M** or **--multi-volume** if backup won't fit on one device; **tar** will prompt for next device when needed | LFS201 40.11
+backup | `$ tar --compare --verbose --file /dev/st0` | verify files after backup with the compare option, using **--compare** | LFS201 40.11
+backup | `$ tar -dvf /dev/st0` | verify files after backup with the compare option, using **-d** | LFS201 40.11
+backup | `$ tar --extract --same-permissions --verbose --file /dev/st0` | extract from an archive | LFS201 40.12
+backup | `$ tar -xpvf /dev/st0` | extract from an archive | LFS201 40.12
+backup | `$ tar xpvf /dev/sts0` | extract from an archive | LFS201 40.12
+backup | `$ tar xvf /dev/st0 somefile` | specify only specific files to restore | LFS201 40.12
+backup | `$ tar --list --file /dev/st0` | list the contents of a tar backup | LFS201 40.12
+backup | `$ tar -tf /dev/st0` | list the contents of a tar backup | LFS201 40.12
+backup | `$ tar --create --newer '2011-12-1' -vf backup1.tar /var/tmp` | creates a backup archive of all files in /var/tmp which were modified after December 1, 2011 | LFS201 40.13
+backup | `$ tar --create --after-date '2011-12-1' -vzf backup1.tar /var/tmp` | creates a backup archive of all files in /var/tmp which were modified after December 1, 2011 | LFS201 40.13
+backup | `$ tar zcvf source.tar.gz source` | produce a compressed archive with **gzip** (**z** option) | LFS201 40.14
+backup | `$ tar jcvf source.tar.bz2 source` | produce a compressed archive with **bzip2** (**j** option) | LFS201 40.14
+backup | `$ tar Jcvf source.tar.xz source` | produce a compressed archive with **xz** (**J** option) | LFS201 40.14
+backup | `$ tar cvf source.tar source ; gzip -v source.tar` | same as `$ tar zcvf source.tar.gz source` but is more efficient | LFS201 40.14
+backup | `$ tar xzvf source.tar.gz` | decompress a **gzip** archive; do in destination directory | LFS201 40.14
+backup | `$ tar xjvf source.tar.bz2` | decompress a **bzip2** archive; do in destination directory | LFS201 40.14
+backup | `$ tar xJvf source.tar.xz` | decompress a **xz** archive; do in destination directory | LFS201 40.14
+backup | `$ tar xvf source.tar.gz` | decompress a **gzip** archive without specifying the type of compressions; do in destination directory | LFS201 40.14
+backup | `$ dd if=input-file of=output-file options` | general syntax; converts and copies files | LFS201 40.15
+backup | `$ dd if=/dev/zero of=outfile  bs=1M count=10` | create a 10 MB file filled with zeros | LFS201 40.16
+backup | `$ dd if=/dev/sda of=/dev/sdb` | backup an entire hard drive to another (raw copy) | LFS201 40.16
+backup | `$ dd if=/dev/sda of=sdadisk.img` | create an image of a hard disk (which could later be transferred to another hard disk) | LFS201 40.16
+backup | `$ dd if=/dev/sda1 of=partition1.img` | backup a partition | LFS201 40.16
+backup | `$ dd if=ndata conv=swab count=1024 | uniq > ofile` | use **dd** in a pipeline | LFS201 40.16
+backup | `$ rsync [options] source destination` | general syntax; sync files | LFS201 40.17
+backup | `$ rsync file.tar someone@backup.mydomain:/usr/local` | example rsync use | LFS201 40.17
+backup | `$ rsync -r a-machine:/usr/local b-machine:/usr/` | example rsync use | LFS201 40.17
+backup | `$ rsync -r --dry-run /usr/local /BACKUP/usr` | example rsync use | LFS201 40.17
+backup | `$ rsync -r project-X archive-machine:archives/project-X` | back up a project directory using **-r** | LFS201 40.17
+backup | `$ ls | cpio --create -O /dev/st0` | create an archive, use **-o** or **--create** | LFS201 40.18
+backup | `$ cpio -i somefile -I /dev/st0` | extract from an archive, use **-i** or **--extract** | LFS201 40.18
+backup | `$ cpio -t -I /dev/st0` | list contents of an archive, use **-t** or **--list** | LFS201 40.18
+backup | `$ sudo restore -rvf /tmp/boot_backup` | restores all files that were dumped, relative to current directory | LFS201 40.21
+backup | `$ mt [-h] [-f device] operation [count] [arguments...]` | generic syntax; used to control magnetic tape devices | LFS201 40.22
+backup | `$ mt status` | how status information about the tape device | LFS201 40.22
+backup | `$ mt rewind` | rewind the tape | LFS201 40.22
+backup | `$ mt erase` | erase the tape | LFS201 40.22
+backup | `$ mt fsf` | move forward to the end of the current archive | LFS201 40.22
+backup | `$ tar tvf /tmp/backup/backup.tar.bz2` | list files in the archive | Lab 40.1
+backup | `$ diff -qr include /usr/include` | compare the contents with the original directory the archive was made from | Lab 40.1
+backup | `$ find include | cpio -c -o | gzip -c > /tmp/backup/include.cpio.gz` | place compressed **cpio** archive of all the files under `/usr/include` in `/tmp/backup` | Lab 40.2
+backup | `$ cpio -ivt < include.cpio` | list the files in the archive | Lab 40.2
+backup | `$ rsync -av /usr/include .` | create a complete copy of `/usr/include` in the current directory | Lab 40.3
+backup | `$ rsync -av --delete /usr/include .` | remove files that are no longer in source (?) | Lab 40.3
+backup | `$ rsync -av --delete --dry-run /usr/include .` | see which files will be removed or added if the command was run | Lab 40.3
+  
 
