@@ -256,6 +256,10 @@ if you are using a **systemd**-based system everything should still work because
         ```
     * `$ sudo chkconfig fake_service off`
 * To test this completely you’ll have to reboot the system to see if it comes on automatically. You can also try varying the runlevels in which the service is running.
+    * after reboot, `$ sudo chkconfig --list fake_service` gives:
+        ```
+        fake_service   	0:off	1:off	2:on	3:on	4:on	5:on	6:off
+        ```
 
 ### Lab 39.2: Adding a New Startup Service with systemd
 ----
@@ -319,6 +323,19 @@ deprecated.
         Removed symlink /etc/systemd/system/multi-user.target.wants/fake2.service.
         ```
 * Once again, you really need to reboot to make sure it has taken effect.
+    * after reboot, `$ sudo systemctl status fake2.service` gives:
+        ```
+        ● fake2.service - fake2
+           Loaded: loaded (/etc/systemd/system/fake2.service; enabled; vendor preset: disabled)
+           Active: inactive (dead) since Wed 2019-06-05 20:54:53 PDT; 6min ago
+          Process: 11515 ExecStop=/bin/echo I am stopping the fake2 service (code=exited, status=0/SUCCESS)
+          Process: 9604 ExecStart=/bin/sh -c /bin/echo I am starting the fake2 service ; /bin/sleep 30 (code=exited, status=0/SUCCESS)
+         Main PID: 9604 (code=exited, status=0/SUCCESS)
+
+        Jun 05 20:54:25 centos systemd[1]: Started fake2.
+        Jun 05 20:54:25 centos sh[9604]: I am starting the fake2 service
+        Jun 05 20:54:53 centos echo[11515]: I am stopping the fake2 service
+        ```
 
 ### Paths and Commands
 ----

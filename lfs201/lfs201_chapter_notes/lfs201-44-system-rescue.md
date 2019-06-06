@@ -93,10 +93,11 @@ By the end of this chapter, you should be able to:
     * network is not activated
     * all possible filesystems are mounted
     * root access is granted without a password
-    * Aa system maintenance command line shell is launched
+    * a system maintenance command line shell is launched
 * in this mode, your system boots to **runlevel** 1
 * because single user mode automatically tries to mount your filesystem, you cannot use it when your root filesystem cannot be mounted successfully, or if the **init** configuration is corrupted
 * to boot into single user mode, you use the same method as described for emergency mode with one exception, replace the keyword **emergency** with the keyword **single**
+* helpful link that describes this differently: [Boot in single user mode on CentOS 7 / RHEL 7](https://ma.ttias.be/boot-in-single-user-mode-on-centos-7-rhel-7/)  
   
 ### Lab 44.1: Preparing to Use Rescue/Recover Media
 ----
