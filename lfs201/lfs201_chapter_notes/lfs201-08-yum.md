@@ -307,10 +307,10 @@ packages | `$ sudo yum list "kernel*"` | list all installed or available kernel-
 packages | `$ sudo yum list` | show a complete list of available packages | LFS201 Lab 8.1
 packages | `$ sudo yum install httpd-devel` | install the httpd-devel package, or anything else you might not have installed yet | LFS201 Lab 8.1
 packages | `$ sudo yum search bash` | find all packages that contain a reference to **bash** in their name or description | LFS201 Lab 8.2
-packages | `$ sudo yum list installed "bash*"` | find nstalled and available **bash** packages | LFS201 Lab 8.2
-packages | `$ sudo yum list installed "*bash*"` | find nstalled and available **bash** packages | LFS201 Lab 8.2
-packages | `$ sudo yum list available "bash*"` | find nstalled and available **bash** packages | LFS201 Lab 8.2
-packages | `$ sudo yum list available "*bash*"` | find nstalled and available **bash** packages | LFS201 Lab 8.2
+packages | `$ sudo yum list installed "bash*"` | find installed and available **bash** packages | LFS201 Lab 8.2
+packages | `$ sudo yum list installed "*bash*"` | find installed and available **bash** packages | LFS201 Lab 8.2
+packages | `$ sudo yum list available "bash*"` | find installed and available **bash** packages | LFS201 Lab 8.2
+packages | `$ sudo yum list available "*bash*"` | find installed and available **bash** packages | LFS201 Lab 8.2
 packages | `$ sudo yum info "bash*"` | find package information for **bash** | LFS201 Lab 8.2
 packages | `$ sudo yum deplist bash` | find dependencies for the **bash** package | LFS201 Lab 8.2
 packages | `$ yum grouplist` | list all package groups available on your system | LFS201 Lab 8.3
