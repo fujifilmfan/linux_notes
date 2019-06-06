@@ -109,7 +109,7 @@ security, system | `/etc/sysconfig/selinux` | contains symbolic link to `/etc/se
 monitoring, system | `/etc/sysctl.conf` | configuration for values set at boot time | LFS201 13.6
 boot, kernel | `/etc/sysctl.conf` | config file allowing settings to be fixed at boot time | LFS201 25.8
 startup/shutdown | `/etc/sysctl.d/*.conf` | systemd drop-in directory for kernel sysctl parameters | LFS201 39.7
-startup/shutdown | `/etc/systemd/system` | location for **systemd** services | Lab 39.2
+startup/shutdown | `/etc/systemd/system` | location for **systemd** services | LFS201 Lab 39.2
 devices | `/etc/udev/rules.d` and `/usr/lib/udev/rules.d` | hold rules for naming device nodes | LFS201 27.8
 devices | `/etc/udev/udev.conf` | main configuration file with info on where to place nodes, default permissions, etc. | LFS201 27.8
 startup/shutdown | `/etc/vconsole.conf` | systemd default keyboard mapping and console font | LFS201 39.7
@@ -337,7 +337,7 @@ backup | `$ dd if=/dev/zero of=outfile  bs=1M count=10` | create a 10 MB file fi
 filesystem | `$ dd if=/dev/zero of=swpfile bs=1M count=1024` | create file of 1GB file to use as a swap space | LFS201 Lab 19.1
 rescue, system | `$ dd if=boot.iso of=/dev/sdX` | use **dd** to place boot image on a USB key drive | LFS201 44.9
 backup | `$ dd if=input-file of=output-file options` | general syntax; converts and copies files | LFS201 40.15
-backup | `$ dd if=ndata conv=swab count=1024 | uniq > ofile` | use **dd** in a pipeline | LFS201 40.16
+backup | `$ dd if=ndata conv=swab count=1024 \| uniq > ofile` | use **dd** in a pipeline | LFS201 40.16
 troubleshooting, system | `$ debsums options some_package` | check integrity of the filed in some_package | LFS 201 43.8
 kernel, modules | `$ depmod ...` | generate or update the file `/lib/modules/$(uname -r)/modules.dep` | LFS201 26.7
 filesystem | `$ df -h /dev/shm` | see how much space the filesystem has been given and how much it is using | LFS201 Lab 16.1
@@ -384,7 +384,7 @@ filesystem | `$ fsck [-t fstype] [options] [device-file]` | generic **fsck** syn
 filesystem | `$ fuser [options]` | show which users are using the FS | LFS201 18.12
 packages | `$ gcc -o signals signals.c` | compiles the signals.c source code | LFS201 Lab 4.1
 security, system | `$ getenforce` | show current SELinux mode | LFS201 41.7
-accounts, files, permissions | `$ getfacl <file |directory>` | see ACLs | LFS201 32.13
+accounts, files, permissions | `$ getfacl <file \|directory>` | see ACLs | LFS201 32.13
 accounts, files, permissions | `$ getfacl test` | see ACLs for test file | LFS201 32.13
 security, system | `$ getsebool -a` | prints the boolean name and current status; simpler output than what is given by **semanage** | LFS201 41.15
 security, system | `$ getsebool ...` | show SELinux booleans | LFS201 41.14
@@ -412,7 +412,7 @@ monitoring, i/o | `$ iostat` | shows a default I/O report | LFS201 14.5
 networks | `$ ip -s link show eth0` | show information for the `eth0` network interface, including statistics | LFS201 35.6
 networks | `$ ip ...` | used to configure, control and query interface parameters and control devices, routing, etc. | LFS201 35.5
 networks | `$ ip [ -force ] -batch filename` | read and execute commands from FILENAME (**-batch**); don't terminate ip on errors in batch mode (**-force**) | LFS201 35.5
-networks | `$ ip [ OPTIONS ] OBJECT { COMMAND | help }` | general syntax | LFS201 35.5
+networks | `$ ip [ OPTIONS ] OBJECT { COMMAND \| help }` | general syntax | LFS201 35.5
 networks | `$ ip link show` | show information for all network interfaces | LFS201 35.6
 networks | `$ ip route` | shows current routing table | LFS201 35.17
 processes | `$ ipcs -p` | ?? | LFS201 Lab 3.2
@@ -655,8 +655,8 @@ networks, security | `$ sudo firewall-cmd --list-services --zone=public` | see s
 networks, security | `$ sudo firewall-cmd --permanent --zone=home --add-service=dhcp` | add a service to a zone | LFS201 36.14
 networks, security | `$ sudo firewall-cmd --permanent --zone=internal --change-interface=eno1` | assign an interface to a particular zone permanently, which creates `/etc/firewalld/zones/internal.xml` | LFS201 36.12
 networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --add-source=192.168.1.0/24` | assign anyone with an IP address of 192.168.1.x to the **trusted** zone | LFS201 36.13
-networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --list-sources` | list the sources bound to a zone | LFS`201 36.13
-networks, security | `$ sudo firewall-cmd --reload` | reload firewall rules and keep state information. Current permanent con`figuration will become new runtime configuration | LFS201 36.14
+networks, security | `$ sudo firewall-cmd --permanent --zone=trusted --list-sources` | list the sources bound to a zone | LFS201 36.13
+networks, security | `$ sudo firewall-cmd --reload` | reload firewall rules and keep state information. Current permanent configuration will become new runtime configuration | LFS201 36.14
 networks, security | `$ sudo firewall-cmd --set-default-zone=public` | change the default zone back to **public** | LFS201 36.12
 networks, security | `$ sudo firewall-cmd --set-default-zone=trusted` | change the default zone to **trusted** | LFS201 36.12
 networks, security | `$ sudo firewall-cmd --state` | shows the current state of **firewalld** | LFS201 36.10
@@ -679,7 +679,7 @@ networks | `$ sudo ifconfig eth0 down` | bring interface `eth0` down | LFS201 35
 networks | `$ sudo ifconfig eth0 mtu 1480` | set the **MTU** to 1480 bytes for interface `eth0` | LFS201 35.7
 networks | `$ sudo ifconfig eth0 netmask 255.255.255.0` | set the **netmask** to 24-bit | LFS201 35.7
 networks | `$ sudo ifconfig eth0 up` | bring interface `eth0` up | LFS201 35.7
-startup/shutdown | `$ sudo invoke-rc.d cups [ status | start | stop ]` | equivalent of **service** on Ubuntu | LFS201 39.16
+startup/shutdown | `$ sudo invoke-rc.d cups [ status \| start \| stop ]` | equivalent of **service** on Ubuntu | LFS201 39.16
 monitoring, i/o | `$ sudo ionice -c 2 -n 3 -p 30078` | change best effort to priority 3 for process 30078 | LFS201 14.9
 monitoring, i/o | `$ sudo ionice -c 2 -n 6 -p 47` | change the priority of process 47 from be/7 to be/6 | LFS201 14.9
 monitoring, i/o | `$ sudo iotop -o` | use -o (or --only) option to show only processes or threads actually doing I/O | LFS201 14.8
@@ -787,7 +787,7 @@ packages | `$ sudo rpm -Uvh bash-4.2.45-5.el7_0.4.x86_64.rpm` | upgrade package 
 startup/shutdown | `$ sudo service --status-all` | shows status of all services on the system | LFS201 39.15
 startup/shutdown | `$ sudo service network status` | shows the current status of a particular service | LFS201 39.15
 startup/shutdown | `$ sudo service network` | shows available options for **service**, which vary by the particular service | LFS201 39.15
-startup/shutdown | `$ sudo service some_service [stop | start]` | start or stop a service | LFS201 39.14
+startup/shutdown | `$ sudo service some_service [stop \| start]` | start or stop a service | LFS201 39.14
 network, system | `$ sudo service sshd restart` | start **sshd** service | LFS201 Lab 30.1
 security, system | `$ sudo setenforce Permissive` | set SELinux mode to permissive | LFS201 41.7
 security, system | `$ sudo setsebool -P ssh_chroot_rw_homedirs on` | change boolean status persistently | LFS201 41.15
@@ -806,7 +806,7 @@ networks, security | `$ sudo sysctl net.ipv4.ip_forward=1` | turn on **ip forwar
 networks, security | `$ sudo systemctl [enable/disable] firewalld` | start **firewalld** | LFS201 36.10
 security, system | `$ sudo systemctl [start \| stop \| restart \| status] apparmor` | change or inquire about the current state of AppArmor operation | LFS201 41.19
 networks, security | `$ sudo systemctl [start/stop] firewalld` | stop **firewalld** | LFS201 36.10
-startup/shutdown | `$ sudo systemctl daemon-reload` | reload 'things' after editing 'unit file' | Lab 39.2
+startup/shutdown | `$ sudo systemctl daemon-reload` | reload 'things' after editing 'unit file' | LFS201 Lab 39.2
 filesystem | `$ sudo systemctl daemon-reload` and `$ sudo systemctl restart local-fs.target` | restart after editing `/etc/fstab` | LFS201 18.15
 startup/shutdown | `$ sudo systemctl disable sshd.service` | disable a service | LFS201 39.8
 raid | `$ sudo systemctl enable mdmonitor` | ensure **mdmonitor** starts at boot | LFS201 24.7
@@ -820,13 +820,13 @@ startup/shutdown | `$ sudo systemctl start foo` | start (activate) one or more u
 startup/shutdown | `$ sudo systemctl start gdm` | start graphical user interface (GUI) from command line | LFS201 Lab 38.1
 virtualization | `$ sudo systemctl start libvirtd` | start **libvirtd** | LFS201 Lab 28.2
 raid | `$ sudo systemctl start mdmonitor` | start monitoring RAID device with **mdmonitor** | LFS201 24.7
-startup/shutdown | `$ sudo systemctl status fake2.service` | show status of fake2.service | Lab 39.2
+startup/shutdown | `$ sudo systemctl status fake2.service` | show status of fake2.service | LFS201 Lab 39.2
 networks, security | `$ sudo systemctl status firewalld` | shows the current state of **firewalld** | LFS201 36.10
 containers, docker | `$ sudo systemctl stop docker` | stop **docker** service | LFS201 Lab 29.1
 startup/shutdown | `$ sudo systemctl stop foo.service` | stop (deactivate) a service | LFS201 39.8
 startup/shutdown | `$ sudo sysv-rc-conf cups [ on \| off ]` | equivalent of **chkconfig** | LFS201 39.16
 monitoring, system | `$ sudo tail -f /var/log/messages` | view new messages continually | LFS201 11.5
-apps, monitoring, troubleshooting | `$ sudo tail -f /var/log/messages` | view log messages in real-time | Lab 39.2
+apps, monitoring, troubleshooting | `$ sudo tail -f /var/log/messages` | view log messages in real-time | LFS201 Lab 39.2
 monitoring, system | `$ sudo tail -f /var/log/syslog`  (or `$ sudo telinit 3`) | view new messages continually | LFS201 11.5
 filesystem | `$ sudo touch /forcefsck` then `$ sudo reboot` | force a check of mounted filesystems at boot, which allows **fsck** to check the root FS | LFS201 18.6
 filesystem | `$ sudo tune2fs -c 25 /dev/sda1` | change the maximum number of mounts between filesystem checks (max-mount-count) | LFS201 20.12
@@ -969,7 +969,7 @@ files, partitions | `x7:/tmp>sudo file sda_backup` or `$ file myfile.txt` | dete
 partitions | `x7:/tmp>sudo sgdisk --backup=/tmp/sda_backup /dev/sda` | backup GPT partition | LFS201 17.16
 networks, security | 1 `/etc/sysctl.conf` | add **net.ipv4.ip_forward=1** to make **ip forwarding** persistent | LFS201 36.10
 accounts | 1 `$ cd /bin ; sudo ln -s bash rbash` | set up restricted account; create symbolic link from bash to rbash | LFS201 30.15
-packages | 1 `$ rpm2cpio bash-4.2.45-5.el7_0.4.x86_64.rpm |  cpio -ivd bin/bash` | extract onto the system  | LFS201 6.17
+packages | 1 `$ rpm2cpio bash-4.2.45-5.el7_0.4.x86_64.rpm \| cpio -ivd bin/bash` | extract onto the system  | LFS201 6.17
 raid | 1 `$ sudo fdisk /dev/sdb; sudo fdisk /dev/sdc` | create partitions | LFS201 24.6
 lvm | 1 `$ sudo lvcreate -l 128 -s -n mysnap /dev/vg/mylvm` | create a snapshot of an existing logical volume | LFS201 23.12
 lvm | 1 `$ sudo lvextend -L +500M /dev/vg/mylvm` | grow a logical volume with ext4 filesytem | LFS201 23.11
