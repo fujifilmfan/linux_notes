@@ -196,6 +196,26 @@ accounts, auth | `/etc/pam_ldap.conf/` | file that needs editing when configurin
 accounts, auth | `/etc/nslcd.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
 accounts, auth | `/etc/sssd/sssd.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
 accounts, auth | `/etc/nsswitch.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
+networks | `/etc/hostname` holds current value on most distros | LFS201 34.11
+networks | `/etc/sysconfig/network` | stores persistent NIC configs on Red Hat | LFS201 35.11
+networks | `/etc/sysconfig/network-scripts/ifcfg-ethX` | stores persistent NIC configs on Red Hat | LFS201 35.11
+networks | `/etc/sysconfig/network-scripts/ifcfg-ethX:Y` | stores persistent NIC configs on Red Hat | LFS201 35.11
+networks | `/etc/sysconfig/network-scripts/route-ethX` | stores persistent NIC configs on Red Hat | LFS201 35.11
+networks | `/etc/network/interfaces` | stores persistent NIC configs on Debian | LFS201 35.11
+networks | `/etc/sysconfig/network` | stores persistent NIC configs on SUSE | LFS201 35.11
+networks | `/etc/sysconfig/network`, add **GATEWAY=x.x.x.x** | manually configure the default route directly on Red Hat-based systems | LFS201 35.18
+networks | `/etc/sysconfig/network-scripts/ifcfg-ethX`, add **GATEWAY=x.x.x.x** | manually configure the default route directly on Red Hat-based systems on a device-specific basis | LFS201 35.18
+networks | `/etc/network/interfaces`, add **gateway=x.x.x.x** | manually configure the default route directly on Debian-based systems | LFS201 35.18
+networks | `/etc/sysconfig/network-scripts/route-ethX` | edit this to set a persistent route on a Red Hat-based system | LFS201 35.19
+networks | `/etc/network/interfaces` | edit this to set a persistent route on a Debian-based system | LFS201 35.19
+networks | `/etc/sysconfig/network/ifroute-eth0` | edit this to set a persistent route on a SUSE-based system |  LFS201 35.19
+networks | `/etc/hosts` | used for static name resolution | LFS201 35.20
+networks | `/etc/hosts` | holds a local database of hostnames and IP addresses; maps IP addresses with corresponding hostnames and aliases | LFS201 35.21
+networks | `/etc/nsswitch.conf` | used to set DNS priority | LFS201 35.21
+networks | `/etc/hosts.deny` | searched after `allow` | LFS201 35.21
+networks | `/etc/hosts.allow` | searched first | LFS201 35.21
+networks | `/etc/host.conf` | contains general configuration information; rarely used | LFS201 35.21
+networks | `/etc/resolv.conf` | configures machine's usage of DNS | LFS201 35.22
 networks, security | `/etc/firewalld` | configuration files for **firewalld**; override those in `/usr/lib/firewalld` | LFS201 36.9
 networks, security | `/usr/lib/firewalld` | configuration files for **firewalld** `/etc/firewalld` | LFS201 36.9
 networks, security | `/etc/firewalld/zones/internal.xml` | created when assigning an interface to a particular zone permanently | LFS201 36.12
@@ -230,6 +250,17 @@ startup/shutdown | `/etc/init/rc.conf` | Upstart configuration source | LFS201 3
 startup/shutdown | `/etc/rc[0-5].d` | Upstart configuration source | LFS201 39.17
 startup/shutdown | `/etc/init/start-ttys.conf` | Upstart configuration source | LFS201 39.17
 startup/shutdown | `/etc/systemd/system` | location for **systemd** services | Lab 39.2
+security, system | `/etc/selinux/config` | SELinux config file in which modes are selected and explained; also used to set the SELinux policy | LFS201 41.7
+security, system | `/etc/sysconfig/selinux` | contains symbolic link to `/etc/selinux/config` | LFS201 41.7
+security, system | `/etc/selinux/[SELINUXTYPE]` | stores SELinux policies | LFS201 41.8
+security, system | `/etc/apparmor.d` | contains AppArmor profiles | LFS201 41.20
+security, system | to `/etc/fstab` add `/dev/sda2 /mymountpt  ext4 ro,noexec,nodev 0 0` | mount the filesystem in **read-only** mode | LFS201 42.15
+troubleshooting, system | `/var/log/messages` | useful for troubleshooting | LFS 201 43.5
+troubleshooting, system | `/var/log/secure` | useful for troubleshooting | LFS 201 43.5
+troubleshooting, system | `/proc/interrupts` | useful for troubleshooting network drivers | LFS 201 43.7
+troubleshooting, system | `/sys/class/net` | useful for troubleshooting network drivers | LFS 201 43.7
+troubleshooting, system | `/etc/fstab` | location of filesystem table | LFS 201 43.10
+
 
 
 ### Commands  
@@ -480,7 +511,7 @@ filesystem | `$ sudo fsck -t ext4 /dev/sda10` | check ext4 filesystem on `/dev/s
 filesystem | `$ sudo fsck.ext4 /dev/sda10` | check ext4 filesystem on `/dev/sda10` | LFS201 18.6
 filesystem | `$ sudo fsck /dev/sda10`  | check filesystem on `/dev/sda10` | LFS201 18.6
 filesystem | `$ sudo touch /forcefsck` then `$ sudo reboot` | force a check of mounted filesystems at boot, which allows **fsck** to check the root FS | LFS201 18.6
-filesystem | `$ sudo mount -t ext /dev/sdb4 /home` | mount an ext4 filesystem on the `/dev/sdb4` partition at the position `/home` | LFS201 18.7
+filesystem | `$ sudo mount -t ext4 /dev/sdb4 /home` | mount an ext4 filesystem on the `/dev/sdb4` partition at the position `/home` | LFS201 18.7
 filesystem | `$ mount [options] <source> <directory>` | generic **mount** syntax | LFS201 18.10
 filesystem | `$ sudo mount /dev/sda2 /home` | mount a partition at `/home` | LFS201 18.10
 filesystem | `$ sudo mount LABEL=home /home` | mount a partition at `/home` | LFS201 18.10
@@ -778,6 +809,45 @@ accounts, auth | **pam ldap** | involved in configuring LDAP with PAM | LFS201 3
 accounts, auth | **nss-pam-ldapd** | involved in configuring LDAP with PAM | LFS201 33.8
 accounts, auth | `$ sudo pam_tally2 -u rocky` | see how many failed logins there are for user rocky | LFS201 Lab 33.1
 accounts, auth | `$ sudo pam_tally2 -u rocky -r` | reset the failed login counter for user rocky | LFS201 Lab 33.1
+networks | `$ hostname` gives the current hostname | LFS201 34.11
+networks | `$ sudo hostname lumpy` changes the hostname to "lumpy" | LFS201 34.11
+networks | `$ sudo hostnamectl set-hostname MYPC` changes the hostname persistently to "MYPC" distros | LFS201 34.11
+networks | `$ ip ...` | used to configure, control and query interface parameters and control devices, routing, etc. | LFS201 35.5
+networks | `$ ip [ OPTIONS ] OBJECT { COMMAND | help }` | general syntax | LFS201 35.5
+networks | `$ ip [ -force ] -batch filename` | read and execute commands from FILENAME (**-batch**); don't terminate ip on errors in batch mode (**-force**) | LFS201 35.5
+networks | `$ ip link show` | show information for all network interfaces | LFS201 35.6
+networks | `$ ip -s link show eth0` | show information for the `eth0` network interface, including statistics | LFS201 35.6
+networks | `$ sudo ip addr add 192.168.1.7 dev eth0` | set the IP address for `eth0` | LFS201 35.6
+networks | `$ sudo ip link set eth0 down` | bring `eth0` down  | LFS201 35.6
+networks | `$ sudo ip link set eth0 mtu 1480` | set the **MTU** to 1480 bytes for `eth0` | LFS201 35.6
+networks | `$ sudo ip route add 172.16.1.0/24 via 192.168.1.5` | set the networking route | LFS201 35.6
+networks | `$ ifconfig` | display information about all interfaces | LFS201 35.7
+networks | `$ ifconfig eth0` | display information about only `eth0` | LFS201 35.7
+networks | `$ sudo ifconfig eth0 192.168.1.50` | set the IP address to 192.168.1.50 on interface `eth0` | LFS201 35.7
+networks | `$ sudo ifconfig eth0 netmask 255.255.255.0` | set the **netmask** to 24-bit | LFS201 35.7
+networks | `$ sudo ifconfig eth0 up` | bring interface `eth0` up | LFS201 35.7
+networks | `$ sudo ifconfig eth0 down` | bring interface `eth0` down | LFS201 35.7
+networks | `$ sudo ifconfig eth0 mtu 1480` | set the **MTU** to 1480 bytes for interface `eth0` | LFS201 35.7
+networks | `$ nmtui` | activates **nmtui** (NetworkManager Text User Interface) | LFS201 35.13
+networks | `$ nmcli ...` | NetworkManager Command Line Interface | LFS201 35.13
+networks | `$ man nmcli-examples` | get examples of **nmcli** use | LFS201 35.16
+networks | `$ nmcli` | gives some device and connection information | LFS201 35.16
+networks | `$ nmcli device show` | show detailed information about devices | LFS201 35.16
+networks | `$ nmcli connection show` | list in-memory and on-disk connection profiles | LFS201 35.16
+networks | `$ nmcli device status` | print status of devices | LFS201 35.16
+networks | `$ route -n` | shows current routing table; **-n** is used to show numerical addresses instead of  symbolic host names | LFS201 35.17
+networks | `$ ip route` | shows current routing table | LFS201 35.17
+networks | `$ sudo nmcli con mod virbr0 ipv4.routes 192.168.10.0/24 +ipv4.gateway 192.168.122.0` | manually configure the default route | LFS201 35.18
+networks | `$ sudo nmcli con up virbr0` | manually configure the default route | LFS201 35.18
+networks | `$ sudo route add default gw 192.168.1.10 enp2s0` | set default route at runtime | LFS201 35.18
+networks | `$ sudo route add default gw 192.168.1.1 enp2s0` | restore the default in the above example | LFS201 35.18
+networks | `$ sudo ip route add 10.5.0.0/16 via 192.168.1.100` | set a non-persistent route | LFS201 35.19
+networks | `$ dig linuxfoundation.org` | resolves IP address; generates the most information and has many options | LFS201 35.20
+networks | `$ host linuxfoundation.org` | resolves IP address; more compact | LFS201 35.20
+networks | `$ nslookup linuxfoundation.org` | resolves IP address; older | LFS201 35.20
+networks | `$ ping -c 10 linuxfoundation.org` | sends test packets to network hosts | LFS201 35.23
+networks | `$ traceroute linuxfoundation.org` | displays a network path to a destination | LFS201 35.23
+networks | `$ mtr linuxfoundation.org` | combines the functionality of ping and traceroute and creates a continuously updated display | LFS201 35.23
 networks, security | `$ firewall-cmd --help` | has lots of information | LFS201 36.9
 networks, security | `$ sudo systemctl [enable/disable] firewalld` | start **firewalld** | LFS201 36.10
 networks, security | `$ sudo systemctl [start/stop] firewalld` | stop **firewalld** | LFS201 36.10
@@ -891,6 +961,48 @@ backup | `$ cpio -ivt < include.cpio` | list the files in the archive | Lab 40.2
 backup | `$ rsync -av /usr/include .` | create a complete copy of `/usr/include` in the current directory | Lab 40.3
 backup | `$ rsync -av --delete /usr/include .` | remove files that are no longer in source (?) | Lab 40.3
 backup | `$ rsync -av --delete --dry-run /usr/include .` | see which files will be removed or added if the command was run | Lab 40.3
+security, system | `$ sestatus` | used to display the current SELinux mode and policy | LFS201 41.7
+security, system | `$ getenforce` | show current SELinux mode | LFS201 41.7
+security, system | `$ sudo setenforce Permissive` | set SELinux mode to permissive | LFS201 41.7
+security, system | `$ ls -Z` | list files and show SELinux context | LFS201 41.9
+security, system | `$ ps auZ` | show processes with SELinux context | LFS201 41.9
+security, system | `$ chcon -t etc_t somefile` | change SELinux context | LFS201 41.9
+security, system | `$ chcon --reference somefile so` | change SELinux context | LFS201 41.9
+security, system | `$ restorecon ...` | resets file contexts based on parent directory settings | LFS201 41.12
+security, system | `$ restorecon -Rv /home/peter` | resets the default SELinux context recursively for all files at the home directory | LFS201 41.12
+security, system | `$ semanage ...` | used to change and display the default context of files and directories; does not apply the settings to existing objects | LFS201 41.13
+security, system | `# semanage fcontext -a -t httpd_sys_content_t /virtualHosts` | change context default file context | LFS201 41.13
+security, system | `# restorecon -RFv /virtualHosts` | apply context change to existing directory | LFS201 41.13
+security, system | `$ getsebool ...` | show SELinux booleans | LFS201 41.14
+security, system | `$ setsebool ...` | set SELinux booleans | LFS201 41.14
+security, system | `$ semanage boolean -i` | show persistent SELinux boolean settings | LFS201 41.14
+security, system | `$ getsebool -a` | prints the boolean name and current status; simpler output than what is given by **semanage** | LFS201 41.15
+security, system | `$ setsebool` | changes boolean status; use **-P** parameter to make the changes persistent | LFS201 41.15
+security, system | `$ getsebool ssh_chroot_rw_homedirs` | show boolean name and current status | LFS201 41.15
+security, system | `$ sudo setsebool ssh_chroot_rw_homedirs on` | change boolean status non-persistently | LFS201 41.15
+security, system | `$ sudo setsebool -P ssh_chroot_rw_homedirs on` | change boolean status persistently | LFS201 41.15
+security, system | `# sealert -l d51d34f9-91d5-4219-ad1e-5531e61a2dc3` | view SELinux alert details(?) | LFS201 41.16
+security, system | `$ audit2allow ...` | generates SELinux policy rules from logs of denied operations | LFS201 41.16
+security, system | `$ audit2why ...` | translates SELinux audit messages into a description of why the access was denied | LFS201 41.16
+security, system | `# restorecon -Rv /var/www/html/` | apply context change to directory | LFS201 41.16
+security, system | `$ sudo systemctl [start|stop|restart|status] apparmor` | change or inquire about the current state of AppArmor operation | LFS201 41.19
+​security, system | `$ sudo systemctl [enable|disable} apparmor` | cause AppArmor to be loaded or not loaded at boot | LFS201 41.19
+security, system | `$ sudo apparmor_status` | see the current AppArmor status | LFS201 41.19
+security, system | `$ aa-enforce ...` | set an AppArmor profile to enforce mode | LFS201 41.20
+security, system | `$ aa-complain ...` | set an AppArmor profile to complain mode | LFS201 41.20
+security, system | `$ man apparmor.d` | documention for AppArmor, including what can go in a profile | LFS201 41.20
+security, system | `$ rpm -qil apparmor-utils | grep bin​` | view AppArmor utilities on OpenSUSE | LFS201 41.21
+security, system | `$ mount -o ro,noexec,nodev /dev/sda2 /mymountpt` | mount the filesystem in **read-only** mode | LFS201 42.15
+accounts, security, system | `$ chmod u+s somefile` | 'does the setuid' | LFS201 42.17
+accounts, security, system | `$ chmod g+s somefile` | 'does the setgid' | LFS201 42.17
+accounts, security, system | `$ chmod g+s somedir` | creates a shared directory; files created here are group owned by the group owner of the directory | LFS201 42.17
+troubleshooting, system | `$ rpm -V some_package` | verify file integrity for a single package | LFS 201 43.8
+troubleshooting, system | `$ rpm -Va` | check all packages on the system | LFS 201 43.8
+troubleshooting, system | `$ debsums options some_package` | check integrity of the filed in some_package | LFS 201 43.8
+troubleshooting, system | `$ aide ...` | used for  **intrusion detection** and is another way to check for changes in files | LFS 201 43.8
+troubleshooting, system | `$ sudo aide --check` | run a scan on your files and compare them to the last scan | LFS 201 43.8
+troubleshooting, system | `$ sudo mount -o remount,rw /` | remount root filesystem with write permission | LFS 201 43.10
+troubleshooting, system | `$ sudo mount -a` | try and mount all filesystem | LFS 201 43.10
   
 
 

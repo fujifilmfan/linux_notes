@@ -100,7 +100,8 @@ By the end of this chapter, you should be able to:
   
 ### Lab 44.1: Preparing to Use Rescue/Recover Media
 ----
-
+"Do not do the following exercises unless you are sure you can boot your system off rescue/recovery media!"
+  
 ### Lab 44.2: Recovering from a Corrupted GRUB Configuration
 ----
 

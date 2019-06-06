@@ -147,6 +147,29 @@ By the end of this chapter, you should be able to:
   
 ### Lab 42.1: Security and Mount Options
 ----
+1. Set up an empty file, put a filesystem on it and mount it.
+    * `$ sudo fdisk /dev/sda`
+    * `$ sudo partprobe -s`
+    * `$ dd if=/dev/zero of=imagefile bs=1M count=1024`
+    * `$ mkfs.ext4 imagefile`
+    * `$ sudo mkdir /mnt/mntpoint`
+    * `$ sudo mount -o loop imagefile /mnt/mntpoint`
+2. Copy an executable file to it from somewhere else on your system and test that it works in the new location.
+    * `$ sudo cp /bin/ls /mnt/mntpoint`
+    * `$ cd /mnt/mntpoint`
+    * `$ ls .`
+    * `$ cd ~`
+3. Unmount it and remount with the noexec option.
+    * `$ sudo umount /mnt/mntpoint`
+    * `$ sudo mount -o noexec,loop imagefile /mnt/mntpoint`
+4. Test if the executable still works. It should give you an error because of the noexec mount option.
+    * `$ /mnt/mntpoint/ls .`
+5. Clean up.
+    * `$ sudo umount /mnt/mntpoint`
+    * `$ sudo fdisk /dev/sda`
+    * `$ sudo partprobe -s`
+6. To make persistant, add something like the following to `/etc/fstab`:
+    > /home/student/image  /home/student/mountpoint  ext3  loop,rw,noexec 0 0  
   
 ### Lab 42.2: More on setuid and Scripts
 ----

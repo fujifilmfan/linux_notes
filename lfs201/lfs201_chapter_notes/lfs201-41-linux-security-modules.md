@@ -335,10 +335,41 @@ easyprof        | Help set up a basic AppArmor profile for a program
   
 ### Lab 41.1: SELinux: Contexts
 ----
-
+1. Verify **SELinux** is enabled and in **enforcing** mode, by executing **getenforce** and **sestatus**. If not, edit `/etc/selinux/config`, reboot, and check again.
+    * setting SELinux to enforcing mode in `/etc/selinux/config` prevented login completely
+2. Install the **httpd** package (if not already present) which provides the Apache web server, and then verify that it is working:
+    * `$ sudo yum install httpd`
+    * `$ elinks http:/localhost` (or another browser, graphical or otherwise)
+3. As superuser, create a small file in `/var/www/html`:
+    * `$ sudo sh -c "echo file1 > /var/www/html/file1.html"`
+4. Verify you can see it:
+    * `$ elinks -dump http://localhost/file1.html`
+        > file1  
+    * Now create another small file in root’s home directory and move it to `/var/www/html`. (Do not copy it, move it!) Then try and view it:
+    * `$ sudo cd /root`
+    * `$ sudo sh -c "echo file2 > file2.html"`
+    * `$ sudo mv file2.html /var/www.html`
+    * `$ elinks -dump http://localhost/file2.html`
+        ```
+        Forbidden
+        You don't have permission to access /file2.html on this server.
+        ```
+5. Examine the security contexts:
+    * `$ cd /var/www/html`
+    * `$ ls -Z file*html`
+        ```
+        -rw-r--r--. root root unconfined_u:object_r:httpd_sys_content_t:s0 file1.html
+        -rw-r--r--. root root unconfined_u:object_r:admin_home_t:s0 file2.html
+        ```
+6. Change the offending context and view again:
+    * `$ sudo chcon -t httpd_sys_content_t file2.html`
+    * `$ elinks http://localhost/file2.html`
+        > file2  
+  
 ### Lab 41.2: Explore the apparmor Security
 ----
-
+"This exercise can only be performed on a system (such as **Ubuntu**) where **AppArmor** is installed."
+  
 ### Paths and Commands
 ----
   
