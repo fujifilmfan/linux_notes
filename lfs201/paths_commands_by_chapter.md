@@ -137,7 +137,7 @@ filesystem | `/dev/zero` | special file in Unix-like operating systems that prov
 filesystem | `/dev/shm` | most modern Linux distributions mount an instance of **tmpfs** here | LFS201 Lab 16.1
 filesystem | `$ sudo mkdir /mnt/tmpfs` | create a **tmpfs** filesystem | LFS201 Lab 16.1
 filesystem | `$ sudo mount -t tmpfs none /mnt/tmpfs` | mount a new **tmpfs** filesystem | LFS201 Lab 16.1
-filesystem | `$ df -h /mnt/tmpfs` | see how much space the filesystem has been given and how much it is using
+filesystem | `$ df -h /mnt/tmpfs` | see how much space the filesystem has been given and how much it is using | LFS201 Lab 16.1
 filesystem | `$ sudo mount -t tmpfs -o size=1G none /mnt/tmpfs` | change the allotted size of **tmpfs** as a mount option | LFS201 Lab 16.1
 filesystem | `$ sudo umount /mnt/tmpfs` | unmount the **tmpfs** filesystem | LFS201 Lab 16.1
 filesystem | `$ df -h /dev/shm` | see how much space the filesystem has been given and how much it is using | LFS201 Lab 16.1
@@ -196,7 +196,7 @@ accounts, auth | `/etc/pam_ldap.conf/` | file that needs editing when configurin
 accounts, auth | `/etc/nslcd.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
 accounts, auth | `/etc/sssd/sssd.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
 accounts, auth | `/etc/nsswitch.conf` | file that needs editing when configuring a system for LDAP | LFS201 33.8
-networks | `/etc/hostname` holds current value on most distros | LFS201 34.11
+networks | `/etc/hostname` | holds current value on most distros | LFS201 34.11
 networks | `/etc/sysconfig/network` | stores persistent NIC configs on Red Hat | LFS201 35.11
 networks | `/etc/sysconfig/network-scripts/ifcfg-ethX` | stores persistent NIC configs on Red Hat | LFS201 35.11
 networks | `/etc/sysconfig/network-scripts/ifcfg-ethX:Y` | stores persistent NIC configs on Red Hat | LFS201 35.11
@@ -274,7 +274,7 @@ processes | `$ ulimit [options] [limit]` | generic syntax | LFS201 3.8
 processes | `$ ulimit -a` | displays or resets resource limits associated with processes running under a shell | LFS201 3.8
 processes | `$ ulimit -n 1600` | changes maximum number of file descriptors | LFS201 3.8
 processes | `$ passwd ...` | **setuid** program; changes password | LFS201 3.9
-processes | `&` | at end of command for background processing: LFS201 3.14
+processes | `&` | at end of command for background processing | LFS201 3.14
 processes | `$ ps -elf` | show kernel-created processes; list all processes on the system while showing the parent process IDs | LFS201 3.16
 processes | `$ nice -n 5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
 processes | `$ nice -5 command [ARGS]` | increase niceness by 5 | LFS201 3.18
@@ -809,9 +809,9 @@ accounts, auth | **pam ldap** | involved in configuring LDAP with PAM | LFS201 3
 accounts, auth | **nss-pam-ldapd** | involved in configuring LDAP with PAM | LFS201 33.8
 accounts, auth | `$ sudo pam_tally2 -u rocky` | see how many failed logins there are for user rocky | LFS201 Lab 33.1
 accounts, auth | `$ sudo pam_tally2 -u rocky -r` | reset the failed login counter for user rocky | LFS201 Lab 33.1
-networks | `$ hostname` gives the current hostname | LFS201 34.11
-networks | `$ sudo hostname lumpy` changes the hostname to "lumpy" | LFS201 34.11
-networks | `$ sudo hostnamectl set-hostname MYPC` changes the hostname persistently to "MYPC" distros | LFS201 34.11
+networks | `$ hostname` | gives the current hostname | LFS201 34.11
+networks | `$ sudo hostname lumpy` | changes the hostname to "lumpy" | LFS201 34.11
+networks | `$ sudo hostnamectl set-hostname MYPC` | changes the hostname persistently to "MYPC" distros | LFS201 34.11
 networks | `$ ip ...` | used to configure, control and query interface parameters and control devices, routing, etc. | LFS201 35.5
 networks | `$ ip [ OPTIONS ] OBJECT { COMMAND | help }` | general syntax | LFS201 35.5
 networks | `$ ip [ -force ] -batch filename` | read and execute commands from FILENAME (**-batch**); don't terminate ip on errors in batch mode (**-force**) | LFS201 35.5
