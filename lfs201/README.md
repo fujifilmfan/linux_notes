@@ -57,11 +57,10 @@ Contents
 [Chapter 43: Basic Troubleshooting](lfs201_chapter_notes/lfs201-43-basic-troubleshooting.md)  
 [Chapter 44: System Rescue](lfs201_chapter_notes/lfs201-44-system-rescue.md)  
 
-### Paths
+### Paths and Commands
 ----
-
-### Commands
-----
+[Alphabetical](paths_commands_by_alpha.md)  
+[Sequential (by chapter)](paths_commands_by_chapter.md)  
 
 ### Main Directory Layout
 ----
