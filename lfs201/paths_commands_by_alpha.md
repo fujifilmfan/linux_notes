@@ -247,7 +247,7 @@ packages | 2 `/etc/rpmrc` | second place RPM looks for settings; each is read | 
 packages | 3 `~/.rpmrc` | third place RPM looks for settings; each is read | LFS201 6.8
 startup/shutdown | 3 `rc.d/rc[0-6].d` | scripts here are run after `/etc/rc.d/rc` on SysVinit systems | LFS201 39.13
 security, system  | to `/etc/fstab` add `/dev/sda2 /mymountpt  ext4 ro,noexec,nodev 0 0` | mount the filesystem in **read-only** mode | LFS201 42.15
-packages | `$ ls /usr/lib/rpm | wc -l` | shows programs and scripts used by RPM | LFS201 6.8
+packages | `$ ls /usr/lib/rpm \| wc -l` | shows programs and scripts used by RPM | LFS201 6.8
   
 ### Commands  
 ----
@@ -302,7 +302,7 @@ devices | `$ cat /usr/lib/udev/rules.d/99-fitbit.rules` | read rules for a Fitbi
 packages | `$ cat CentOS-Base.repo` | example of a respository file | LFS201 8.7
 accounts | `$ chage -l MY_USERNAME` | list accoung aging information for myself | LFS201 30.13
 accounts | `$ chage [-m mindays] [-M maxdays] [-d lastday] [-I inactive] [-E expiredate] [-W warndays] user` | generic syntax for chage | LFS201 30.13
-files | `$ chattr [+| - | =mode] filename` | change attributes for a file | LFS201 18.4
+files | `$ chattr [+ \| - \| =mode] filename` | change attributes for a file | LFS201 18.4
 security, system | `$ chcon --reference somefile so` | change SELinux context | LFS201 41.9
 security, system | `$ chcon -t etc_t somefile` | change SELinux context | LFS201 41.9
 accounts, files, permissions | `$ chgrp ...` | changes group ownership; you can only change group ownership to groups you are a member of | LFS201 32.9
@@ -342,7 +342,7 @@ troubleshooting, system | `$ debsums options some_package` | check integrity of 
 kernel, modules | `$ depmod ...` | generate or update the file `/lib/modules/$(uname -r)/modules.dep` | LFS201 26.7
 filesystem | `$ df -h /dev/shm` | see how much space the filesystem has been given and how much it is using | LFS201 Lab 16.1
 filesystem | `$ df -h /mnt/tmpfs` | see how much space the filesystem has been given and how much it is using | LFS201 Lab 16.1
-filesystem | `$ df -h |  grep tmpfs` | many distributions mount multiple instances of **tmpfs** | LFS201 Lab 16.1
+filesystem | `$ df -h \| grep tmpfs` | many distributions mount multiple instances of **tmpfs** | LFS201 Lab 16.1
 filesystem | `$ df -h` | display filesystem disk space usage in human-readable form | LFS201 16.10
 filesystem | `$ df -h` | view filesystem usage in human-readable format | LFS201 19.11
 partitions | `$ df -h` | shows the mounted partition | LFS201 22.9
@@ -372,8 +372,8 @@ filesystem | `$ edquota -t` | set grace periods | LFS201 19.10
 filesystem | `$ edquota -u -p [userproto] [username]` | copy userproto's user quota values to username | LFS201 19.10
 filesystem | `$ edquota -u [username]` | edit limits for username | LFS201 19.10
 filesystem | `$ edquota` | used for editing user or group quotas | LFS201 19.5
-packages | `$ find / -name "bzip2*" -type d 2>&1 |  grep -v 'Permission denied'` | find **bzip2** packages | LFS201 6.13
-backup | `$ find include | cpio -c -o | gzip -c > /tmp/backup/include.cpio.gz` | place compressed **cpio** archive of all the files under `/usr/include` in `/tmp/backup` | Lab 40.2
+packages | `$ find / -name "bzip2*" -type d 2>&1 \| grep -v 'Permission denied'` | find **bzip2** packages | LFS201 6.13
+backup | `$ find include \| cpio -c -o \| gzip -c > /tmp/backup/include.cpio.gz` | place compressed **cpio** archive of all the files under `/usr/include` in `/tmp/backup` | Lab 40.2
 networks, security | `$ firewall-cmd --help` | has lots of information | LFS201 36.9
 networks, security | `$ firewall-config` | start firewall GUI | LFS201 Lab 36.4
 accounts, network | `$ for machines in node1 node2 node3 ; do (ssh $machines some_command &) ; done` | run a command on multiple machines simultaneously | LFS201 30.17
@@ -438,11 +438,11 @@ lvm | `$ ls -lF /sbin/lv*` | show logical volume utilities | LFS201 23.7
 virtualization | `$ ls -lF /usr/bin/virt*` | see which utilities are using *libvirt* (?) | LFS201 28.14
 packages | `$ ls -lF $(rpm -ql bzip2)` | make it a shell command (pipe through less if too much output) | LFS201 6.13 
 security, system | `$ ls -Z` | list files and show SELinux context | LFS201 41.9
-backup | `$ ls | cpio --create -O /dev/st0` | create an archive, use **-o** or **--create** | LFS201 40.18
+backup | `$ ls \| cpio --create -O /dev/st0` | create an archive, use **-o** or **--create** | LFS201 40.18
 files | `$ lsattr <filename>` | display attributes for a file | LFS201 18.4
 files | `$ lsattr appendit` | show file's extended attributes | LFS201 Lab 18.1
 partitions | `$ lsblk` | presents block device information in a tree format | LFS201 17.13
-filesystem | `$ lsmod |  less` | shows mounted filesystems | LFS201 16.10
+filesystem | `$ lsmod \|  less` | shows mounted filesystems | LFS201 16.10
 kernel, modules | `$ lsmod` | list loaded modules | LFS201 26.6
 filesystem | `$ lsof` | list open files, shows which files are being used | LFS201 18.12
 lvm | `$ lvcreate ...` | creates logical volumes from within volume groups | LFS201 23.8
@@ -466,7 +466,7 @@ monitoring, performance, i/o, testing | `$ mount -o remount,barrier=1 /tmp` | ch
 monitoring, performance, i/o, testing | `$ mount -o remount,journal_async_commit /tmp` | change **mount** options for **ext4** to improve performance | LFS201 Lab 14.2
 security, system | `$ mount -o ro,noexec,nodev /dev/sda2 /mymountpt` | mount the filesystem in **read-only** mode | LFS201 42.15
 filesystem | `$ mount [options] <source> <directory>` | generic **mount** syntax | LFS201 18.10
-filesystem | `$ mount | grep tempdir` | view mounted filesystems | LFS201 Lab 18.2
+filesystem | `$ mount \| grep tempdir` | view mounted filesystems | LFS201 Lab 18.2
 filesystem | `$ mount` | show currently mounted filesystems | LFS201 18.17
 backup | `$ mt [-h] [-f device] operation [count] [arguments...]` | generic syntax; used to control magnetic tape devices | LFS201 40.22
 backup | `$ mt erase` | erase the tape | LFS201 40.22
@@ -496,7 +496,7 @@ processes | `$ ps -elf` | show kernel-created processes; list all processes on t
 monitoring, processes | `$ ps -elf` | show processes in UNIX option format | LFS201 12.8
 monitoring, processes | `$ ps -o pid,pri,ni,cmd` | show only the process ID, priority, nice value, and the process command line | LFS201 Lab 12.1
 monitoring, processes | `$ ps -o pid,uid,cputime,pmem,command` | specific the fields in the output | LFS201 12.9
-processes | `$ ps aux |  grep -e 11737 -e 11044` | `-e` option is to match a pattern; also `--regexp` | LFS201 Lab 3.2
+processes | `$ ps aux \| grep -e 11737 -e 11044` | `-e` option is to match a pattern; also `--regexp` | LFS201 Lab 3.2
 monitoring, processes | `$ ps aux` | shows all processes | LFS201 12.6
 monitoring, processes | `$ ps aux` | shows every process on the system using BSD syntax | LFS201 Lab 12.1
 monitoring, processes | `$ ps auxf` | adding **f** flag shows how processes relate by ancestry | LFS201 12.7
@@ -511,7 +511,7 @@ lvm | `$ pvdisplay ...` | shows the physical volumes being used | LFS201 23.6
 lvm | `$ pvdisplay /dev/sda5` | shows physical volumes; leave off physical volume name to list all | LFS201 23.9
 lvm | `$ pvmove ...` | moves the data from one physical volume within the volume group to others | LFS201 23.6
 lvm | `$ pvremove ...` | remove a partition from a physical volume | LFS201 23.6
-virtualization | `$ qemu-img --help | grep formats:` | get list of supported formats | LFS201 28.17
+virtualization | `$ qemu-img --help \| grep formats:` | get list of supported formats | LFS201 28.17
 virtualization | `$ qemu-img convert -O vmdk myvm.qcow2 myvm.vmdk` | translate between disk image file formats | LFS201 28.17
 filesystem | `$ quota -g` | shows your current group quota | LFS201 19.9
 filesystem | `$ quota` | reports on usage and limits | LFS201 19.5
@@ -532,15 +532,15 @@ packages | `$ rpm -q --whatprovides libc.so.6` | shows what installed package pr
 packages | `$ rpm -q --whatrequires bzip2` | show prerequisites for **bzip2** | LFS201 6.13
 packages | `$ rpm -q ...` | make an RPM inquiry | LFS201 6.9
 packages | `$ rpm -q bash` | shows which version of a package is installed | LFS201 6.9
-packages | `$ rpm -qa |  grep bzip2` | find **bzip2** packages | LFS201 6.13
-packages | `$ rpm -qa | tee /tmp/rpm-qa.output` | get a listing of all RPMs on the system | LFS201 Lab 6.2
+packages | `$ rpm -qa \| grep bzip2` | find **bzip2** packages | LFS201 6.13
+packages | `$ rpm -qa \| tee /tmp/rpm-qa.output` | get a listing of all RPMs on the system | LFS201 Lab 6.2
 packages | `$ rpm -qa` | lists all installed packages on this system | LFS201 6.9
 packages | `$ rpm -qf /bin/bash` | shows which package a file came from; **-f** for file | LFS201 6.9
 packages | `$ rpm -qf /etc/logrotate.conf` | find out what package the file `/etc/logrotate.conf` belongs to | LFS201 Lab 6.1
 packages | `$ rpm -qi bash` | shows information about this package | LFS201 6.9
 packages | `$ rpm -qil $(rpm -qf /etc/logrotate.conf)` | find out the owner of `/etc/logrotate.conf` *and* list information about the package | LFS201 Lab 6.1
-security, system | `$ rpm -qil apparmor-utils | grep bin` | view AppArmor utilities on OpenSUSE | LFS201 41.21
-packages | `$ rpm -qil bzip2 |  less` | find **bzip2** packages | LFS201 6.13
+security, system | `$ rpm -qil apparmor-utils \| grep bin` | view AppArmor utilities on OpenSUSE | LFS201 41.21
+packages | `$ rpm -qil bzip2 \| less` | find **bzip2** packages | LFS201 6.13
 packages | `$ rpm -qil logrotate-3.8.6-15.el7.x86_64` | lists information about the package including all the files it contains | LFS201 Lab 6.1
 packages | `$ rpm -qilp foobar.rpm` | better way to list files in an RPM | LFS201 6.17
 packages | `$ rpm -qip foo-1.0.0-1.noarch.rpm` | shows information about this package from the package file, not the package database | LFS201 6.9
@@ -553,7 +553,7 @@ packages | `$ rpm -V talk` | verify **talk** package | LFS201 6.10
 packages | `$ rpm -Va` | verify all packages on system; output only when there is a problem | LFS201 6.10
 troubleshooting, system | `$ rpm -Va` | check all packages on the system | LFS 201 43.8
 packages | `$ rpm2cpio foobar.rpm > foobar.cpio` | creates the cpio archive | LFS201 6.17
-packages | `$ rpm2cpio foobar.rpm | cpio -t` | lists files in an RPM | LFS201 6.17
+packages | `$ rpm2cpio foobar.rpm \| cpio -t` | lists files in an RPM | LFS201 6.17
 packages | `$ rpmbuild --rebuild` | rebuild a binary package | LFS201 5.6
 backup | `$ rsync -av --delete --dry-run /usr/include .` | see which files will be removed or added if the command was run | Lab 40.3
 backup | `$ rsync -av --delete /usr/include .` | remove files that are no longer in source (?) | Lab 40.3
@@ -635,7 +635,7 @@ containers, docker | `$ sudo docker run httpd` | start the **httpd docker** cont
 containers, docker | `$ sudo docker stop b936b0afeb23` | stop **docker** container | LFS201 Lab 29.1
 filesystem | `$ sudo du --max-depth=1 -hx /` | calculate overall size of directories | LFS201 Lab 2.1
 filesystem | `$ sudo du -cshx --exclude=/proc *` | calculate overall size of directories | LFS201 Lab 2.1
-filesystem | `$ sudo dumpe2fs /dev/sda1 | grep superblock` | shows superblock locations | LFS201 20.9
+filesystem | `$ sudo dumpe2fs /dev/sda1 \| grep superblock` | shows superblock locations | LFS201 20.9
 filesystem | `$ sudo e4defrag -c /var/log` | analyze and report on fragmentation of `/var/log` | LFS201 Lab 20.1
 filesystem | `$ sudo e4defrag TARGET` | generic syntax | LFS201 Lab 20.1
 filesystem | `$ sudo edquota -u student` | opens up the quota settings for this user; soft and hard quotas can be set by block or inode | LFS201 Lab 19.2
@@ -802,9 +802,9 @@ monitoring, system | `$ sudo sysctl kernel.threads-max=100000` | change maximum 
 apps, kernel | `$ sudo sysctl net.ipv4.icmp_echo_ignore_all=1` | cause system not to respond to pings | LFS201 Lab 25.1
 boot, kernel | `$ sudo sysctl net.ipv4.ip_forward=1` | sets kernel runtime values with the **sysctl** interface | LFS201 25.8
 networks, security | `$ sudo sysctl net.ipv4.ip_forward=1` | turn on **ip forwarding** | LFS201 36.10
-​security, system | `$ sudo systemctl [enable | disable} apparmor` | cause AppArmor to be loaded or not loaded at boot | LFS201 41.19
+​security, system | `$ sudo systemctl [enable \| disable} apparmor` | cause AppArmor to be loaded or not loaded at boot | LFS201 41.19
 networks, security | `$ sudo systemctl [enable/disable] firewalld` | start **firewalld** | LFS201 36.10
-security, system | `$ sudo systemctl [start | stop | restart | status] apparmor` | change or inquire about the current state of AppArmor operation | LFS201 41.19
+security, system | `$ sudo systemctl [start \| stop \| restart \| status] apparmor` | change or inquire about the current state of AppArmor operation | LFS201 41.19
 networks, security | `$ sudo systemctl [start/stop] firewalld` | stop **firewalld** | LFS201 36.10
 startup/shutdown | `$ sudo systemctl daemon-reload` | reload 'things' after editing 'unit file' | Lab 39.2
 filesystem | `$ sudo systemctl daemon-reload` and `$ sudo systemctl restart local-fs.target` | restart after editing `/etc/fstab` | LFS201 18.15
@@ -824,7 +824,7 @@ startup/shutdown | `$ sudo systemctl status fake2.service` | show status of fake
 networks, security | `$ sudo systemctl status firewalld` | shows the current state of **firewalld** | LFS201 36.10
 containers, docker | `$ sudo systemctl stop docker` | stop **docker** service | LFS201 Lab 29.1
 startup/shutdown | `$ sudo systemctl stop foo.service` | stop (deactivate) a service | LFS201 39.8
-startup/shutdown | `$ sudo sysv-rc-conf cups [ on | off ]` | equivalent of **chkconfig** | LFS201 39.16
+startup/shutdown | `$ sudo sysv-rc-conf cups [ on \| off ]` | equivalent of **chkconfig** | LFS201 39.16
 monitoring, system | `$ sudo tail -f /var/log/messages` | view new messages continually | LFS201 11.5
 apps, monitoring, troubleshooting | `$ sudo tail -f /var/log/messages` | view log messages in real-time | Lab 39.2
 monitoring, system | `$ sudo tail -f /var/log/syslog`  (or `$ sudo telinit 3`) | view new messages continually | LFS201 11.5
@@ -840,7 +840,7 @@ encryption | `$ sudo umount /mnt` | unmounts the partition | LFS201 22.7
 partitions | `$ sudo umount /mnt` | unmounts the partition | LFS201 22.9
 partitions | `$ sudo umount mnt1 mnt2 mnt3` | unmount the three filesystems | LFS201 Lab 17.3
 partitions | `$ sudo umount mntpoint` | unmount the filesystem | LFS201 Lab 17.1
-startup/shutdown | `$ sudo update-rc.d cups [ defaults | purge ]` | equivalent of **chkconfig** | LFS201 39.16
+startup/shutdown | `$ sudo update-rc.d cups [ defaults \| purge ]` | equivalent of **chkconfig** | LFS201 39.16
 accounts | `$ sudo useradd -s /bin/csh -m -k /etc/skel -c "Bullwinkle J Moose" bmoose` | create a user account and use options to overrule defaults | LFS201 30.6
 accounts | `$ sudo useradd dexter` | create an account for user **dexter** | LFS201 30.6
 accounts | `$ sudo userdel morgan` | delete the user **morgan** | LFS201 30.7
@@ -869,7 +869,7 @@ packages | `$ sudo yum install yum-plugin-verify` | install the **yum-plugin-ver
 packages | `$ sudo yum list "*KEYWORD*"` | tells what is installed and what else is available | LFS201 8.8
 packages | `$ sudo yum list "kernel*"` | list all installed or available kernel-related packages | LFS201 Lab 8.1
 packages | `$ sudo yum list "yum-plugin*"` | lists plugins | LFS201 8.11
-packages | `$ sudo yum list [installed | updates | available ]` | list all packages, or just those installed, available, or updates that have not yet been installed | LFS201 8.8
+packages | `$ sudo yum list [installed \| updates \| available ]` | list all packages, or just those installed, available, or updates that have not yet been installed | LFS201 8.8
 packages | `$ sudo yum list available "*bash*"` | find nstalled and available **bash** packages | LFS201 Lab 8.2
 packages | `$ sudo yum list available "bash*"` | find nstalled and available **bash** packages | LFS201 Lab 8.2
 packages | `$ sudo yum list installed "*bash*"` | find nstalled and available **bash** packages | LFS201 Lab 8.2
@@ -938,7 +938,7 @@ processes | `$ ulimit -S -n` | view soft limt | LFS201 Lab 3.1
 processes | `$ ulimit [options] [limit]` | generic syntax | LFS201 3.8
 accounts, files, permissions | `$ umask 0022` | changes the umask value | LFS201 32.10
 accounts, files, permissions | `$ umask` | shows which permissions should be denied (0002 on my machine) | LFS201 32.10
-filesystem | `$ umount [device-file | mount-point]` | generic umount syntax | LFS201 18.12
+filesystem | `$ umount [device-file \| mount-point]` | generic umount syntax | LFS201 18.12
 system | `$ uname -r` | gives the current kernel version  | LFS201 26.7
 system | `$ uname ...` | prints system information | LFS201 26.7
 startup/shutdown | `$ update-grub ...` or `$ grub2-mkconfig ...` | modify `grub.cfg` | LFS201 38.4
@@ -978,7 +978,7 @@ lvm | 1 `$ sudo pvmove /dev/sdc1` | reduce a volume group | LFS201 23.11
 lvm | 1 `$ sudo umount /mylvm` | shrink the filesystem | LFS201 23.11
 accounts | 2 `$ cd /bin ; sudo ln bash rbash` | set up restricted account; create a link from bash to rbash | LFS201 30.15
 lvm | 2 `$ mkdir /mysnap` | make a mount point | LFS201 23.12
-packages | 2 `$ rpm2cpio foobar.rpm | cpio --extract --make-directories` | extract onto the system | LFS201 6.17
+packages | 2 `$ rpm2cpio foobar.rpm \| cpio --extract --make-directories` | extract onto the system | LFS201 6.17
 lvm | 2 `$ sudo fsck -f /dev/vg/mylvm` | shrink the filesystem | LFS201 23.11
 raid | 2 `$ sudo mdadm --create /dev/md0 --level=1 --raid-disks=2 /dev/sdbX /dev/sdcX` or `$ mdadm --create /dev/md0 ... /dev/sdb1 /dev/sdc1` | set up array | LFS201 24.6
 filesystem | 2 `$ sudo mount -t tmpfs none /mnt/tmpfs` | mount a new **tmpfs** filesystem | LFS201 Lab 16.1
