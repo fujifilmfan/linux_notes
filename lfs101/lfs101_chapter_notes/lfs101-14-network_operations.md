@@ -7,6 +7,7 @@ Chapter 14: Network Operations
 [14.3: Browsers](#143-browsers)  
 [14.4: Transferring Files](#144-transferring-files)  
 [14.5: Summary](#145-summary)  
+[Paths and Commands](#paths-and-commands)  
   
 ### 14.0: Introduction/ Learning Objectives
 ----
@@ -712,63 +713,60 @@ You have completed this chapter. Let’s summarize the key concepts covered:
 * **ftp**, **sftp**, **ncftp**, and **yafc** are command line FTP clients used in Linux.
 * You can use **ssh** to run commands on remote systems.
 
-PATHS:  
+### Paths and Commands
+----
+  
+#### Paths  
 
-COMMANDS:  
-14.1  
-`$ hostname`  
-`$ cat /etc/hosts`  
-`$ cat /etc/resolv.conf`  
-`$ host linuxfoundation.org`  
-`$ nslookup linuxfoundation.org`  
-`$ dig linuxfoundation.org`  
-`$ whois 23.185.0.2`  
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
+network | `$ /etc/hosts` | _ | LFS101 14.1
+network | `$ /etc/resolv.conf` | local nameserver(?) | LFS101 14.1
+network | `$ /sbin/ifconfig` | view network settings | LFS101 Lab 14.1
 
-14.2  
-`$ /sbin/ip addr show`   
-`$ /sbin/ip route show`  
-`$ ping <hostname>`  
-`$ route -n`  
-`$ ip route`  
-`$ route –n`  
-`$ ip route`  
-`$ route add -net address`  
-`$ ip route add`  
-`$ route del -net address`  
-`$ ip route del`  
-`$ traceroute google.com`  
-`$ ethtool eth0`  
-`$ netstat -r`  
-`$ sudo hostname LFstudent`  
+  
+#### Commands  
 
-14.3  
-`$ wget <url>`  
-`$ sudo wget https://docs.gitlab.com/ee/user/markdown.html`  
-`$ sudo wget https://training.linuxfoundation.org`  
-`$ curl <URL>`  
-`$ curl -o saved.html <URL>`  
-
-14.4  
-`$ ftp ftp.gnu.org`  
-`$ get welcome.msg`  
-`$ ssh some_system`  
-`$ ssh -l someone some_system`  
-`$ ssh someone@some_system`  
-`$ ssh some_system my_command`  
-`$ scp <localfile> <user@remotesystem>:/home/user>`  
-    
-Lab 14.1  
-`$ /sbin/ifconfig`  
-`$ sudo systemctl restart NetworkManager`  
-`$ student:/tmp> sudo systemctl restart network`  
-`$ student:/tmp> sudo service NetworkManager restart`  
-`$ student:/tmp> sudo service network restart`  
-`$ sudo dhclient eth0`  
-`$ hostname`  
-`$ sudo ping -c 3 google.com`  
-`$ sudo traceroute 8.8.8.8`  
-`$ ip route show`  
-`$ sudo mtr --report-cycles 3 8.8.8.8`  
-
-
-
+Topics | Command | Notes | Reference
+------ | ------- | ----- | ---------
+network | `$ hostname` | shows the system's hostname | LFS101 14.1
+network | `$ host linuxfoundation.org` | DNS lookup for linuxfoundation.org | LFS101 14.1
+network | `$ nslookup linuxfoundation.org` | query internet name server for linuxfoundation.org | LFS101 14.1
+network | `$ dig linuxfoundation.org` | DNS lookup for linuxfoundation.org | LFS101 14.1
+network | `$ whois 23.185.0.2` | get information about IP owner | LFS101 14.1
+network | `$ ip addr show` | view IP address (do I need to use the one in `/sbin` or is `/usr/sbin` fine?) | LFS101 14.2
+network | `$ ip route show` | view routing info (do I need to use the one in `/sbin` or is `/usr/sbin` fine?) | LFS101 14.2
+network | `$ ping <hostname>` | check whether a machine on the network can receive and send data | LFS101 14.2
+network | `$ route -n` | show current routing table | LFS101 14.2
+network | `$ ip route` | show current routing table | LFS101 14.2
+network | `$ route add -net address` | add static route | LFS101 14.2
+network | `$ ip route add` | add static route | LFS101 14.2
+network | `$ route del -net address` | delete statis route | LFS101 14.2
+network | `$ ip route del` | delete static route | LFS101 14.2
+network | `$ traceroute google.com` | inspect the route which the data packet takes to reach the destination host  | LFS101 14.2
+network | `$ ethtool eth0` | _ | LFS101 14.2
+network | `$ netstat -r` | _ | LFS101 14.2
+network | `$ sudo hostname LFstudent` | changes system's hostname | LFS101 14.2
+network | `$ wget <url>` | generic syntax (get a website) | LFS101 14.3
+network | `$ sudo wget https://docs.gitlab.com/ee/user/markdown.html` | example **wget** usage | LFS101 14.3
+network | `$ sudo wget https://training.linuxfoundation.org` | example **wget** usage | LFS101 14.3
+network | `$ curl <URL>` | generic syntax (get a website) | LFS101 14.3
+network | `$ curl -o saved.html <URL>` | save to a file called "saved.html" | LFS101 14.3
+network | `$ ftp ftp.gnu.org` | get a file from an FTP server | LFS101 14.4
+network | `$ get welcome.msg` | ?? | LFS101 14.4
+network | `$ ssh some_system` | connect to some_system | LFS101 14.4
+network | `$ ssh -l someone some_system` | connect to some_system with login name | LFS101 14.4
+network | `$ ssh someone@some_system` | connect to some_system with login name | LFS101 14.4
+network | `$ ssh some_system my_command` | connect to some_system and execute my_command | LFS101 14.4
+network | `$ scp <localfile> <user@remotesystem>:/home/user>` | generic syntax; transfer a file securely | LFS101 14.4
+network | `$ sudo systemctl restart NetworkManager` | restart the network or NetworkManager (depends on distribution) | LFS101 Lab 14.1
+network | `$ $ sudo systemctl restart network` | restart the network or NetworkManager (depends on distribution) | LFS101 Lab 14.1
+network | `$ $ sudo service NetworkManager restart` | restart the network or NetworkManager (depends on distribution) | LFS101 Lab 14.1
+network | `$ $ sudo service network restart` | restart the network or NetworkManager (depends on distribution) | LFS101 Lab 14.1
+network | `$ sudo dhclient eth0` | get a fresh IP address if restarting the network / NetworkManager didn't do it | LFS101 Lab 14.1
+network | `$ hostname` | check hostname; make sure it's valid | LFS101 Lab 14.1
+network | `$ sudo ping -c 3 google.com` | see if site is up and reachable | LFS101 Lab 14.1
+network | `$ sudo traceroute 8.8.8.8` | trace the route to the DNS to see if the route is correct | LFS101 Lab 14.1
+network | `$ ip route show` | check that route is setup properly (first to network interface or IP of router) | LFS101 Lab 14.1
+network | `$ sudo mtr --report-cycles 3 8.8.8.8` | trace route continuously | LFS101 Lab 14.1
+  
