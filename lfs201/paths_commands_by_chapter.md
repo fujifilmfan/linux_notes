@@ -260,7 +260,8 @@ troubleshooting, system | `/var/log/secure` | useful for troubleshooting | LFS 2
 troubleshooting, system | `/proc/interrupts` | useful for troubleshooting network drivers | LFS 201 43.7
 troubleshooting, system | `/sys/class/net` | useful for troubleshooting network drivers | LFS 201 43.7
 troubleshooting, system | `/etc/fstab` | location of filesystem table | LFS 201 43.10
-
+rescue, system | `/mnt/sysimage` | location of mounted filesystems during system rescue | LFS201 44.6
+rescue, system | `/mnt/source` | mount location for a network-based rescue | LFS201 44.6
 
 
 ### Commands  
@@ -1003,6 +1004,10 @@ troubleshooting, system | `$ aide ...` | used for  **intrusion detection** and i
 troubleshooting, system | `$ sudo aide --check` | run a scan on your files and compare them to the last scan | LFS 201 43.8
 troubleshooting, system | `$ sudo mount -o remount,rw /` | remount root filesystem with write permission | LFS 201 43.10
 troubleshooting, system | `$ sudo mount -a` | try and mount all filesystem | LFS 201 43.10
-  
+rescue, system | `$ sudo chroot /mnt/sysimage` | change into the `/mnt/sysimage` environment | LFS201 44.6
+rescue, system | `$ sudo rpm -ivh --force --root=/mnt/sysimage /mnt/source/Packages/vsftpd-2*.rpm` | install packages outside a **chroot**-ed environmnet on an **rpm**-based system by using the **--root** option | LFS201 44.6
+rescue, system | `$ dd if=boot.iso of=/dev/sdX` | use **dd** to place boot image on a USB key drive | LFS201 44.9
+rescue, system | **livecd-tools** | suite of tools for creating and manipulating live media | LFS201 44.9
+rescue, system | **liveusb-creator** | creates live CD or DVD images (ISO images) from kickstart files | LFS201 44.9
 
 
