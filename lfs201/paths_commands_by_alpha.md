@@ -1,5 +1,5 @@
-Paths and Commands by Chapter
------------------------------
+Paths and Commands Sorted Alphabetically
+----------------------------------------
 
 I conducted a very rough sort in Excel that did not take into account prefixes like `sudo`, that `/boot` should appear before `/boot/config`, or any other sensible thing that appears unsensible here.
   
