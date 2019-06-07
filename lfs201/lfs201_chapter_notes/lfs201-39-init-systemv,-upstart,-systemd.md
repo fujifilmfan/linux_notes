@@ -105,6 +105,7 @@ By the end of this chapter, you should be able to:
 * these are defined differently on different distributions
 
 **System Runlevels**
+
 Runlevel | Meaning
 -------- | -------
 S, s     | Same as 1
