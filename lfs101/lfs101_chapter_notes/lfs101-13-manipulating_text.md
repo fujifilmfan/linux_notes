@@ -9,6 +9,7 @@ Chapter 13: Manipulating Text
 [13.5: grep and strings](#135-grep-and-strings)  
 [13.6: Miscellaneous Text Utilities](#136-miscellaneous-text-utilities)  
 [13.7: Summary](#137-summary)  
+[Paths and Commands](#paths-and-commands)  
   
 ### 13.0: Introduction/ Learning Objectives
 ----
@@ -529,108 +530,103 @@ You have completed this chapter. Let’s summarize the key concepts covered:
 * The **z** command family is used to read and work with compressed files.
 
 
-PATHS:  
+### Paths and Commands
+----
+  
+#### Paths  
 
-COMMANDS:  
-13.1  
-`$ cat <filename>`  
-`$ cat file1 file2`  
-`$ cat file1 file2 > newfile`  
-`$ cat file >> existingfile`  
-`$ cat > file`  
-`$ cat >> file`  
-`$ tac file`  
-`$ tac file1 file2 > newfile`  
-`$ cat > filename << EOF` (enter EOF at beginning of a line to exit)  
-`$ echo string`  
-`$ echo -e "string \n new line"`  
-`$ echo -e "string \t tab"`  
-`$ echo string > newfile`  
-`$ echo string >> existingfile`  
-`$ echo $variable`  
+Topics | Path | Notes | Reference
+------ | ---- | ----- | ---------
 
-13.2 
-`$ less <filename>`  
-`$ cat <filename> | less`  
-`$ head –n 5 grub.cfg`  
-`$ tail -n 15 atmtrans.txt`  
-`$ tail -f atmtrans.txt`  
-`$ zcat compressed-file.txt.gz`  
-`$ zless <filename>.gz`  
-`$ zmore <filename>.gz`  
-`$ zgrep -i less test-file.txt.gz`  
-`$ zdiff filename1.txt.gz filename2.txt.gz`  
+  
+#### Commands  
 
-13.3  
-`$ sed -e command <filename>`  
-`$ sed -f scriptfile <filename>`  
-`$ sed s/pattern/replace_string/ file`  
-`$ sed s:pattern:replace_string: file`  
-`$ sed s/pattern/replace_string/g file`  
-`$ sed 1,3s/pattern/replace_string/g file`  
-`$ sed -i s/pattern/replace_string/g file`  
-`$ sed s/pattern/replace_string/g file1 > file2`  
-`$ sed -e 's/01/JAN/' -e 's/02/FEB/' -e 's/03/MAR/' -e 's/04/APR/' -e 's/05/MAY/' \  
-    -e 's/06/JUN/' -e 's/07/JUL/' -e 's/08/AUG/' -e 's/09/SEP/' -e 's/10/OCT/' \  
-    -e 's/11/NOV/' -e 's/12/DEC/'`  
-`$ awk ‘command’ var=value file`  
-`$ awk -f scriptfile var=value file`  
-`$ awk '{ print $0 }' /etc/passwd`  
-`$ awk -F: '{ print $1 }' /etc/passwd`  
-`$ awk -F: '{ print $1 $7 }' /etc/passwd`  
-`$ sed s/'\/sbin\/nologin'/'\/bin\/bash'/g /etc/passwd > passwd_new`  
-`$ student:/tmp> sed s:'/sbin/nologin':'/bin/bash':g /etc/passwd`  
-`$ student:/tmp> sed s:/sbin/nologin:/bin/bash:g /etc/passwd`  
-
-13.4  
-`$ sort <filename>`  
-`$ cat file1 file2 | sort`  
-`$ sort -r <filename>`  
-`$ sort -k 3 <filename>`  
-`$ sort file1 file2 | uniq > file3`  
-`$ sort -u fileq file2 > file3`  
-`$ uniq -c filename`  
-`$ paste file1 file2`  
-`$ paste -d, file1 file2`  
-`$ join file1 file2`  
-`$ split infile`  
-`$ split infile <Prefix>`  
-`$ wc -l american-english`  
-`$ split american-english dictionary`  
-`$ awk -F: '{ print $7 }' /etc/passwd | sort | uniq`  
-`$ awk -F: '{ print $7 }' /etc/passwd | sort -u`  
-
-13.5  
-`$ grep [pattern] <filename>`  
-`$ grep -v [pattern] <filename>`  
-`$ grep [0-9] <filename>`  
-`$ grep -C 3 [pattern] <filename>`  
-`$ strings book1.xls | grep my_string`  
-`$ grep student /etc/passwd`  
-`$ grep ftp /etc/services`  
-`$ grep -i ftp /etc/services | grep -i /tcp`  
-`$ grep -i ftp /etc/services | grep -iv /tcp`  
-`$ grep -e ^ts /etc/services`  
-`$ grep -e st$ /etc/services`  
-`$ grep ftp /etc/services | grep tcp`  
-`$ grep -n ftp /etc/services | grep -v tcp`  
-`$ grep -e ^ts -e st$ /etc/services`  
-
-13.6  
-`$ tr [option] set1 [set2]`  
-`$ tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ`  
-`$ tr '{}' '()' < inputfile > outputfile`  
-`$ echo "This is for testing" | tr [:space:] '\t'`  
-`$ echo "This   is   for    testing" | tr -s [:space:]`  
-`$ echo "the geek stuff" | tr -d 't'`  
-`$ echo "my username is 432234" | tr -cd [:digit:]`  
-`$ tr -cd [:print:] < file.txt`  
-`$ tr -s '\n' ' ' < file.txt`  
-`$ ls -l | tee newfile`  
-`$ wc -l filename`  
-`$ ls -l | cut -d" " -f3`
-`$ ls -l /etc | tee ls_output`  
-`$ ls -l /etc | tee /tmp/ls-output`  
-`$ ls -l /var/log | grep -e \\.log$`  
-``[student@centos log]$ wc `ls /var/log | grep -e \\.log$` ``  
-`$ wc /var/log/*.log`  
+Topics | Command | Notes | Reference
+------ | ------- | ----- | ---------
+apps, text | `$ cat <filename>` | view file | LFS101 13.1
+apps, text | `$ cat file1 file2` | concatenate multiple files and display the output; i.e., the entire content of the first file is followed by that of the second file | LFS101 13.1
+apps, text | `$ cat file1 file2 > newfile` | combine multiple files and save the output into a new file | LFS101 13.1
+apps, text | `$ cat file >> existingfile` | append a file to the end of an existing file | LFS101 13.1
+apps, text | `$ cat > file` | any subsequent lines typed will go into the file, until **CTRL-D** is typed | LFS101 13.1
+apps, text | `$ cat >> file` | any subsequent lines are appended to the file, until **CTRL-D** is typed | LFS101 13.1
+apps, text | `$ tac file` | prints lines in reverse order | LFS101 13.1
+apps, text | `$ tac file1 file2 > newfile` | prints lines in reverse order and writes them to newfile | LFS101 13.1
+apps, text | `$ cat > filename << EOF` | create a file (enter EOF at beginning of a line to exit) | LFS101 13.1
+apps, text | `$ echo string` | display text | LFS101 13.1
+apps, text | `$ echo -e "string \n new line"` | use **-e** to allow special character sequences | LFS101 13.1
+apps, text | `$ echo -e "string \t tab"` | use **-e** to allow special character sequences | LFS101 13.1
+apps, text | `$ echo string > newfile` | the specified string is placed in a new file | LFS101 13.1
+apps, text | `$ echo string >> existingfile` | the specified string is appended to the end of an already existing file | LFS101 13.1
+apps, text | `$ echo $variable` | the contents of the specified environment variable are displayed | LFS101 13.1
+apps, text | `$ less <filename>` | view large files without reading the whole thing into memory | LFS101 13.2
+apps, text | `$ cat <filename> | less` | view large files without reading the whole thing into memory | LFS101 13.2
+apps, text | `$ head –n 5 grub.cfg` | display first five lines | LFS101 13.2
+apps, text | `$ tail -n 15 atmtrans.txt` | display last fifteen lines | LFS101 13.2
+apps, text | `$ tail -f atmtrans.txt` | continuous display last lines | LFS101 13.2
+apps, text | `$ zcat compressed-file.txt.gz` | view a compressed file | LFS101 13.2
+apps, text | `$ zless <filename>.gz` | page through a compressed file | LFS101 13.2
+apps, text | `$ zmore <filename>.gz` | page through a compressed file | LFS101 13.2
+apps, text | `$ zgrep -i less test-file.txt.gz` | search inside a compressed file | LFS101 13.2
+apps, text | `$ zdiff filename1.txt.gz filename2.txt.gz` | compare two compressed files | LFS101 13.2
+apps, text | `$ sed -e command <filename>` | specify editing commands at the command line, operate on file, and put the output on standard out (e.g., the terminal) | LFS101 13.3
+apps, text | `$ sed -f scriptfile <filename>` | specify a scriptfile containing sed commands, operate on file, and put output on standard out | LFS101 13.3
+apps, text | `$ sed s/pattern/replace_string/ file` | substitute first string occurrence in a line | LFS101 13.3
+apps, text | `$ sed s:pattern:replace_string: file` | substitute first string occurrence in a line | LFS101 13.3
+apps, text | `$ sed s/pattern/replace_string/g file` | substitute all string occurrences in a line | LFS101 13.3
+apps, text | `$ sed 1,3s/pattern/replace_string/g file` | substitute all string occurrences in a range of lines | LFS101 13.3
+apps, text | `$ sed -i s/pattern/replace_string/g file` | save changes for string substitution in the same file | LFS101 13.3
+apps, text | `$ sed s/pattern/replace_string/g file1 > file2` | save changes for string substitution in the same file; safer than using **-i** | LFS101 13.3
+apps, text | `$ sed -e 's/01/JAN/' -e 's/02/FEB/' -e 's/03/MAR/' -e 's/04/APR/' -e 's/05/MAY/' -e 's/06/JUN/' -e 's/07/JUL/' -e 's/08/AUG/' -e 's/09/SEP/' -e 's/10/OCT/' -e 's/11/NOV/' -e 's/12/DEC/'` | convert 01/01/... to JAN/FEB/... | LFS101 13.3
+apps, text | `$ awk ‘command’ var=value file` | specify a command directly at the command line | LFS101 13.3
+apps, text | `$ awk -f scriptfile var=value file` | specify a file that contains the script to be executed along with **f**   | LFS101 13.3
+apps, text | `$ awk '{ print $0 }' /etc/passwd` | print entire file | LFS101 13.3
+apps, text | `$ awk -F: '{ print $1 }' /etc/passwd` | print first field (column) of every line, separated by a space | LFS101 13.3
+apps, text | `$ awk -F: '{ print $1 $7 }' /etc/passwd` | print first and seventh field of every line | LFS101 13.3
+apps, text | `$ sed s/'\/sbin\/nologin'/'\/bin\/bash'/g /etc/passwd > passwd_new` | search for all instances of the user command interpreter (shell) equal to `/sbin/nologin` in `/etc/passwd` and replace them with `/bin/bash` | LFS101 13.3
+apps, text | `$ sed s:'/sbin/nologin':'/bin/bash':g /etc/passwd` | get output on stdout | LFS101 13.3
+apps, text | `$ sed s:/sbin/nologin:/bin/bash:g /etc/passwd` | use the colon to avoid having to escape slashes | LFS101 13.3
+apps, text | `$ sort <filename>` | sort the lines in the specified file, according to the characters at the beginning of each line | LFS101 13.4
+apps, text | `$ cat file1 file2 | sort` | combine the two files, then sort the lines and display the output on the terminal | LFS101 13.4
+apps, text | `$ sort -r <filename>` | sort the lines in reverse order | LFS101 13.4
+apps, text | `$ sort -k 3 <filename>` | sort the lines by the 3rd field on each line instead of the beginning | LFS101 13.4
+apps, text | `$ sort file1 file2 | uniq > file3` | remove duplicate entries from multiple files | LFS101 13.4
+apps, text | `$ sort -u fileq file2 > file3` | remove duplicate entries from multiple files | LFS101 13.4
+apps, text | `$ uniq -c filename` | count duplicate entries | LFS101 13.4
+apps, text | `$ paste file1 file2` | paste contents from two files | LFS101 13.4
+apps, text | `$ paste -d, file1 file2` | paste contents from two files using a different delimiter | LFS101 13.4
+apps, text | `$ join file1 file2` | combine two files on a common field | LFS101 13.4
+apps, text | `$ split infile` | break up large file in 1000-line segments | LFS101 13.4
+apps, text | `$ split infile <Prefix>` | split file using a different prefix for the new file | LFS101 13.4
+apps, text | `$ wc -l american-english` | count the words in the dictionary | LFS101 13.4
+apps, text | `$ split american-english dictionary` | split the dictionary into separate files | LFS101 13.4
+apps, text | `$ awk -F: '{ print $7 }' /etc/passwd | sort | uniq` | generate a column containing a unique list of all the shells used for users in `/etc/passwd` | LFS101 13.4
+apps, text | `$ awk -F: '{ print $7 }' /etc/passwd | sort -u` | generate a column containing a unique list of all the shells used for users in `/etc/passwd` | LFS101 13.4
+apps, text | `$ grep [pattern] <filename>` | search for a pattern in a file and print all matching lines | LFS101 13.5
+apps, text | `$ grep -v [pattern] <filename>` | print all lines that do not match the pattern | LFS101 13.5
+apps, text | `$ grep [0-9] <filename>` | print the lines that contain the numbers 0 through 9 | LFS101 13.5
+apps, text | `$ grep -C 3 [pattern] <filename>` | print context of lines (specified number of lines above and below the pattern) for matching the pattern | LFS101 13.5
+apps, text | `$ strings book1.xls | grep my_string` | search for **my_string** in a spreadsheet | LFS101 13.5
+apps, text | `$ grep student /etc/passwd` | search for your username in file `/etc/passwd` | LFS101 13.5
+apps, text | `$ grep ftp /etc/services` | find all entries in `/etc/services` that include the string **ftp** | LFS101 13.5
+apps, text | `$ grep -i ftp /etc/services | grep -i /tcp` | find all entries in `/etc/services` that include the string **ftp** and use the **tcp** protocol | LFS101 13.5
+apps, text | `$ grep -i ftp /etc/services | grep -iv /tcp` | find all entries in `/etc/services` that include the string **ftp** and do not use the **tcp** protocol | LFS101 13.5
+apps, text | `$ grep -e ^ts /etc/services` | get all strings that start with 'ts' | LFS101 13.5
+apps, text | `$ grep -e st$ /etc/services` | get all strings that end with 'st' | LFS101 13.5
+apps, text | `$ grep ftp /etc/services | grep tcp` | find all entries in `/etc/services` that include the string **ftp** and use the **tcp** protocol | LFS101 13.5
+apps, text | `$ grep -n ftp /etc/services | grep -v tcp` | find all entries in `/etc/services` that include the string **ftp** and do not use the **tcp** protocol and print line number | LFS101 13.5
+apps, text | `$ grep -e ^ts -e st$ /etc/services` | get all strings that start with 'ts' or end with 'st' | LFS101 13.5
+apps, text | `$ tr [option] set1 [set2]` | generic syntax for translate | LFS101 13.6
+apps, text | `$ tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ` | convert lower case to upper case | LFS101 13.6
+apps, text | `$ tr '{}' '()' < inputfile > outputfile` | translate braces into parenthesis | LFS101 13.6
+apps, text | `$ echo "This is for testing" | tr [:space:] '\t'` | translate white-space to tabs | LFS101 13.6
+apps, text | `$ echo "This |  is |  for | testing" | tr -s [:space:]` | squeeze repetition of characters using **-s** | LFS101 13.6
+apps, text | `$ echo "the geek stuff" | tr -d 't'` | delete specified characters using **-d** option | LFS101 13.6
+apps, text | `$ echo "my username is 432234" | tr -cd [:digit:]` | complement the sets using **-c** option | LFS101 13.6
+apps, text | `$ tr -cd [:print:] < file.txt` | remove all non-printable character from a file | LFS101 13.6
+apps, text | `$ tr -s '\n' ' ' < file.txt` | join all the lines in a file into a single line | LFS101 13.6
+apps, text | `$ ls -l | tee newfile` | takes output from any command and sends it to STDOUT and also writes it to a file | LFS101 13.6
+apps, text | `$ wc -l filename` | counts lines, words, and characters | LFS101 13.6
+apps, text | `$ ls -l | cut -d" " -f3` | display third column delimited by a blank space | LFS101 13.6
+apps, text | `$ ls -l /etc | tee ls_output` | list contents of `/etc` while both saving the output in a file and displaying it at the terminal | LFS101 13.6
+apps, text | `$ wc /var/log/*.log` | using **wc** (word count), find out how many lines, words, and characters there are in all the files in `/var/log` that have the '.log' extension | LFS101 13.6
+  
