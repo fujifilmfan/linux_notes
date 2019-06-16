@@ -602,7 +602,7 @@ startup/shutdown | `$ sudo apt install sysvinit-utils chkconfig` | install sysvi
 monitoring, system | `$ sudo bash -c 'echo 100000 > /proc/sys/kernel/threads-max'` | change maximum number of threads | LFS201 11.10
 partitions | `$ sudo blkid -L root` | convert LABEL to 'root'(?) | LFS201 17.12
 partitions | `$ sudo blkid /dev/sda*` | report on block devices matching the pattern | LFS201 17.12
-partitions | `$ sudo blkid` | ?? | LFS201 17.12
+partitions | `$ sudo blkid ...` | locate/print block device attributes | LFS201 17.12
 accounts | `$ sudo chage -d 0 USERNAME` | force a user to change their password at next login | LFS201 30.13
 accounts | `$ sudo chage -E 2012-4-1 morgan` | set the password expiration for morgan to 2012-4-1 | LFS201 30.13
 accounts | `$ sudo chage -E 2014-09-11 morgan` | lock **morgan**'s account by changing the expiration date to a date in the past | LFS201 30.8
