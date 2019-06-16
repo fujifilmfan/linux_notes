@@ -19,7 +19,6 @@ By the end of this chapter, you should be able to:
 * Search for patterns using **grep**.
 * Use multiple other utilities for file and text manipulation.
 
-
 ### 13.1: cat and echo
 ----
 #### Command Line Tools
