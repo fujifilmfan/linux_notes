@@ -1,5 +1,7 @@
-Processes, System Monitoring, System Tunables: 3, 11, 12, 13, 14, 15, 25, 9 (101)
+Processes, System Monitoring, System Tunables
 -----
+
+### Chapters: LFS101: 9, LFS201: 3, 11, 12, 13, 14, 15, 25
 
 ### Ch.3
 * find files in /usr/bin with SUID / SGID /sticky bits set - `$ find /usr/bin -perm -4000 | xargs ls -l`
