@@ -1,7 +1,7 @@
 Storage Management
 ------------------
 
-### Chapters: LFS201: 16
+### Chapters: LFS101: 2, LFS201: 16, 17, 18
 
 ### Ch.16
 * list available filesystems - `$ cat /proc/filesystems`
@@ -37,18 +37,20 @@ When adding a new internal disk to an existing server, in which best logical ord
 2. Format with a filesystem
 3. Edit `/etc/fstab`
 4. Reboot the system
-I got it right. :)  
 
 
-### Lab 17.1
-* 1 create a file full of zeros 1 GB in length - `$ dd if=/dev/zero of=imagefile bs=1M count=1024`
-* 1 put a filesystem on it - `$ mkfs.ext4 imagefile`
-* 1 mount it somewhere - `$ mkdir mntpoint`, `$ sudo mount -o loop imagefile mntpoint`
-* 1 unmount it - `$ sudo umount mntpoint`
-* 2  - `$ sudo losetup /dev/loop2 imagefile`
-* 2  - `$ sudo mount /dev/loop2 mntpoint`
-* 2  - `$ sudo umount mntpoint`
-* 2  - `$ sudo losetup -d /dev/loop2`
+### Use a file as a disk partition
+* reate a file full of zeros 1 GB in length - `$ dd if=/dev/zero of=imagefile bs=1M count=1024`
+* put a filesystem on it - `$ mkfs.ext4 imagefile`
+* mount and unmount on a directory
+    * `$ mkdir mntpoint`
+    * `$ sudo mount -o loop imagefile mntpoint`
+    * `$ sudo umount mntpoint`
+* mount and unmount using loop
+    * `$ sudo losetup /dev/loop2 imagefile`
+    * `$ sudo mount /dev/loop2 mntpoint`
+    * `$ sudo umount mntpoint`
+    * `$ sudo losetup -d /dev/loop2`
 
 ### Lab 17.2 and 17.3
 * run fdisk on your imagefile
@@ -79,18 +81,12 @@ I got it right. :)
 * `$ lsattr <filename>` display attributes for a file
 
 
-* make an ext4 filesystem on a partition or imagefile - `$ sudo mkfs -t ext4 /dev/sda10` or `$ sudo mkfs.ext4 /dev/sda10`
-* different filesystems have different options that can be set when formatting
 * check health of unmounted filesystem - `$ sudo fsck -t ext4 /dev/sda10` or `$ sudo fsck.ext4 /dev/sda10`
 * automatically repair a filesystem - `$ sudo fsck -a /dev/sda10`
 * interactively repair a filesystem - `$ sudo fsck -r /dev/sda10`
-* list currently mounted filesystems - `$ mount`
-* mount an ext filesystem at `/home` - `$ sudo mount -t ext /dev/sdb4 /home`
 * mount a filesystem with a label - `$ sudo mount LABEL=home /home` or `$ sudo mount -L home /home`
-* remount a filesystem with the read-only attribute - `$ sudo mount -o remount,ro /myfs`
 * view partitions by-id, by-path, by-uuid - `ls -al /dev/disk/...`
 * mount all filesystems in `/etc/fstab` - `$ mount -a`
-* unmount the `/dev/sda3` device - `$ sudo umount /dev/sda3`
 * list open files - `$ lsof`
 
 ### Lab 18.1
@@ -106,68 +102,32 @@ I got it right. :)
 * try appending output to `/tmp/appendit`, try renaming the file, creating a hard link to the file, and deleting the file as both the normal user and as root - `$ echo hello >> appendit`, `$ mv appendit appendit.rename`, `$ ln appendit appendit.hardlink`, `$ rm -f appendit`, `$ sudo su`, `$ echo hello >> appendit`, `$ mv appendit appendit.rename`, `$ ln appendit appendit.hardlink`, `$ rm -f appendit`, `$ exit`
 * remove this file by removing the extended attributes - `$ sudo su`, `$ lsattr appendit`, `$ ls appendit`
 
-### Lab 18.2
-* use fdisk to create a new 250 MB partition on your system, probably on `/dev/sda` or create a file full of zeros to use as a loopback file to simulate a new partition
-* use mkfs to format a new filesystem on the partition or loopback file just created; do this three times, changing the block size each time. Note the locations of the superblocks, the number of block groups and any other pertinent information, for each case.
-* create a new subdirectory (say /mnt/tempdir) and mount the new filesystem at this location. Verify it has been mounted.
-* unmount the new filesystem, and then remount it as read-only.
-* try to create a file in the mounted directory. You should get an error here, why?
-* unmount the filesystem again.
-* add a line to your `/etc/fstab` file so that the filesystem will be mounted at boot time.
-* mount the filesystem
-* modify the configuration for the new filesystem so that binary files may not be executed from the filesystem (change defaults to noexec in the /mnt/tempdir entry). Then remount the filesystem and copy an executable file (such as /bin/ls) to /mnt/tempdir and try to run it. You should get an error: why?
-    * Physical Partition Solution:
-    ```
-    1. We won’t show the detailed steps in fdisk, as it is all ground covered earlier. We will assume the partition created is /dev/sda11, just to have something to show.
-        $ sudo fdisk /dev/sda
-        .....
-        w
-        $ partprobe -s
-    Sometimes the partprobe won’t work, and to be sure the system knows about the new partition you have to reboot.
-    2. $ sudo mkfs -t ext4 -v /dev/sda11 $ sudo mkfs -t ext4 -b 2048 -v /dev/sda11 $ sudo mkfs -t ext4 -b 4096 -v /dev/sda11
-    Note the -v flag (verbose) will give the requested information; you will see that for a small partition like this the default is 1024 byte blocks.
-    3. $ sudo mkdir /mnt/tempdir
-    $ sudo mount /dev/sda11 /mnt/tempdir
-    $ mount | grep tempdir
-    4. $ sudo umount /mnt/tempdir
-    $ sudo mount -o ro /dev/sda11 /mnt/tempdir
-    If you get an error while unmounting, make sure you are not currently in the directory.
-    5. $ sudo touch /mnt/tempdir/afile
-    6. $ sudo umount /mnt/tempdir
-    7. Put this line in /etc/fstab:
-    /dev/sda11 /mnt/tempdir ext4 defaults 1 2
-    8. $ sudo mount /mnt/tempdir
-    $ sudo mount | grep tempdir
-    9. Change the line in /etc/fstab to: /dev/sda11 /mnt/tempdir ext4 noexec 1 2 Then do:
-    $ sudo mount -o remount /mnt/tempdir
-    $ sudo cp /bin/ls /mnt/tempdir
-    $ /mnt/tempdir/ls
-    You should get an error here, why?
-    ```
-    * Loopback File Solution
-    ```
-    1. $ sudo dd if=/dev/zero of=/imagefile bs=1M count=250
-    2. $ sudo mkfs -t ext4 -v
-    $ sudo mkfs -t ext4 -b 2048 -v /imagefile $ sudo mkfs -t ext4 -b 4096 -v /imagefile
-    You will get warned that this is a file and not a partition, just proceed.
-    Note the -v flag (verbose) will give the requested information; you will see that for a small partition like this the default is 1024 byte blocks.
-    3. $ sudo mkdir /mnt/tempdir
-    $ sudo mount -o loop /imagefile /mnt/tempdir $ mount | grep tempdir
-    4. $ sudo umount /mnt/tempdir
-    $ sudo mount -o ro,loop /imagefile /mnt/tempdir
-    If you get an error while unmounting, make sure you are not currently in the directory.
-    5. $ sudo touch /mnt/tempdir/afile
-    6. $ sudo umount /mnt/tempdir
-    7. Put this line in /etc/fstab:
-    8. $ sudo mount /mnt/tempdir
-    $ sudo mount | grep tempdir
-    9. Change the line in /etc/fstab to:
-    Then do:
-    $ sudo mount -o remount /mnt/tempdir
-    $ sudo cp /bin/ls /mnt/tempdir
-    $ /mnt/tempdir/ls
-    You should get an error here, why?
-    ```
+### Mount a physical partition OR loopback file
+* create a 250 MB partition
+    * `$ sudo fdisk /dev/sda`, ..., `$ partprobe -s` OR
+    * `$ sudo dd if=/dev/zero of=/imagefile bs=1M count=250`
+* put a filesytem on the partition three times, changing the block size each time
+    * `$ sudo mkfs -t ext4 -v /dev/sda11`, `$ sudo mkfs -t ext4 -b 2048 -v /dev/sda11`, `$ sudo mkfs -t ext4 -b 4096 -v /dev/sda11`
+    * (`$ sudo mkfs.ext4 -b 4096 -v /dev/sda11`) OR
+    * `$ sudo mkfs -t ext4 -v`, `$ sudo mkfs -t ext4 -b 2048 -v /imagefile`, `$ sudo mkfs -t ext4 -b 4096 -v /imagefile` (proceed past warning)
+* create a new subdirectory and mount the new filesystem at this location, verify - `$ sudo mkdir /mnt/tempdir`
+    * `$ sudo mount /dev/sda11 /mnt/tempdir` (`$ sudo mount -t ext4 /dev/sda11 /mnt/tempdir`), `$ mount | grep tempdir` OR
+    * `$ sudo mount -o loop /imagefile /mnt/tempdir`, `$ mount | grep tempdir`
+* unmount the new filesystem, and then remount it as read-only - `$ sudo umount /mnt/tempdir`
+    * `$ sudo mount -o ro /dev/sda11 /mnt/tempdir` (`$ sudo mount -o remount,ro /dev/sda11 /mnt/tempdir`) OR
+    * `$ sudo mount -o ro,loop /imagefile /mnt/tempdir`
+* try to create a file in the mounted directory - `$ sudo touch /mnt/tempdir/afile` (gives an error)
+* unmount the filesystem again - `$ sudo umount /mnt/tempdir`
+* add a line to your `/etc/fstab` file so that the filesystem will be mounted at boot time
+    * `/dev/sda11 /mnt/tempdir ext4 defaults 1 2` OR
+    * `/imagefile /mnt/tempdir ext4 defaults 1 2`
+* mount the filesystem - `$ sudo mount /mnt/tempdir`, `$ sudo mount | grep tempdir`
+* modify the configuration for the new filesystem so that binary files may not be executed from the filesystem
+    * `/dev/sda11 /mnt/tempdir ext4 noexec 1 2` OR
+    * `/imagefile /mnt/tempdir ext4 loop,noexec 1 2`
+* remount the filesystem and copy an executable file (such as /bin/ls) to /mnt/tempdir and try to run it - `$ sudo mount -o remount /mnt/tempdir`, `$ sudo cp /bin/ls /mnt/tempdir`, `$ /mnt/tempdir/ls` (gives an error)
+
+
 
 ### Ch.2
 * Lab 2.1
@@ -194,54 +154,32 @@ I got it right. :)
    * **swapoff**: deactivate a swap partition or file
 * most in-use memory is for caching file contents to prevent going to disk; such pages of memory are never swapped out as the backing store is the files themselves, so writing out a swap would be pointless; instead **dirty** pages (memory containing updated file contents that no longer reflect the stored data) are flushed out to disk
 * memory used by the kernel is never **swapped** out
-  
-### 19.5: Filesystem Quotas
-----
-* disk quotoa allow admins to control the maximum space users or groups are allowed
-   * can be set based on user and group IDs
-* utilities that help manage quotas:
-   * **quotacheck**: generates and updates quota accounting files
-   * **quotaon**: enables quota accounting
-   * **quotaoff**: disables quota accounting
-   * **edquota**: used for editing user or group quotas
-   * **quota**: reports on usage and limits
-   * **xfs_quota**: ??
-* the files `aquoata.user` and `aquota.group` are required in the root directory of the filesystem using quotas
-  
-### 19.6: Setting up Quotas
-----
-* to create a filesystem quota, you must first make sure you have mounted the filesystem with the user and/or group quota mount options; basic steps:
-   * mount the filesystem with user and/or group quota options:
-       1. add the **usrquota** and/or **grpquota** options to the filesystems entry in `/etc/fstab`; example assuming `/home` is on a dedicated partition: `/dev/sda5 /home ext4 defaults,usrquota 1 2 `
-          * test with the following:
-             * `$ sudo mount -o remount /home`
-             * `$ sudo quotacheck -vu /home`
-             * `$ sudo quotaon -vu /home`
-             * `$ sudo edquota someusername`
-       1. remount the filesystem (or mount it if new)
-    * run **quotacheck** on the filesystem to set up quotas
-    * enable quotas on the filesystem
-    * set quotas with the **edquota** program
-       * **grace periods** can be used
-  
-### 19.7: quotacheck
-----
-* **quotacheck** creates and updates the quota accounting files (**aquota.user** and **aquota.group**)
-   * use **-v** option to get more verbose output
-   * generally only run when quotes are initially turned on or need to be updated
-   * can also be run when **fsck** reports FS errors during boot
-* `$ sudo quotacheck -ua` update user files for all filesystems in `/etc/fstab` with user quota options
-* `$ sudo quotacheck -ga` update group files for all filesystems in `/etc/fstab` with group quota options
-* `$ sudo quotacheck -u [somefilesystem]` update the user file for a particular filesystem
-* `$ sudo quotacheck -g [somefilesystem]` update the group file for a particular filesystem
-  
-### 19.8: Turning Quotas On and Off
-----
-* **quotaon** and **quotaoff** are really the same program
-* **quotaon** is used to turn filesystem quotas on
-   * `$ sudo quotaon [flags] [filesystem]` generic quotaon syntax
-* **quotaoff** is used to turn them off
-   * `$ sudo quotaoff [flags] [filesystem]` generic quotaoff syntax
+
+
+### Filesystem quotas
+* change the entry in `/etc/fstab` for your new filesystem to use user quotas (change noexec to usrquota (or grpquota) in the entry for /mnt/tempdir) - `/dev/sda11 /mnt/tempdir ext4 usrquota 1 2` or `/imagefile  /mnt/tempdir ext4 loop,usrquota 1 2`
+* remount the filesystem - `$ sudo mount -o remount /mnt/tempdir`
+* initialize quotas on the new filesystem  (verbose)- `$ sudo quotacheck -vu /mnt/tempdir`
+* check for `/aquoata.user` and `/aquota.group`
+* (initialize quotas for all users on the filesystem) - `$ sudo quotacheck -ua`
+* (initialize quotas for all groups on the filesystem) - `$ sudo quotacheck -ga`
+* turn the quota checking system on (verbose)- `$ sudo quotaon -vu /mnt/tempdir`, `$ sudo chown student.student /mnt/tempdir` (not usually necessary)
+* set some quota limits for the normal user account: a soft limit of 500 blocks and a hard limit of 1000 blocks - `$ sudo edquota -u student`
+* set some quota limits for a group account - `$ sudo edquota -g <groupname>`
+* set a grace period for a user - `$ sudo edquota -t`
+* as the normal user, attempt to use dd to create some files to exceed the quota limits; create bigfile1 (200 blocks) and bigfile2 (400 blocks); you should get a warning; why? - `$ cd /mnt/tempdir`, `$ dd if=/dev/zero of=bigfile1 bs=1024 count=200`, `$ quota`, `$ dd if=/dev/zero of=bigfile2 bs=1024 count=400`
+* create bigfile3 (600 blocks) - `$ quota`, `$ dd if=/dev/zero of=bigfile3 bs=1024 count=600`, `$ quota`, `$ ls -l`
+* eliminate the persistent mount line you inserted in `/etc/fstab`
+
+* show current user quota - `$ quota` or `$ quota -u`
+* show current group quota - `$ quota -g`
+* show quota for any particular user or group - `$ sudo quota <username | group >`
+* turn on all user and group quotas - `$ sudo quotaon -av`
+* turn off all user and group quotas - `$ sudo quotaoff -av`
+* turn on all user quotas - `$ sudo quotaon -avu`
+* turn off all user quotas - `$ sudo quotaoff -avu`
+* turn on all group quotas - `$ sudo quotaon -avg`
+* turn off all group quotas - `$ sudo quotaoff -avg`
 
 **quotaon and quotaoff Flags**
 
@@ -258,50 +196,6 @@ Flag | Function
 -h, --help              | display this help text and exit
 -V, --version           | display version information and exit
 
-* example usages:
-   * `$ sudo quotaon -av`
-      > /dev/sda6 [/]: group quotas turned on
-      > /dev/sda5 [/home]: user quotas turned on
-
-   * `$ sudo quotaoff -av`
-      > /dev/sda6 [/]: group quotas turned off
-      > /dev/sda5 [/home]: user quotas turned off
-
-   * `$ sudo quotaon -avu`
-      > /dev/sda5 [/home]: user quotas turned on
-
-   * `$ sudo quotaoff -avu`
-      > /dev/sda5 [/home]: user quotas turned off
-
-   * `$ sudo quotaon -avg`
-      > /dev/sda6 [/]: group quotas turned on
-
-   * `$ sudo quotaoff -avg`
-      > /dev/sda6 [/]: group quotas turned off
-  
-### 19.9: Examining Quotas
-----
-* **quota** generates reports on quotas
-* `$ quota` or `$ quota -u` show your current user quota
-* `$ quota -g` shows your current group quota
-* `$ sudo quota <username>` to see quota for any particular user or group
-  
-### 19.10: Setting Quotas
-----
-* **edquota** bring up the quota editor
-* the only fields which can be edited in the quota are the soft and hard limits. The other fields are informational only
-* example usage:
-   * `$ edquota -u [username]` edits limits for username
-   * `$ edquota -g [groupname]` edits limits for groupname
-   * `$ edquota -u -p [userproto] [username]` copies userproto's user quota values to username
-   * `$ edquota -g -p [groupproto] [groupname]` copies groupproto's group quota values to groupname
-   * `$ edquota -t` to set grace periods
-* the last two are useful in scripts used in creating new accounts and setting quotas for them
-* quotas for users and groups may be set for disk blocks and/or inodes
-* soft limits may be exceeded for a grace period, set on a per-filesystem basis
-* hard limits may never be exceeded
-   * `$ sudo edquota gracie`
-   * `$ sudo edquota -t`
   
 ### 19.11: df: Filesystem Usage
 ----
@@ -329,56 +223,14 @@ Organize the steps below in the best logical order to enable quota on an existin
 * activate the new swap space - `$ sudo swapon swpfile`
 * remove the swap file from use and delete it to save space - `$ sudo swapoff swpfile`, `$ sudo rm swpfile`
 
-### Lab 19.2
-* change the entry in `/etc/fstab` for your new filesystem to use user quotas (change noexec to usrquota in the entry for /mnt/tempdir). Then remount the filesystem - `/dev/sda11 /mnt/tempdir ext4 usrquota 1 2` or `/imagefile  /mnt/tempdir ext4 loop,usrquota 1 2` then `$ sudo mount -o remount /mnt/tempdir`
-* initialize quotas on the new filesystem, and then turn the quota checking system on - `$ sudo quotacheck -u /mnt/tempdir`, `$ sudo quotaon -u /mnt/tempdir`, `$ sudo chown student.student /mnt/tempdir`
-* now set some quota limits for the normal user account: a soft limit of 500 blocks and a hard limit of 1000 blocks - `$ sudo edquota -u student`
-* as the normal user, attempt to use dd to create some files to exceed the quota limits. Create bigfile1 (200 blocks) and bigfile2 (400 blocks). You should get a warning. Why? - `$ cd /mnt/tempdir`, `$ dd if=/dev/zero of=bigfile1 bs=1024 count=200`, `$ quota`, `$ dd if=/dev/zero of=bigfile2 bs=1024 count=400`
-* create bigfile3 (600 blocks) - `$ quota`, `$ dd if=/dev/zero of=bigfile3 bs=1024 count=600`, `$ quota`, `$ ls -l`
-* eliminate the persistent mount line you inserted in `/etc/fstab`
-
-### Ch.20
-* show superblock locations - `$ sudo dumpe2fs /dev/sda1 | grep superblock` 
-* change the maximum number of mounts between filesystem checks (max-mount-count) - `$ sudo tune2fs -c 25 /dev/sda1`
-* change the time interval between checks (interval-between-checks) - `$ sudo tune2fs -i 10 /dev/sda1`
+### tune2fs
+* create a formatted ext4 filesystem - image file or another partition with a filesystem that can be modified (`$ dd ...`, `$ mkfs.ext4 imagefile`)
+* display the maximum mount count setting (after which a filesystem check will be forced), the Check interval (the amount of time after which a filesystem check is forced), the number of blocks reserved, and the total number of blocks - `$ dumpe2fs imagefile > dumpe2fs-output-initial`, `$ grep -i -e "Mount count" -e "Check interval" -e "Block Count" dumpe2fs-output-initial`
 * list the contents of the superblock, including the current values of parameters which can be changed - `$ sudo tune2fs -l /dev/sda1`
-
-* Lab 20.2
-    We are going to fiddle with some properties of a formatted ext4 filesystem. This does not require unmounting the filesystem
-    first.
-    In the below you can work with an image file you create as in:
-    $ dd if=/dev/zero of=imagefile bs=1M count=1024
-    $ mkfs.ext4 imagefile
-    or you can substitute /dev/sdaX (using whatever partition the filesystem you want to modify is mounted on) for imagefile.
-    1. Using dumpe2fs, obtain information about the filesystem whose properties you want to adjust.
-    Display:
-    • The maximum mount count setting (after which a filesystem check will be forced.)
-    • The Check interval (the amount of time after which a filesystem check is forced) • The number of blocks reserved, and the total number of blocks
-    ```
-    1. $ dumpe2fs imagefile > dumpe2fs-output-initial
-    $ grep -i  -e "Mount count" -e "Check interval" -e "Block Count" dumpe2fs-output-initial
-    ```
-    2. Change:
-    • The maximum mount count to 30.
-    • The Check interval to three weeks.
-    • The percentage of blocks reserved to 10 percent.
-    ```
-    $ tune2fs -c 30 imagefile tune2fs 1.42.9 (28-Dec-2013)
-    Setting maximal mount count to 30
-    $ tune2fs -i 3w imagefile
-    tune2fs 1.42.9 (28-Dec-2013)
-    Setting interval between checks to 1814400 seconds
-    $ tune2fs -m 10 imagefile
-    tune2fs 1.42.9 (28-Dec-2013)
-    Setting reserved blocks percentage to 10% (26214 blocks)
-    ```
-    3. Using dumpe2fs, once again obtain information about the filesystem and compare with the original output.
-    ```
-    3. $ dumpe2fs imagefile > dumpe2fs-output-final
-    dumpe2fs 1.42.9 (28-Dec-2013)
-    $ grep -i  -e "Mount count" -e "Check interval" -e "Block Count" dumpe2fs-output-final
-    4. $ diff dumpe2fs-output-initial dumpe2fs-output-final
-    ```
+* change the maximum count to 30 - `$ tune2fs -c 30 imagefile`
+* change the Check interval to three weeks - `$ tune2fs -i 3w imagefile`
+* change the percentage of blocks reserved to 10 percent - `$ tune2fs -m 10 imagefile`
+* once again obtain information about the filesystem and compare with the original output - `$ dumpe2fs imagefile > dumpe2fs-output-final`, `$ grep -i  -e "Mount count" -e "Check interval" -e "Block Count" dumpe2fs-output-final`, ` $ diff dumpe2fs-output-initial dumpe2fs-output-final`
 
 ### Ch.23
 * for example, assuming you have already created partitions `/dev/sdb1` and `/dev/sdc1` and given them type **8e** (do all this with lvm):
@@ -585,6 +437,9 @@ You added two new disks to a server. In which order would you use the following 
 ### Extras
 * 18.10: mount a filesystem by UUID
 * 18.13: mount a network filesystem
+* 19.10: Setting Quotas
+   * `$ edquota -u -p [userproto] [username]` copies userproto's user quota values to username
+   * `$ edquota -g -p [groupproto] [groupname]` copies groupproto's group quota values to groupname
 * Lab 20.1: defragmentation
 * Lab 22.1: disk encryption w/ cryptsetup
 * Lab 22.2: encrypted swap w/ cryptsetup
