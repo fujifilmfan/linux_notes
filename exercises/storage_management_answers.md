@@ -1,17 +1,9 @@
 Storage Management
 ------------------
 
-### Chapters: LFS101: 2, LFS201: 16, 17, 18
+### Chapters: LFS101: 2, LFS201: 16, 17, 18, 19, 20, 22, 23, 24
 
-### Ch.16
-* list available filesystems - `$ cat /proc/filesystems`
-* mount an xfs filesystem using the loopback mechanism and create a container for the filesystem - 
-    * `$ dd if=/dev/zero of=junk bs=1M count=512`
-    * `$ sudo /sbin/mkfs.xfs junk`
-    * `$ sudo mount junk /mnt`
-    * `$ df -h`
-    * `$ cat /proc/filesystems`
-    * `$ lsmod | less`
+
 
 ### Lab 16.1
 * mount a new instance of tmpfs anywhere on your directory structure - `$ sudo mkdir /mnt/tmpfs`, `$ sudo mount -t tmpfs none /mnt/tmpfs`
@@ -38,27 +30,23 @@ When adding a new internal disk to an existing server, in which best logical ord
 3. Edit `/etc/fstab`
 4. Reboot the system
 
+### Use a file as a disk partition / partition a disk image file
+* create a file full of zeros 1 GB in length - `$ dd if=/dev/zero of=imagefile bs=1M count=1024`
+* partition the disk image file - `$ sudo fdisk imagefile`
+* put filesystems on the partitions - `$ mkfs.ext4 imagefile`
+* create a mount point - `$ mkdir mntpoint`
+* mount the filesystem
+    * loop: `$ sudo mount -o loop imagefile mntpoint` OR
+    * losetup: `$ sudo losetup /dev/loop2 imagefile`, `$ sudo mount /dev/loop2 mntpoint`
+* unmount the filesystem
+    * loop: `$ sudo umount mntpoint` OR
+    * losetup: `$ sudo umount mntpoint`, `$ sudo losetup -d /dev/loop2`
 
-### Use a file as a disk partition
-* reate a file full of zeros 1 GB in length - `$ dd if=/dev/zero of=imagefile bs=1M count=1024`
-* put a filesystem on it - `$ mkfs.ext4 imagefile`
-* mount and unmount on a directory
-    * `$ mkdir mntpoint`
-    * `$ sudo mount -o loop imagefile mntpoint`
-    * `$ sudo umount mntpoint`
-* mount and unmount using loop
-    * `$ sudo losetup /dev/loop2 imagefile`
-    * `$ sudo mount /dev/loop2 mntpoint`
-    * `$ sudo umount mntpoint`
-    * `$ sudo losetup -d /dev/loop2`
-
-### Lab 17.2 and 17.3
-* run fdisk on your imagefile
-* type m to get a list of commands
-* create a new primary partition and make it 256 MB (or whatever size you would like
-* add a second primary partition also of 256 MB in size
-* write the partition table to disk and exit
-* associate the image file with a loop device - `$ losetup -a`, `$ sudo losetup -f`, `$ sudo losetup /dev/loop1 imagefile`
+### Using losetup and parted
+* 
+* find which loop devices are already being used - `$ losetup -a`
+* find first free loop device - `$ sudo losetup -f`
+* associate the image file with a free loop device - `$ sudo losetup /dev/loop1 imagefile`
 * create a disk partition label on the loop device (image file) - `$ sudo parted -s /dev/loop1 mklabel msdos`
 * create three primary partitions on the loop device using parted - `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 0 256`, `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 256 512`, `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 512 1024`
 * check the partition table - `$ fdisk -l /dev/loop1`
@@ -67,29 +55,16 @@ When adding a new internal disk to an existing server, in which best logical ord
 * mount all three filesystems and show they are available - `$ mkdir mnt1 mnt2 mnt3`, `$ sudo mount /dev/loop1p1 mnt1`, `$ sudo mount /dev/loop1p2 mnt2`, `$ sudo mount /dev/loop1p3 mnt3`, `$ df -Th`
 * after using the filesystems to your heart’s content you can unwind it all - `$ sudo umount mnt1 mnt2 mnt3`, `$ rmdir mnt1 mnt2 mnt3`, `$ sudo losetup -d /dev/loop1`
 
-### Ch.18
-* File flags:
-   * **i**: Immutable  
-    A file with the immutable attribute cannot be modified (not even by root). It cannot be deleted or renamed. No hard link can be created to it, and no data can be written to the file. Only the superuser can set or clear this attribute.  
-    * **a**: Append-only  
-    A file with the append-only attribute set can only be opened in append mode for writing. Only the superuser can set or clear this attribute.  
-    * **d**: No-dump  
-    A file with the no-dump attribute set is ignored when the dump program is run. This is useful for swap and cache files that you don't want to waste time backing up.  
-    * **A**: No **atime** update  
-    A file with the no-atime-update attribute set will not modify its atime (access time) record when the file is accessed but not otherwise modified. This can increase the performance on some systems because it reduces the amount of disk I/O on the system.  
-* `$ chattr [+|-|=mode] filename` generic **chattr** format
-* `$ lsattr <filename>` display attributes for a file
-
 
 * check health of unmounted filesystem - `$ sudo fsck -t ext4 /dev/sda10` or `$ sudo fsck.ext4 /dev/sda10`
 * automatically repair a filesystem - `$ sudo fsck -a /dev/sda10`
 * interactively repair a filesystem - `$ sudo fsck -r /dev/sda10`
-* mount a filesystem with a label - `$ sudo mount LABEL=home /home` or `$ sudo mount -L home /home`
+* mount a filesystem with a label (how to label a filesystem?) - `$ sudo mount LABEL=home /home` or `$ sudo mount -L home /home`
 * view partitions by-id, by-path, by-uuid - `ls -al /dev/disk/...`
 * mount all filesystems in `/etc/fstab` - `$ mount -a`
 * list open files - `$ lsof`
 
-### Lab 18.1
+### File attributes
 * with your normal user account use touch to create an empty file named `/tmp/appendit` - `$ cd /tmp`, `$ touch appendit $ ls -l appendit`
 * use cat to append the contents of `/etc/hosts` to `/tmp/appendit` - `$ cat /etc/hosts > appendit`
 * compare the contents of /tmp/appendit with /etc/hosts; there should not be any differences - `$ diff /etc/hosts appendit`
@@ -102,59 +77,57 @@ When adding a new internal disk to an existing server, in which best logical ord
 * try appending output to `/tmp/appendit`, try renaming the file, creating a hard link to the file, and deleting the file as both the normal user and as root - `$ echo hello >> appendit`, `$ mv appendit appendit.rename`, `$ ln appendit appendit.hardlink`, `$ rm -f appendit`, `$ sudo su`, `$ echo hello >> appendit`, `$ mv appendit appendit.rename`, `$ ln appendit appendit.hardlink`, `$ rm -f appendit`, `$ exit`
 * remove this file by removing the extended attributes - `$ sudo su`, `$ lsattr appendit`, `$ ls appendit`
 
+* File flags:
+   * **i**: Immutable  
+    A file with the immutable attribute cannot be modified (not even by root). It cannot be deleted or renamed. No hard link can be created to it, and no data can be written to the file. Only the superuser can set or clear this attribute.  
+    * **a**: Append-only  
+    A file with the append-only attribute set can only be opened in append mode for writing. Only the superuser can set or clear this attribute.  
+    * **d**: No-dump  
+    A file with the no-dump attribute set is ignored when the dump program is run. This is useful for swap and cache files that you don't want to waste time backing up.  
+    * **A**: No **atime** update  
+    A file with the no-atime-update attribute set will not modify its atime (access time) record when the file is accessed but not otherwise modified. This can increase the performance on some systems because it reduces the amount of disk I/O on the system.
+
 ### Mount a physical partition OR loopback file
 * create a 250 MB partition
-    * `$ sudo fdisk /dev/sda`, ..., `$ partprobe -s` OR
-    * `$ sudo dd if=/dev/zero of=/imagefile bs=1M count=250`
+    * p: `$ sudo fdisk /dev/sda`, ..., `$ partprobe -s` OR
+    * l: `$ sudo dd if=/dev/zero of=/imagefile bs=1M count=250`
 * put a filesytem on the partition three times, changing the block size each time
-    * `$ sudo mkfs -t ext4 -v /dev/sda11`, `$ sudo mkfs -t ext4 -b 2048 -v /dev/sda11`, `$ sudo mkfs -t ext4 -b 4096 -v /dev/sda11`
-    * (`$ sudo mkfs.ext4 -b 4096 -v /dev/sda11`) OR
-    * `$ sudo mkfs -t ext4 -v`, `$ sudo mkfs -t ext4 -b 2048 -v /imagefile`, `$ sudo mkfs -t ext4 -b 4096 -v /imagefile` (proceed past warning)
+    * p: `$ sudo mkfs -t ext4 -v /dev/sda11`, `$ sudo mkfs -t ext4 -b 2048 -v /dev/sda11`, `$ sudo mkfs -t ext4 -b 4096 -v /dev/sda11` or (`$ sudo mkfs.ext4 -b 4096 -v /dev/sda11`) OR
+    * l: `$ sudo mkfs -t ext4 -v`, `$ sudo mkfs -t ext4 -b 2048 -v /imagefile`, `$ sudo mkfs -t ext4 -b 4096 -v /imagefile` (proceed past warning)
 * create a new subdirectory and mount the new filesystem at this location, verify - `$ sudo mkdir /mnt/tempdir`
-    * `$ sudo mount /dev/sda11 /mnt/tempdir` (`$ sudo mount -t ext4 /dev/sda11 /mnt/tempdir`), `$ mount | grep tempdir` OR
-    * `$ sudo mount -o loop /imagefile /mnt/tempdir`, `$ mount | grep tempdir`
+    * p: `$ sudo mount /dev/sda11 /mnt/tempdir` (`$ sudo mount -t ext4 /dev/sda11 /mnt/tempdir`), `$ mount | grep tempdir` OR
+    * l: `$ sudo mount -o loop /imagefile /mnt/tempdir`, `$ mount | grep tempdir`
 * unmount the new filesystem, and then remount it as read-only - `$ sudo umount /mnt/tempdir`
-    * `$ sudo mount -o ro /dev/sda11 /mnt/tempdir` (`$ sudo mount -o remount,ro /dev/sda11 /mnt/tempdir`) OR
-    * `$ sudo mount -o ro,loop /imagefile /mnt/tempdir`
+    * p: `$ sudo mount -o ro /dev/sda11 /mnt/tempdir` (`$ sudo mount -o remount,ro /dev/sda11 /mnt/tempdir`) OR
+    * l: `$ sudo mount -o ro,loop /imagefile /mnt/tempdir`
 * try to create a file in the mounted directory - `$ sudo touch /mnt/tempdir/afile` (gives an error)
 * unmount the filesystem again - `$ sudo umount /mnt/tempdir`
 * add a line to your `/etc/fstab` file so that the filesystem will be mounted at boot time
-    * `/dev/sda11 /mnt/tempdir ext4 defaults 1 2` OR
-    * `/imagefile /mnt/tempdir ext4 defaults 1 2`
+    * p: `/dev/sda11 /mnt/tempdir ext4 defaults 1 2` OR
+    * l: `/imagefile /mnt/tempdir ext4 defaults 1 2`
 * mount the filesystem - `$ sudo mount /mnt/tempdir`, `$ sudo mount | grep tempdir`
 * modify the configuration for the new filesystem so that binary files may not be executed from the filesystem
-    * `/dev/sda11 /mnt/tempdir ext4 noexec 1 2` OR
-    * `/imagefile /mnt/tempdir ext4 loop,noexec 1 2`
+    * p: `/dev/sda11 /mnt/tempdir ext4 noexec 1 2` OR
+    * l: `/imagefile /mnt/tempdir ext4 loop,noexec 1 2`
 * remount the filesystem and copy an executable file (such as /bin/ls) to /mnt/tempdir and try to run it - `$ sudo mount -o remount /mnt/tempdir`, `$ sudo cp /bin/ls /mnt/tempdir`, `$ /mnt/tempdir/ls` (gives an error)
 
 
 
-### Ch.2
-* Lab 2.1
-    * Use the du utility to calculate the overall size of each of your system’s top-level directories.
-> $ sudo du --max-depth=1 -hx / (-x ignores /dev, /proc, /run, /sys, /bin, /sbin)  
-> mine: $ sudo du -cshx --exclude=/proc *  
-```
--c total  
--h human readable  
--s summarize (otherwise every file on the system!  
--x skip directories on different file systems  
--X exclude  
-```
-
-### Ch.19
-### 19.4: Using swap
-----
-* check on swap areas - `$ cat /proc/swaps`
+### du, df, free, lsmod, other
+* calculate the overall size of each of your system’s top-level directories - `$ sudo du --max-depth=1 -hx` or `$ sudo du -cshx --exclude=/proc *` (less good)
+* display disk usage for current directory - `$ du` 
+* list all files, not just directories - `$ du -a` 
+* display disk usage for a specific directory - `$ du -h somedir`
+* show filesystem capacity and usage, human-readable, fs type, inodes instead of bytes - `$ df -hTi`
 * get basic memory statistics - `$ free -m`
+* show status of kernel modules - `$ lsmod | less`
+* list available filesystems - `$ cat /proc/filesystems`
 
-* commands involving swap:
-   * **mkswap**: format a swap partition or file
-   * **swapon**: activate a swap partition or file
-   * **swapoff**: deactivate a swap partition or file
-* most in-use memory is for caching file contents to prevent going to disk; such pages of memory are never swapped out as the backing store is the files themselves, so writing out a swap would be pointless; instead **dirty** pages (memory containing updated file contents that no longer reflect the stored data) are flushed out to disk
-* memory used by the kernel is never **swapped** out
-
+### Swap
+* check current swap space - `$ cat /proc/swaps`
+* add more swap space by adding either a new partition or a file - `$ dd if=/dev/zero of=swpfile bs=1M count=1024`, `$ mkswap swpfile` or `$ mkswap <partition name>`
+* activate the new swap space - `$ sudo swapon swpfile`
+* remove the swap file from use and delete it to save space - `$ sudo swapoff swpfile`, `$ sudo rm swpfile`
 
 ### Filesystem quotas
 * change the entry in `/etc/fstab` for your new filesystem to use user quotas (change noexec to usrquota (or grpquota) in the entry for /mnt/tempdir) - `/dev/sda11 /mnt/tempdir ext4 usrquota 1 2` or `/imagefile  /mnt/tempdir ext4 loop,usrquota 1 2`
@@ -196,33 +169,6 @@ Flag | Function
 -h, --help              | display this help text and exit
 -V, --version           | display version information and exit
 
-  
-### 19.11: df: Filesystem Usage
-----
-* **df** (**d**isk **f**ree) utility examines filesystem capacity and usage
-   * use **-h** to make human-readable
-   * use **-T** to show filesystem type
-   * use **-i** to show inode information instead of bytes
-  
-* display disk usage for current directory - `$ du` 
-* list all files, not just directories - `$ du -a` 
-* display disk usage for a specific directory - `$ du -h somedir`
-  
-### 19.13 Knowledge Check 19.3
-----
-Organize the steps below in the best logical order to enable quota on an existing filesystem:
-1. Edit `/etc/fstab` to add **usrquota** mount option.
-2. Remount the filesystem.
-3. Run **quotaon** to enable quota.
-4. Edit individual user or group quota with **edquota**.
-
-
-### Lab 19.1
-* examine your current swap space - `$ cat /proc/swaps`
-* add more swap space by adding either a new partition or a file - `$ dd if=/dev/zero of=swpfile bs=1M count=1024`, `$ mkswap swpfile` or `$ mkswap <partition name>`
-* activate the new swap space - `$ sudo swapon swpfile`
-* remove the swap file from use and delete it to save space - `$ sudo swapoff swpfile`, `$ sudo rm swpfile`
-
 ### tune2fs
 * create a formatted ext4 filesystem - image file or another partition with a filesystem that can be modified (`$ dd ...`, `$ mkfs.ext4 imagefile`)
 * display the maximum mount count setting (after which a filesystem check will be forced), the Check interval (the amount of time after which a filesystem check is forced), the number of blocks reserved, and the total number of blocks - `$ dumpe2fs imagefile > dumpe2fs-output-initial`, `$ grep -i -e "Mount count" -e "Check interval" -e "Block Count" dumpe2fs-output-initial`
@@ -239,30 +185,9 @@ Organize the steps below in the best logical order to enable quota on an existin
     * `$ sudo vgcreate -s 16M vg /dev/sdb1` creates a new VG on block devices
     * `$ sudo vgextend vg /dev/sdc1` adds one or more PVs to a VG
     * `$ sudo lvcreate -L 50G -n mylvm vg` creates a logical volume
-    * `$ sudo mkfs -t ext4 /dev/vg/mylvm`
-    * `$ sudo mkdir /mylvm`
-    * `$ sudo mount /dev/vg/mylvm /mylvm`
-    * add `/dev/vg/mylvm /mylvm ext4 defaults 1 2` to `/etc/fstab` to make this a persistent mount
-### 23.9: Displaying Logical Volumes
-----
-* `$ pvdisplay /dev/sda5` shows physical volumes; leave off physical volume name to list all
-* `*$ vgdisplay /dev/vg0` shows volume groups; leave off volume group name to list all
-* `*$ lvdisplay /dev/vg0/lvm1` shows logical volumes; leave off logical volume name to list all
-
-### 23.10: Resizing Logical Volumes
-----
-* if the volume contains a filesystem, then the filesystem needs to be shrunk or expanded before shrinking or resizing the volume, respectively
-* `$ sudo lvresive -r -L 20 GB /dev/VG/mylvm` resizes the volume
-    * **-r** causes resizing of the filesystem at the same time
-    * from the man page: `-L|--size [+|-]Size[m|UNIT]`
-    * the filesystem cannot be mounted while being shrunk, but some can be expanded while mounted
-* the exact utilities to change filesystem size are filesystem dependents; examples: **lvresize**, **lvextend**, and **lvreduce** with **resize2fs**
 
 ### 23.11: Examples of Resizing
 ----
-* grow a logical volume with ext4 filesytem:
-    * `$ sudo lvextend -L +500M /dev/vg/mylvm`
-    * `$ sudo resize2fs /dev/vg/mylvm`
 * shrink the filesystem:
     * `$ sudo umount /mylvm`
     * `$ sudo fsck -f /dev/vg/mylvm`
@@ -293,108 +218,38 @@ Organize the steps below in the best logical order to enable quota on an existin
     * if you do not remove the snapshot and it fills up because of changes, it will be automatically disabled
     * a snapshot with the size of the original will never overflow
 
-* Lab 23.1
-    1. Create two 250 MB partitions of type logical volume (8e).
-    ```
-    1. Execute:
-        $ sudo fdisk /dev/sda
-    using whatever hard disk is appropriate, and create the two partitions. While in fdisk, typing t will let you set the partition type to 8e. While it doesn’t matter if you don’t set the type, it is a good idea to lessen confusion. Use w to rewrite the partition table and exit, and then
-        $ sudo partprobe -s
-    or reboot to make sure the new partitions take effect.
-    ```
-    2. Convert the partitions to physical volumes.
-    ```
-    2. Assuming the new partitions are /dev/sdaX and /dev/sdaY:
-        $ sudo pvcreate /dev/sdaX
-        $ sudo pvcreate /dev/sdaY
-        $ sudo pvdisplay
-    ```
-    3. Create a volume group named myvg and add the two physical volumes to it. Use the default extent size.
-    ```
-    3. $ sudo vgcreate myvg /dev/sdaX /dev/sdaY
-    $ sudo vgdisplay
-    ```
-    4. . Allocate a 300 MB logical volume named mylvm from volume group myvg.
-    ```
-    4. $ sudo lvcreate -L 300M -n mylvm myvg
-    $ sudo lvdisplay
-    ```
-    5. Format and mount the logical volume mylvm at /mylvm
-    ```
-    5. $ sudo mkfs.ext4 /dev/myvg/mylvm
-    $ sudo mkdir /mylvm
-    $ sudo mount /dev/myvg/mylvm /mylvm
-    If you want the mount to be persistent, edit /etc/fstab to include the line:
-    ```
-    6. Use lvdisplay to view information about the logical volume.
-    ```
-    6. $ sudo lvdisplay
-    ```
-    7. Grow the logical volume and corresponding filesystem to 350 MB.
-    ```
-    7. $ df -h
-    $ sudo lvresize -r -L 350M /dev/myvg/mylvm
-    $ df -h
-    or
-    $ sudo lvresize -r -L +50M /dev/myvg/mylvm
-    or with older methods you can do:
-    $ df -h
-    $ sudo lvextend -L 350M /dev/myvg/mylvm
-    $ sudo resize2fs /dev/myvg/mylvm
-    $ df -h
-    ```
+### Logical volumes
+* create two 250 MB partitions of type logical volume (8e) - `$ sudo fdisk /dev/sda` (press t)
+* convert the partitions to physical volumes - `$ sudo pvcreate /dev/sdaX`, `$ sudo pvcreate /dev/sdaY`, `$ sudo pvdisplay` OR `$ sudo lvm` and then `lvm> pvcreate /dev/sda3`
+* create a volume group named myvg and add the two physical volumes to it; use the default extent size; verify - `$ sudo vgcreate myvg /dev/sdaX /dev/sdaY`, `$ sudo vgdisplay`
+* allocate a 300 MB logical volume named mylvm from volume group myvg, verify - `$ sudo lvcreate -L 300M -n mylvm myvg`, `$ sudo lvdisplay`
+* format and mount the logical volume mylvm at /mylvm - `$ sudo mkfs.ext4 /dev/myvg/mylvm`, `$ sudo mkdir /mylvm`, `$ sudo mount /dev/myvg/mylvm /mylvm`
+* make mount persistent - `/dev/myvg/mylvm /mylvm ext4 defaults 0 0`
+* view information about the logical volume (notice that open is now '1') - `$ sudo lvdisplay`
+* check df and then grow the logical volume and corresponding filesystem to 350 MB - `$ df -h`, `$ sudo lvresize -r -L 350M /dev/myvg/mylvm` or `$ sudo lvresize -r -L +50M /dev/myvg/mylvm`, or `$ sudo lvextend -L 350M /dev/myvg/mylvm`, `$ sudo resize2fs /dev/myvg/mylvm`, `$ df -h` (-r for --resizefs (filesystem at same time), -L for --size)
+* shrink the filesystem to 250M
 
-### Ch.24
-### 24.6: Software RAID Configuration
+
+### RAID
+* create two 200 MB partitions of type raid (fd) either on your hard disk using fdisk, or using LVM
+* create a RAID 1 device named `/dev/md0` using the two partitions - `$ sudo mdadm -C /dev/md0 --level=1 --raid-disks=2 /dev/sdaX /dev/sdaY` (-C or --create)
+* format the RAID device as an ext4 filesystem, mount it at `/myraid`, and make the mount persistent - `$ sudo mkfs.ext4 /dev/md0`, `$ sudo mkdir /myraid`, `$ sudo mount /dev/md0 /myraid`, 
+    and add to `/etc/fstab`: `/dev/md0 /myraid ext4 defaults 0 0`
+* place the information about `/dev/md0` in `/etc/mdadm.conf` file using mdadm - `$ sudo bash -c "mdadm --detail --scan >> /etc/mdadm.conf"` (-c: read commands from string) (switch order with mounting?)
+* monitor RAID device - `$ cat /proc/mdstat` or `$ sudo mdadm --detail /dev/md0`
+* start service to monitor RAID device - `$ sudo systemctl start mdmonitor`
+* ensure RAID monitor starts at boot - `$ sudo systemctl enable mdmonitor`
+* stop RAID device - `$ sudo mdadm -S /dev/md0`
+
+### Quota Quiz
 ----
-* essential steps:
-    * create partitions on each disk (type `fd` in **fdisk**)
-    * create RAID device with **mdadm**
-    * format RAID device 
-    * add device to `/etc/fstab`
-    * mount RAID device
-    * capture RAID details to ensure persistence
-* `$ sudo mdadm -S` stop RAID
-* example setup:
-    * create two partitions of type **fd** on disks **sdb** and **sdc** (say `/dev/sdbX` and `/dev/sdcX`) by running **fdisk** on each:
-        * `$ sudo fdisk /dev/sdb`
-        * `$ sudo fdisk /dev/sdc`
-    * then, set up the array, format it, add to the configuration, and mount it:
-        * `$ sudo mdadm --create /dev/md0 --level=1 --raid-disks=2 /dev/sdbX /dev/sdcX`
-        * `$ sudo mkfs.ext4 /dev/md0`
-        * `$ sudo bash -c "mdadm --detail --scan >> /etc/mdadm.conf"`
-        * `$ sudo mkdir /myraid`
-        * `$ sudo mount /dev/md0 /myraid`
-    * add a line in `/etc/fstab` for the mount point
-        * `/dev/md0 /myraid ext4 defaults 0 2`
-* `$ cat /proc/mdstat` check RAID status
-    ```
-        Personalities : [raid1]
+Organize the steps below in the best logical order to enable quota on an existing filesystem:
+1. Edit `/etc/fstab` to add **usrquota** mount option.
+2. Remount the filesystem.
+3. Run **quotaon** to enable quota.
+4. Edit individual user or group quota with **edquota**.
 
-        md0 : active raid1 sdb8[1] sdc7[0]
-
-        ---------- 521984 blocks [2/2]
-
-        unused devices: <none>
-    ```
-* `$ sudo mdadm -S /dev/md0` stop RAID device
-
-### 24.7: Monitoring RAIDs
-----
-* `$ sudo mdadm --detail /dev/md0` monitor RAID device
-* `$ cat /pro/mdstat` monitor RAID device
-* `$ sudo systemctl start mdmonitor` start monitoring RAID device with **mdmonitor**
-* `$ sudo systemctl enable mdmonitor` ensure **mdmonitor** starts at boot
-
-### 24.8: RAID Hot Spares
-----
-* **hot spares** help ensure reduction in redundancy is fixed quickly
-* `$ sudo mdadm --create /dev/md0 -l 5 -n3 -x 1 /dev/sda8 /dev/sda9 /dev/sda10 /dev/sda11` create a hot spare when creating the RAID array (** -x 1** switch)
-* `$ sudo mdadm --fail /dev/md0 /dev/sdb2` test redundancy and hot spare of the array
-* `$ sudo mdadm --remove /dev/md0 /dev/sdb2` remove faulty drive in test or failure situation
-* `$ sudo mdadm --add /dev/md0 /dev/sde2` add new drive in test or failure situation
-
-### 24.9: Knowldege Check 24.1
+### RAID Quiz
 ----
 You added two new disks to a server. In which order would you use the following commands to create a RAID device with `/dev/sdb1` and `/dev/sdc1`, and then make the RAID device available using an ext4 filesystem?
 1. `$ fdisk /dev/sdb; fdisk /dev/sdc`
@@ -403,37 +258,6 @@ You added two new disks to a server. In which order would you use the following 
 4. `$ mdadm --detail --scan >> /etc/mdadm.conf`
 5. `$ reboot`
 
-
-### Lab 24.1
-    1. Create two 200 MB partitions of type raid (fd) either on your hard disk using fdisk, or using LVM.
-    ```
-    1. If you need to create new partitions do:
-        $ sudo fdisk /dev/sda
-    and create the partitions as we have done before. For purposes of being definite, we will call them /dev/sdaX and /dev/sdaY. You will need to run partprobe or kpartx or reboot after you are done to make sure the system is properly aware of the new partitions.
-    ```
-    2. Create a RAID 1 device named /dev/md0 using the two partitions.
-    ```
-    2. $ sudo mdadm -C /dev/md0 --level=1 --raid-disks=2 /dev/sdaX /dev/sdaY
-    ```
-    3. Format the RAID device as an ext4 filesystem. Then mount it at /myraid and make the mount persistent.
-    ```
-    3. $ sudo mkfs.ext4 /dev/md0
-    $ sudo mkdir /myraid
-    $ sudo mount /dev/md0 /myraid
-    and add to /etc/fstab
-    ```
-    4. Place the information about /dev/md0 in /etc/mdadm.conf file using mdadm. (Depending on your distribution, this file may not previously exist.)
-    ```
-    4. $ sudo bash -c "mdadm --detail --scan >> /etc/mdadm.conf"
-    ```
-    5. Examine /proc/mdstat to see the status of your RAID device.
-    ```
-    5. $ cat /proc/mdstat
-        Personalities : [raid1]
-        md0 : active raid1 dm-14[1] dm-13[0]
-            204736 blocks [2/2] [UU]
-        unused devices: <none>
-    ```
 ### Extras
 * 18.10: mount a filesystem by UUID
 * 18.13: mount a network filesystem
@@ -443,4 +267,8 @@ You added two new disks to a server. In which order would you use the following 
 * Lab 20.1: defragmentation
 * Lab 22.1: disk encryption w/ cryptsetup
 * Lab 22.2: encrypted swap w/ cryptsetup
-
+* 24.8: RAID Hot Spares
+    * `$ sudo mdadm --create /dev/md0 -l 5 -n3 -x 1 /dev/sda8 /dev/sda9 /dev/sda10 /dev/sda11` create a hot spare when creating the RAID array (** -x 1** switch)
+    * `$ sudo mdadm --fail /dev/md0 /dev/sdb2` test redundancy and hot spare of the array
+    * `$ sudo mdadm --remove /dev/md0 /dev/sdb2` remove faulty drive in test or failure situation
+    * `$ sudo mdadm --add /dev/md0 /dev/sde2` add new drive in test or failure situation
