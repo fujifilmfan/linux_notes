@@ -1,7 +1,7 @@
 Storage Management
 -----
 
-### Chapters: LFS101: 2, LFS201: 16, 17, 18, 19, 20, 22, 23, 24
+### Chapters: LFS101: 2, LFS201: 16, 17, 18, 19, 20, 22, 23, 24, 42
 
 
 ### du, df, lsmod, lsof, fsck, file, other
@@ -129,6 +129,7 @@ Storage Management
     * l: `/imagefile /mnt/tempdir ext4 defaults 1 2`
 * mount the filesystem - `$ sudo mount /mnt/tempdir`, `$ sudo mount | grep tempdir`
 * modify the configuration for the new filesystem so that binary files may not be executed from the filesystem
+    * unmount and remount OR to make persistent:
     * p: `/dev/sda11 /mnt/tempdir ext4 noexec 1 2` OR
     * l: `/imagefile /mnt/tempdir ext4 loop,noexec 1 2`
 * remount the filesystem and copy an executable file (such as /bin/ls) to /mnt/tempdir and try to run it - `$ sudo mount -o remount /mnt/tempdir`, `$ sudo cp /bin/ls /mnt/tempdir`, `$ /mnt/tempdir/ls` (gives an error)
