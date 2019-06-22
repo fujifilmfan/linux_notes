@@ -62,7 +62,7 @@ In addition, IPv6 has some special types of addresses such as loopback, which is
 ### 34.8: IPv4 Address Classes
 ----
 * historically, IP addresses are based on defined **classes**
-* classes A, B, and C distinguis a network portion of the address from a host portion of the address
+* classes A, B, and C distinguish a network portion of the address from a host portion of the address
 * this is used for routing purposes
 
 **Address Classes**
@@ -104,7 +104,7 @@ E             |               |             |                                   
 ----
 * the **hostname** is simply a label used to identify a networked device to distinguish it from other elements on the network
 * historically, this has also been called a nodename
-* f*or DNS purposes, hostnames are appended with a period (dot) and a domain name, so that a machine with a hostname of **antje** could have a **fully qualified domain name (FQDN)** of **antje.linuxfoundation.org**
+* for DNS purposes, hostnames are appended with a period (dot) and a domain name, so that a machine with a hostname of **antje** could have a **fully qualified domain name (FQDN)** of **antje.linuxfoundation.org**
 * the hostname is generally specified at installation time, and can be modified at any time later
   
 ### 34.11: Getting and Setting the Hostname

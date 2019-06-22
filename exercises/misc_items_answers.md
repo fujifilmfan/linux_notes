@@ -1,4 +1,7 @@
+Miscellaneous Items
+-----
 
+### Chapters: LFS101: , LFS201: 40
 
 Chapter 40: Backup and Recovery Methods
 ---------------------------------------

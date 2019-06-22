@@ -122,7 +122,7 @@ tunnel   | tunnel over IP
     3: enp2s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT qlen 1000
     ```
 * for a wireless device that previously would have been simply named `wlan0`:
-    * `$ ip link show | grep w1`
+    * `$ ip link show | grep wl`
     ```
     3: wlp3s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DORMANT qlen 1000
     ```

@@ -1,5 +1,5 @@
 Packages and Libraries
-----------------------
+-----
 
 ### Chapters: LFS201: (5), 6, 8
 
