@@ -223,7 +223,7 @@ S, s     | Same as 1
 In this and the following exercise, we will create a simple startup service. First we will do it for a **SysVinit** system. Note that
 if you are using a **systemd**-based system everything should still work because of the backwards compatibility layer that all distributions utilize. However, in the next exercise we will do natively for **systemd**.  
 * Move fake_service script to `/etc/init.d/fake_service` and make it executable: `$ sudo chmod 755 /etc/init.d/fake_service`
-* You’ll notice the script includes the file `/etc/sysconfig/fake service`. Give it the following contents:
+* You’ll notice the script includes the file `/etc/sysconfig/fake_service`. Give it the following contents:
     ```
     VAR1= "true"
     VAR2= "true"

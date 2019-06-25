@@ -3,13 +3,10 @@ Miscellaneous Items
 
 ### Chapters: LFS101: , LFS201: 40, 42
 
-
 ### dd
 * create a 10 MB file filled with zeros - `$ dd if=/dev/zero of=outfile  bs=1M count=10` 
-* backup an entire hard drive to another (raw copy) - `$ dd if=/dev/sda of=/dev/sdb` 
 * create an image of a hard disk (which could later be transferred to another hard disk) - `$ dd if=/dev/sda of=sdadisk.img` 
 * backup a partition - `$ dd if=/dev/sda1 of=partition1.img` 
-* use **dd** in a pipeline - `$ dd if=ndata conv=swab count=1024 | uniq > ofile` 
  
 ### Use tar to create and restore a backup
 * create a directory called backup and in it place a compressed tar archive of all the files under /usr/include, with the highest level directory being included - `$ cd /usr ; tar cvf /tmp/backup/include.tar include` or `$ tar -C /usr -jcf include.tar.bz2 include` or with `--create` instead of `c`
@@ -64,6 +61,9 @@ Packaging systems have methods of verifying file integrity and checking for chan
 * `$ sudo aide --check` run a scan on your files and compare them to the last scan
 
 ### Extras
+* dd
+    * backup an entire hard drive to another (raw copy) - `$ dd if=/dev/sda of=/dev/sdb` 
+    * use **dd** in a pipeline - `$ dd if=ndata conv=swab count=1024 | uniq > ofile` 
 * 40.22: mt
 * Lab 41.1: SELinux: contexts
 * Lab 41.2: apparmor
