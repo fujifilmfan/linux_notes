@@ -9,6 +9,7 @@ User and Group Management
 * show group membership of current user
 * show logged-on users - `$ who` or `$ who -a`
 * show info about another user - `$ id <other_user>`
+* show just group IDs of another user - `$ id -G <other_user>` (-u for just user ID)
 * show group membership of another user - `$ groups <other_user>`
 
 ### Add user
@@ -17,58 +18,41 @@ User and Group Management
 * show failed command attempts due to security - `$ cat /var/log/secure`
 * look at the new records which were created in the `/etc/passwd`, `/etc/group`, and the `/etc/shadow` files
 * look at the `/etc/default/useradd` file and see what the current defaults are set to; also look at the `/etc/login.defs` file
+* add user bullwinkle w/ zsh shell and a comment - `$ sudo useradd -s /bin/zsh -m -c "Bullwinkle J Moose" bullwinkle`
 
 ### Passwords and privileges
-* give rocky a password - `$ sudo passwd rocky`
+* give rocky and bullwinkle a password - `$ sudo passwd rocky`
 * view password aging for rocky - `$ sudo chage --list rocky` or `$ sudo chage -l rocky`
 * force rocky to change password at next login - `$ sudo chage -d 0 rocky`
 * modify the expiration date for the user account, setting it to be something that has passed, and check to see what has changed - `$ sudo chage -E 2014-31-12 rocky` or `$ sudo chage -E $(date -d -2days +%Y-%m-%d) rocky`, `$ sudo chage -l rocky`
-* lock rocky's account - `$ sudo usermod -L rocky`
+* lock rocky's account - `$ sudo usermod -L rocky` (shows '!' in `/etc/shadow`)
 * unlock rocky's account - `$ sudo usermod -U rocky`
-
-* give rocky sudo privileges - add `rocky      ALL=(ALL)     ALL` to `/etc/sudoers` or create a file in `/etc/sudoers.d/rocky` with that line
+* give rocky sudo privileges - create a file in `/etc/sudoers.d/rocky` with `rocky  ALL=(ALL)  ALL` or add that line to `/etc/sudoers` (use `$ sudo visudo`) (`$ pkexec visudo` if I botch `/etc/sudoers`)
 * login as rocky and execute a command requiring root privilege, like `$ ls /root` - `$ su - rocky` or `$ sudo su rocky` or `$ ssh rocky@localhost`
 
-
-
-* add user bmoose w/ zsh shell and a comment - `$ sudo useradd -s /bin/zsh -m -k /etc/skel -c "Bullwinkle J Moose" bmoose`
-
-
-
-
-
-* add user to existing group - `$ sudo /usr/sbin/usermod -a -G anewgroup rjsquirrel` (-a for append)
-* delete user rocky - `$ userdel rocky` or `$ userdel -r rocky` to remove home dir, too
-* add a group anewgroup - `$ sudo /usr/sbin/groupadd anewgroup`  
-* delete a group anewgroup - `$ sudo /usr/sbin/groupdel anewgroup`  
-
-* remove user from group - `$ sudo /usr/sbin/usermod -G rjsquirrel rjsquirrel` (any groups not in list will be removed)
-
-* edit the sudoers file - `$ sudo visudo` (`who where = (as_whom) what`), better to add a file to `/etc/sudoers.d` (research this)
-* create private and public encryption keys - `$ ssh-keygen` 
- 
-### Passwords
-----
-* create a user account for user2 which will use the **Korn** shell (**ksh**) as its default shell - `$ sudo useradd -s /bin/ksh user2`, `$ sudo passwd user2`
-* what is the current expiration date for the user2 account? - look in penultimate field of `$ /etc/shadow`, no expiration
-* set the account expiration date of user2 to December 1, 2013, verify - `$ sudo chage -E 2013-12-1 user2`, `$ cat /etc/shadow`
-* use lock the user2 account, verify - `$ sudo usermod -L user2`, `$ cat /etc/shadow`
-* reset the password for user2 - `$ sudo passwd user2`
-* make user2 have to change the password on next login - 
-  
 ### Groups
-----
-* show my groups - `$ groups`
-* show my IDs - `$ id`
-* confirm my group ID in two places - `$ grep -e student /etc/group /etc/passwd`
-* create two new user accounts, rocky and bullwinkle, and make sure they have home directories - `$ sudo useradd -m rocky`, `$ sudo passwd ...`, `$ sudo useradd -m bullwinkle`, `$ sudo passwd ...`, `$ ls -al /home`
+* create two new user accounts, rocky and bullwinkle if they don't already exist
 * create two new groups, `friends` and `bosses` (with a GID of 490) - `$ sudo groupadd friends`, `$ sudo groupadd -g 490 bosses`
 * confirm the new group IDs - `$ cat /etc/group` or `$ grep -e friends -e bosses /etc/group`
 * change the bosses group ID to 500 (if not used) - `$ sudo groupmod -g 500 bosses`
-* add rocky to both new groups; add bullwinkle to group friends - `$ sudo usermod -G friends,bosses rocky`, `$ sudo usermod -G friends bullwinkle`
+* add rocky to both new groups; add bullwinkle to group friends - `$ sudo usermod -aG friends,bosses rocky`, `$ sudo usermod -aG friends bullwinkle`
 * see how the groups have changed - `$ cat /etc/group` or `$ grep -e friends -e bosses /etc/group`
 * shows the groups for both rocky and bullwinkle - `$ groups rocky,bullwinkle`
 * show the IDs for both rocky and bullwinkle - `$ id rocky`, `$ id bullwinkle`
+
+
+### Delete user
+* delete users rocky and bullwinkles and their home directories - `$ userdel -r rocky`
+
+
+* add user to existing group - `$ sudo /usr/sbin/usermod -a -G anewgroup rjsquirrel` (-a for append)
+* add a group anewgroup - `$ sudo /usr/sbin/groupadd anewgroup`  
+* delete a group anewgroup - `$ sudo /usr/sbin/groupdel anewgroup`  
+* remove user from group - `$ sudo /usr/sbin/usermod -G rjsquirrel rjsquirrel` (any groups not in list will be removed)
+* create private and public encryption keys - `$ ssh-keygen` 
+
+  
+### Groups
 * show just the group IDs for rocky and bullwinkle - `$ id -G rocky`, `$ id -G bullwinkle` (try to optimize)
 * show the group names for rocky and bullwinkle - `$ id -Gn rocky`, `$ id -Gn bullwinkle` (try to optimize)
 * create a new user and add them to friends - `$ sudo useradd -G friends -m moose`
@@ -106,6 +90,9 @@ User and Group Management
 * clean up  - `$ rm /tmp/afile`, `$ sudo userdel -r <user>`
 
 ### Extras
+* add user bullwinkle w/ zsh shell and a comment - `$ sudo useradd -s /bin/zsh -m -k /etc/skel -c "Bullwinkle J Moose" bullwinkle` (-k /etc/skel)
+* confirm my group ID in two places - `$ grep -e student /etc/group /etc/passwd`
+
 * start a restricted shell - `$ bash -r`
 * Lab 30.2: restricted shells
 * 30.15: setup a restricted account
