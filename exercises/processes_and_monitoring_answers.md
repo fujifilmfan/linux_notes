@@ -11,7 +11,7 @@ Processes, System Monitoring, System Tunables
     * Identify daemons currently running on the system
     * View RUID, RGID, EUID, and EGID for a process
 
-#### ulimit
+### ulimit
 * view all current resource limits - `$ ulimit -a`
 * view the maximum number of open file descriptors - `$ ulimit -n`
 * view the current soft limit of open file descriptors - `$ ulimit -S -n`
@@ -21,7 +21,7 @@ Processes, System Monitoring, System Tunables
 * set the limit of open file descriptors back to 4096 - `$ ulimit -n 4096`
 * make hard and soft limits of open file descriptors persistent - `$ sudo vim /etc/security/limits.conf`
 
-#### Processes
+### Processes
 * (help) run ps with -ef, -elf - what is the difference?
 * (help) run ps with aux, auxf - what is the difference?
 * (help) run ps so that only the process ID, priority, nice value, process command line, and command with args are displayed - `$ ps -o pid,pri,ni,cmd,command`, `$ ps axo "%p %n %c" (no priority)`, `$ ps axo pid,pri,ni,comm, command`
@@ -32,7 +32,7 @@ Processes, System Monitoring, System Tunables
 * lower the niceness of the same job to 5 - `$ sudo renice -n 5 -p 22171`
 * show the bash processes in top - `$ top` (apply sort-by field (F), filtering (U), sorting (R), and locating (L))
 
-#### Monitoring process states
+### Monitoring process states
 * use dd to start a background process which reads from `/dev/urandom` and writes to `/dev/null` - `$ dd if=/dev/urandom of=/dev/null &`
 * check the process state, what should it be? - `$ ps -C dd -o pid,cmd,stat`, should be S or R
 * bring the process to the foreground using the fg command, look at process state again - `$ fg`
@@ -40,14 +40,14 @@ Processes, System Monitoring, System Tunables
 * run the jobs program, what does it tell you? - `$ jobs -l`
 * bring the job back to the foreground, put it back to background with bg, then terminate it using kill (SIGTERM)  or killall from another window - `$ fg`, `$ bg`, `$ kill 25899`
 
-#### System tunables with sysctl
+### System tunables with sysctl
 * check if you can ping your own system - `$ ping localhost`
 * check the current value of net.ipv4.icmp_echo_ignore_all - `$ sysctl net.ipv4.icmp_echo_ignore_all`
 * set the value to 1 using the sysctl command line utility, verify - `$ sudo sysctl net.ipv4.icmp_echo_ignore_all=1`
 * set the value back to 0, verify - `$ sudo sysctl net.ipv4.icmp_echo_ignore_all=0`
 * change the value by modifying `/etc/sysctl.conf` and force the system to activate this setting file without a reboot, verify, revert - add `net.ipv4.icmp_echo_ignore_all=1`, then `$ sysctl -p`
 
-#### Changing maximum process ID
+### Changing maximum process ID
 * obtain the current maximum PID value - `$ sysctl kernel.pid_max` or `$ cat /proc/sys/kernel/pid_max`
 * find out what current PIDs are being issued - `$ cat &`, `$ kill <pid>`
 * reset pid_max to a lower value than the ones currently being issued, verify - `$ sudo sysctl kernel.pid_max=24000` or `$ echo 24000 > /proc/sys/kernel/pid_max`
@@ -57,9 +57,8 @@ Processes, System Monitoring, System Tunables
 * show current kernel parameters - `$ sysctl -a`
 * view pseudofiles corresponding to current kernel paramters - `$ sudo sh -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'` or `$ sudo sysctl net.ipv4.ip_forward=1` sets a value with the **sysctl** interface
 * what's in sysctl config? - `$ cat /etc/sysctl.conf`
-
  
-#### Scheduling
+### Scheduling
 * interactively schedule a task to run in one minute from now - `$ at now + 1 minute`, `at> top`, `at> CTRL-D` (keep in mind: "The user will be mailed standard error and standard output from his commands, if any.")
 * view the at queue - `$ atq`
 * remove a job from the at queue - `$ atrm <job number>`
@@ -72,7 +71,6 @@ Processes, System Monitoring, System Tunables
 * put a job to sleep using sleep - 
 
 ### Ch.11
-
 * view new messages continually: `$ sudo tail -f /var/log/messages` or `$ sudo tail -f /var/log/syslog` or `$ dmesg -w`
 * logrotate
 * view maximum number of threads allowed on the system - `$ cat /proc/sys/kernel/threads-max`
@@ -150,5 +148,3 @@ boot.log           | System boot messages
 dmesg              | Kernel messages saved after boot. To see the current contents of the kernel message buffer, type dmesg.
 messages or syslog | All important system messages
 secure             | Security related messages
-
-

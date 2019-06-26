@@ -3,31 +3,30 @@ Packages and Libraries
 
 ### Chapters: LFS201: (5), 6, 8
 
-For system administrators, RPM makes it easy to:
-* Use ldd to find what shared libraries an executable (like one in /usr/bin/) requires
+* use ldd to find what shared libraries an executable (like one in ls or xz) requires - `$ ldd /usr/bin/ls /usr/bin/xz`
 
-* rpm - find which version of a package is installed - `$ rpm -q bash`
-* rpm - find which package a file is from - `$ rpm -qf /bin/bash` # **-f** for file
-* rpm - find what files were installed by this package - `$ rpm -ql bash`
-* rpm - show information about this package - `$ rpm -qi bash`
-* rpm - show information about this package from the package file, not the package database - `$ rpm -qip foo-1.0.0-1.noarch.rpm` 
+### Queries
+* rpm - find which version of bash and tar are installed - `$ rpm -q bash`
+* rpm - find which package /bin/bash and /usr/bin/tar are from - `$ rpm -qf /bin/bash` # **-f** for file
+* rpm - find what files were installed by bash and tar - `$ rpm -ql bash`
+* rpm - show information about bash and tar - `$ rpm -qi bash`
+* # rpm - show information about bash and tar from the package (rpm) file, not the package database - `$ rpm -qip foo-1.0.0-1.noarch.rpm` 
 * rpm - list all installed packages on this system - `$ rpm -qa`
-* rpm - return a list of prerequisites for a package - `$ rpm -qp --requires foo-1.0.0-1.noarch.rpm`
-* rpm - show what installed package provides a particular requisite package - `$ rpm -q --whatprovides libc.so.6`
-* rpm - verify all packages on system - `$ rpm -Va`
+* # rpm - return a list of prerequisites for a package - `$ rpm -qp --requires foo-1.0.0-1.noarch.rpm`
+* rpm - show what installed package provides bash or tar or bzip2 - `$ rpm -q --whatprovides bash`
+* rpm - show what packages require bash or tar or bzip2 - `$ rpm -q --whatrequires bash`
+* # rpm - verify all packages on system - `$ rpm -Va` # takes a loooong time
 * rpm - verify the bash package - `$ rpm -V bash` # no output when everything is okay
-* rpm - install a package - `$ sudo rpm -ivh foo-1.0.0-1.noarch.rpm`  # **-i** is for install, **-v** is for verbose, and **-h** just means print out hash marks while doing to show progress
+* # rpm - install a package - `$ sudo rpm -ivh foo-1.0.0-1.noarch.rpm`  # **-i** is for install, **-v** is for verbose, and **-h** just means print out hash marks while doing to show progress
 
-### 6.12: Uninstalling Packages
-----
+### Uninstalling packages
 * rpm - a successful uninstall produces no output
 * rpm - errors occur when the package isn't installed or is required by other packages
 * rpm - remove package - `$ sudo rpm -e system-config-lvm` # **-e** is for erase and 'system-config-lvm' is the package name, not rpm file name
 * rpm - remove package using a test run - `$ sudo rpm -e --test -vv system-config-lvm`
 * rpm - upgrade a package - `$ sudo rpm -Uvh bash-4.2.45-5.el7_0.4.x86_64.rpm`
 
-### 6.15: Freshening Packages
-----
+### Freshening packages
 * rpm - freshen a package - `$ sudo rpm -Fvh *.rpm`
 * rpm - create a cpio archive of a downloaded rpm - `$ rpm2cpio foobar.rpm > foobar.cpio`
 * rpm - list files in a downloaded rpm - `$  rpm -qilp foobar.rpm`
@@ -43,7 +42,6 @@ repository file * Here's an example:
 `$ cat (/etc/yum.repos.d/?)CentOS-Base.repo`
 
 * yum - search for package and see a description - `$ sudo yum search <keyword>`
- 
 * yum - show packages that contain the file `bin/ls` - `$ sudo yum provides *bin/ls` or `$ sudo yum whatprovides *bin/ls`
 * yum - install the **yum-plugin-verify** package - `$ sudo yum install yum-plugin-verify`  
 * yum - verify all packages on the system - `$ sudo yum verify`
@@ -51,15 +49,13 @@ repository file * Here's an example:
 * yum - verify a package, mimicing **rpm -V** exactly - `$ sudo yum verify-rpm [package]`  
 * yum - list all differences between packages, including configuration files - `$ sudo yum verify-all [package]`  
   
-### 8.10: Installing/Removing/Upgrading Packages
-----
+### Installing/removing/upgrading packages
 * install one or more packages from repositories, resolving and installing any necessary dependencies - `$ sudo yum install package1 [package2]`  
 * install from a local rpm without resolving dependencies - `$ rpm -i package-file`  
 * remove packages from the system - `$ sudo yum remove package1 [package2]`  
 * find package config files with the **.rpmsave** and **.rpmnew** extensions - `$ sudo find /etc -name "*.rpm*"`  
   
-### 8.11: Additional Commands
-----
+### Additional commands
 * yum - list plugins - `$ sudo yum list "yum-plugin*"`  
 * yum - show a list of all enabled repositories - `$ sudo yum repolist`  
 * yum - download dump package to a folder of your choice, but do not install it - `$ sudo yum install --downloadonly <package> --downloaddir=<my_dir>`  

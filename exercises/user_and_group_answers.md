@@ -3,6 +3,8 @@ User and Group Management
 
 ### Chapters: LFS101: 12, 18, LFS201: 30, 31, 32, 33
 
+useradd -m to add home dir
+
 * show current user - `$ whoami`
 * show info about current user - `$ id`
 * show group membership of current user - `$ groups`
