@@ -76,39 +76,6 @@ Storage Management
 * turn on all group quotas - `$ sudo quotaon -avg`
 * turn off all group quotas - `$ sudo quotaoff -avg`
 
-### Mount a new instance of tmpfs
-* mount a new instance of tmpfs anywhere on your directory structure - `$ sudo mkdir /mnt/tmpfs`, `$ sudo mount -t tmpfs none /mnt/tmpfs`
-* see how much space the filesystem has been given and how much it is using - `$ df -h /mnt/tmpfs`
-* change the allotted size as a mount option - `$ sudo mount -t tmpfs -o size=1G none /mnt/tmpfs`
-* unmount when you are done - `$ sudo umount /mnt/tmpfs`
-* view the instance of tmpfs at `/dev/shm `- `$ df -h /dev/shm`
-* create some files in `/dev/shm` and note how the filesystem is filling up with df
-* view multiple instances of tmpfs - `$ df -h | grep tmpfs`
-
-### Use a file as a disk partition / partition a disk image file
-* create a file full of zeros 1 GB in length - `$ dd if=/dev/zero of=imagefile bs=1M count=1024`
-* partition the disk image file - `$ sudo fdisk imagefile`
-* put filesystems on the partitions - `$ mkfs.ext4 imagefile`
-* create a mount point - `$ mkdir mntpoint`
-* mount the filesystem
-    * loop: `$ sudo mount -o loop imagefile mntpoint` OR
-    * losetup: `$ sudo losetup /dev/loop2 imagefile`, `$ sudo mount /dev/loop2 mntpoint`
-* unmount the filesystem
-    * loop: `$ sudo umount mntpoint` OR
-    * losetup: `$ sudo umount mntpoint`, `$ sudo losetup -d /dev/loop2`
-
-### Using losetup and parted
-* find which loop devices are already being used - `$ losetup -a`
-* find first free loop device - `$ sudo losetup -f`
-* associate the image file with a free loop device - `$ sudo losetup /dev/loop1 imagefile`
-* create a disk partition label on the loop device (image file) - `$ sudo parted -s /dev/loop1 mklabel msdos`
-* create three primary partitions on the loop device using parted - `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 0 256`, `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 256 512`, `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 512 1024`
-* check the partition table - `$ fdisk -l /dev/loop1`
-* list new device nodes - `$ ls -l /dev/loop1*`
-* put filesystems on the partitions - `$ sudo mkfs.ext3 /dev/loop1p1`, `$ sudo mkfs.ext4 /dev/loop1p2`, `$ sudo mkfs.vfat /dev/loop1p3`
-* mount all three filesystems and show they are available - `$ mkdir mnt1 mnt2 mnt3`, `$ sudo mount /dev/loop1p1 mnt1`, `$ sudo mount /dev/loop1p2 mnt2`, `$ sudo mount /dev/loop1p3 mnt3`, `$ df -Th`
-* after using the filesystems to your heart’s content you can unwind it all - `$ sudo umount mnt1 mnt2 mnt3`, `$ rmdir mnt1 mnt2 mnt3`, `$ sudo losetup -d /dev/loop1`
-
 ### Mount a physical partition OR loopback file
 * create a 250 MB partition
     * p: `$ sudo fdisk /dev/sda`, ..., `$ partprobe -s` OR
@@ -179,6 +146,40 @@ Storage Management
 * start service to monitor RAID device - `$ sudo systemctl start mdmonitor`
 * ensure RAID monitor starts at boot - `$ sudo systemctl enable mdmonitor`
 * stop RAID device - `$ sudo mdadm -S /dev/md0`
+
+### Mount a new instance of tmpfs
+* mount a new instance of tmpfs anywhere on your directory structure - `$ sudo mkdir /mnt/tmpfs`, `$ sudo mount -t tmpfs none /mnt/tmpfs`
+* see how much space the filesystem has been given and how much it is using - `$ df -h /mnt/tmpfs`
+* change the allotted size as a mount option - `$ sudo mount -t tmpfs -o size=1G none /mnt/tmpfs`
+* unmount when you are done - `$ sudo umount /mnt/tmpfs`
+* view the instance of tmpfs at `/dev/shm `- `$ df -h /dev/shm`
+* create some files in `/dev/shm` and note how the filesystem is filling up with df
+* view multiple instances of tmpfs - `$ df -h | grep tmpfs`
+* clean up
+
+### Use a file as a disk partition / partition a disk image file
+* create a file full of zeros 1 GB in length - `$ dd if=/dev/zero of=imagefile bs=1M count=1024`
+* partition the disk image file - `$ sudo fdisk imagefile`
+* put filesystems on the partitions - `$ mkfs.ext4 imagefile`
+* create a mount point - `$ mkdir mntpoint`
+* mount the filesystem
+    * loop: `$ sudo mount -o loop imagefile mntpoint` OR
+    * losetup: `$ sudo losetup /dev/loop2 imagefile`, `$ sudo mount /dev/loop2 mntpoint`
+* unmount the filesystem
+    * loop: `$ sudo umount mntpoint` OR
+    * losetup: `$ sudo umount mntpoint`, `$ sudo losetup -d /dev/loop2`
+
+### Using losetup and parted
+* find which loop devices are already being used - `$ losetup -a`
+* find first free loop device - `$ sudo losetup -f`
+* associate the image file with a free loop device - `$ sudo losetup /dev/loop1 imagefile`
+* create a disk partition label on the loop device (image file) - `$ sudo parted -s /dev/loop1 mklabel msdos`
+* create three primary partitions on the loop device using parted - `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 0 256`, `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 256 512`, `$ sudo parted -s /dev/loop1 unit MB mkpart primary ext4 512 1024`
+* check the partition table - `$ fdisk -l /dev/loop1`
+* list new device nodes - `$ ls -l /dev/loop1*`
+* put filesystems on the partitions - `$ sudo mkfs.ext3 /dev/loop1p1`, `$ sudo mkfs.ext4 /dev/loop1p2`, `$ sudo mkfs.vfat /dev/loop1p3`
+* mount all three filesystems and show they are available - `$ mkdir mnt1 mnt2 mnt3`, `$ sudo mount /dev/loop1p1 mnt1`, `$ sudo mount /dev/loop1p2 mnt2`, `$ sudo mount /dev/loop1p3 mnt3`, `$ df -Th`
+* after using the filesystems to your heart’s content you can unwind it all - `$ sudo umount mnt1 mnt2 mnt3`, `$ rmdir mnt1 mnt2 mnt3`, `$ sudo losetup -d /dev/loop1`
 
 ### Disk mounting quiz
 When adding a new internal disk to an existing server, in which best logical order should the following steps be executed to have the disk persistently mounted after rebooting the system?

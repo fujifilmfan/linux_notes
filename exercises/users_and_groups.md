@@ -9,7 +9,7 @@ User and Group Management
 * show group membership of current user
 * show logged-on users - `$ who` or `$ who -a`
 * show info about another user - `$ id <other_user>`
-* show just group IDs of another user - `$ id -G <other_user>` (-u for just user ID)
+* show just group IDs of another user - `$ id -G <other_user>` (-u for just user ID; add a -n for names instead of numbers)
 * show group membership of another user - `$ groups <other_user>`
 
 ### Add user
@@ -39,24 +39,18 @@ User and Group Management
 * see how the groups have changed - `$ cat /etc/group` or `$ grep -e friends -e bosses /etc/group`
 * shows the groups for both rocky and bullwinkle - `$ groups rocky,bullwinkle`
 * show the IDs for both rocky and bullwinkle - `$ id rocky`, `$ id bullwinkle`
-
-
-### Delete user
-* delete users rocky and bullwinkles and their home directories - `$ userdel -r rocky`
-
-
-* add user to existing group - `$ sudo /usr/sbin/usermod -a -G anewgroup rjsquirrel` (-a for append)
-* add a group anewgroup - `$ sudo /usr/sbin/groupadd anewgroup`  
-* delete a group anewgroup - `$ sudo /usr/sbin/groupdel anewgroup`  
-* remove user from group - `$ sudo /usr/sbin/usermod -G rjsquirrel rjsquirrel` (any groups not in list will be removed)
-* create private and public encryption keys - `$ ssh-keygen` 
-
-  
-### Groups
 * show just the group IDs for rocky and bullwinkle - `$ id -G rocky`, `$ id -G bullwinkle` (try to optimize)
 * show the group names for rocky and bullwinkle - `$ id -Gn rocky`, `$ id -Gn bullwinkle` (try to optimize)
-* create a new user and add them to friends - `$ sudo useradd -G friends -m moose`
-* is the new user also part of their default group?
+* create boris and add him to friends - `$ sudo useradd -G friends -m boris`
+* is the new user also part of their default group? - yes
+* remove boris from the friends group - `$ sudo usermod -G boris,characters boris`
+
+### Delete user
+ 
+
+* create private and public encryption keys - `$ ssh-keygen` 
+
+### Groups
 * login as rocky, create a directory called `somedir` with execute privileges for all, and set the group ownership to 'bosses' - `$ ssh rocky@localhost`, `$ chmod a+x .`, `$ mkdir ~/somedir`, `$ chgrp bosses somedir`
 * login as `bullwinkle` and try to create a file in `/home/rocky/somedir` called `somefile` using the **touch** command; can you do this? - `$ ssh bullwinkle@localhost`, `$ touch /home/rocky/somedir/somefile`, no
 * add 'bullwinkle' to the 'bosses' group and try again - `$ sudo usermod -a -G bosses bullwinkle`, `$ ssh bullwinkle@localhost`, `$ touch /home/rocky/somedir/somefile`, `$ ls -al /home/rocky/somedir` (need to log out and log in again)
@@ -64,30 +58,30 @@ User and Group Management
 * create a system group with name staff and GID 215 - `$ sudo groupadd -r -g 215 staff`
 
 ### chown and chgrp 
-----
-* change user ownership of a file - `$ sudo chown <user> somefile`
-* change group ownership of a file - `$ sudo chgrp <group> somefile`
+* as rocky, create afile in somedir and change ownership to bullwinkle - `$ sudo chown bullwinkle afile`
 * change both the user and group ownership of a file at the same time - `$ sudo <user>:<group> somefile` (you need to be a member of the group, too)
 * change both the user and group ownership of a file recursively - `$ chown -R <user>:<group> ./` or `$ chown -R <user>:<group> subdir`
- 
+
 ### umask
-----
 * create an empty file - `touch /tmp/afile`
 * show current umask - `$ umask`
-* change the umask so that new files will have 777 permissions - `$ umask ...` (depends on current value)
-* change the umask so that new files will have 755 permissions - `$ umask ...` (depends on current value)
-* change the umask so that new files will have 222 permissions - `$ umask ...` (depends on current value)
+* change the umask so that new files will have 777 permissions - `$ umask ...` (depends on current value) - can't do that
+* change the umask so that new files will have 755 permissions - `$ umask ...` (depends on current value) - can't do that
+* change the umask so that new files will have 222 permissions - `$ umask 0444` (depends on current value)
 
 ### ACLs
-----
 * create a file using your usual user name and look at it's ACL properties - ` $ getfacl somefile`
 * create a new user, login as that user, and try to add a line to the file you created in the first step - `$ sudo useradd <user>`, `$ sudo passwd <user>`, `$ sudo su - <user>`, `$ echo another line > /tmp/afile`
 * make the file writeable by the new user using ACLs and try again - `$ setfacl -m u:<user>:rw /tmp/afile`, `$ getfacl /tmp/afile`, `$ echo ...`
 * check the permissions - have they changed?
 * make the file not readable by the new user using ACLs and try again - `$ setfacl -m u:<user>:w /tmp/afile`, `$ echo another line > /tmp/afile`
 * remove the ACL entries - `$ setfacl -x u:<user> /tmp/afile`
-* create a directory for sharing files and set the default ACL so that another user can read and write files there - `$ setfacl -m d:u:<user>:rw somedir`
-* clean up  - `$ rm /tmp/afile`, `$ sudo userdel -r <user>`
+* create a directory for sharing files and set the default ACL so that another user can read and write files there - `$ setfacl -m d:u:<user>:rw /tmp/sharing`
+
+### Delete stuff
+* clean up files - `$ rm /tmp/sharing`
+* delete rocky, bullwinkle, and boris and their home directories - `$ userdel -r rocky`
+* delete groups friends, bosses, characters - `$ sudo /usr/sbin/groupdel friends` 
 
 ### Extras
 * add user bullwinkle w/ zsh shell and a comment - `$ sudo useradd -s /bin/zsh -m -k /etc/skel -c "Bullwinkle J Moose" bullwinkle` (-k /etc/skel)
