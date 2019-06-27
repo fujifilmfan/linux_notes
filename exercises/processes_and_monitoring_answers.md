@@ -46,18 +46,17 @@ Processes, System Monitoring, System Tunables
 * set the value to 1 using the sysctl command line utility, verify - `$ sudo sysctl net.ipv4.icmp_echo_ignore_all=1`
 * set the value back to 0, verify - `$ sudo sysctl net.ipv4.icmp_echo_ignore_all=0`
 * change the value by modifying `/etc/sysctl.conf` and force the system to activate this setting file without a reboot, verify, revert - add `net.ipv4.icmp_echo_ignore_all=1`, then `$ sysctl -p`
-
+  
 ### Changing maximum process ID
 * obtain the current maximum PID value - `$ sysctl kernel.pid_max` or `$ cat /proc/sys/kernel/pid_max`
 * find out what current PIDs are being issued - `$ cat &`, `$ kill <pid>`
 * reset pid_max to a lower value than the ones currently being issued, verify - `$ sudo sysctl kernel.pid_max=24000` or `$ echo 24000 > /proc/sys/kernel/pid_max`
 * start a new process and see what it gets as a PID; kill the process - `$ cat &`, `$ kill -9 <pid>`
-
 * see what command line a system was booted in - `$ cat /proc/cmdline`
 * show current kernel parameters - `$ sysctl -a`
 * view pseudofiles corresponding to current kernel paramters - `$ sudo sh -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'` or `$ sudo sysctl net.ipv4.ip_forward=1` sets a value with the **sysctl** interface
 * what's in sysctl config? - `$ cat /etc/sysctl.conf`
- 
+  
 ### Scheduling
 * interactively schedule a task to run in one minute from now - `$ at now + 1 minute`, `at> top`, `at> CTRL-D` (keep in mind: "The user will be mailed standard error and standard output from his commands, if any.")
 * view the at queue - `$ atq`
@@ -69,8 +68,8 @@ Processes, System Monitoring, System Tunables
 * verify the cron job was loaded - `$ crontab -l`, 
 * remove the cron job - `$ crontab -r`
 * put a job to sleep using sleep - 
-
-### Ch.11
+  
+### Threads, I/O, paging
 * view new messages continually: `$ sudo tail -f /var/log/messages` or `$ sudo tail -f /var/log/syslog` or `$ dmesg -w`
 * logrotate
 * view maximum number of threads allowed on the system - `$ cat /proc/sys/kernel/threads-max`
@@ -79,6 +78,7 @@ Processes, System Monitoring, System Tunables
 * sadc stores information in `/var/log/sa` with a daily frequency by default
 * paging statistics: `$ sar -B 3 3 `
 * I/O and transfer rate statistics: `$ sar -b 3 3`
+  
 Option | Meaning
 ------ | -------
 -A 	   | Almost all information
@@ -96,8 +96,7 @@ Option | Meaning
 -W 	   | Swapping statistics, pages in and out per second
 -f 	   | Extract information from specified file, created by the -o option
 -o 	   | Save readings in the file specified, to be read in later with -f option
-
-
+  
 ### Memory
 * show brief summary of memory usage - `$ free`
 * get basic memory statistics - `$ free -m` or `$ free -h`
@@ -105,7 +104,7 @@ Option | Meaning
 * show table of memory statistics with units - `$ vmstat -s -S m`
 * show table of disk statistics - `$ vmstat -d`
 * show table of statistics for /dev/sda1 - `$ vmstat -p /dev/sda1 2 4`
-
+  
 ### Swap
 * check current swap space - `$ cat /proc/swaps`
 * add more swap space by adding either a new partition or a file - `$ dd if=/dev/zero of=swpfile bs=1M count=1024`, `$ mkswap swpfile` or `$ mkswap <partition name>`
@@ -114,7 +113,7 @@ Option | Meaning
 * turn off all swap - `$ sudo /sbin/swapoff -a`
 * turn on all swap - `$ sudo /sbin/swapon -a`
 
-
+### Stress
 * stress system and monitor logs - `$ stress -m 8 -t 10s`, `$ dmesg` or `/var/log/messages`, `/var/log/syslog`
 
 ### I/O monitoring
@@ -126,6 +125,14 @@ Option | Meaning
 * show table of current I/O usage - `$ sudo iotop`
 * show table of only processes or threads actually doing I/O - `$ sudo iotop -o`
 
+### Important files in /var/log
+
+File               | Purpose
+----               | -------
+boot.log           | System boot messages
+dmesg              | Kernel messages saved after boot. To see the current contents of the kernel message buffer, type dmesg.
+messages or syslog | All important system messages
+secure             | Security related messages
 
 ### Extras
 * Lab 3.2: ipcs
@@ -139,12 +146,4 @@ Option | Meaning
     * `$ pkill [-signal] [options] [pattern]`
     * `$ pkill -u libby foobar` (will kill all of **libby**'s processes with a name of **foobar**)
     * `$ pkill -HUP rsyslogd` (makes **rsyslog** re-read its config file)
-
-
-* important files in /var/log:
-File               | Purpose
-----               | -------
-boot.log           | System boot messages
-dmesg              | Kernel messages saved after boot. To see the current contents of the kernel message buffer, type dmesg.
-messages or syslog | All important system messages
-secure             | Security related messages
+  
