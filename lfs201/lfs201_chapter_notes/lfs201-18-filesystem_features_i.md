@@ -203,7 +203,7 @@ By the end of this chapter, you should be able to:
 ----
 * entry in `/etc/fstab` for USB pen drive always plugged in but only mounted when used:
    > `LABEL=Sam128   /SAM  ext4  noauto,x-systemd.automount,x-systemd.device-timeout=10,x-systemd.idle-timeout=30 0 0`  
-   * **noauto**: Do not mount at boot. Here, **auto** does not refer to **automount**.
+   * **noauto**: Do not mount at boot. Here, **auto** does not refer to **automount** (??).
    * **x-systemd.automount**: Use the **systemd automount** facility.
    * **x-systemd.automount.device-timeout=10**: If this device is not available, say it is a network device accessible through NFS, timeout after 10 seconds instead of getting hung.
    * **x-systemd.automount.idle-timeout=30**: If the device is not used for 30 seconds, unmount it.
