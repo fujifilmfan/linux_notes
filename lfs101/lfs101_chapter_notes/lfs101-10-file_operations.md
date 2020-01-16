@@ -67,6 +67,9 @@ By the end of this chapter, you should be able to:
    * allows the directory `/projects` to be mounted using NFS with read and write (`rw`) permissions and shared with other hosts in the `example.com` domain  
 * after modifying `/etc/exports`, notify Linux with `$ exportfs -av` (can also restart NFS, but that halts NFS before starting up again)  
 * use `$ sudo systemctl enable nfs` to ensure NFS service starts whenever the system is booted  
+* resources about `/etc/exports` options:  
+   * [man/5/exports](https://linux.die.net/man/5/exports) (My own copy of the main page did not contain the `no_subtree_check` option.)  
+   * [3. Setting Up an NFS Server](http://nfs.sourceforge.net/nfs-howto/ar01s03.html)  
 
 #### NFS on the Client
 * on client machine, to have remote filesystem mounted automatically upon boot, add an entry to `/etc/fstab`
