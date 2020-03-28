@@ -92,7 +92,7 @@ None or Unknown      | 0        | Default value
 Real Time            | 1        | Get first access to the disk, can starve other processes. The priority defines how big a time slice each process gets.
 Best effort          | 2        | All programs serviced in round-robin fashion, according to priority settings. The Default. 
 Idle                 | 3        | No access to disk I/O unless no other program has asked for it for a defined period. 
-
+  
 ### 14.10: Using iotop and iostat Demo
 ----
 * `$ iostat -m /dev/sda /dev/sdb 2 200`

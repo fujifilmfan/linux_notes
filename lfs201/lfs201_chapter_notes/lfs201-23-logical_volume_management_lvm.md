@@ -203,13 +203,13 @@ What is the best logical order of actions needed to make a new disk available us
 ----
   
 #### Paths  
-
+  
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 lvm | `/sbin/lv*` | logical volume utilties | LFS201 23.7
-
+  
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 lvm | `$ vgcreate ...` | creates volume groups | LFS201 23.6

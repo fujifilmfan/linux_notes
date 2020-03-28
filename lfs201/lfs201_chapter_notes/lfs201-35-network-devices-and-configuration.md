@@ -405,7 +405,7 @@ $ sudo sh -c "cat hosts.txt >> /etc/hosts"
 ----
   
 #### Paths  
-
+  
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 networks | `/etc/sysconfig/network` | stores persistent NIC configs on Red Hat | LFS201 35.11
@@ -429,7 +429,7 @@ networks | `/etc/host.conf` | contains general configuration information; rarely
 networks | `/etc/resolv.conf` | configures machine's usage of DNS | LFS201 35.22
   
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 networks | `$ ip ...` | used to configure, control and query interface parameters and control devices, routing, etc. | LFS201 35.5

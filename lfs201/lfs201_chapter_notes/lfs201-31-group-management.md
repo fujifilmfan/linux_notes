@@ -126,16 +126,16 @@ By the end of this chapter, you should be able to:
 ----
   
 #### Paths  
-
+  
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 accounts | `/etc/group` | holds group definitions | LFS201 31.4
 accounts | `/etc/gshadow` | holds group passwords | LFS201 31.4
 accounts, system | `/etc/profile` | contains system-wide environment and startup programs | LFS201 31.6
 accounts, system | `/etc/bashrc` | contains system-wide functions and aliases | LFS201 31.6
-
+  
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 accounts | `$ sudo groupadd -r -g 215 staff` | creates a system group (**-r**) and assigns it the GID "215" and name "staff" (?) | LFS201 31.5

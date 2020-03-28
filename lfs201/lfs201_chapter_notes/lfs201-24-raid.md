@@ -132,14 +132,14 @@ You added two new disks to a server. In which order would you use the following 
 ----
   
 #### Paths  
-
+  
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 raid | `/dev/mdX` | RAID device | LFS201 24.4
 raid | `/proc/mdstat` | RAID status | LFS201 24.6
 
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 raid | `$ sudo mdadm -S` | stop RAID | LFS201 24.6

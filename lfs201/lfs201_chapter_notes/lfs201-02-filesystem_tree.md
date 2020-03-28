@@ -248,16 +248,16 @@ On some newer distributions (including SUSE and RHEL 7) removable media will pop
   
 ### Lab 2.1: Use du to calculate overall size of each of your system's top-level directories
 ----
--c total
--h human readable
--s summarize (otherwise every file on the system!
--x skip directories on different file systems
--X exclude
+-c total  
+-h human readable  
+-s summarize (otherwise every file on the system!  
+-x skip directories on different file systems  
+-X exclude  
 
-Mine: `$ sudo du -cshx --exclude=/proc *`
-Solution: `$ sudo du --max-depth=1 -hx /`
-    > pseudo-filesystems not followed: /dev /proc /run /sys
-    > symbolic links to counterparts under /usr not followed: /bin /sbin /lib /lib64
+Mine: `$ sudo du -cshx --exclude=/proc *`  
+Solution: `$ sudo du --max-depth=1 -hx /`  
+> pseudo-filesystems not followed: /dev /proc /run /sys  
+> symbolic links to counterparts under /usr not followed: /bin /sbin /lib /lib64  
   
 ### Lab 2.2: Touring the /proc Filesystem
 ----

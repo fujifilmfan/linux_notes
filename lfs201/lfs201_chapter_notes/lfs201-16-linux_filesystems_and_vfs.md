@@ -99,8 +99,8 @@ example filesystems supported by Linux:
    * ext4 is a vastly enhanced outgrowth of ext3. Features include extents, 48-bit block numbers, and up to 16TB size. Most Linux distributions have used ext4 as the default filesystem for quite a few years
    * reiserfs was the first journalling implementation used in Linux, but lost its leadership and further development was abandoned
    * JFS was originally a product of IBM and was ported from IBM's AIX operating system
-   * XFS was originally a product of SGI, and was ported from SGI's IRIX operating systems. RHEL 7 has adopted XFS as its default filesystem
-   * btrfs is the newest of the journalling filesystems and is still under rapid development.
+   * XFS was originally a product of SGI, and was ported from SGI's IRIX operating systems; RHEL 7 has adopted XFS as its default filesystem
+   * btrfs is the newest of the journalling filesystems and is still under rapid development
   
 ### 16.13: Special Filesystems
 ----

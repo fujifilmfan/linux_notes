@@ -304,7 +304,7 @@ See video.
 ----
   
 #### Paths  
-
+  
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 accounts | `/etc/passwd` | file that describes basic account attributes | LFS201 30.5
@@ -321,9 +321,9 @@ accounts, network | `~/.ssh/id_rsa.pub` | user's public encryption key | LFS201 
 accounts, network | `~/.ssh/authorized_keys` | list of public keys that are permitted to login | LFS201 30.18
 accounts, network | `~/.ssh/known_hosts` | list of hosts from which logins have been allowed in the past | LFS201 30.18
 accounts, network | `~/.ssh/config` | configuration file for specifying various options | LFS201 30.18
-
+  
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 accounts | `$ sudo useradd dexter` | create an account for user **dexter** | LFS201 30.6

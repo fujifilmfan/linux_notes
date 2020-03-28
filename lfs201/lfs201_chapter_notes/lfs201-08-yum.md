@@ -268,13 +268,13 @@ packages | `/etc/yum.repos.d/` | contains repository configuration files; they h
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-packages | `$ yum clean [ packages | metadata | expire-cache | rpmdb | plugins | all ]` | remove cached information | LFS201 8.5
+packages | `$ yum clean [ packages \| metadata \| expire-cache \| rpmdb \| plugins \| all ]` | remove cached information | LFS201 8.5
 packages | `$ cat CentOS-Base.repo` | example of a respository file | LFS201 8.7
 packages | `$ sudo yum search KEYWORD` | search for packages with keyword in name | LFS201 8.8
 packages | `$ sudo yum list "*KEYWORD*"` | tells what is installed and what else is available | LFS201 8.8
 packages | `$ sudo yum info KEYWORD` | get information about a package | LFS201 8.8
 packages | `$ yum info "libc\*"` | wildcards can be used for most **yum** commands | LFS201 8.8
-packages | `$ sudo yum list [installed | updates | available ]` | list all packages, or just those installed, available, or updates that have not yet been installed | LFS201 8.8
+packages | `$ sudo yum list [installed \| updates \| available ]` | list all packages, or just those installed, available, or updates that have not yet been installed | LFS201 8.8
 packages | `$ sudo yum grouplist` | show information about package groups installed or available, etc. | LFS201 8.8
 packages | `$ sudo yum groupinfo GROUP1` | show information about package groups installed or available, etc. | LFS201 8.8
 packages | `$ sudo yum groupinfo "Development Tools"` | show information about the "Development Tools" package group | LFS201 8.8

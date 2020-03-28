@@ -121,7 +121,7 @@ Organize the basic steps of the boot sequence in the correct order.
 ----
   
 #### Paths  
-
+  
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 startup/shutdown | `/usr/lib/systemd` | contains default configuration information | LFS201 37.7
@@ -132,7 +132,7 @@ startup/shutdown | `/etc/default` | used by Ubuntu in a similar way as `/etc/sys
 startup/shutdown | `/etc/default/useradd` | sets the defaults that are used when new user accounts are being created | LFS201 37.9
   
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 startup/shutdown | `$ shutdown [OPTIONS...] [TIME] [WALL...]` | generic syntax | LFS201 37.10

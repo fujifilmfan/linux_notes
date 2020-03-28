@@ -28,7 +28,7 @@ By the end of this chapter, you should be able to:
 * Know how to query, verify, install, uninstall, upgrade and freshen packages.
 * Grasp why new kernels should be installed rather than upgraded.
 * Know how to use **rpm2cpio** to copy packaged files into a **cpio** archive, as well as to extract the files without installing them.
-* **yum** and **zypper** hanlded dependencies in a more robust fashion; rpm more for packages listed on command line (?)
+* **yum** and **zypper** handle dependencies in a more robust fashion; rpm more for packages listed on command line (?)
 
 ### 6.4: RPM
 ----

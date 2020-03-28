@@ -209,7 +209,7 @@ Topics | Path | Notes | Reference
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-filesystem | `$ sudo dumpe2fs /dev/sda1 | grep superblock` | shows superblock locations | LFS201 20.9
+filesystem | `$ sudo dumpe2fs /dev/sda1 \| grep superblock` | shows superblock locations | LFS201 20.9
 filesystem | `$ dumpe2fs ...` | scan filesystem information | LFS201 20.11
 filesystem | `$ tune2fs ...` | change filesystem parameters | LFS201 20.12
 filesystem | `$ sudo tune2fs -c 25 /dev/sda1` | change the maximum number of mounts between filesystem checks (max-mount-count) | LFS201 20.12

@@ -184,7 +184,7 @@ Topics | Path | Notes | Reference
 security, system | to `/etc/fstab` add `/dev/sda2 /mymountpt  ext4 ro,noexec,nodev 0 0` | mount the filesystem in **read-only** mode | LFS201 42.15
   
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 security, system | `$ mount -o ro,noexec,nodev /dev/sda2 /mymountpt` | mount the filesystem in **read-only** mode | LFS201 42.15

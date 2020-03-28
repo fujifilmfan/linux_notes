@@ -14,19 +14,19 @@ Chapter 13: Memory: Monitoring Usage and Tuning
 ### 13.3: Learning Objectives
 ----
 By the end of this chapter, you should be able to:
-  * List the primary (inter-related) considerations and tasks involved in memory tuning.
-  * Use entries in `/proc/sys/vm`, and decipher `/proc/meminfo`.
-  * Use **vmstat** to display information about memory, paging, I/O, processor activity, and processes' memory consumption.
-  * Understand how the **OOM-killer** decides when to take action and selects which processes should be exterminated to open up some memory.
+* List the primary (inter-related) considerations and tasks involved in memory tuning.
+* Use entries in `/proc/sys/vm`, and decipher `/proc/meminfo`.
+* Use **vmstat** to display information about memory, paging, I/O, processor activity, and processes' memory consumption.
+* Understand how the **OOM-killer** decides when to take action and selects which processes should be exterminated to open up some memory.
 
 ### 13.4: Memory Tuning Considerations
 ----
 * most memory is used to cached contents of files on disk, so closely related to I/O throughput
 * tweak parameters in `/proc/sys/vm` one at a time and look for effects
 * primary (inter-related) tasks:
-   * controlling flushing parameters, i.e., how many pages are allowed to be **dirty** and how often they are flushed out to disk
-   * controlling **swap** behavior, i.e., how much pages that reflect file contents are allowed to remain in memory, as opposed to those that need to be swapped out as they have no other backing store
-   * controlling how much memory **overcommission** is allowed, since many programs never need the full amount of memory they request, particularly because of **copy on write** (**COW**) techniques
+    * controlling flushing parameters, i.e., how many pages are allowed to be **dirty** and how often they are flushed out to disk
+    * controlling **swap** behavior, i.e., how much pages that reflect file contents are allowed to remain in memory, as opposed to those that need to be swapped out as they have no other backing store
+    * controlling how much memory **overcommission** is allowed, since many programs never need the full amount of memory they request, particularly because of **copy on write** (**COW**) techniques
 * what works in one situation might be far from optimal in others
   
 ### 13.5: Memory Monitoring Tools

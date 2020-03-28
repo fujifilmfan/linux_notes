@@ -416,7 +416,7 @@ filesystem, partitions | `/proc/partitions` | stores information about partition
 
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
-files | `$ chattr [+|-|=mode] filename` | change attributes for a file | LFS201 18.4
+files | `$ chattr [+\|-\|=mode] filename` | change attributes for a file | LFS201 18.4
 files | `$ lsattr <filename>` | display attributes for a file | LFS201 18.4
 filesystem | `$ mkfs [-t fstype] [options] [device-file]` | generic **mkfs** syntax | LFS201 18.5
 filesystem | `$ sudo mkfs -t ext4 /dev/sda10` | make an ext4 fs on `/dev/sda10` | LFS201 18.5
@@ -462,7 +462,7 @@ filesystem | `$ sudo mkfs -t ext4 -b 2048 -v /dev/sda3` | create filesytem with 
 filesystem | `$ sudo mkfs -t ext4 -b 4096 -v /dev/sda3` | create filesystem with block size of 4096 | LFS201 Lab 18.2
 filesystem | `$ sudo mount /dev/sda3 /mnt/tempdir` | mount the partition | LFS201 Lab 18.2
 filesystem | `$ df -Th` | view disk information **-T** for filesytem type, **-h** for human-readable | LFS201 Lab 18.2
-filesystem | `$ mount | grep tempdir` | view mounted filesystems | LFS201 Lab 18.2
+filesystem | `$ mount \| grep tempdir` | view mounted filesystems | LFS201 Lab 18.2
 filesystem | `$ sudo umount /mnt/tempdir` | unmount the filesystem | LFS201 Lab 18.2
 filesystem | `$ sudo mount -r /dev/sda3 /mnt/tmpdir` | mount the filesystem as read-only | LFS201 Lab 18.2
 filesystem | `$ sudo mount -o ro /dev/sda3 /mnt/tempdir` | mount the filesystem as read-only | LFS201 Lab 18.2

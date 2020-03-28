@@ -71,7 +71,10 @@ wireshark | Detailed network traffic analysis                | wireshark
 * log files are typically found in `/var/log`
 * control of messages is by the **syslogd** daemon (or **rsyslogd** on modern systems) or **journalctl** on newer **systemd**-based systems
 * messages can be seen on system console window, too
-* view new messages continually: `$ sudo tail -f /var/log/messages` or `$ sudo tail -f /var/log/syslog` or `$ dmesg -w`
+* view new messages continually:
+    * `$ sudo tail -f /var/log/messages`
+    * `$ sudo tail -f /var/log/syslog`
+    * `$ dmesg -w`
 
 ### 11.6: Important Log Files in /var/log
 ----
@@ -179,13 +182,13 @@ Topics | Path | Notes | Reference
 monitoring, system | `/var/log` | log files | LFS201 11.5
 monitoring, system | `/etc/logrotate.conf` | controls **logrotate** | LFS201 11.6
 monitoring, system | `/proc/sys` | shows tunable system parameters | LFS201 11.10
-monitoring, system | `/proc/sys/abi/` | Contains files with application binary information | LFS201 11.10
-monitoring, system | `/proc/sys/debug/` | Debugging parameters; for now, just some control of exception reporting | LFS201 11.10
-monitoring, system | `/proc/sys/dev/` | Device parameters, including subdirectories for cdrom, scsi, raid, and parport | LFS201 11.10
-monitoring, system | `/proc/sys/fs/` | Filesystem parameters, including quota, file handles used, and maximums, inode and directory information, etc. | LFS201 11.10
-monitoring, system | `/proc/sys/kernel/` | Kernel parameters | LFS201 11.10
-monitoring, system | `/proc/sys/net/` | Network parameters; there are subdirectories for ipv4, netfilter, etc. | LFS201 11.10
-monitoring, system | `/proc/sys/vm` | Virtual memory parameters | LFS201 11.10
+monitoring, system | `/proc/sys/abi/` | contains files with application binary information | LFS201 11.10
+monitoring, system | `/proc/sys/debug/` | debugging parameters; for now, just some control of exception reporting | LFS201 11.10
+monitoring, system | `/proc/sys/dev/` | device parameters, including subdirectories for cdrom, scsi, raid, and parport | LFS201 11.10
+monitoring, system | `/proc/sys/fs/` | filesystem parameters, including quota, file handles used, and maximums, inode and directory information, etc. | LFS201 11.10
+monitoring, system | `/proc/sys/kernel/` | kernel parameters | LFS201 11.10
+monitoring, system | `/proc/sys/net/` | network parameters; there are subdirectories for ipv4, netfilter, etc. | LFS201 11.10
+monitoring, system | `/proc/sys/vm` | virtual memory parameters | LFS201 11.10
 monitoring, system | `/sys/class/net` | contains network device information | LFS201 11.12
 monitoring, system | `/var/log/sa` | contains data stored by system activity data collector | LFS201 11.13
 monitoring, system | `/etc/cron.d/sysstat` | cron job for periodic data collection for sadc | LFS201 11.13

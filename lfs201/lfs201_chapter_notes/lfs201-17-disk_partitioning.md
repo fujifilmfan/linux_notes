@@ -483,7 +483,7 @@ Topics | Command | Notes | Reference
 partitions | `$ sudo fdisk -l /dev/sda` | list partition table | LFS201 17.5
 partitions | `$ ls -l /dev` | show current available disk device nodes | LFS201 17.10
 partitions | `$ sudo blkid /dev/sda*` | report on block devices matching the pattern| LFS201 17.12
-partitions | `$ sudo blkid` | ?? | LFS201 17.12
+partitions | `$ sudo blkid ...` | locate/print block device attributes | LFS201 17.12
 partitions | `$ sudo blkid -L root` | convert LABEL to 'root'(?)| LFS201 17.12
 partitions | `$ lsblk` | presents block device information in a tree format | LFS201 17.13
 partitions | `$ sudo dd if=/dev/sda of=mbrbackup bs=512 count=1` | backup **MBR** on the first disk | LFS201 17.15

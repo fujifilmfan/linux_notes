@@ -83,7 +83,7 @@ LANG            | is the system language
     * `$ sudo sysctl net.ipv4.ip_forward=1` sets a value with the **sysctl** interface
 * `$ man 8 sysctl` get **sysctl** help
 * `$ man 2 sysctl` get information about using the `sysctl()` function from programs
-* if settings are place in `/etc/sysctl.conf`, then settings can be fixed at boot time
+* if settings are placed in `/etc/sysctl.conf`, then settings can be fixed at boot time
     * `$ man sysctl.conf` for help
 * `$ sudo sysctl -p` causes immediate digestion of the file, setting all parameters as found; this is also part of the boot process
 * on **systemd** distributions (like CentOS 7), actual settings are in `/usr/lib/sysctl.d/00-system.conf` but original file is still supported

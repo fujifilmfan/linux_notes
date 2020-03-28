@@ -121,7 +121,7 @@ ibus-daemon,10525 --xim --panel disable
 ### 12.11: Viewing System Loads with top
 ----
 * by default, top refreshes itself every 3.0 seconds
-dd
+  
 ### 12.12: top Options
 ----
 * top is interactive

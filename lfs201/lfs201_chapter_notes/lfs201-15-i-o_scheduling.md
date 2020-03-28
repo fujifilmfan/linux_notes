@@ -83,8 +83,8 @@ running `$ ls -l /dev` gives results w/ a preceding **c** for character special 
 * `$ ls -l iosched/`
 * `$ echo cfq > scheduler`
 * `$ ls -l iosched/`
-* `$ ls -l rotational
-* `$ cat scheduler 
+* `$ ls -l rotational`
+* `$ cat scheduler`
   
 ### 15.9: CFQ (Completey Fair Queue) Scheduler
 ----

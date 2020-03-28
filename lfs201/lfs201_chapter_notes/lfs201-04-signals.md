@@ -76,7 +76,6 @@ By the end of this chapter, you should be able to:
 
 ### Lab 4.1: Examining Signal Priorities and Execution
 ----
-
 When run, the signals program:
 * Does not send the signals SIGKILL or SIGSTOP, which can not be handled and will always terminate a program.
 * Stores the sequence of signals as they come in, and updates a counter array for each signal that indicates how many times the signal has been handled.
@@ -89,7 +88,8 @@ Note the following:
 * If more than one of a given signal is **raised** while the process has blocked it, does the process **receive** it multiple times? Does the behavior of **real time** signals differ from normal signals?
 * Are all signals received by the process, or are some handled before they reach it?
 * What order are the signals received in?
-One signal, SIGCONT (18 on **x86**) may not get through; can you figure out why? Note:  
+One signal, SIGCONT (18 on **x86**) may not get through; can you figure out why?  
+Note:  
 On some **Linux** distributions signals 32 and 33 can not be blocked and will cause the program to fail. Even though system header files indicate SIGRTMIN=32, the command kill -l indicates SIGRTMIN=34.
 Note that **POSIX** says one should use signal names, not numbers, which are allowed to be completely implementation dependent. You should generally avoid sending these signals.
 

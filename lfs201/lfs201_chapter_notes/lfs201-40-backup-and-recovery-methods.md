@@ -410,7 +410,7 @@ backup | `$ rsync file.tar someone@backup.mydomain:/usr/local` | example rsync u
 backup | `$ rsync -r a-machine:/usr/local b-machine:/usr/` | example rsync use | LFS201 40.17
 backup | `$ rsync -r --dry-run /usr/local /BACKUP/usr` | example rsync use | LFS201 40.17
 backup | `$ rsync -r project-X archive-machine:archives/project-X` | back up a project directory using **-r** | LFS201 40.17
-backup | `$ ls | cpio --create -O /dev/st0` | create an archive, use **-o** or **--create** | LFS201 40.18
+backup | `$ ls \| cpio --create -O /dev/st0` | create an archive, use **-o** or **--create** | LFS201 40.18
 backup | `$ cpio -i somefile -I /dev/st0` | extract from an archive, use **-i** or **--extract** | LFS201 40.18
 backup | `$ cpio -t -I /dev/st0` | list contents of an archive, use **-t** or **--list** | LFS201 40.18
 backup | `$ sudo restore -rvf /tmp/boot_backup` | restores all files that were dumped, relative to current directory | LFS201 40.21
@@ -421,7 +421,7 @@ backup | `$ mt erase` | erase the tape | LFS201 40.22
 backup | `$ mt fsf` | move forward to the end of the current archive | LFS201 40.22
 backup | `$ tar tvf /tmp/backup/backup.tar.bz2` | list files in the archive | Lab 40.1
 backup | `$ diff -qr include /usr/include` | compare the contents with the original directory the archive was made from | Lab 40.1
-backup | `$ find include | cpio -c -o | gzip -c > /tmp/backup/include.cpio.gz` | place compressed **cpio** archive of all the files under `/usr/include` in `/tmp/backup` | Lab 40.2
+backup | `$ find include \| cpio -c -o \| gzip -c > /tmp/backup/include.cpio.gz` | place compressed **cpio** archive of all the files under `/usr/include` in `/tmp/backup` | Lab 40.2
 backup | `$ cpio -ivt < include.cpio` | list the files in the archive | Lab 40.2
 backup | `$ rsync -av /usr/include .` | create a complete copy of `/usr/include` in the current directory | Lab 40.3
 backup | `$ rsync -av --delete /usr/include .` | remove files that are no longer in source (?) | Lab 40.3

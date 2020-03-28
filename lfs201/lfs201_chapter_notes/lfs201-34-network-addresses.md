@@ -131,13 +131,13 @@ No lab this chapter
 ----
   
 #### Paths  
-
+  
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
 networks | `/etc/hostname` holds current value on most distros | LFS201 34.11
   
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 networks | `$ hostname` gives the current hostname | LFS201 34.11

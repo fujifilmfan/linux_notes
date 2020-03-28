@@ -353,12 +353,12 @@ $ ulimit -S -n`
 
 This doesn't work, even with sudo or changing user to root; need to change the soft limit first:
 
-`[student@centos ~]$ ulimit -S -n 2048
-[student@centos ~]$ ulimit -H -n 2048
-[student@centos ~]$ ulimit -H -n 4096`
-> bash: ulimit: open files: cannot modify limit: Operation not permitted
-`[student@centos ~]$ sudo ulimit -H -n 4096`
-> sudo: ulimit: command not found
+`[student@centos ~]$ ulimit -S -n 2048`  
+`[student@centos ~]$ ulimit -H -n 2048`  
+`[student@centos ~]$ ulimit -H -n 4096`  
+    > bash: ulimit: open files: cannot modify limit: Operation not permitted  
+`[student@centos ~]$ sudo ulimit -H -n 4096`  
+    > sudo: ulimit: command not found  
 
 4. Change to root user and set hard limit back to 4096
 

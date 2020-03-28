@@ -181,12 +181,12 @@ Try modifying the umask and creating new files and see the resulting permissions
 ----
   
 #### Paths  
-
+  
 Topics | Path | Notes | Reference
 ------ | ---- | ----- | ---------
   
 #### Commands  
-
+  
 Topics | Command | Notes | Reference
 ------ | ------- | ----- | ---------
 accounts, files, permissions | `$ chmod ...` | changes file permissions | LFS201 32.7

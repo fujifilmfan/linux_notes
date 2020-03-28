@@ -365,7 +365,7 @@ startup/shutdown | `/etc/init/rc.conf` | Upstart configuration source | LFS201 3
 startup/shutdown | `/etc/rc[0-5].d` | Upstart configuration source | LFS201 39.17
 startup/shutdown | `/etc/init/start-ttys.conf` | Upstart configuration source | LFS201 39.17
 startup/shutdown | `/etc/systemd/system` | location for **systemd** services | Lab 39.2
-    
+  
 #### Commands  
   
 Topics | Command | Notes | Reference

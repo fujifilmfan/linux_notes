@@ -94,9 +94,9 @@ By the end of this chapter, you should be able to:
    * `$ sudo quotaon [flags] [filesystem]` generic quotaon syntax
 * **quotaoff** is used to turn them off
    * `$ sudo quotaoff [flags] [filesystem]` generic quotaoff syntax
-
+  
 **quotaon and quotaoff Flags**
-
+  
 Flag | Function
 ---- | -------
 -a, --all               | turn quotas off (on and off??) for all filesystems
@@ -109,7 +109,7 @@ Flag | Function
 -v, --verbose           | print more messages
 -h, --help              | display this help text and exit
 -V, --version           | display version information and exit
-
+  
 * example usages:
    * `$ sudo quotaon -av`
       > /dev/sda6 [/]: group quotas turned on
