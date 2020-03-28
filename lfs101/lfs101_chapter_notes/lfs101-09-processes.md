@@ -397,7 +397,7 @@ processes | `$ ps aux` | displays all processes of all users | LFS101 9.3
 processes | `$ ps axo <attributes>` | allows you to specify which attributes you want to view | LFS101 9.3
 processes | `$ pstree` | displays the processes running on the system in the form of a tree diagram | LFS101 9.3
 apps, processes | `$ top` | display and update sorted information about processes | LFS101 9.3
-apps, processes | `$ top | head` | show just the top header | LFS101 9.3
+apps, processes | `$ top \| head` | show just the top header | LFS101 9.3
 processes | `$ at ...` | starts execution at a later time; contrast with `sleep` | LFS101 9.4
 processes | `$ at now + 2 days` at> top  at> <EOT> CTRL-D | schedule top to run in two days  | LFS101 9.4
 processes | `$ at now + 1 minute` | schedule program to run in one minute | LFS101 9.4
